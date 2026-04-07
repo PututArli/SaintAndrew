@@ -64,6 +64,48 @@ const stasiData = {
     }
 };
 
+function showAlert(title, message, type = 'success') {
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300';
+    
+    const isError = type === 'error';
+    const iconColor = isError ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600';
+    const iconStr = isError ? '✖' : '✔';
+    const btnColor = isError ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700';
+
+    overlay.innerHTML = `
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl transform scale-90 transition-transform duration-300" id="alertBox">
+            <div class="${iconColor} w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center text-4xl shadow-inner font-bold">
+                ${iconStr}
+            </div>
+            <h3 class="text-2xl font-bold mb-2 text-gray-800">${title}</h3>
+            <p class="text-gray-600 mb-6">${message}</p>
+            <button id="closeAlertBtn" class="${btnColor} text-white font-bold py-3 px-8 rounded-xl w-full transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Tutup</button>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+
+    requestAnimationFrame(() => {
+        overlay.classList.remove('opacity-0');
+        overlay.querySelector('#alertBox').classList.remove('scale-90');
+        overlay.querySelector('#alertBox').classList.add('scale-100');
+    });
+
+    const closeBtn = overlay.querySelector('#closeAlertBtn');
+    const closeAlert = () => {
+        overlay.classList.add('opacity-0');
+        overlay.querySelector('#alertBox').classList.remove('scale-100');
+        overlay.querySelector('#alertBox').classList.add('scale-90');
+        setTimeout(() => overlay.remove(), 300);
+    };
+
+    closeBtn.addEventListener('click', closeAlert);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeAlert();
+    });
+}
+
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     const bgColor = type === 'error' ? 'bg-red-600' : 'bg-green-600';
@@ -211,19 +253,32 @@ const contactForm = document.getElementById('contactForm');
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const name = document.getElementById('name').value.trim();
-        const subject = document.getElementById('subject');
-        const message = document.getElementById('message').value.trim();
         
-        let subjectValue = '';
-        if(subject) subjectValue = subject.value;
+        const btn = contactForm.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.textContent = 'Memproses...';
+        btn.disabled = true;
+        btn.classList.add('cursor-wait', 'opacity-80');
 
-        if (name === '' || message === '' || subjectValue === '') {
-            showToast('Mohon lengkapi nama, subjek, dan pesan Anda!', 'error');
-        } else {
-            showToast('Terima kasih ' + name + '! Pesan berhasil terkirim.', 'success');
-            contactForm.reset();
-        }
+        setTimeout(() => {
+            const name = document.getElementById('name').value.trim();
+            const subject = document.getElementById('subject');
+            const message = document.getElementById('message').value.trim();
+            
+            let subjectValue = '';
+            if(subject) subjectValue = subject.value;
+
+            if (name === '' || message === '' || subjectValue === '') {
+                showAlert('Formulir Belum Lengkap', 'Mohon lengkapi nama, subjek, dan pesan Anda sebelum mengirim!', 'error');
+            } else {
+                showAlert('Berhasil Terkirim!', 'Terima kasih ' + name + '! Pesan Anda telah kami terima dan akan segera kami proses.', 'success');
+                contactForm.reset();
+            }
+
+            btn.textContent = originalText;
+            btn.disabled = false;
+            btn.classList.remove('cursor-wait', 'opacity-80');
+        }, 600); // Simulasi delay pengiriman
     });
 }
 
