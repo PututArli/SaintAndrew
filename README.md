@@ -1,7 +1,5 @@
 # 🏛️ Paroki Santo Andreas Rasul - Marga Agung
 
-Website resmi Paroki Santo Andreas Rasul Marga Agung, Kecamatan Jati Agung, Kabupaten Lampung Selatan, Provinsi Lampung.
-
 ## 📁 Struktur Proyek
 
 ```
@@ -10,8 +8,8 @@ Website resmi Paroki Santo Andreas Rasul Marga Agung, Kecamatan Jati Agung, Kabu
 ├── assets/
 │   ├── img/
 │   │   ├── stasi/          # Foto gereja tiap stasi
-│   │   └── ui/             # Ikon, background, & elemen UI
-│   └── favicon.ico         # Favicon website
+│   │   └── ui/             # Ikon, background, dan elemen UI
+│   └── crossIcon.png       # Favicon website
 │
 ├── css/
 │   └── style.css           # Stylesheet utama
@@ -30,13 +28,13 @@ Website resmi Paroki Santo Andreas Rasul Marga Agung, Kecamatan Jati Agung, Kabu
 
 ## 🌐 Halaman
 
-| Halaman | Deskripsi |
-|---------|-----------|
-| **Beranda** | Landing page dengan sapaan, pengumuman, dan renungan harian |
-| **Profil** | Sejarah lengkap Paroki Marga Agung |
-| **Stasi** | Daftar 9 stasi dengan modal sejarah interaktif |
-| **Jadwal Misa** | Jadwal perayaan Ekaristi dan pelayanan sakramen |
-| **Kontak** | Informasi sekretariat dan formulir kontak |
+| Halaman         | Deskripsi                                                   |
+| --------------- | ----------------------------------------------------------- |
+| **Beranda**     | Landing page dengan sapaan, pengumuman, dan renungan harian |
+| **Profil**      | Sejarah lengkap Paroki Marga Agung                          |
+| **Stasi**       | Daftar 9 stasi dengan modal sejarah interaktif              |
+| **Jadwal Misa** | Jadwal perayaan Ekaristi dan pelayanan sakramen             |
+| **Kontak**      | Informasi sekretariat dan formulir kontak                   |
 
 ## 🛠️ Teknologi
 
@@ -45,12 +43,6 @@ Website resmi Paroki Santo Andreas Rasul Marga Agung, Kecamatan Jati Agung, Kabu
 - **Vanilla CSS** — Custom animations & glassmorphism effects
 - **Vanilla JavaScript** — Interaktivitas tanpa framework
 
-## 🚀 Cara Menjalankan
-
-1. Clone repository ini
-2. Buka `index.html` di browser
-3. Atau gunakan Live Server extension di VS Code
-
 ## 👤 Pembuat
 
 **Rafael Putut Arli** — 2417051042  
@@ -58,4 +50,4 @@ Tugas UTP Pemrograman Web — Universitas Lampung
 
 ---
 
-*© 2026 Paroki Santo Andreas Rasul Marga Agung*
+_© 2026 Paroki Santo Andreas Rasul Marga Agung_
