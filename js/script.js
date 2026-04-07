@@ -215,38 +215,7 @@ if (greetingElement) {
     greetingElement.textContent = greetingText + ', Berkah Dalem.';
 }
 
-const searchInput = document.getElementById('searchInput');
-const stasiContainer = document.getElementById('stasiContainer');
-if (searchInput && stasiContainer) {
-    const noResultMsg = document.createElement('p');
-    noResultMsg.textContent = 'Stasi tidak ditemukan.';
-    noResultMsg.className = 'text-center text-gray-500 font-semibold w-full col-span-full hidden mt-4';
-    stasiContainer.appendChild(noResultMsg);
-
-    searchInput.addEventListener('input', function() {
-        const filter = searchInput.value.toLowerCase();
-        const items = document.querySelectorAll('.stasi-item');
-        let hasResult = false;
-        
-        items.forEach(function(item) {
-            const text = item.querySelector('h3').textContent.toLowerCase();
-            if (text.includes(filter)) {
-                item.style.display = 'flex';
-                item.classList.add('animate-fade-in');
-                hasResult = true;
-            } else {
-                item.style.display = 'none';
-                item.classList.remove('animate-fade-in');
-            }
-        });
-        
-        if (hasResult) {
-            noResultMsg.classList.add('hidden');
-        } else {
-            noResultMsg.classList.remove('hidden');
-        }
-    });
-}
+// Fitur search telah diganti dengan tombol di UI
 
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
