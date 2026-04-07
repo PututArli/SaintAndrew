@@ -67,3 +67,10 @@ body {
     from { opacity: 1; transform: translateY(0); }
     to { opacity: 0; transform: translateY(-15px); }
 }
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #1e3a8a;
+    border-radius: 10px;
+}
