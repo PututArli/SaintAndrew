@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jadwal Misa - Paroki Marga Agung</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col min-h-screen text-gray-800">
+
+<nav class="glass-nav sticky top-0 z-50 w-full text-white px-6 py-4">
+<div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+<h1 class="text-2xl font-bold tracking-wide">Paroki Marga Agung</h1>
+<ul class="flex space-x-6 mt-4 md:mt-0 font-medium">
+<li><a href="index.html" class="nav-link">Beranda</a></li>
+<li><a href="profil.html" class="nav-link">Profil</a></li>
+<li><a href="stasi.html" class="nav-link">Stasi</a></li>
+<li><a href="jadwal.html" class="nav-link text-blue-300">Jadwal Misa</a></li>
+<li><a href="kontak.html" class="nav-link">Kontak</a></li>
+</ul>
+</div>
+</nav>
+
+<main class="flex-grow p-6">
+<div class="max-w-4xl mx-auto glass-card rounded-3xl p-10 animate-fade-in">
+    <h2 class="text-4xl font-bold text-blue-900 mb-2 text-center">Jadwal Misa & Pelayanan</h2>
+    <p class="text-center text-gray-600 mb-8">Informasi waktu perayaan Ekaristi dan Sakramen Paroki Marga Agung.</p>
+    
+    <div class="space-y-8">
+        <div>
+            <h3 class="text-xl font-bold text-blue-800 mb-4 bg-blue-100 inline-block px-4 py-1 rounded-full">Misa Pusat (Margo Agung)</h3>
+            <div class="overflow-hidden rounded-2xl shadow-sm border border-gray-200 bg-white/80">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-blue-800 text-white">
+                            <th class="py-3 px-6 font-semibold w-1/3">Hari</th>
+                            <th class="py-3 px-6 font-semibold w-1/3">Waktu</th>
+                            <th class="py-3 px-6 font-semibold w-1/3">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                            <td class="py-3 px-6 font-medium">Minggu</td>
+                            <td class="py-3 px-6">07:00 WIB</td>
+                            <td class="py-3 px-6">Misa Umat</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                            <td class="py-3 px-6 font-medium">Kamis</td>
+                            <td class="py-3 px-6">05:30 WIB</td>
+                            <td class="py-3 px-6">Misa Harian</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="py-3 px-6 font-medium">Jumat Pertama</td>
+                            <td class="py-3 px-6">17:00 WIB</td>
+                            <td class="py-3 px-6">Misa Jumat Pertama</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-xl font-bold text-blue-800 mb-4 bg-blue-100 inline-block px-4 py-1 rounded-full">Pelayanan Sakramen</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white/80 p-5 rounded-2xl border border-gray-100">
+                    <h4 class="font-bold text-gray-800">Sakramen Tobat</h4>
+                    <p class="text-gray-600 text-sm mt-1">Setiap setengah jam sebelum Misa Minggu atau dengan perjanjian khusus dengan Pastor Paroki.</p>
+                </div>
+                <div class="bg-white/80 p-5 rounded-2xl border border-gray-100">
+                    <h4 class="font-bold text-gray-800">Sakramen Baptis Bayi</h4>
+                    <p class="text-gray-600 text-sm mt-1">Minggu kedua setiap bulan genap. Pendaftaran maksimal 2 minggu sebelum pelaksanaan di sekretariat.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+<footer class="glass-nav text-white text-center py-6 mt-auto">
+<p class="text-sm opacity-80">&copy; 2026 Rafael Putut Arli - 2417051042</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
