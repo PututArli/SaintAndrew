@@ -1,3 +1,18 @@
+document.body.classList.add('page-transition');
+
+const links = document.querySelectorAll('a[href$=".html"]');
+links.forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetUrl = this.href;
+        document.body.classList.remove('page-transition');
+        document.body.classList.add('page-fade-out');
+        setTimeout(() => {
+            window.location.href = targetUrl;
+        }, 400);
+    });
+});
+
 const greetingElement = document.getElementById('greeting');
 if (greetingElement) {
     const hour = new Date().getHours();
@@ -79,3 +94,25 @@ if (contactForm) {
         }
     });
 }
+
+const scrollTopBtn = document.createElement('button');
+scrollTopBtn.innerHTML = '↑';
+scrollTopBtn.className = 'fixed bottom-6 left-6 bg-blue-800 text-white w-12 h-12 rounded-full shadow-xl flex items-center justify-center text-2xl font-bold opacity-0 transition-opacity duration-300 pointer-events-none z-50 hover:bg-blue-700';
+document.body.appendChild(scrollTopBtn);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        scrollTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+        scrollTopBtn.classList.add('opacity-100', 'pointer-events-auto');
+    } else {
+        scrollTopBtn.classList.remove('opacity-100', 'pointer-events-auto');
+        scrollTopBtn.classList.add('opacity-0', 'pointer-events-none');
+    }
+});
+
+scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
