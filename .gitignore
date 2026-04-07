@@ -1,0 +1,28 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Temp files
+*.tmp
+*.log
+*.bak
+~$*
+
+# Environment files
+.env
+.env.local
