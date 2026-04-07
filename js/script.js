@@ -268,7 +268,21 @@ if (contactForm) {
             if(subject) subjectValue = subject.value;
 
             if (name === '' || message === '' || subjectValue === '') {
-                showAlert('Formulir Belum Lengkap', 'Mohon lengkapi nama, subjek, dan pesan Anda sebelum mengirim!', 'error');
+                let missing = [];
+                if (name === '') missing.push('nama');
+                if (subjectValue === '') missing.push('subjek');
+                if (message === '') missing.push('pesan');
+                
+                let missingText = '';
+                if (missing.length === 1) {
+                    missingText = missing[0];
+                } else if (missing.length === 2) {
+                    missingText = missing[0] + ' dan ' + missing[1];
+                } else {
+                    missingText = missing[0] + ', ' + missing[1] + ', dan ' + missing[2];
+                }
+
+                showAlert('Formulir Belum Lengkap', 'Mohon lengkapi ' + missingText + ' Anda sebelum mengirim!', 'error');
             } else {
                 showAlert('Berhasil Terkirim!', 'Terima kasih ' + name + '! Pesan Anda telah kami terima dan akan segera kami proses.', 'success');
                 contactForm.reset();
