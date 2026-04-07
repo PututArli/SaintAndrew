@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+html {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
@@ -55,7 +59,7 @@ body {
 }
 
 .page-fade-out {
-    animation: fadeOutPage 0.4s ease-in forwards;
+    animation: fadeOutPage 0.15s ease-in forwards;
 }
 
 @keyframes fadeInPage {

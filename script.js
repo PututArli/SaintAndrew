@@ -190,7 +190,6 @@ document.querySelectorAll('.btn-sejarah').forEach(btn => {
         openStasiModal(stasiId);
     });
 });
-
 document.body.classList.add('page-transition');
 
 const links = document.querySelectorAll('a[href$=".html"]');
@@ -202,7 +201,7 @@ links.forEach(link => {
         document.body.classList.add('page-fade-out');
         setTimeout(() => {
             window.location.href = targetUrl;
-        }, 400);
+        }, 150);
     });
 });
 
