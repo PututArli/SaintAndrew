@@ -182,141 +182,116 @@ window.onclick = function(event) {
     }
 }
 
-document.querySelectorAll('.btn-sejarah').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        const stasiId = this.getAttribute('data-stasi');
-        openStasiModal(stasiId);
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('page-transition');
+
+    document.querySelectorAll('.btn-sejarah').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const stasiId = this.getAttribute('data-stasi');
+            openStasiModal(stasiId);
+        });
     });
-});
-document.body.classList.add('page-transition');
 
-const links = document.querySelectorAll('a[href$=".html"]');
-links.forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetUrl = this.href;
-        document.body.classList.remove('page-transition');
-        document.body.classList.add('page-fade-out');
-        setTimeout(() => {
-            window.location.href = targetUrl;
-        }, 150);
+    const links = document.querySelectorAll('a[href$=".html"]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetUrl = this.href;
+            document.body.classList.remove('page-transition');
+            document.body.classList.add('page-fade-out');
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 150);
+        });
     });
-});
 
-const greetingElement = document.getElementById('greeting');
-if (greetingElement) {
-    const hour = new Date().getHours();
-    let greetingText = 'Selamat Malam';
-    if (hour >= 5 && hour < 12) greetingText = 'Selamat Pagi';
-    else if (hour >= 12 && hour < 15) greetingText = 'Selamat Siang';
-    else if (hour >= 15 && hour < 18) greetingText = 'Selamat Sore';
-    greetingElement.textContent = greetingText + ', Berkah Dalem.';
-}
+    const greetingElement = document.getElementById('greeting');
+    if (greetingElement) {
+        const hour = new Date().getHours();
+        let greetingText = 'Selamat Malam';
+        if (hour >= 5 && hour < 12) greetingText = 'Selamat Pagi';
+        else if (hour >= 12 && hour < 15) greetingText = 'Selamat Siang';
+        else if (hour >= 15 && hour < 18) greetingText = 'Selamat Sore';
+        greetingElement.textContent = greetingText + ', Berkah Dalem.';
+    }
 
-// Fitur search telah diganti dengan tombol di UI
-
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const btn = contactForm.querySelector('button[type="submit"]');
-        const originalText = btn.textContent;
-        btn.textContent = 'Memproses...';
-        btn.disabled = true;
-        btn.classList.add('cursor-wait', 'opacity-80');
-
-        setTimeout(() => {
-            const name = document.getElementById('name').value.trim();
-            const subject = document.getElementById('subject');
-            const message = document.getElementById('message').value.trim();
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            let subjectValue = '';
-            if(subject) subjectValue = subject.value;
+            const btn = contactForm.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Memproses...';
+            btn.disabled = true;
+            btn.classList.add('cursor-wait', 'opacity-80');
 
-            if (name === '' || message === '' || subjectValue === '') {
-                let missing = [];
-                if (name === '') missing.push('nama');
-                if (subjectValue === '') missing.push('subjek');
-                if (message === '') missing.push('pesan');
-                
-                let missingText = '';
-                if (missing.length === 1) {
-                    missingText = missing[0];
-                } else if (missing.length === 2) {
-                    missingText = missing[0] + ' dan ' + missing[1];
+            setTimeout(() => {
+                const name = document.getElementById('name').value.trim();
+                const btnRef = contactForm.querySelector('button[type="submit"]');
+
+                if (name === '') {
+                    showAlert('Formulir Belum Lengkap', 'Mohon lengkapi nama Anda!', 'error');
                 } else {
-                    missingText = missing[0] + ', ' + missing[1] + ', dan ' + missing[2];
+                    showAlert('Berhasil Terkirim!', 'Terima kasih ' + name + '! Pesan Anda telah kami terima.', 'success');
+                    contactForm.reset();
                 }
 
-                showAlert('Formulir Belum Lengkap', 'Mohon lengkapi ' + missingText + ' Anda sebelum mengirim!', 'error');
-            } else {
-                showAlert('Berhasil Terkirim!', 'Terima kasih ' + name + '! Pesan Anda telah kami terima dan akan segera kami proses.', 'success');
-                contactForm.reset();
-            }
-
-            btn.textContent = originalText;
-            btn.disabled = false;
-            btn.classList.remove('cursor-wait', 'opacity-80');
-        }, 600); // Simulasi delay pengiriman
-    });
-}
-
-const scrollTopBtn = document.createElement('button');
-scrollTopBtn.innerHTML = '↑';
-scrollTopBtn.className = 'fixed bottom-6 left-6 bg-blue-800 text-white w-12 h-12 rounded-full shadow-xl flex items-center justify-center text-2xl font-bold opacity-0 transition-opacity duration-300 pointer-events-none z-50 hover:bg-blue-700';
-document.body.appendChild(scrollTopBtn);
-
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        scrollTopBtn.classList.remove('opacity-0', 'pointer-events-none');
-        scrollTopBtn.classList.add('opacity-100', 'pointer-events-auto');
-    } else {
-        scrollTopBtn.classList.remove('opacity-100', 'pointer-events-auto');
-        scrollTopBtn.classList.add('opacity-0', 'pointer-events-none');
-    }
-});
-
-scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-const stasiModalOverlay = document.getElementById('stasiModal');
-if (stasiModalOverlay) {
-    const stasiModalCard = stasiModalOverlay.querySelector('.glass-card');
-    
-    if (stasiModalCard) {
-        stasiModalCard.style.willChange = 'transform';
-        stasiModalCard.style.transformStyle = 'preserve-3d';
-
-        stasiModalCard.addEventListener('mousemove', function(e) {
-            const rect = this.getBoundingClientRect();
-            
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -6; 
-            const rotateY = ((x - centerX) / centerX) * 6;
-            
-            this.style.transition = 'transform 0.1s ease-out';
-            this.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        });
-
-        stasiModalCard.addEventListener('mouseleave', function() {
-            this.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-            this.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-        });
-
-        stasiModalCard.addEventListener('mouseenter', function() {
-            this.style.transition = 'transform 0.1s ease-out';
+                btnRef.textContent = originalText;
+                btnRef.disabled = false;
+                btnRef.classList.remove('cursor-wait', 'opacity-80');
+            }, 600);
         });
     }
-}
+
+    const scrollTopBtn = document.createElement('button');
+    scrollTopBtn.innerHTML = '↑';
+    scrollTopBtn.className = 'fixed bottom-6 left-6 bg-blue-800 text-white w-12 h-12 rounded-full shadow-xl flex items-center justify-center text-2xl font-bold opacity-0 transition-opacity duration-300 pointer-events-none z-50 hover:bg-blue-700';
+    document.body.appendChild(scrollTopBtn);
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+            scrollTopBtn.classList.add('opacity-100', 'pointer-events-auto');
+        } else {
+            scrollTopBtn.classList.remove('opacity-100', 'pointer-events-auto');
+            scrollTopBtn.classList.add('opacity-0', 'pointer-events-none');
+        }
+    });
+
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    const stasiModalOverlay = document.getElementById('stasiModal');
+    if (stasiModalOverlay) {
+        const stasiModalCard = stasiModalOverlay.querySelector('.glass-card');
+        
+        if (stasiModalCard) {
+            stasiModalCard.style.willChange = 'transform';
+            stasiModalCard.style.transformStyle = 'preserve-3d';
+
+            stasiModalCard.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -6; 
+                const rotateY = ((x - centerX) / centerX) * 6;
+                this.style.transition = 'transform 0.1s ease-out';
+                this.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            stasiModalCard.addEventListener('mouseleave', function() {
+                this.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+                this.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        }
+    }
+});
