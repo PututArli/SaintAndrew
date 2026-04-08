@@ -58,7 +58,7 @@ const stasiData = {
     'purwotani': {
         title: 'Stasi Purwotani',
         patron: 'Santo Petrus',
-        image: 'assets/img/stasi/purwotani.jpg',
+        image: '',
         history: '<strong>Awal Pembentukan Komunitas dan Perjuangan Toleransi (1984\u20131990-an)</strong><br>Desa Purwotani terbentuk sekitar tahun 1984. Sebagian besar penduduk, termasuk umat Katolik, adalah pendatang dalam proyek transmigrasi lokal karena bekerja di PT. Midsugoro (Jepang). Umat Katolik perdana berjumpa dan mulai beribadat tahun 1990-an, terdiri dari 8 Keluarga Katolik: Pak Surajan, Pak Albertus Kasimin, Pak Margono, Pak Karinus, Pak Bernardus, Mbah Kasimah, Mbah Petrus Murbadi, dan Mbah Yohanes Saleh. Awalnya merupakan lingkungan di Gereja St. Aloysius Bergen (Paroki Katedral). Pada awal 1990-an, Romo Peco dan katekis Pak Puspayuwono mulai memberikan pelayanan. Umat harus berjuang memperoleh izin dari Kepala Desa dan mendapat pengawasan ibadat karena kecurigaan, tetapi secara perlahan terjalin toleransi yang kuat hingga saat ini tanpa adanya benturan agama.<br><br><strong>Lahan Gereja dan Perpindahan Status Administratif (1992\u20132022)</strong><br>Sekitar tahun 1992, Romo Peco membeli tanah 3/4 hektar untuk gereja lalu ditukar guling oleh Pak Surajan dengan pekarangan 3 rante di tengah kampung. SKT lahan tersebut sekarang disimpan di Paroki Marga Agung atas nama Supriyanto. Menariknya, hingga saat ini umat belum memiliki bangunan gereja permanen; semua ibadat dan Misa diadakan bergiliran di rumah umat\u2014yang juga berfungsi sebagai kunjungan pastoral langsung. Pada 2022, lingkungan tersebut pindah ke Paroki Marga Agung dan baru resmi ditetapkan sebagai <strong>Stasi Santo Petrus Purwotani</strong> oleh Romo Philipus Suroyo.<br><br><strong>Semangat Beribadat dan Data Umat Terkini</strong><br>Sebelumnya Misa hanya diterima pada Minggu ke-5 dan kini umat sering bergabung ke Stasi Marga Lestari di Hari Minggu. Semangat umat sangat tinggi, terbukti dengan partisipasi utuh saat ada ibadah lokal di stasi. Saat ini, jumlah umat Stasi Purwotani tercatat ada <strong>7 Kepala Keluarga (25 jiwa)</strong>.',
         chairmen: ['Surajan (Ketua Lingkungan, 1990\u2013?)', 'Sempat ada kekosongan ketua', 'Albertus Kasimin (Ketua Lingkungan, ?\u20132021)', 'Benediktus Daman (Ketua Stasi, 2022\u2013Sekarang)']
     }
@@ -141,6 +141,15 @@ function openStasiModal(id) {
     let imageHtml = '';
     if (data.image) {
         imageHtml = `<img src="${data.image}" alt="Gereja ${data.patron}" class="w-full h-auto rounded-2xl shadow-sm border border-gray-100 mb-6 bg-gray-50/50">`;
+    } else {
+        imageHtml = `
+        <div class="w-full h-48 md:h-64 rounded-2xl shadow-sm border-2 border-dashed border-blue-200 mb-6 bg-blue-50/50 flex flex-col items-center justify-center text-blue-400">
+            <svg class="w-16 h-16 mb-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+            <span class="font-bold text-blue-800">Gereja Dalam Pembangunan</span>
+            <span class="text-sm text-blue-600 mt-1">Lokasi beribadah sementara di rumah umat</span>
+        </div>`;
     }
 
     content.innerHTML = `
@@ -182,6 +191,154 @@ window.onclick = function(event) {
     }
 }
 
+// --- Lightbox Functions ---
+let currentLightboxIndex = 0;
+let lightboxImages = [];
+
+function buildLightboxImages() {
+    // Pada index.html mungkin tidak pakai full-gallery, jadi hanya ambil gallery-item yang terlihat
+    const items = document.querySelectorAll('.gallery-item:not([style*="display: none"])');
+    lightboxImages = Array.from(items).map(item => {
+        const img = item.querySelector('img');
+        return { src: img ? img.src : '', alt: img ? img.alt : '' };
+    });
+}
+
+function openLightbox(src, alt) {
+    buildLightboxImages();
+    let idx = lightboxImages.findIndex(i => i.src === src);
+    currentLightboxIndex = idx >= 0 ? idx : 0;
+    renderLightbox();
+
+    const lb = document.getElementById('lightbox');
+    if (lb) {
+        lb.classList.remove('hidden'); // khusus index.html yang belum pakai d-none
+        lb.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeLightbox() {
+    const lb = document.getElementById('lightbox');
+    if (lb) {
+        lb.classList.add('closing');
+        setTimeout(() => {
+            lb.classList.remove('active', 'closing');
+            document.body.style.overflow = '';
+        }, 300);
+    }
+}
+
+function handleLightboxClick(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+
+function renderLightbox() {
+    const data = lightboxImages[currentLightboxIndex];
+    if (!data) return;
+
+    const img = document.getElementById('lightbox-img');
+    const caption = document.getElementById('lightbox-caption');
+    const counter = document.getElementById('lightbox-counter');
+
+    if (img) {
+        img.src = data.src;
+        img.alt = data.alt;
+    }
+    if (caption) caption.textContent = data.alt;
+    if (counter) counter.textContent = `${currentLightboxIndex + 1} / ${lightboxImages.length}`;
+}
+
+function changeLightboxImage(dir) {
+    if (lightboxImages.length <= 1) return;
+    const img = document.getElementById('lightbox-img');
+
+    if (img) {
+        img.classList.add('changing');
+        setTimeout(() => {
+            currentLightboxIndex = (currentLightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
+            renderLightbox();
+            img.classList.remove('changing');
+        }, 160);
+    }
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+    const lb = document.getElementById('lightbox');
+    if (!lb || !lb.classList.contains('active')) return;
+    if (e.key === 'ArrowRight') changeLightboxImage(1);
+    if (e.key === 'ArrowLeft')  changeLightboxImage(-1);
+    if (e.key === 'Escape')     closeLightbox();
+});
+
+// Setup Gallery listeners on load
+document.addEventListener('DOMContentLoaded', () => {
+    const lb = document.getElementById('lightbox');
+    if (lb) {
+        let startX = 0;
+        lb.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+        lb.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].clientX - startX;
+            if (Math.abs(diff) > 50) changeLightboxImage(diff < 0 ? 1 : -1);
+        }, { passive: true });
+    }
+
+    setupGalleryClicks();
+    setupFilters();
+});
+
+function setupGalleryClicks() {
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        // Hapus inline event yang lama jika ada (dari index.html)
+        item.removeAttribute('onclick'); 
+        item.addEventListener('click', () => {
+            const img = item.querySelector('img');
+            if (img) openLightbox(img.src, img.alt);
+        });
+    });
+}
+
+function setupFilters() {
+    const btns = document.querySelectorAll('.filter-btn');
+    if (!btns.length) return; // Jangan jalankan jika tak ada filter (seperti di index.html)
+
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btns.forEach(b => { 
+                b.classList.remove('active-filter', 'bg-blue-600', 'text-white'); 
+                b.classList.add('bg-white', 'text-gray-600'); 
+            });
+            btn.classList.add('active-filter', 'bg-blue-600', 'text-white');
+            btn.classList.remove('bg-white', 'text-gray-600');
+
+            const filter = btn.dataset.filter || 'all';
+            const items = document.querySelectorAll('.gallery-item');
+            let visibleCount = 0;
+
+            items.forEach(item => {
+                const cat = item.dataset.category || '';
+                const show = filter === 'all' || cat === filter;
+                item.style.display = show ? '' : 'none';
+                if (show) visibleCount++;
+            });
+
+            const emptyMsg = document.getElementById('empty-msg');
+            if(emptyMsg) emptyMsg.classList.toggle('hidden', visibleCount > 0);
+        });
+    });
+
+    const filterAllBtn = document.getElementById('filter-all');
+    if(filterAllBtn) {
+        filterAllBtn.addEventListener('click', () => {
+            document.querySelectorAll('.gallery-item').forEach(i => i.style.display = '');
+            const emptyMsg = document.getElementById('empty-msg');
+            if(emptyMsg) emptyMsg.classList.add('hidden');
+        });
+    }
+}
+
+// Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('page-transition');
 

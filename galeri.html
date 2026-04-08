@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeri Paroki - Marga Agung</title>
+<meta name="description" content="Album foto dan dokumentasi kegiatan Gereja Katolik Paroki Santo Andreas Rasul Marga Agung. Mengabadikan perjalanan iman umat.">
+<link rel="icon" href="assets/crossIcon.png" type="image/png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+    /* Lightbox: selalu mengikuti viewport, tidak peduli posisi scroll */
+    #lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.93);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        /* Pastikan tidak terpengaruh scroll atau parent transform */
+        overflow: hidden;
+    }
+    #lightbox.active {
+        display: flex;
+        opacity: 1;
+    }
+    #lightbox.closing {
+        opacity: 0;
+    }
+    /* Tombol close & navigasi selalu menempel di viewport */
+    #lightbox .lb-close,
+    #lightbox .lb-prev,
+    #lightbox .lb-next {
+        position: fixed;
+        z-index: 10000;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s ease;
+    }
+    #lightbox .lb-close {
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 9999px;
+        background: rgba(255,255,255,0.12);
+        color: white;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    #lightbox .lb-close:hover { background: #ef4444; }
+    #lightbox .lb-prev,
+    #lightbox .lb-next {
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3rem;
+        height: 3rem;
+        border-radius: 9999px;
+        background: rgba(255,255,255,0.1);
+        color: white;
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    #lightbox .lb-prev:hover,
+    #lightbox .lb-next:hover { background: #2563eb; }
+    #lightbox .lb-prev { left: 1rem; }
+    #lightbox .lb-next { right: 1rem; }
+    @media (min-width: 768px) {
+        #lightbox .lb-prev { left: 2rem; }
+        #lightbox .lb-next { right: 2rem; }
+        #lightbox .lb-prev,
+        #lightbox .lb-next { width: 3.5rem; height: 3.5rem; font-size: 1.5rem; }
+        #lightbox .lb-close { top: 2rem; right: 2rem; }
+    }
+    /* Gambar itu sendiri */
+    #lightbox-img {
+        max-width: 90vw;
+        max-height: 80vh;
+        border-radius: 0.75rem;
+        object-fit: contain;
+        transform: scale(0.92);
+        opacity: 0;
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    }
+    #lightbox.active #lightbox-img {
+        transform: scale(1);
+        opacity: 1;
+    }
+    /* Transisi saat ganti foto */
+    #lightbox-img.changing {
+        transform: scale(0.88) !important;
+        opacity: 0 !important;
+        transition: transform 0.15s ease-in, opacity 0.15s ease-in !important;
+    }
+    /* Wrapper konten — tidak perlu container scroll */
+    #lightbox-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 90vw;
+        padding: 0 5rem; /* ruang untuk tombol panah */
+    }
+    /* Counter foto misal "3 / 5" */
+    #lightbox-counter {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255,255,255,0.7);
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        background: rgba(0,0,0,0.4);
+        padding: 0.3rem 1rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.15);
+        backdrop-filter: blur(8px);
+    }
+</style>
+</head>
+<body class="flex flex-col min-h-screen text-gray-800 page-transition bg-gray-50/50">
+
+<modern-navbar active-page="galeri.html"></modern-navbar>
+
+<main class="flex-grow pb-16">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6 py-16 relative z-10 text-center animate-fade-in">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 drop-shadow-md">Galeri Paroki</h2>
+            <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto drop-shadow">Mengabadikan setiap momen dan perjalanan bertumbuh dalam iman umat Paroki Marga Agung.</p>
+        </div>
+        <div class="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-gray-50/50 to-transparent"></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 mt-10">
+
+        <!-- Filter Kategori -->
+        <div class="flex flex-wrap justify-center gap-3 mb-10 animate-fade-in">
+            <button id="filter-all" class="filter-btn active-filter bg-blue-600 text-white px-5 py-2 rounded-full font-semibold shadow-md transition">Semua Foto</button>
+            <button class="filter-btn bg-white text-gray-600 hover:text-blue-600 border border-gray-200 px-5 py-2 rounded-full font-medium shadow-sm transition hover:bg-blue-50" data-filter="stasi">Stasi</button>
+            <button class="filter-btn bg-white text-gray-600 hover:text-blue-600 border border-gray-200 px-5 py-2 rounded-full font-medium shadow-sm transition hover:bg-blue-50" data-filter="omk">Kegiatan OMK</button>
+            <button class="filter-btn bg-white text-gray-600 hover:text-blue-600 border border-gray-200 px-5 py-2 rounded-full font-medium shadow-sm transition hover:bg-blue-50" data-filter="perayaan">Perayaan Besar</button>
+        </div>
+
+        <!-- Grid Galeri -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 animate-fade-in" id="full-gallery">
+
+            <!-- Gereja Marga Agung | kategori: stasi -->
+            <div class="gallery-item" data-category="stasi">
+                <img src="assets/img/stasi/marga-agung.jpg" alt="Gereja Pusat Marga Agung">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Pusat</span>
+                    <span class="gallery-sub">Stasi Marga Agung</span>
+                </div>
+            </div>
+
+            <!-- Gereja Marga Lestari | kategori: stasi -->
+            <div class="gallery-item" data-category="stasi">
+                <img src="assets/img/stasi/marga-lestari.jpg" alt="Gereja Marga Lestari">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Marga Lestari</span>
+                    <span class="gallery-sub">Santa Maria</span>
+                </div>
+            </div>
+
+            <!-- Gereja Rejomulyo | kategori: stasi -->
+            <div class="gallery-item" data-category="stasi">
+                <img src="assets/img/stasi/rejomulyo.jpg" alt="Gereja Rejomulyo">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Rejomulyo</span>
+                    <span class="gallery-sub">Tritunggal Mahakudus</span>
+                </div>
+            </div>
+
+            <!-- Gereja Sindangsari | kategori: stasi -->
+            <div class="gallery-item" data-category="stasi">
+                <img src="assets/img/stasi/sindang-sari.jpg" alt="Gereja Sindangsari">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Sindangsari</span>
+                    <span class="gallery-sub">Santo Stefanus</span>
+                </div>
+            </div>
+
+            <!-- Gereja Jatimulyo | kategori: stasi -->
+            <div class="gallery-item" data-category="stasi">
+                <img src="assets/img/stasi/jatimulyo.jpg" alt="Gereja Jatimulyo Perdana">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Jatimulyo Perdana</span>
+                    <span class="gallery-sub">Santo Fransiskus Xaverius</span>
+                </div>
+            </div>
+
+            <!-- Gereja Way Galih | kategori: stasi -->
+            <div class="gallery-item" data-category="stasi">
+                <img src="assets/img/stasi/way-galih.jpg" alt="Gereja Way Galih">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Way Galih</span>
+                    <span class="gallery-sub">Santo Yohanes De Britto</span>
+                </div>
+            </div>
+
+            <!-- Gereja Sukadamai | kategori: stasi -->
+            <div class="gallery-item" data-category="stasi">
+                <img src="assets/img/stasi/sukadamai.jpg" alt="Gereja Sukadamai">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Sukadamai</span>
+                    <span class="gallery-sub">Santo Yusuf</span>
+                </div>
+            </div>
+
+            <!-- Gereja Pendowo | kategori: stasi -->
+            <div class="gallery-item" data-category="stasi">
+                <img src="assets/img/stasi/pendowo.jpg" alt="Gereja Pendowo">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Pendowo</span>
+                    <span class="gallery-sub">Santo Aloysius</span>
+                </div>
+            </div>
+
+            <!-- Gereja Purwotani | kategori: stasi (Belum ada bangunan fisik) -->
+            <div class="gallery-item" data-category="stasi">
+                <!-- SVG Placeholder mirip dengan pop-up stasi modal -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='100%25' height='100%25' fill='%23f1f5f9'/%3E%3Cpath d='M250 400 L400 200 L550 400 Z' fill='%23e2e8f0' stroke='%23cbd5e1' stroke-width='4' stroke-linejoin='round'/%3E%3Crect x='360' y='300' width='80' height='100' fill='%23cbd5e1'/%3E%3Cpath d='M400 200 L400 150 M380 170 L420 170' stroke='%2394a3b8' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='400' cy='260' r='20' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4'/%3E%3Ctext x='400' y='460' font-family='sans-serif' font-size='24' font-weight='bold' fill='%2364748b' text-anchor='middle'%3EGereja Dalam Pembangunan%3C/text%3E%3Ctext x='400' y='490' font-family='sans-serif' font-size='16' fill='%2394a3b8' text-anchor='middle'%3EUmat rutin beribadah di rumah warga%3C/text%3E%3C/svg%3E" alt="Gereja Purwotani - Dalam Pembangunan">
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Gereja Purwotani</span>
+                    <span class="gallery-sub">Santo Petrus (Tahap Pembangunan)</span>
+                </div>
+            </div>
+
+            <!-- OMK | kategori: omk -->
+            <div class="gallery-item" data-category="omk">
+                <img src="assets/img/galeri/kegiatanOMK.png" alt="Kegiatan Bersama OMK - Ziarah dan Rekreasi">
+                <div class="gallery-badge bg-teal-500">OMK</div>
+                <div class="gallery-overlay">
+                    <span class="gallery-title">Kegiatan OMK 2025</span>
+                    <span class="gallery-sub">Ziarah &amp; Rekreasi</span>
+                </div>
+            </div>
+
+            <!--
+            ╔══════════════════════════════════════════════════════════╗
+            ║  TAMBAHKAN FOTO BARU DI BAWAH INI                       ║
+            ║  Contoh:                                                 ║
+            ║  <div class="gallery-item" data-category="omk">          ║
+            ║      <img src="assets/img/galeri/namafile.jpg"           ║
+            ║           alt="Keterangan Foto">                         ║
+            ║      <div class="gallery-badge bg-teal-500">OMK</div>    ║
+            ║      <div class="gallery-overlay">                       ║
+            ║          <span class="gallery-title">Judul</span>        ║
+            ║          <span class="gallery-sub">Sub-judul</span>      ║
+            ║      </div>                                              ║
+            ║  </div>                                                  ║
+            ╚══════════════════════════════════════════════════════════╝
+            -->
+
+        </div>
+
+        <!-- Pesan jika kosong -->
+        <div id="empty-msg" class="hidden text-center py-20 text-gray-400">
+            <svg class="w-16 h-16 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <p class="font-semibold text-lg">Belum ada foto dalam kategori ini</p>
+            <p class="text-sm mt-1">Foto akan segera ditambahkan</p>
+        </div>
+    </div>
+</main>
+
+<modern-footer></modern-footer>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<!-- Berada di luar main & footer, langsung anak dari body -->
+<div id="lightbox" onclick="handleLightboxClick(event)">
+    <!-- Tombol Close -->
+    <button class="lb-close" onclick="closeLightbox()" title="Tutup">&times;</button>
+
+    <!-- Tombol Navigasi -->
+    <button class="lb-prev" onclick="changeLightboxImage(-1)" title="Foto Sebelumnya">&#10094;</button>
+    <button class="lb-next" onclick="changeLightboxImage(1)"  title="Foto Selanjutnya">&#10095;</button>
+
+    <!-- Konten Gambar -->
+    <div id="lightbox-content">
+        <img id="lightbox-img" src="" alt="">
+        <div class="mt-6 text-center" style="width:100%">
+            <p id="lightbox-caption" class="text-white text-lg md:text-xl font-bold tracking-wide px-4 py-2 mx-auto inline-block bg-black/40 rounded-2xl backdrop-blur-sm border border-white/10"></p>
+        </div>
+    </div>
+
+    <!-- Counter "2 / 5" -->
+    <div id="lightbox-counter"></div>
+</div>
+
+
+<script src="js/components/navbar.js"></script>
+<script src="js/components/footer.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

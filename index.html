@@ -58,28 +58,59 @@
         <div class="text-center mb-6">
             <h4 class="text-2xl font-bold text-blue-900 border-b-2 border-blue-200 pb-2 inline-block">Galeri Paroki</h4>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm">
-                <img src="assets/img/stasi/marga-agung.jpg" alt="Gereja Marga Agung" onerror="this.src='https://via.placeholder.com/400x300?text=Galeri+1';" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+        <div class="flex overflow-x-auto gap-4 pb-6 snap-x snap-mandatory custom-scrollbar" id="gallery-container">
+            <div class="gallery-item flex-none w-[75vw] sm:w-64 md:w-72 group relative aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm cursor-pointer snap-center">
+                <img src="assets/img/stasi/marga-agung.jpg" alt="Gereja Marga Agung" onerror="this.src='https://via.placeholder.com/400x300?text=Galeri+1';" class="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-1 transition duration-500">
+                <div class="absolute inset-0 bg-blue-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                    <span class="text-white font-bold text-center px-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">Gereja Marga Agung<br><span class="text-xs font-normal opacity-80">Lihat Foto</span></span>
+                </div>
             </div>
-            <div class="aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm">
-                <img src="assets/img/stasi/sindang-sari.jpg" alt="Gereja Sindangsari" onerror="this.src='https://via.placeholder.com/400x300?text=Galeri+2';" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+            <div class="gallery-item flex-none w-[75vw] sm:w-64 md:w-72 group relative aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm cursor-pointer snap-center">
+                <img src="assets/img/stasi/sindang-sari.jpg" alt="Gereja Sindangsari" onerror="this.src='https://via.placeholder.com/400x300?text=Galeri+2';" class="w-full h-full object-cover group-hover:scale-110 group-hover:-rotate-1 transition duration-500">
+                <div class="absolute inset-0 bg-blue-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                    <span class="text-white font-bold text-center px-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">Gereja Sindangsari<br><span class="text-xs font-normal opacity-80">Lihat Foto</span></span>
+                </div>
             </div>
-            <div class="aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm">
-                <img src="assets/img/stasi/rejomulyo.jpg" alt="Gereja Rejomulyo" onerror="this.src='https://via.placeholder.com/400x300?text=Galeri+3';" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+            <div class="gallery-item flex-none w-[75vw] sm:w-64 md:w-72 group relative aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm cursor-pointer snap-center">
+                <img src="assets/img/stasi/rejomulyo.jpg" alt="Gereja Rejomulyo" onerror="this.src='https://via.placeholder.com/400x300?text=Galeri+3';" class="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-1 transition duration-500">
+                <div class="absolute inset-0 bg-blue-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                    <span class="text-white font-bold text-center px-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">Gereja Rejomulyo<br><span class="text-xs font-normal opacity-80">Lihat Foto</span></span>
+                </div>
             </div>
-            <div class="aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm">
-                <img src="assets/img/stasi/marga-lestari.jpg" alt="Gereja Marga Lestari" onerror="this.src='https://via.placeholder.com/400x300?text=Galeri+4';" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+            <div class="gallery-item flex-none w-[75vw] sm:w-64 md:w-72 group relative aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm cursor-pointer snap-center">
+                <img src="assets/img/stasi/marga-lestari.jpg" alt="Gereja Marga Lestari" onerror="this.src='https://via.placeholder.com/400x300?text=Galeri+4';" class="w-full h-full object-cover group-hover:scale-110 group-hover:-rotate-1 transition duration-500">
+                <div class="absolute inset-0 bg-blue-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                    <span class="text-white font-bold text-center px-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">Gereja Marga Lestari<br><span class="text-xs font-normal opacity-80">Lihat Foto</span></span>
+                </div>
+            </div>
+            <div class="gallery-item flex-none w-[75vw] sm:w-64 md:w-72 group relative aspect-[4/3] bg-gray-200 rounded-xl overflow-hidden shadow-sm cursor-pointer snap-center">
+                <img src="assets/img/galeri/kegiatanOMK.png" alt="Kegiatan OMK Paroki" class="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-1 transition duration-500">
+                <div class="absolute inset-0 bg-blue-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                    <span class="text-white font-bold text-center px-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">Kegiatan OMK<br><span class="text-xs font-normal opacity-80">Lihat Foto</span></span>
+                </div>
             </div>
         </div>
         <div class="text-center mt-6">
-            <a href="stasi.html" class="text-blue-700 font-bold hover:text-blue-900 transition bg-blue-50 px-6 py-2 rounded-full inline-block shadow-sm">Lihat Daftar Stasi & Sejarah</a>
+            <a href="galeri.html" class="text-blue-700 font-bold hover:text-blue-900 transition bg-blue-50 px-6 py-2 rounded-full inline-block shadow-sm ring-1 ring-blue-200 hover:ring-blue-400">Lihat Galeri Selengkapnya</a>
         </div>
     </div>
 </div>
 </main>
 
 <modern-footer></modern-footer>
+
+<div id="lightbox" onclick="handleLightboxClick(event)">
+    <button class="lb-close" onclick="closeLightbox()" title="Tutup">&times;</button>
+    <button class="lb-prev" onclick="changeLightboxImage(-1)">&#10094;</button>
+    <button class="lb-next" onclick="changeLightboxImage(1)">&#10095;</button>
+    <div id="lightbox-content">
+        <img id="lightbox-img" src="" alt="">
+        <p id="lightbox-caption"></p>
+    </div>
+    <div id="lightbox-counter"></div>
+</div>
+
+
 
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>

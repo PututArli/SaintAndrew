@@ -10,6 +10,7 @@ class ModernNavbar extends HTMLElement {
             { href: 'index.html', text: 'Beranda' },
             { href: 'profil.html', text: 'Profil' },
             { href: 'stasi.html', text: 'Stasi' },
+            { href: 'galeri.html', text: 'Galeri' },
             { href: 'jadwal.html', text: 'Jadwal Misa' },
             { href: 'kontak.html', text: 'Kontak' }
         ];
