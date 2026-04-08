@@ -17,7 +17,7 @@ Website ini menggunakan arsitektur **Web Components** untuk efisiensi pemelihara
 │   └── style.css           # Stylesheet utama & animasi custom
 │
 ├── js/
-│   ├── components/         # 🧩 Komponen Reusable (Web Components)
+│   ├── components/         # Komponen Reusable (Web Components)
 │   │   ├── navbar.js       # Logika Navigasi (Edit menu di sini)
 │   │   └── footer.js       # Logika Footer & Sosmed (Edit link di sini)
 │   └── script.js           # JavaScript utama & interaksi modal
@@ -34,10 +34,8 @@ Website ini menggunakan arsitektur **Web Components** untuk efisiensi pemelihara
 ## 🏗️ Fitur Arsitektur Baru
 
 ### 🧩 Reusable Components
-Untuk mempermudah pembaruan, bagian **Navbar** dan **Footer** kini dipisahkan ke dalam file JavaScript tersendiri menggunakan standar *Web Components*.
 
-*   **Mengedit Menu Navigasi:** Buka `js/components/navbar.js`. Cukup edit array `links` dan semua halaman otomatis terupdate.
-*   **Mengedit Link Sosmed:** Buka `js/components/footer.js`. Cukup ganti nilai dalam objek `SOCIAL_LINKS` di bagian paling atas file.
+Untuk mempermudah pembaruan, bagian **Navbar** dan **Footer** dipisahkan ke dalam file JavaScript tersendiri menggunakan standar _Web Components_.
 
 ## 🌐 Halaman
 
@@ -64,4 +62,3 @@ Tugas UTP Pemrograman Web — Universitas Lampung
 ---
 
 _© 2026 Paroki Santo Andreas Rasul Marga Agung_
-
