@@ -340,27 +340,12 @@ function setupFilters() {
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('page-transition');
-
     document.querySelectorAll('.btn-sejarah').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             const stasiId = this.getAttribute('data-stasi');
             openStasiModal(stasiId);
-        });
-    });
-
-    const links = document.querySelectorAll('a[href$=".html"]');
-    links.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetUrl = this.href;
-            document.body.classList.remove('page-transition');
-            document.body.classList.add('page-fade-out');
-            setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 150);
         });
     });
 
