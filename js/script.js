@@ -372,10 +372,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 const name = document.getElementById('name').value.trim();
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value.trim();
                 const btnRef = contactForm.querySelector('button[type="submit"]');
 
-                if (name === '') {
-                    showAlert('Formulir Belum Lengkap', 'Mohon lengkapi nama Anda!', 'error');
+                let missingFields = [];
+                if (!name) missingFields.push('Nama Lengkap');
+                if (!subject) missingFields.push('Subjek');
+                if (!message) missingFields.push('Pesan');
+
+                if (missingFields.length > 0) {
+                    showAlert(
+                        'Formulir Belum Lengkap',
+                        'Mohon isi kolom berikut: <strong>' + missingFields.join(', ') + '</strong>',
+                        'error'
+                    );
                 } else {
                     showAlert('Berhasil Terkirim!', 'Terima kasih ' + name + '! Pesan Anda telah kami terima.', 'success');
                     contactForm.reset();
