@@ -1,50 +1,46 @@
 /* ============================================================
-   2. LAYOUT & STRUCTURAL SECTIONS
-   Paroki Santo Andreas Rasul
+   LAYOUT — Navbar · Hero · Page Header · Footer · Responsive
    ============================================================ */
 
 /* ── Navbar ── */
 .glass-nav {
-  background: rgba(10, 22, 60, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px) saturate(1.6);
   -webkit-backdrop-filter: blur(20px) saturate(1.6);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  transition: background var(--transition), box-shadow var(--transition);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--ease), box-shadow var(--ease);
 }
 
 .glass-nav.scrolled {
-  background: rgba(10, 22, 60, 0.97);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
 }
 
 .nav-logo-text {
   font-family: 'Inter', sans-serif;
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #fff 0%, var(--gold-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--ink);
 }
 
 .nav-logo-sub {
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-  margin-top: -2px;
+  color: var(--stone);
+  margin-top: -1px;
 }
 
 .nav-link {
   position: relative;
   font-size: 0.875rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.78);
-  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  letter-spacing: 0.005em;
   padding: 0.35rem 0.1rem;
-  transition: color var(--transition);
+  transition: color var(--ease);
 }
 
 .nav-link::after {
@@ -55,15 +51,16 @@
   width: 0;
   height: 2px;
   border-radius: 99px;
-  background: linear-gradient(90deg, var(--gold), var(--gold-light));
-  transition: width var(--transition);
+  background: var(--gold);
+  transition: width var(--ease);
 }
 
-.nav-link:hover { color: #fff; }
-.nav-link:hover::after,
-.nav-link.active { color: #fff; }
-.nav-link.active::after,
+.nav-link:hover { color: var(--ink); }
 .nav-link:hover::after { width: 100%; }
+.nav-link.active {
+  color: var(--gold);
+  font-weight: 600;
+}
 .nav-link.active::after { width: 100%; }
 
 /* Mobile Menu */
@@ -71,16 +68,19 @@
 #mobile-menu {
   display: none;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem 0 0.5rem;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  gap: 0.25rem;
+  padding: 1rem 0 0.75rem;
+  border-top: 1px solid var(--border);
   margin-top: 0.75rem;
 }
 #mobile-menu.open { display: flex; }
 #mobile-menu .nav-link {
   font-size: 1rem;
-  padding: 0.6rem 0;
+  padding: 0.65rem 0;
+  border-radius: var(--r-sm);
+  color: var(--ink-soft);
 }
+#mobile-menu .nav-link.active { color: var(--gold); }
 
 /* ── Hero Section (Home) ── */
 .hero-section {
@@ -89,70 +89,69 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(155deg, var(--navy) 0%, var(--navy-mid) 55%, #1e3a8a 100%);
+  background: linear-gradient(155deg, #1A1A1E 0%, #2C2C30 50%, #1C1C1E 100%);
 }
 
 .hero-bg-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(100px);
   pointer-events: none;
-  animation: orbFloat 8s ease-in-out infinite;
+  animation: orbFloat 10s ease-in-out infinite;
 }
 
 .hero-bg-orb-1 {
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(33,72,192,0.45) 0%, transparent 70%);
-  top: -200px; right: -150px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(184,134,11,0.22) 0%, transparent 70%);
+  top: -150px; right: -100px;
   animation-delay: 0s;
 }
 
 .hero-bg-orb-2 {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(201,168,76,0.25) 0%, transparent 70%);
-  bottom: -100px; left: -100px;
-  animation-delay: -3s;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(212,160,23,0.14) 0%, transparent 70%);
+  bottom: -80px; left: -80px;
+  animation-delay: -4s;
 }
 
 .hero-bg-orb-3 {
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(74,144,226,0.3) 0%, transparent 70%);
-  top: 30%; left: 30%;
-  animation-delay: -5s;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+  top: 35%; left: 35%;
+  animation-delay: -7s;
 }
 
 .hero-grid-pattern {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%);
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 75%);
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: rgba(201,168,76,0.15);
-  border: 1px solid rgba(201,168,76,0.4);
+  gap: 0.4rem;
+  background: rgba(184,134,11,0.15);
+  border: 1px solid rgba(184,134,11,0.4);
   color: var(--gold-light);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.45rem 1.1rem;
+  padding: 0.4rem 1rem;
   border-radius: 999px;
-  backdrop-filter: blur(8px);
 }
 
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-size: clamp(2.4rem, 5.5vw, 4.5rem);
   font-weight: 700;
-  color: white;
-  line-height: 1.15;
+  color: #FFFFFF;
+  line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
@@ -164,18 +163,19 @@
 }
 
 .hero-subtitle {
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
-  color: rgba(255,255,255,0.7);
-  line-height: 1.75;
-  max-width: 580px;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  color: rgba(255,255,255,0.6);
+  line-height: 1.8;
+  max-width: 540px;
+  font-weight: 400;
 }
 
 /* ── Page Hero (Inner Pages) ── */
 .page-hero {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1d4ed8 100%);
+  background: linear-gradient(150deg, #1A1A1E 0%, #2A2A2E 100%);
   position: relative;
   overflow: hidden;
-  padding: 5rem 1.5rem 4rem;
+  padding: 5rem 1.5rem 4.5rem;
   text-align: center;
 }
 
@@ -184,26 +184,28 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
 .page-hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.9rem, 4vw, 3rem);
   font-weight: 700;
   color: white;
   position: relative;
   z-index: 1;
+  letter-spacing: -0.02em;
 }
 
 .page-hero-subtitle {
-  color: rgba(255,255,255,0.65);
-  font-size: 1rem;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.95rem;
   margin-top: 0.75rem;
   position: relative;
   z-index: 1;
+  line-height: 1.7;
 }
 
 /* ── Stats Bar ── */
@@ -220,11 +222,11 @@
   top: 25%;
   height: 50%;
   width: 1px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.1);
 }
 
 .stat-number {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 800;
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
   -webkit-background-clip: text;
@@ -232,43 +234,44 @@
   background-clip: text;
   display: block;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.5);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
   display: block;
 }
 
-/* ── Footer ── */
+/* ── Site Footer ── */
 .site-footer {
-  background: linear-gradient(180deg, rgba(10,22,60,0.97), rgba(5,10,30,1));
+  background: var(--charcoal);
   border-top: 1px solid rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.7);
 }
 
 .footer-social-btn {
-  width: 44px; height: 44px;
+  width: 40px; height: 40px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
   display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.7);
-  transition: all var(--transition);
+  color: rgba(255,255,255,0.6);
+  transition: all var(--ease);
 }
 
 .footer-social-btn:hover {
-  background: var(--royal);
-  border-color: var(--royal);
+  background: var(--gold);
+  border-color: var(--gold);
   color: white;
   transform: translateY(-3px);
 }
 
-/* ── Responsive Layouts ── */
+/* ── Responsive ── */
 @media (max-width: 767px) {
   .stat-item + .stat-item::before { display: none; }
   .hero-section { min-height: 100svh; padding-top: 5rem; }

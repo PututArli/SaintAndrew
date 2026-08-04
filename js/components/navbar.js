@@ -17,15 +17,15 @@ class ModernNavbar extends HTMLElement {
         links.forEach(link => {
             const isActive = activePage === link.href;
             desktopLinks += `<li><a href="${link.href}" class="nav-link${isActive ? ' active' : ''}">${link.text}</a></li>`;
-            mobileLinks  += `<a href="${link.href}" class="nav-link${isActive ? ' active' : ''} flex items-center gap-3 px-3 py-2 rounded-xl ${isActive ? 'bg-white/10' : 'hover:bg-white/8'}">${link.icon} ${link.text}</a>`;
+            mobileLinks  += `<a href="${link.href}" class="nav-link${isActive ? ' active' : ''} flex items-center gap-3 px-2 py-3">${link.icon} ${link.text}</a>`;
         });
 
         this.innerHTML = `
-        <nav id="main-nav" class="glass-nav sticky top-0 z-50 w-full text-white px-5 py-3.5">
+        <nav id="main-nav" class="glass-nav sticky top-0 z-50 w-full px-5 py-3.5">
             <div class="max-w-7xl mx-auto flex items-center justify-between">
                 <!-- Logo -->
                 <a href="index.html" class="flex items-center gap-3 no-underline">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 flex items-center justify-center text-lg">✝</div>
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center text-base" style="background:rgba(184,134,11,0.12);border:1px solid rgba(184,134,11,0.25);color:#B8860B">✝</div>
                     <div>
                         <div class="nav-logo-text">Paroki Marga Agung</div>
                         <div class="nav-logo-sub">Santo Andreas Rasul</div>
@@ -33,19 +33,19 @@ class ModernNavbar extends HTMLElement {
                 </a>
 
                 <!-- Desktop Links -->
-                <ul class="hidden md:flex items-center gap-6 font-medium">
+                <ul class="hidden md:flex items-center gap-7 font-medium list-none">
                     ${desktopLinks}
                 </ul>
 
                 <!-- CTA + Hamburger -->
                 <div class="flex items-center gap-3">
-                    <a href="jadwal.html" class="hidden md:inline-flex items-center gap-2 text-sm font-bold bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 text-yellow-200 px-4 py-2 rounded-xl hover:from-yellow-400/30 hover:to-yellow-600/30 transition-all duration-300">
-                        📅 Jadwal
+                    <a href="jadwal.html" class="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-300" style="background:rgba(184,134,11,0.1);color:#B8860B;border:1px solid rgba(184,134,11,0.25)">
+                        📅 Jadwal Misa
                     </a>
-                    <button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-xl hover:bg-white/10 transition-colors" aria-label="Menu">
-                        <span class="ham-line block w-5 h-0.5 bg-white rounded-full transition-all duration-300"></span>
-                        <span class="ham-line block w-5 h-0.5 bg-white rounded-full transition-all duration-300"></span>
-                        <span class="ham-line block w-5 h-0.5 bg-white rounded-full transition-all duration-300"></span>
+                    <button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-xl hover:bg-black/5 transition-colors" aria-label="Menu">
+                        <span class="ham-line block w-5 h-0.5 rounded-full transition-all duration-300" style="background:#111"></span>
+                        <span class="ham-line block w-5 h-0.5 rounded-full transition-all duration-300" style="background:#111"></span>
+                        <span class="ham-line block w-5 h-0.5 rounded-full transition-all duration-300" style="background:#111"></span>
                     </button>
                 </div>
             </div>
@@ -58,8 +58,8 @@ class ModernNavbar extends HTMLElement {
         `;
 
         // Hamburger toggle
-        const btn  = this.querySelector('#hamburger-btn');
-        const menu = this.querySelector('#mobile-menu');
+        const btn   = this.querySelector('#hamburger-btn');
+        const menu  = this.querySelector('#mobile-menu');
         const lines = this.querySelectorAll('.ham-line');
         btn?.addEventListener('click', () => {
             const open = menu.classList.toggle('open');

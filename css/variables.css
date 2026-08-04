@@ -1,36 +1,56 @@
 /* ============================================================
-   1. VARIABLES & BASE DESIGN SYSTEM
-   Paroki Santo Andreas Rasul
+   PAROKI SANTO ANDREAS RASUL — DESIGN SYSTEM 2026
+   Palette: Warm Minimal — Cream · Charcoal · Gold
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:wght@600;700;800&display=swap');
 
-/* ── Design Tokens & Custom Properties ── */
+/* ── Design Tokens ── */
 :root {
-  --navy:         #0f1f4b;
-  --navy-mid:     #1a3378;
-  --royal:        #2148c0;
-  --blue-light:   #4a90e2;
-  --gold:         #c9a84c;
-  --gold-light:   #e8c970;
-  --cream:        #faf8f3;
-  --glass-bg:     rgba(255,255,255,0.08);
-  --glass-border: rgba(255,255,255,0.18);
-  --card-bg:      rgba(255,255,255,0.72);
-  --card-border:  rgba(255,255,255,0.55);
-  --shadow-sm:    0 2px 12px rgba(15,31,75,0.08);
-  --shadow-md:    0 8px 40px rgba(15,31,75,0.12);
-  --shadow-lg:    0 20px 60px rgba(15,31,75,0.18);
-  --radius-sm:    0.75rem;
-  --radius-md:    1.25rem;
-  --radius-lg:    2rem;
-  --radius-xl:    3rem;
-  --transition:   0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Core colours */
+  --ink:          #111111;
+  --ink-soft:     #444444;
+  --ink-muted:    #888888;
+
+  --bg:           #F5F3EF;          /* warm off-white */
+  --bg-alt:       #EDEAE4;
+  --surface:      #FFFFFF;
+  --surface-alt:  #FAF9F6;
+
+  --gold:         #B8860B;          /* rich gold — accent */
+  --gold-light:   #D4A017;
+  --gold-pale:    #F5E6C3;
+  --gold-muted:   rgba(184,134,11,0.12);
+
+  --charcoal:     #1C1C1E;
+  --slate:        #3A3A3C;
+  --stone:        #8A8A8E;
+
+  /* Border */
+  --border:       rgba(0,0,0,0.08);
+  --border-dark:  rgba(0,0,0,0.15);
+
+  /* Shadows */
+  --shadow-xs:    0 1px 4px rgba(0,0,0,0.06);
+  --shadow-sm:    0 2px 12px rgba(0,0,0,0.07);
+  --shadow-md:    0 6px 32px rgba(0,0,0,0.09);
+  --shadow-lg:    0 16px 56px rgba(0,0,0,0.12);
+
+  /* Radii */
+  --r-sm:         0.625rem;   /* 10px */
+  --r-md:         1rem;       /* 16px */
+  --r-lg:         1.5rem;     /* 24px */
+  --r-xl:         2rem;       /* 32px */
+
+  /* Transitions */
+  --ease:         0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Reset & Global Base ── */
 *, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -40,46 +60,102 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: #e8edf7;
-  background-image:
-    radial-gradient(ellipse at 10% 20%, rgba(33,72,192,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 90% 80%, rgba(201,168,76,0.06) 0%, transparent 50%),
-    linear-gradient(160deg, #dce6f5 0%, #edf1fb 50%, #e8edf7 100%);
-  background-attachment: fixed;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--ink);
   min-height: 100vh;
-  color: #1e2a4a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Typography ── */
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', sans-serif;
   letter-spacing: -0.02em;
   line-height: 1.2;
+  color: var(--ink);
 }
 
 .font-serif {
   font-family: 'Playfair Display', serif;
 }
 
-/* ── Utility Classes ── */
-.text-gradient {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.gold-gradient {
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+img {
+  display: block;
+  max-width: 100%;
 }
 
-.divider-gold {
-  width: 48px;
+/* ── Utility Tokens ── */
+.text-gold {
+  color: var(--gold);
+}
+
+.text-muted {
+  color: var(--ink-muted);
+}
+
+.text-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+.gold-line {
+  width: 40px;
   height: 3px;
   background: linear-gradient(90deg, var(--gold), var(--gold-light));
   border-radius: 99px;
+}
+
+.gold-line-center {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 99px;
+  margin: 0 auto;
+}
+
+/* Section badge */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--gold-muted);
+  border: 1px solid rgba(184,134,11,0.25);
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.65rem, 3.2vw, 2.4rem);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-top: 0.75rem;
+}
+
+.section-title span {
+  color: var(--gold);
+}
+
+.section-divider {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 99px;
+  margin-top: 1rem;
+}
+
+.section-divider.centered {
+  margin: 1rem auto 0;
 }
