@@ -408,26 +408,6 @@ function ensureScrollTopInDOM() {
     }, { passive: true });
 }
 
-// ── Main DOM Ready Initializer ───────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Setup Scroll-to-top
-    ensureScrollTopInDOM();
-
-    // 2. Setup Gallery & Lightbox triggers
-    setupGalleryClicks();
-    setupFilters();
-
-    // 3. Stasi card / button click triggers
-    document.querySelectorAll('.stasi-card, .btn-sejarah').forEach(el => {
-        el.addEventListener('click', function(e) {
-            const stasiId = this.getAttribute('data-stasi');
-            if (stasiId) {
-                e.preventDefault();
-                openStasiModal(stasiId);
-            }
-        });
-    });
-
 function getGreetingText() {
     const hour = new Date().getHours();
     if (hour >= 5  && hour < 12) return 'Selamat Pagi';
@@ -460,11 +440,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setupGalleryClicks();
     setupFilters();
 
-    // 3. Stasi card / button click triggers
-    document.querySelectorAll('.stasi-card, .btn-sejarah').forEach(el => {
+    // 3. Stasi card / button click triggers (opens interactive detail modal)
+    document.querySelectorAll('[data-stasi]').forEach(el => {
         el.addEventListener('click', function(e) {
             const stasiId = this.getAttribute('data-stasi');
-            if (stasiId) {
+            if (stasiId && typeof openStasiModal === 'function') {
                 e.preventDefault();
                 openStasiModal(stasiId);
             }

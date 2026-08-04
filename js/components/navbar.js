@@ -8,75 +8,74 @@ class ModernNavbar extends HTMLElement {
             { href: 'index.html',   text: 'Beranda',     icon: '🏠' },
             { href: 'profil.html',  text: 'Profil',      icon: '📖' },
             { href: 'stasi.html',   text: 'Stasi',       icon: '⛪' },
-            { href: 'galeri.html',  text: 'Galeri',      icon: '🖼️' },
             { href: 'jadwal.html',  text: 'Jadwal Misa', icon: '📅' },
+            { href: 'galeri.html',  text: 'Galeri',      icon: '🖼️' },
             { href: 'kontak.html',  text: 'Kontak',      icon: '✉️' }
         ];
 
-        let desktopLinks = '', mobileLinks = '';
+        let desktopLinks = '';
         links.forEach(link => {
             const isActive = activePage === link.href;
-            desktopLinks += `<li><a href="${link.href}" class="nav-link${isActive ? ' active' : ''}">${link.text}</a></li>`;
-            mobileLinks  += `<a href="${link.href}" class="nav-link${isActive ? ' active' : ''} flex items-center gap-3 px-2 py-3">${link.icon} ${link.text}</a>`;
+            desktopLinks += `<li><a href="${link.href}" class="nav-pill-link${isActive ? ' active' : ''}">${link.text}</a></li>`;
         });
 
+        const mobileDockLinks = [
+            { href: 'index.html',   text: 'Beranda', icon: '🏠' },
+            { href: 'profil.html',  text: 'Profil',  icon: '📖' },
+            { href: 'stasi.html',   text: 'Stasi',   icon: '⛪' },
+            { href: 'jadwal.html',  text: 'Jadwal',  icon: '📅' },
+            { href: 'kontak.html',  text: 'Kontak',  icon: '✉️' }
+        ].map(item => {
+            const isActive = activePage === item.href;
+            return `<a href="${item.href}" class="dock-item${isActive ? ' active' : ''}">
+                <span class="dock-icon">${item.icon}</span>
+                <span class="dock-text">${item.text}</span>
+            </a>`;
+        }).join('');
+
         this.innerHTML = `
-        <nav id="main-nav" class="glass-nav sticky top-0 z-50 w-full px-5 py-3.5">
-            <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <!-- Floating Top Pill Navbar (Desktop & Tablet) -->
+        <header class="floating-nav-container">
+            <nav class="floating-nav" id="main-nav">
                 <!-- Logo -->
-                <a href="index.html" class="flex items-center gap-3 no-underline">
-                    <div class="w-9 h-9 rounded-xl flex items-center justify-center text-base" style="background:rgba(184,134,11,0.12);border:1px solid rgba(184,134,11,0.25);color:#B8860B">✝</div>
-                    <div>
-                        <div class="nav-logo-text">Paroki Marga Agung</div>
-                        <div class="nav-logo-sub">Santo Andreas Rasul</div>
+                <a href="index.html" class="flex items-center gap-2.5 no-underline pr-2">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.25)">✝</div>
+                    <div class="flex flex-col">
+                        <span class="font-extrabold text-sm tracking-tight" style="color:var(--ink);line-height:1.15">Paroki Marga Agung</span>
+                        <span class="text-[10px] font-medium tracking-wider uppercase" style="color:var(--stone)">S. Andreas Rasul</span>
                     </div>
                 </a>
 
-                <!-- Desktop Links -->
-                <ul class="hidden md:flex items-center gap-7 font-medium list-none">
+                <!-- Desktop Nav Links -->
+                <ul class="hidden md:flex items-center gap-1 list-none p-0 m-0">
                     ${desktopLinks}
                 </ul>
 
-                <!-- CTA + Hamburger -->
-                <div class="flex items-center gap-3">
-                    <a href="jadwal.html" class="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-300" style="background:rgba(184,134,11,0.1);color:#B8860B;border:1px solid rgba(184,134,11,0.25)">
-                        📅 Jadwal Misa
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <a href="galeri.html" class="text-xs font-semibold px-3 py-1.5 rounded-full" style="background:var(--gold-muted);color:var(--gold)">
+                        Galeri 🖼️
                     </a>
-                    <button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-xl hover:bg-black/5 transition-colors" aria-label="Menu">
-                        <span class="ham-line block w-5 h-0.5 rounded-full transition-all duration-300" style="background:#111"></span>
-                        <span class="ham-line block w-5 h-0.5 rounded-full transition-all duration-300" style="background:#111"></span>
-                        <span class="ham-line block w-5 h-0.5 rounded-full transition-all duration-300" style="background:#111"></span>
-                    </button>
                 </div>
-            </div>
+            </nav>
+        </header>
 
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="md:hidden">
-                ${mobileLinks}
+        <!-- Mobile Bottom Floating Dock Bar -->
+        <nav class="mobile-bottom-dock md:hidden" aria-label="Mobile Navigation">
+            <div class="dock-inner">
+                ${mobileDockLinks}
             </div>
         </nav>
         `;
 
-        // Hamburger toggle
-        const btn   = this.querySelector('#hamburger-btn');
-        const menu  = this.querySelector('#mobile-menu');
-        const lines = this.querySelectorAll('.ham-line');
-        btn?.addEventListener('click', () => {
-            const open = menu.classList.toggle('open');
-            if (open) {
-                lines[0].style.transform = 'translateY(8px) rotate(45deg)';
-                lines[1].style.opacity   = '0';
-                lines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
-            } else {
-                lines.forEach(l => { l.style.transform = ''; l.style.opacity = ''; });
-            }
-        });
-
-        // Scroll-aware nav
-        const nav = this.querySelector('#main-nav');
+        // Scroll awareness for floating nav
+        const nav = this.querySelector('.floating-nav');
         const onScroll = () => {
-            if (window.scrollY > 60) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
+            if (window.scrollY > 40) {
+                nav?.classList.add('nav-scrolled');
+            } else {
+                nav?.classList.remove('nav-scrolled');
+            }
         };
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
