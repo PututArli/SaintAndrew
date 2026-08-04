@@ -76,7 +76,7 @@ const stasiData = {
         patron: 'Santo Yusuf',
         patronFeast: '19 Maret & 1 Mei',
         patronRole: 'Bapa Asuh Yesus & Pelindung Gereja Universal',
-        patronBio: 'Santo Yusuf adalah pria tulus hati (*iustus*), suami Santa Maria, dan bapa asuh Yesus di bumi. Ia melindungi Keluarga Kudus Nazaret dalam ketaatan penuh keheningan kepada Allah. Sebagai pekerja kayu yang tekun, Santo Yusuf menjadi teladan para pekerja, bapa keluarga, serta Pelindung Gereja Universal.',
+        patronBio: 'Santo Yusuf adalah pria tulus hati dan benar di hadapan Allah (iustus), suami Santa Maria, dan bapa asuh Yesus di bumi. Ia melindungi Keluarga Kudus Nazaret dalam ketaatan penuh keheningan kepada Allah. Sebagai pekerja kayu yang tekun, Santo Yusuf menjadi teladan para pekerja, bapa keluarga, serta Pelindung Gereja Universal.',
         address: 'RT 006, Dusun II, Desa Sukadamai, Kec. Natar, Kab. Lampung Selatan',
         gmapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Yusuf+Sukadamai+Lampung+Selatan',
         image: 'assets/img/stasi/sukadamai.jpg',
