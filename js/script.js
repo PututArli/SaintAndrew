@@ -176,7 +176,7 @@ function ensureStasiModalInDOM() {
         modal = document.createElement('div');
         modal.id = 'stasiModal';
         modal.className = 'fixed inset-0 z-[60] hidden items-center justify-center p-3 md:p-6';
-        modal.style.background = 'rgba(5,10,30,0.75)';
+        modal.style.background = 'rgba(28,28,30,0.8)';
         modal.innerHTML = `
             <div class="modal-card w-full max-w-4xl max-h-[90vh] md:max-h-[88vh] relative flex flex-col overflow-hidden">
                 <button class="modal-close-btn absolute top-4 right-4 md:top-5 md:right-5 z-50 w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold" aria-label="Tutup modal">✕</button>
@@ -205,7 +205,7 @@ function openStasiModal(id) {
     const content = document.getElementById('modalContent');
     
     const chairmenList = data.chairmen.map((name, i) =>
-        `<li class="flex items-center gap-2 py-1.5 border-b text-sm text-gray-700" style="border-color:rgba(15,31,75,0.06)">
+        `<li class="flex items-center gap-2 py-1.5 border-b text-sm" style="border-color:var(--border);color:var(--ink-soft)">
             <span class="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center text-xs font-bold" style="background:var(--gold-muted);color:var(--gold)">${i+1}</span>
             <span>${name}</span>
          </li>`
@@ -253,11 +253,11 @@ function openStasiModal(id) {
         <!-- Address Bar -->
         ${data.address ? `
             <div class="flex items-start gap-2.5 text-xs text-gray-600 mb-6 p-3.5 rounded-xl" style="background:var(--bg-alt);border:1px solid var(--border)">
-                <span class="text-base flex-shrink-0 text-amber-600">📍</span>
+                <span class="text-base flex-shrink-0" style="color:var(--gold)">📍</span>
                 <div class="flex-grow">
-                    <strong class="text-gray-900">Alamat:</strong> ${data.address}
+                    <strong style="color:var(--ink)">Alamat:</strong> ${data.address}
                 </div>
-                <a href="${data.gmapsUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-amber-700 hover:underline flex-shrink-0">Petunjuk Arah ↗</a>
+                <a href="${data.gmapsUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold hover:underline flex-shrink-0" style="color:var(--gold)">Petunjuk Arah ↗</a>
             </div>
         ` : ''}
 
