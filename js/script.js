@@ -428,17 +428,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 4. Dynamic Hero greeting
+function getGreetingText() {
     const hour = new Date().getHours();
-    let greetingText = 'Selamat Malam';
-    if (hour >= 5  && hour < 12) greetingText = 'Selamat Pagi';
-    else if (hour >= 12 && hour < 15) greetingText = 'Selamat Siang';
-    else if (hour >= 15 && hour < 18) greetingText = 'Selamat Sore';
+    if (hour >= 5  && hour < 12) return 'Selamat Pagi';
+    if (hour >= 12 && hour < 15) return 'Selamat Siang';
+    if (hour >= 15 && hour < 18) return 'Selamat Sore';
+    return 'Selamat Malam';
+}
 
+function updateGreetings() {
+    const greetingText = getGreetingText();
     const heroGreeting = document.getElementById('greeting-hero');
     const oldGreeting  = document.getElementById('greeting');
     if (heroGreeting) heroGreeting.textContent = `${greetingText} — Berkah Dalem`;
     if (oldGreeting)  oldGreeting.textContent  = `${greetingText}, Berkah Dalem.`;
+}
+
+// Execute immediately if DOM elements already parsed
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateGreetings);
+} else {
+    updateGreetings();
+}
+
+// ── Main DOM Ready Initializer ───────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Setup Scroll-to-top
+    ensureScrollTopInDOM();
+
+    // 2. Setup Gallery & Lightbox triggers
+    setupGalleryClicks();
+    setupFilters();
+
+    // 3. Stasi card / button click triggers
+    document.querySelectorAll('.stasi-card, .btn-sejarah').forEach(el => {
+        el.addEventListener('click', function(e) {
+            const stasiId = this.getAttribute('data-stasi');
+            if (stasiId) {
+                e.preventDefault();
+                openStasiModal(stasiId);
+            }
+        });
+    });
+
+    // 4. Update greeting once more to ensure all elements caught
+    updateGreetings();
 
     // 5. Contact form submission & validation
     const contactForm = document.getElementById('contactForm');
@@ -498,7 +532,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+        }, { threshold: 0.05, rootMargin: '0px 0px -10px 0px' });
 
         document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
             revealObserver.observe(el);
