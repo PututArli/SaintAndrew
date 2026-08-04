@@ -38,9 +38,9 @@ const stasiData = {
     'rejomulyo': {
         title: 'Stasi Rejomulyo',
         patron: 'Tritunggal Mahakudus',
-        patronFeast: 'Minggu Pertama stl. Pentakosta',
+        patronFeast: 'Minggu I stl. Pentakosta (Mei/Juni)',
         patronRole: 'Misteri Sentral Iman Katolik (Bapa, Putra, & Roh Kudus)',
-        patronBio: 'Tritunggal Mahakudus adalah misteri iman sentral Gereja Katolik: Satu Allah dalam Tiga Pribadi Ilahi yang sehakikat—Allah Bapa Sang Pencipta, Allah Putra Sang Penebus, dan Allah Roh Kudus Sang Pengudus. Ketiganya hidup dalam persekutuan kasih tak terhingga. Persekutuan cinta ini dihayati umat Stasi Rejomulyo dalam membangun kerukunan dan semangat gotong royong bersama masyarakat luas.',
+        patronBio: 'Tritunggal Mahakudus adalah misteri iman sentral Gereja Katolik: Satu Allah dalam Tiga Pribadi Ilahi yang sehakikat—Allah Bapa Sang Pencipta, Allah Putra Sang Penebus, dan Allah Roh Kudus Sang Pengudus. Hari rayanya dirayakan pada hari Minggu pertama setelah Pentakosta (antara akhir Mei hingga Juni). Persekutuan kasih ini dihayati umat Stasi Rejomulyo dalam membangun kerukunan hidup bersama.',
         address: 'Desa Rejomulyo, Kec. Jati Agung, Kab. Lampung Selatan',
         gmapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Tritunggal+Mahakudus+Rejomulyo+Jati+Agung',
         image: 'assets/img/stasi/rejomulyo.jpg',
