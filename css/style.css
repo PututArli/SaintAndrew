@@ -1,0 +1,14 @@
+/* ============================================================
+   PAROKI SANTO ANDREAS RASUL — MODULAR STYLESHEET ENTRY POINT
+   ============================================================
+   Design System Architecture (7-1 Pattern):
+   1. variables.css  : Color tokens, font families, base reset & typography
+   2. layout.css     : Navbar, hero sections, stats bar, footer & responsive layout
+   3. components.css : Cards, buttons, tables, badges, gallery & form controls
+   4. animations.css : Keyframes, scroll reveals, modals, lightbox & scroll-to-top
+   ============================================================ */
+
+@import url('variables.css');
+@import url('layout.css');
+@import url('components.css');
+@import url('animations.css');

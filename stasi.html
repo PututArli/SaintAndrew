@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stasi - Paroki Marga Agung</title>
+<meta name="description" content="Daftar 9 stasi di bawah Paroki Santo Andreas Rasul Marga Agung beserta sejarah dan perkembangannya.">
+<link rel="icon" href="assets/crossIcon.png" type="image/png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="flex flex-col min-h-screen">
+
+<modern-navbar active-page="stasi.html"></modern-navbar>
+
+<main class="flex-grow">
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="flex justify-center mb-4">
+      <div class="hero-badge">⛪ 9 Komunitas Iman</div>
+    </div>
+    <div class="page-hero-title animate-fade-in">Daftar Stasi</div>
+    <p class="page-hero-subtitle animate-fade-in">Paroki Marga Agung menaungi 9 stasi dengan sejarah yang kaya di Lampung Selatan</p>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-16">
+
+    <!-- Header row -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10 reveal">
+      <div>
+        <div class="section-badge">⛪ Komunitas</div>
+        <h2 class="section-title mt-2">9 <span>Stasi</span> Paroki</h2>
+        <div class="section-divider mt-3"></div>
+      </div>
+      <a href="jadwal.html" class="btn-primary">
+        <span>📅</span> Cek Jadwal Misa
+      </a>
+    </div>
+
+    <!-- Stasi Grid -->
+    <div id="stasiContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <div class="stasi-card reveal delay-1" data-stasi="margo-agung">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">1</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Margo Agung</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Santo Andreas Rasul · Pusat Paroki</p>
+          </div>
+        </div>
+        <button data-stasi="margo-agung" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+      <div class="stasi-card reveal delay-2" data-stasi="marga-lestari">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">2</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Marga Lestari</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Santa Maria</p>
+          </div>
+        </div>
+        <button data-stasi="marga-lestari" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+      <div class="stasi-card reveal delay-3" data-stasi="rejomulyo">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">3</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Rejomulyo</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Tritunggal Mahakudus</p>
+          </div>
+        </div>
+        <button data-stasi="rejomulyo" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+      <div class="stasi-card reveal delay-4" data-stasi="sukadamai">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">4</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Sukadamai</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Santo Yusuf</p>
+          </div>
+        </div>
+        <button data-stasi="sukadamai" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+      <div class="stasi-card reveal delay-5" data-stasi="way-galih">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">5</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Way Galih</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Santo Yohanes De Britto</p>
+          </div>
+        </div>
+        <button data-stasi="way-galih" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+      <div class="stasi-card reveal delay-6" data-stasi="sindang-sari">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">6</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Sindang Sari</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Santo Stefanus</p>
+          </div>
+        </div>
+        <button data-stasi="sindang-sari" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+      <div class="stasi-card reveal delay-1" data-stasi="purwotani">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">7</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Purwotani</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Santo Petrus</p>
+          </div>
+        </div>
+        <button data-stasi="purwotani" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+      <div class="stasi-card reveal delay-2" data-stasi="jatimulyo">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">8</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Jatimulyo</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Santo Fransiskus Xaverius</p>
+          </div>
+        </div>
+        <button data-stasi="jatimulyo" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+      <div class="stasi-card reveal delay-3" data-stasi="pendowo">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="stasi-number">9</div>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base truncate" style="color:#0f1f4b">Pendowo</h3>
+            <p class="text-xs font-semibold mt-0.5 truncate" style="color:#2148c0">Santo Aloysius</p>
+          </div>
+        </div>
+        <button data-stasi="pendowo" class="btn-sejarah flex-shrink-0 text-xs font-bold px-4 py-2 rounded-xl transition-all" style="background:rgba(33,72,192,0.08);color:#2148c0">Selengkapnya →</button>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<modern-footer></modern-footer>
+
+<script src="js/components/navbar.js"></script>
+<script src="js/components/footer.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

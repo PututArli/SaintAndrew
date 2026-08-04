@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeri Paroki - Marga Agung</title>
+<meta name="description" content="Album foto dan dokumentasi kegiatan Gereja Katolik Paroki Santo Andreas Rasul Marga Agung.">
+<link rel="icon" href="assets/crossIcon.png" type="image/png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* Lightbox override for galeri page */
+#lightbox { position:fixed; }
+</style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+<modern-navbar active-page="galeri.html"></modern-navbar>
+
+<main class="flex-grow">
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="flex justify-center mb-4">
+      <div class="hero-badge">📸 Dokumentasi</div>
+    </div>
+    <div class="page-hero-title animate-fade-in">Galeri Paroki</div>
+    <p class="page-hero-subtitle animate-fade-in">Mengabadikan setiap momen dan perjalanan bertumbuh dalam iman umat Paroki Marga Agung</p>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 py-14">
+
+    <!-- ── Filter ── -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12 reveal">
+      <button class="filter-btn active-filter px-5 py-2.5 rounded-full font-semibold text-sm shadow-md" data-filter="all">
+        Semua Foto
+      </button>
+      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="stasi">
+        ⛪ Stasi
+      </button>
+      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="omk">
+        🎉 Kegiatan OMK
+      </button>
+      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="perayaan">
+        ✝ Perayaan Besar
+      </button>
+    </div>
+
+    <!-- ── Gallery Grid ── -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 reveal" id="full-gallery">
+
+      <!-- Stasi -->
+      <div class="gallery-item" data-category="stasi">
+        <img src="assets/img/stasi/marga-agung.jpg" alt="Gereja Pusat Marga Agung">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Pusat</span>
+          <span class="gallery-sub">Stasi Marga Agung</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="stasi">
+        <img src="assets/img/stasi/marga-lestari.jpg" alt="Gereja Marga Lestari">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Marga Lestari</span>
+          <span class="gallery-sub">Santa Maria</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="stasi">
+        <img src="assets/img/stasi/rejomulyo.jpg" alt="Gereja Rejomulyo">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Rejomulyo</span>
+          <span class="gallery-sub">Tritunggal Mahakudus</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="stasi">
+        <img src="assets/img/stasi/sindang-sari.jpg" alt="Gereja Sindangsari">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Sindangsari</span>
+          <span class="gallery-sub">Santo Stefanus</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="stasi">
+        <img src="assets/img/stasi/jatimulyo.jpg" alt="Gereja Jatimulyo Perdana">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Jatimulyo</span>
+          <span class="gallery-sub">Santo Fransiskus Xaverius</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="stasi">
+        <img src="assets/img/stasi/way-galih.jpg" alt="Gereja Way Galih">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Way Galih</span>
+          <span class="gallery-sub">Santo Yohanes De Britto</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="stasi">
+        <img src="assets/img/stasi/sukadamai.jpg" alt="Gereja Sukadamai">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Sukadamai</span>
+          <span class="gallery-sub">Santo Yusuf</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="stasi">
+        <img src="assets/img/stasi/pendowo.jpg" alt="Gereja Pendowo">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Pendowo</span>
+          <span class="gallery-sub">Santo Aloysius</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="stasi">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='100%25' height='100%25' fill='%23f1f5f9'/%3E%3Cpath d='M250 400 L400 200 L550 400 Z' fill='%23e2e8f0' stroke='%23cbd5e1' stroke-width='4' stroke-linejoin='round'/%3E%3Crect x='360' y='300' width='80' height='100' fill='%23cbd5e1'/%3E%3Cpath d='M400 200 L400 150 M380 170 L420 170' stroke='%2394a3b8' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='400' cy='260' r='20' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4'/%3E%3Ctext x='400' y='460' font-family='sans-serif' font-size='24' font-weight='bold' fill='%2364748b' text-anchor='middle'%3EGereja Dalam Pembangunan%3C/text%3E%3Ctext x='400' y='490' font-family='sans-serif' font-size='16' fill='%2394a3b8' text-anchor='middle'%3EUmat rutin beribadah di rumah warga%3C/text%3E%3C/svg%3E" alt="Gereja Purwotani - Dalam Pembangunan">
+        <div class="gallery-overlay">
+          <span class="gallery-title">Gereja Purwotani</span>
+          <span class="gallery-sub">Santo Petrus · Dalam Pembangunan</span>
+        </div>
+      </div>
+
+      <!-- OMK -->
+      <div class="gallery-item" data-category="omk">
+        <img src="assets/img/galeri/kegiatanOMK.png" alt="Kegiatan Bersama OMK">
+        <div class="gallery-badge" style="background:#0d9488">OMK</div>
+        <div class="gallery-overlay">
+          <span class="gallery-title">Kegiatan OMK 2025</span>
+          <span class="gallery-sub">Ziarah &amp; Rekreasi</span>
+        </div>
+      </div>
+
+      <!--
+      ╔═══════════════════════════════════════════╗
+      ║  TAMBAHKAN FOTO BARU DI BAWAH INI        ║
+      ║  <div class="gallery-item" data-category="omk|stasi|perayaan">
+      ║    <img src="assets/img/galeri/namafile.jpg" alt="...">
+      ║    <div class="gallery-overlay">
+      ║      <span class="gallery-title">Judul</span>
+      ║      <span class="gallery-sub">Sub</span>
+      ║    </div>
+      ║  </div>
+      ╚═══════════════════════════════════════════╝
+      -->
+
+    </div>
+
+    <!-- Empty message -->
+    <div id="empty-msg" class="hidden text-center py-24 text-gray-400 reveal">
+      <div class="text-6xl mb-4">📷</div>
+      <p class="font-bold text-xl">Belum ada foto dalam kategori ini</p>
+      <p class="text-sm mt-2">Foto akan segera ditambahkan</p>
+    </div>
+
+  </div>
+</main>
+
+<modern-footer></modern-footer>
+
+<script src="js/components/navbar.js"></script>
+<script src="js/components/footer.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

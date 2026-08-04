@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontak - Paroki Marga Agung</title>
+<meta name="description" content="Hubungi sekretariat Paroki Santo Andreas Rasul Marga Agung. Informasi alamat, telepon, dan formulir kontak.">
+<link rel="icon" href="assets/crossIcon.png" type="image/png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="flex flex-col min-h-screen">
+
+<modern-navbar active-page="kontak.html"></modern-navbar>
+
+<main class="flex-grow">
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="flex justify-center mb-4">
+      <div class="hero-badge">✉️ Hubungi Kami</div>
+    </div>
+    <div class="page-hero-title animate-fade-in">Kontak &amp; Sekretariat</div>
+    <p class="page-hero-subtitle animate-fade-in">Kami siap membantu dan menjawab setiap pertanyaan Anda</p>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-16">
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-16">
+
+      <!-- Info Sekretariat -->
+      <div class="lg:col-span-2 space-y-5 reveal reveal-left">
+
+        <div class="glass-card p-7">
+          <h2 class="font-bold text-xl mb-6 flex items-center gap-3" style="color:#0f1f4b">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style="background:rgba(33,72,192,0.1)">🏛️</span>
+            Sekretariat Paroki
+          </h2>
+
+          <div class="space-y-5">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(33,72,192,0.08)">📍</div>
+              <div>
+                <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#2148c0">Alamat</div>
+                <p class="text-sm text-gray-600 leading-relaxed">Jl. Margo Agung, Marga Kaya, Jati Agung, Kabupaten Lampung Selatan, Lampung 35365</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(33,72,192,0.08)">📞</div>
+              <div>
+                <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#2148c0">Telepon</div>
+                <p class="text-sm text-gray-600">(0721) 755300</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(33,72,192,0.08)">✉️</div>
+              <div>
+                <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#2148c0">Email</div>
+                <a href="mailto:parokimargaagung@gmail.com" class="text-sm hover:underline break-all" style="color:#2148c0">parokimargaagung@gmail.com</a>
+              </div>
+            </div>
+
+            <div class="border-t pt-5" style="border-color:rgba(15,31,75,0.08)">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:rgba(201,168,76,0.12)">🕐</div>
+                <div>
+                  <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#c9a84c">Jam Operasional</div>
+                  <div class="text-sm text-gray-600 space-y-1">
+                    <div>Senin – Jumat: <strong style="color:#0f1f4b">08:00 – 15:00 WIB</strong></div>
+                    <div>Sabtu – Minggu: <strong style="color:#0f1f4b">08:00 – 12:00 WIB</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Formulir Kontak -->
+      <div class="lg:col-span-3 reveal reveal-right">
+        <div class="glass-card p-8">
+          <h2 class="font-bold text-xl mb-2 flex items-center gap-3" style="color:#0f1f4b">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style="background:rgba(33,72,192,0.1)">💬</span>
+            Kirim Pesan
+          </h2>
+          <p class="text-sm text-gray-500 mb-7 pl-1">Isi formulir di bawah ini dan kami akan merespons secepatnya.</p>
+
+          <form id="contactForm" class="space-y-5" novalidate>
+            <div>
+              <label class="form-label" for="name">Nama Lengkap</label>
+              <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap Anda" class="form-input">
+            </div>
+
+            <div>
+              <label class="form-label" for="subject">Subjek</label>
+              <select id="subject" name="subject" class="form-input" style="cursor:pointer">
+                <option value="">Pilih Subjek</option>
+                <option value="Informasi Baptis">Informasi Baptis / Sakramen</option>
+                <option value="Intensi Misa">Pengajuan Intensi Misa</option>
+                <option value="Pernikahan">Konsultasi Pernikahan</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label" for="message">Pesan</label>
+              <textarea id="message" name="message" rows="5" placeholder="Tuliskan pesan atau pertanyaan Anda di sini…" class="form-input" style="resize:vertical;min-height:120px"></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-primary w-full justify-center text-base py-4">
+              <span id="submitIcon">📤</span>
+              <span id="submitText">Kirim Pesan</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── FAQ ── -->
+    <section class="reveal">
+      <div class="text-center mb-10">
+        <div class="section-badge mx-auto">❓ FAQ</div>
+        <h2 class="section-title mt-3">Pertanyaan yang Sering <span>Diajukan</span></h2>
+        <div class="section-divider centered"></div>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-3" id="faq-container">
+
+        <div class="faq-item reveal" style="transition-delay:0.1s">
+          <div class="faq-question" id="faq-q-1">
+            <span>Apa syarat untuk pembaptisan bayi?</span>
+            <div class="faq-chevron">▼</div>
+          </div>
+          <div class="faq-answer">
+            Persyaratan pendaftaran meliputi: 1) Fotokopi Akta Perkawinan Gereja orang tua, 2) Fotokopi Surat Baptis orang tua, 3) Fotokopi Akta Lahir anak, dan 4) Rekomendasi/Tanda tangan dari Ketua Lingkungan setempat.
+          </div>
+        </div>
+
+        <div class="faq-item reveal" style="transition-delay:0.2s">
+          <div class="faq-question" id="faq-q-2">
+            <span>Bagaimana prosedur pendaftaran pernikahan?</span>
+            <div class="faq-chevron">▼</div>
+          </div>
+          <div class="faq-answer">
+            Pengajuan dilakukan minimal 3 bulan sebelum hari-H. Calon mempelai diwajibkan mengikuti Kursus Persiapan Perkawinan (KPP) dan menyerahkan dokumen seperti surat baptis terbaru, akta lahir, dan rekomendasi dari ketua lingkungan.
+          </div>
+        </div>
+
+        <div class="faq-item reveal" style="transition-delay:0.3s">
+          <div class="faq-question" id="faq-q-3">
+            <span>Apakah bisa berkonsultasi langsung dengan Pastor?</span>
+            <div class="faq-chevron">▼</div>
+          </div>
+          <div class="faq-answer">
+            Tentu. Anda dapat membuat janji temu dengan Pastor Paroki melalui sekretariat pada jam operasional atau langsung setelah perayaan ekaristi selesai.
+          </div>
+        </div>
+
+        <div class="faq-item reveal" style="transition-delay:0.4s">
+          <div class="faq-question" id="faq-q-4">
+            <span>Bagaimana cara mendaftarkan intensi Misa?</span>
+            <div class="faq-chevron">▼</div>
+          </div>
+          <div class="faq-answer">
+            Pendaftaran intensi Misa dapat dilakukan di sekretariat paroki pada jam operasional. Sertakan nama orang yang didoakan serta jenis intensi (hidup atau arwah). Hubungi sekretariat untuk informasi lebih lanjut.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<modern-footer></modern-footer>
+
+<script src="js/components/navbar.js"></script>
+<script src="js/components/footer.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

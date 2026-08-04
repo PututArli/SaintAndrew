@@ -1,0 +1,85 @@
+/* ============================================================
+   1. VARIABLES & BASE DESIGN SYSTEM
+   Paroki Santo Andreas Rasul
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap');
+
+/* ── Design Tokens & Custom Properties ── */
+:root {
+  --navy:         #0f1f4b;
+  --navy-mid:     #1a3378;
+  --royal:        #2148c0;
+  --blue-light:   #4a90e2;
+  --gold:         #c9a84c;
+  --gold-light:   #e8c970;
+  --cream:        #faf8f3;
+  --glass-bg:     rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.18);
+  --card-bg:      rgba(255,255,255,0.72);
+  --card-border:  rgba(255,255,255,0.55);
+  --shadow-sm:    0 2px 12px rgba(15,31,75,0.08);
+  --shadow-md:    0 8px 40px rgba(15,31,75,0.12);
+  --shadow-lg:    0 20px 60px rgba(15,31,75,0.18);
+  --radius-sm:    0.75rem;
+  --radius-md:    1.25rem;
+  --radius-lg:    2rem;
+  --radius-xl:    3rem;
+  --transition:   0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset & Global Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #e8edf7;
+  background-image:
+    radial-gradient(ellipse at 10% 20%, rgba(33,72,192,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 90% 80%, rgba(201,168,76,0.06) 0%, transparent 50%),
+    linear-gradient(160deg, #dce6f5 0%, #edf1fb 50%, #e8edf7 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: #1e2a4a;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5 {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+/* ── Utility Classes ── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.divider-gold {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 99px;
+}
