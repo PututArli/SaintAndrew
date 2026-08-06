@@ -755,7 +755,7 @@ let _deleteCb    = null;
 // ── Auth Guard ──────────────────────────────────────────────
 (async () => {
   const { data: { session } } = await db.auth.getSession();
-  if (!session) { window.location.replace('login.html'); return; }
+  if (!session) { window.location.replace('../index.html'); return; }
   document.getElementById('admin-email').textContent = session.user.email;
   loadJadwal();
   loadCounters();
@@ -765,7 +765,7 @@ let _deleteCb    = null;
 async function doLogout() {
   if (!confirm('Keluar dari dashboard admin?')) return;
   await db.auth.signOut();
-  window.location.replace('login.html');
+  window.location.replace('../index.html');
 }
 
 // ── Toast ───────────────────────────────────────────────────
