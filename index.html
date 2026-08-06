@@ -111,7 +111,7 @@
               <span class="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style="background:var(--gold-muted)">📌</span>
               Pengumuman Paroki
             </h3>
-            <div class="space-y-4">
+            <div id="pengumumanList" class="space-y-4">
 
               <div class="announcement-card">
                 <span class="announcement-date">5 April 2026</span>
@@ -357,8 +357,46 @@
 
 <modern-footer></modern-footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>
 <script src="js/script.js"></script>
-</body>
-</html>
+<script>
+// ── Load Pengumuman from Supabase ──────────────────
+const KAT_ICON = {
+  'sakramen':    '🕊️',
+  'misa-khusus': '✠️',
+  'kegiatan':    '🌟',
+  'umum':        '📌'
+};
+
+(async () => {
+  try {
+    const { data, error } = await db
+      .from('pengumuman')
+      .select('*')
+      .eq('aktif', true)
+      .order('tanggal', { ascending: false })
+      .limit(5);
+
+    if (error || !data || data.length === 0) return; // pakai data statis
+
+    document.getElementById('pengumumanList').innerHTML = data.map(p => {
+      const tgl = new Date(p.tanggal).toLocaleDateString('id-ID', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+      const icon = KAT_ICON[p.kategori] || '📌';
+      return `
+        <div class="announcement-card">
+          <span class="announcement-date">${icon} ${tgl}</span>
+          <h4 class="font-bold text-base mt-1" style="color:var(--ink)">${p.judul}</h4>
+          <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--ink-soft)">${p.isi}</p>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    // Supabase tidak tersedia — tampilkan data statis
+    console.log('Supabase unavailable, using static announcements.');
+  }
+})();
+</script>

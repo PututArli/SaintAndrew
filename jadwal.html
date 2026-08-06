@@ -47,7 +47,8 @@
                 <th>Keterangan</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="jadwalPusatBody">
+              <!-- Diisi oleh Supabase, fallback di bawah -->
               <tr>
                 <td class="flex items-center gap-2"><span class="text-xs font-bold" style="color:var(--gold)">✦</span> Minggu Pagi</td>
                 <td><span class="font-bold" style="color:var(--ink)">07:00 WIB</span></td>
@@ -79,7 +80,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div id="stasiJadwalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="info-card reveal delay-1">
           <div class="flex items-center gap-3 mb-3">
             <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold" style="background:var(--gold-muted);color:var(--gold)">⛪</div>
@@ -227,8 +228,70 @@
 
 <modern-footer></modern-footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>
 <script src="js/script.js"></script>
+<script>
+// ── Load Jadwal from Supabase ──────────────────────
+const STASI_INFO = {
+  'pusat':        { label: 'Margo Agung (Pusat)', sub: 'Santo Andreas Rasul' },
+  'marga-lestari':{ label: 'Marga Lestari',       sub: 'Santa Maria' },
+  'rejomulyo':    { label: 'Rejomulyo',            sub: 'Tritunggal Mahakudus' },
+  'sukadamai':    { label: 'Sukadamai',            sub: 'Santo Yusuf' },
+  'way-galih':    { label: 'Way Galih',            sub: 'S. Yohanes De Britto' },
+  'sindang-sari': { label: 'Sindang Sari',         sub: 'Santo Stefanus' },
+  'purwotani':    { label: 'Purwotani',            sub: 'Santo Petrus' },
+  'jatimulyo':    { label: 'Jatimulyo',            sub: 'S. Fransiskus Xaverius' },
+  'pendowo':      { label: 'Pendowo',              sub: 'Santo Aloysius' }
+};
+
+(async () => {
+  try {
+    const { data, error } = await db.from('jadwal_misa').select('*').order('urutan').order('created_at');
+    if (error || !data || data.length === 0) return; // gunakan fallback statis
+
+    // Update tabel jadwal pusat
+    const pusatRows = data.filter(r => r.stasi === 'pusat');
+    if (pusatRows.length > 0) {
+      document.getElementById('jadwalPusatBody').innerHTML = pusatRows.map(r => `
+        <tr>
+          <td class="flex items-center gap-2"><span class="text-xs font-bold" style="color:var(--gold)">✦</span> ${r.hari}</td>
+          <td><span class="font-bold" style="color:var(--ink)">${r.waktu}</span></td>
+          <td><span class="px-2.5 py-1 rounded-full text-xs font-bold" style="background:var(--gold-muted);color:var(--gold)">${r.keterangan}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // Update kartu jadwal stasi (semua kecuali pusat)
+    const stasiList = [...new Set(data.filter(r => r.stasi !== 'pusat').map(r => r.stasi))];
+    if (stasiList.length > 0) {
+      const delays = ['delay-1','delay-2','delay-3','delay-4','delay-1','delay-2','delay-3','delay-4'];
+      document.getElementById('stasiJadwalGrid').innerHTML = stasiList.map((stasi, i) => {
+        const rows = data.filter(r => r.stasi === stasi);
+        const first = rows[0];
+        const info = STASI_INFO[stasi] || { label: stasi, sub: '' };
+        return `
+          <div class="info-card reveal ${delays[i % 8]}">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold" style="background:var(--gold-muted);color:var(--gold)">⛪</div>
+              <div>
+                <h4 class="font-bold text-sm" style="color:var(--ink)">${info.label}</h4>
+                <div class="text-[10px] text-gray-500">${info.sub}</div>
+              </div>
+            </div>
+            <div class="font-black text-lg" style="color:var(--ink)">${first.waktu}</div>
+            <div class="text-xs font-medium mt-1" style="color:var(--gold)">${first.hari}</div>
+            ${first.minggu_ke ? `<div class="mt-2 text-xs text-gray-400 border-t pt-2" style="border-color:var(--border)">${first.minggu_ke}</div>` : ''}
+          </div>`;
+      }).join('');
+    }
+  } catch(e) {
+    // Gagal koneksi — biarkan fallback statis tampil
+    console.log('Supabase unavailable, using static fallback.');
+  }
+})();
+</script>
 </body>
 </html>
