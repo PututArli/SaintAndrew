@@ -233,7 +233,7 @@ function openStasiModal(id) {
             </div>
             ${data.gmapsUrl ? `
                 <a href="${data.gmapsUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary inline-flex items-center gap-2 text-xs py-2 px-4 shadow-sm">
-                    <span>📍</span> Buka Google Maps
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Buka Google Maps
                 </a>
             ` : ''}
         </div>
@@ -243,7 +243,7 @@ function openStasiModal(id) {
         <!-- Patron Box -->
         <div class="p-5 rounded-2xl mb-6" style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25)">
             <div class="flex items-center gap-2 mb-2">
-                <span class="text-sm font-bold" style="color:var(--gold)">✨ Mengenal Pelindung: ${data.patron}</span>
+                <span class="text-sm font-bold" style="color:var(--gold)">Mengenal Pelindung: ${data.patron}</span>
                 ${data.patronFeast ? `<span class="text-[11px] px-2 py-0.5 rounded-full font-semibold ml-auto" style="background:var(--gold-muted);color:var(--gold)">Pesta: ${data.patronFeast}</span>` : ''}
             </div>
             <div class="text-xs font-semibold mb-1.5" style="color:var(--ink)">${data.patronRole || ''}</div>
@@ -253,7 +253,7 @@ function openStasiModal(id) {
         <!-- Address Bar -->
         ${data.address ? `
             <div class="flex items-start gap-2.5 text-xs text-gray-600 mb-6 p-3.5 rounded-xl" style="background:var(--bg-alt);border:1px solid var(--border)">
-                <span class="text-base flex-shrink-0" style="color:var(--gold)">📍</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0 mt-0.5" style="color:var(--gold)"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 <div class="flex-grow">
                     <strong style="color:var(--ink)">Alamat:</strong> ${data.address}
                 </div>
@@ -506,8 +506,37 @@ if (document.readyState === 'loading') {
     updateGreetings();
 }
 
+// ── Sync Stasi Data from Supabase ────────────────────────────
+async function syncStasiFromSupabase() {
+    if (typeof db === 'undefined') return;
+    try {
+        const { data, error } = await db.from('stasi').select('*');
+        if (!error && data && data.length > 0) {
+            data.forEach(item => {
+                if (stasiData[item.id]) {
+                    if (item.nama) stasiData[item.id].title = item.nama;
+                    if (item.pelindung) stasiData[item.id].patron = item.pelindung;
+                    if (item.pesta_nama) stasiData[item.id].patronFeast = item.pesta_nama;
+                    if (item.peran_pelindung) stasiData[item.id].patronRole = item.peran_pelindung;
+                    if (item.biografi_pelindung) stasiData[item.id].patronBio = item.biografi_pelindung;
+                    if (item.alamat) stasiData[item.id].address = item.alamat;
+                    if (item.gmaps_url) stasiData[item.id].gmapsUrl = item.gmaps_url;
+                    if (item.foto_url) stasiData[item.id].image = item.foto_url;
+                    if (item.sejarah) stasiData[item.id].history = item.sejarah;
+                    if (Array.isArray(item.daftar_ketua)) stasiData[item.id].chairmen = item.daftar_ketua;
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('Sync stasi error:', e);
+    }
+}
+
 // ── Main DOM Ready Initializer ───────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Sync dynamic Stasi from DB
+    syncStasiFromSupabase();
+
     // 1. Setup Scroll-to-top
     ensureScrollTopInDOM();
 
@@ -540,7 +569,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const origText = textEl ? textEl.textContent : (btn ? btn.textContent : 'Kirim Pesan');
 
             if (textEl) textEl.textContent = 'Memproses…';
-            if (iconEl) iconEl.textContent = '⏳';
             if (btn) btn.disabled = true;
 
             setTimeout(() => {
@@ -561,7 +589,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (textEl) textEl.textContent = origText;
-                if (iconEl) iconEl.textContent = '📤';
                 if (btn) btn.disabled = false;
             }, 500);
         });

@@ -403,6 +403,49 @@
   .confirm-box h3 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 0.5rem; }
   .confirm-box p { font-size: 0.85rem; color: var(--ink-soft); max-width: 320px; margin: 0 auto; line-height: 1.5; }
 
+  /* ═══ IMAGE PREVIEW & STASI ADMIN CARDS ═══ */
+  .img-preview-box {
+    width: 100%; border: 1.5px dashed var(--border);
+    border-radius: 12px; background: var(--bg-alt);
+    padding: 0.5rem; text-align: center; min-height: 100px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden; margin-top: 0.5rem;
+  }
+  .img-preview-box img {
+    max-height: 150px; max-width: 100%; object-fit: cover;
+    border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .img-preview-empty {
+    font-size: 0.75rem; color: var(--ink-soft);
+  }
+  .stasi-admin-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .stasi-admin-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stasi-admin-card:hover {
+    transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+  .stasi-admin-cover {
+    width: 100%; height: 140px; background: var(--bg-alt);
+    position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+  }
+  .stasi-admin-cover img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .stasi-admin-body {
+    padding: 1.1rem; flex: 1; display: flex; flex-direction: column;
+  }
+  .galeri-thumb-mini {
+    width: 68px; height: 50px; border-radius: 8px;
+    object-fit: cover; background: var(--bg-alt); border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
   /* ═══ RESPONSIVE ═══ */
   @media (max-width: 768px) {
     .sidebar { transform: translateX(-100%); }
@@ -437,6 +480,20 @@
       </span>
       <span>Pengumuman</span>
       <span class="nav-count" id="count-pengumuman">—</span>
+    </button>
+    <button class="nav-btn" id="nav-galeri" onclick="showTab('galeri', this)">
+      <span class="ni">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+      </span>
+      <span>Galeri Kegiatan</span>
+      <span class="nav-count" id="count-galeri">—</span>
+    </button>
+    <button class="nav-btn" id="nav-stasi" onclick="showTab('stasi', this)">
+      <span class="ni">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      </span>
+      <span>Data &amp; Foto Stasi</span>
+      <span class="nav-count" id="count-stasi">9</span>
     </button>
   </nav>
 
@@ -504,6 +561,15 @@
           <div class="stat-lbl">Pengumuman Aktif</div>
         </div>
       </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color:var(--gold)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        </div>
+        <div>
+          <div class="stat-val" id="stat-galeri">—</div>
+          <div class="stat-lbl">Foto Kegiatan</div>
+        </div>
+      </div>
     </div>
 
     <!-- ═══ TAB: Jadwal Misa ═══ -->
@@ -524,7 +590,7 @@
           <span class="filter-label">Filter Stasi:</span>
           <select id="filter-stasi" class="filter-select" onchange="loadJadwal()">
             <option value="">Semua Stasi</option>
-            <option value="pusat">Margo Agung</option>
+            <option value="margo-agung">Margo Agung</option>
             <option value="marga-lestari">Marga Lestari</option>
             <option value="rejomulyo">Rejomulyo</option>
             <option value="sukadamai">Sukadamai</option>
@@ -568,6 +634,63 @@
       </div>
     </div>
 
+    <!-- ═══ TAB: Galeri Kegiatan ═══ -->
+    <div id="tab-galeri" class="tab-panel" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <div style="flex:1">
+            <div class="card-head-title">Manajemen Galeri Kegiatan</div>
+            <div class="card-head-sub">Dokumentasi foto kegiatan OMK, liturgi, perayaan, dan aksi sosial paroki</div>
+          </div>
+          <button class="btn btn-primary" onclick="openGaleriModal()">
+            <span>＋</span> Tambah Foto Kegiatan
+          </button>
+        </div>
+
+        <!-- Filter -->
+        <div class="filter-bar">
+          <span class="filter-label">Filter Kategori:</span>
+          <select id="filter-kategori-galeri" class="filter-select" onchange="loadGaleri()">
+            <option value="">Semua Kategori</option>
+            <option value="omk">OMK</option>
+            <option value="liturgi">Liturgi &amp; Misa</option>
+            <option value="perayaan">Perayaan Besar</option>
+            <option value="sosial">Sosial &amp; Lingkungan</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="loadGaleri()" style="margin-left:auto">
+            Muat Ulang
+          </button>
+        </div>
+
+        <div class="card-body">
+          <div id="galeri-content">
+            <div class="empty-state"><p>Memuat data galeri kegiatan…</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: Data & Foto Stasi ═══ -->
+    <div id="tab-stasi" class="tab-panel" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <div style="flex:1">
+            <div class="card-head-title">Manajemen Data &amp; Foto Stasi</div>
+            <div class="card-head-sub">Perbarui foto bangunan fisik, pelindung, alamat, dan tautan Google Maps untuk 9 stasi</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="loadStasiAdmin()">
+            Muat Ulang
+          </button>
+        </div>
+
+        <div class="card-body">
+          <div id="stasi-content">
+            <div class="empty-state"><p>Memuat data stasi…</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /page-body -->
 </div><!-- /main -->
 
@@ -591,7 +714,7 @@
             <label class="form-label">Stasi <span class="req">*</span></label>
             <select id="j-stasi" class="form-ctrl" required>
               <option value="">— Pilih Stasi —</option>
-              <option value="pusat">Margo Agung</option>
+              <option value="margo-agung">Margo Agung</option>
               <option value="marga-lestari">Marga Lestari</option>
               <option value="rejomulyo">Rejomulyo</option>
               <option value="sukadamai">Sukadamai</option>
@@ -711,6 +834,158 @@
   </div>
 </div>
 
+<!-- ═══════════════════════════════════
+     MODAL: Galeri Kegiatan (Tambah / Edit)
+════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-galeri">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modal-galeri-title">Tambah Foto Kegiatan</div>
+      <button class="modal-close" onclick="closeModal('modal-galeri')">✕</button>
+    </div>
+    <form id="form-galeri" onsubmit="submitGaleri(event)">
+      <input type="hidden" id="gid">
+      <div class="modal-body">
+
+        <div id="galeri-alert" class="alert alert-err" style="display:none"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Judul Kegiatan / Foto <span class="req">*</span></label>
+            <input id="g-judul" type="text" class="form-ctrl" placeholder="Contoh: Ziarah &amp; Rekreasi OMK 2025" required>
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Kategori <span class="req">*</span></label>
+            <select id="g-kategori" class="form-ctrl" required>
+              <option value="omk">OMK (Orang Muda Katolik)</option>
+              <option value="liturgi">Liturgi &amp; Misa</option>
+              <option value="perayaan">Perayaan Besar (Natal/Paskah/HUT)</option>
+              <option value="sosial">Sosial &amp; Lingkungan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tanggal Kegiatan</label>
+            <input id="g-tanggal" type="date" class="form-ctrl">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">URL Foto / Gambar <span class="req">*</span></label>
+            <input id="g-foto" type="text" class="form-ctrl" placeholder="assets/img/galeri/nama-file.jpg atau link https://" required oninput="updateGaleriPreview()">
+            <span class="form-hint">Dapat berupa path gambar lokal (contoh: <code>assets/img/galeri/...</code>) atau URL gambar online.</span>
+
+            <div class="img-preview-box" id="g-preview-box">
+              <span class="img-preview-empty" id="g-preview-empty">Preview foto akan muncul di sini</span>
+              <img id="g-preview-img" src="" alt="Preview Foto" style="display:none" onerror="this.style.display='none';document.getElementById('g-preview-empty').style.display='block';document.getElementById('g-preview-empty').textContent='Gambar tidak dapat dimuat';">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Keterangan Singkat</label>
+            <textarea id="g-keterangan" class="form-ctrl" style="min-height:70px" placeholder="Deskripsi atau sub-judul kegiatan…"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Urutan Tampil</label>
+            <input id="g-urutan" type="number" class="form-ctrl" value="0" min="0" placeholder="0 = tampil paling atas">
+            <span class="form-hint">Angka lebih kecil tampil lebih awal</span>
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-galeri')">Batal</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit-galeri">
+          <span id="btn-galeri-text">Simpan Foto Kegiatan</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     MODAL: Data & Foto Stasi (Edit)
+════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-stasi">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modal-stasi-title">Edit Foto &amp; Data Stasi</div>
+      <button class="modal-close" onclick="closeModal('modal-stasi')">✕</button>
+    </div>
+    <form id="form-stasi" onsubmit="submitStasiAdmin(event)">
+      <input type="hidden" id="s-id">
+      <div class="modal-body">
+
+        <div id="stasi-alert" class="alert alert-err" style="display:none"></div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Nama Stasi / Gereja</label>
+            <input id="s-nama" type="text" class="form-ctrl" readonly style="background:var(--bg-alt);font-weight:700">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Santo / Santa Pelindung <span class="req">*</span></label>
+            <input id="s-pelindung" type="text" class="form-ctrl" placeholder="Contoh: Santo Andreas Rasul" required>
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Hari Pesta Nama</label>
+            <input id="s-pesta" type="text" class="form-ctrl" placeholder="Contoh: 30 November">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Peran Pelindung</label>
+            <input id="s-role" type="text" class="form-ctrl" placeholder="Contoh: Rasul Pertama &amp; Saudara Petrus">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">URL Foto Bangunan Gereja / Stasi</label>
+            <input id="s-foto" type="text" class="form-ctrl" placeholder="assets/img/stasi/nama.jpg atau https://" oninput="updateStasiPreview()">
+            <span class="form-hint">Kosongkan jika stasi dalam tahap pembangunan/belum ada bangunan fisik.</span>
+
+            <div class="img-preview-box" id="s-preview-box">
+              <span class="img-preview-empty" id="s-preview-empty">Preview foto bangunan akan muncul di sini</span>
+              <img id="s-preview-img" src="" alt="Preview Foto Stasi" style="display:none" onerror="this.style.display='none';document.getElementById('s-preview-empty').style.display='block';document.getElementById('s-preview-empty').textContent='Gambar tidak dapat dimuat atau belum ada';">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Alamat Lengkap <span class="req">*</span></label>
+            <input id="s-alamat" type="text" class="form-ctrl" placeholder="Desa / Jalan, Kecamatan..." required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tautan Google Maps</label>
+            <input id="s-maps" type="text" class="form-ctrl" placeholder="https://maps.app.goo.gl/...">
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-stasi')">Batal</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit-stasi">
+          <span id="btn-stasi-text">Simpan Perubahan Stasi</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- ═══════════════════
      MODAL: Konfirmasi Hapus
 ══════════════════════ -->
@@ -722,7 +997,9 @@
     </div>
     <div class="modal-body">
       <div class="confirm-box">
-        <div class="cb-icon">🗑️</div>
+        <div class="cb-icon" style="color:var(--danger)">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+        </div>
         <h3>Hapus data ini?</h3>
         <p id="confirm-desc">Data yang dihapus tidak dapat dikembalikan.</p>
       </div>
@@ -743,7 +1020,7 @@
 <script>
 // ── Constants ──────────────────────────────────────────────
 const STASI_MAP = {
-  'pusat':        'Margo Agung',
+  'margo-agung':  'Margo Agung',
   'marga-lestari':'Marga Lestari',
   'rejomulyo':    'Rejomulyo',
   'sukadamai':    'Sukadamai',
@@ -754,11 +1031,111 @@ const STASI_MAP = {
   'pendowo':      'Pendowo'
 };
 
+const DEFAULT_STASI_DATA = {
+  'margo-agung': {
+    id: 'margo-agung',
+    nama: 'Gereja Paroki Margo Agung',
+    pelindung: 'Santo Andreas Rasul',
+    pesta_nama: '30 November',
+    role: 'Rasul Pertama & Saudara Simon Petrus',
+    foto_url: 'assets/img/stasi/marga-agung.jpg',
+    alamat: 'Jl. Margo Agung, Marga Kaya, Kec. Jati Agung, Kab. Lampung Selatan, Lampung 35365',
+    gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Andreas+Rasul+Marga+Agung+Lampung+Selatan'
+  },
+  'marga-lestari': {
+    id: 'marga-lestari',
+    nama: 'Stasi Marga Lestari',
+    pelindung: 'Santa Maria',
+    pesta_nama: '1 Januari & 15 Agustus',
+    role: 'Bunda Yesus Kristus & Teladan Ketaatan Iman',
+    foto_url: 'assets/img/stasi/marga-lestari.jpg',
+    alamat: 'Desa Marga Lestari, Kec. Jati Agung, Kab. Lampung Selatan',
+    gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santa+Maria+Marga+Lestari+Jati+Agung'
+  },
+  'sindang-sari': {
+    id: 'sindang-sari',
+    nama: 'Stasi Sindangsari',
+    pelindung: 'Santo Stefanus',
+    pesta_nama: '26 Desember',
+    role: 'Protomartir (Martir Pertama) & Diakon Gereja',
+    foto_url: 'assets/img/stasi/sindang-sari.jpg',
+    alamat: 'Dusun Umbul Kapuk, Desa Sindangsari, Kec. Tanjung Bintang, Kab. Lampung Selatan',
+    gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Stefanus+Sindang+Sari+Tanjung+Bintang'
+  },
+  'rejomulyo': {
+    id: 'rejomulyo',
+    nama: 'Stasi Rejomulyo',
+    pelindung: 'Tritunggal Mahakudus',
+    pesta_nama: 'Minggu I stl. Pentakosta (Mei/Juni)',
+    role: 'Misteri Sentral Iman Katolik (Bapa, Putra, & Roh Kudus)',
+    foto_url: 'assets/img/stasi/rejomulyo.jpg',
+    alamat: 'Desa Rejomulyo, Kec. Jati Agung, Kab. Lampung Selatan',
+    gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Tritunggal+Mahakudus+Rejomulyo+Jati+Agung'
+  },
+  'jatimulyo': {
+    id: 'jatimulyo',
+    nama: 'Stasi Jatimulyo Perdana',
+    pelindung: 'Santo Fransiskus Xaverius',
+    pesta_nama: '3 Desember',
+    role: 'Misionaris Agung & Pelindung Misi Sedunia',
+    foto_url: 'assets/img/stasi/jatimulyo.jpg',
+    alamat: 'Perumahan Jatimulyo Perdana, Kec. Jati Agung, Kab. Lampung Selatan',
+    gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Fransiskus+Xaverius+Jatimulyo+Perdana'
+  },
+  'way-galih': {
+    id: 'way-galih',
+    nama: 'Stasi Way Galih',
+    pelindung: 'Santo Yohanes De Britto',
+    pesta_nama: '4 Februari',
+    role: 'Misionaris Yesuit & Martir Pembela Kekudusan Iman',
+    foto_url: 'assets/img/stasi/way-galih.jpg',
+    alamat: 'Dusun V.A, Desa Way Galih, Kec. Tanjung Bintang, Kab. Lampung Selatan',
+    gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Yohanes+De+Britto+Way+Galih'
+  },
+  'sukadamai': {
+    id: 'sukadamai',
+    nama: 'Stasi Sukadamai',
+    pelindung: 'Santo Yusuf',
+    pesta_nama: '19 Maret & 1 Mei',
+    role: 'Bapa Asuh Yesus & Pelindung Gereja Universal',
+    foto_url: 'assets/img/stasi/sukadamai.jpg',
+    alamat: 'RT 006, Dusun II, Desa Sukadamai, Kec. Natar, Kab. Lampung Selatan',
+    gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Yusuf+Sukadamai+Lampung+Selatan'
+  },
+  'pendowo': {
+    id: 'pendowo',
+    nama: 'Stasi Pendowo',
+    pelindung: 'Santo Aloysius Gonzaga',
+    pesta_nama: '21 Juni',
+    role: 'Pelindung Kaum Muda & Pelajar Katolik',
+    foto_url: 'assets/img/stasi/pendowo.jpg',
+    alamat: 'Desa Pancasila (Pendowo), Kec. Natar, Kab. Lampung Selatan',
+    gmaps_url: 'https://maps.app.goo.gl/mhdeNQXPXwW8WJtJ6'
+  },
+  'purwotani': {
+    id: 'purwotani',
+    nama: 'Stasi Purwotani',
+    pelindung: 'Santo Petrus',
+    pesta_nama: '29 Juni & 22 Februari',
+    role: 'Pemimpin Para Rasul & Uskup Roma (Paus) Pertama',
+    foto_url: '',
+    alamat: 'Desa Purwotani, Kec. Jati Agung, Kab. Lampung Selatan',
+    gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Purwotani+Jati+Agung+Lampung+Selatan'
+  }
+};
+
 const KAT_MAP = {
   'umum':       { label:'Umum' },
   'sakramen':   { label:'Sakramen' },
   'misa-khusus':{ label:'Misa Khusus' },
   'kegiatan':   { label:'Kegiatan' }
+};
+
+const KAT_GALERI_MAP = {
+  'omk':      { label: 'OMK', bg: '#0d9488' },
+  'liturgi':  { label: 'Liturgi & Misa', bg: '#7c3aed' },
+  'perayaan': { label: 'Perayaan Besar', bg: '#d97706' },
+  'sosial':   { label: 'Sosial & Lingkungan', bg: '#2563eb' }
 };
 
 // State untuk delete
@@ -817,27 +1194,45 @@ function showTab(name, btn) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).style.display = 'block';
   btn.classList.add('active');
-  document.getElementById('topbar-title').textContent =
-    name === 'jadwal' ? 'Jadwal Misa' : 'Pengumuman';
-  if (name === 'jadwal')    loadJadwal();
-  if (name === 'pengumuman') loadPengumuman();
+
+  const titles = {
+    'jadwal': 'Jadwal Misa',
+    'pengumuman': 'Pengumuman Paroki',
+    'galeri': 'Galeri Kegiatan',
+    'stasi': 'Data & Foto Stasi'
+  };
+  document.getElementById('topbar-title').textContent = titles[name] || 'Admin';
+
+  if (name === 'jadwal')     loadJadwal();
+  if (name === 'pengumuman')  loadPengumuman();
+  if (name === 'galeri')      loadGaleri();
+  if (name === 'stasi')       loadStasiAdmin();
 }
 
 // ── Counters ────────────────────────────────────────────────
 async function loadCounters() {
-  const [{ count: cJ }, { count: cP }] = await Promise.all([
-    db.from('jadwal_misa').select('*', { count: 'exact', head: true }),
-    db.from('pengumuman').select('*', { count: 'exact', head: true }).eq('aktif', true)
-  ]);
-  document.getElementById('stat-jadwal').textContent      = cJ ?? '—';
-  document.getElementById('stat-pengumuman').textContent  = cP ?? '—';
-  document.getElementById('count-jadwal').textContent     = cJ ?? '—';
-  document.getElementById('count-pengumuman').textContent = cP ?? '—';
+  try {
+    const [{ count: cJ }, { count: cP }, { count: cG }] = await Promise.all([
+      db.from('jadwal_misa').select('*', { count: 'exact', head: true }),
+      db.from('pengumuman').select('*', { count: 'exact', head: true }).eq('aktif', true),
+      db.from('galeri').select('*', { count: 'exact', head: true })
+    ]);
+    document.getElementById('stat-jadwal').textContent      = cJ ?? '—';
+    document.getElementById('stat-pengumuman').textContent  = cP ?? '—';
+    document.getElementById('stat-galeri').textContent      = cG ?? '1';
+    document.getElementById('count-jadwal').textContent     = cJ ?? '—';
+    document.getElementById('count-pengumuman').textContent = cP ?? '—';
+    document.getElementById('count-galeri').textContent     = cG ?? '1';
+  } catch (err) {
+    console.warn('Counters load note:', err);
+  }
 }
 
 // Cache data by ID for safe edit calls
 let _jadwalMap = {};
 let _pengMap   = {};
+let _galeriMap = {};
+let _stasiMap  = {};
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -1115,7 +1510,7 @@ async function submitPengumuman(e) {
   }
 
   closeModal('modal-pengumuman');
-  toast(id ? 'Pengumuman berhasil diperbarui!' : 'Pengumuman baru berhasil ditambahkan!');
+  toast(id ? 'Pengumuman berhasil diperbarui.' : 'Pengumuman baru berhasil ditambahkan.');
   loadPengumuman();
   loadCounters();
 }
@@ -1123,9 +1518,333 @@ async function submitPengumuman(e) {
 async function toggleAktif(id, current) {
   const { error } = await db.from('pengumuman').update({ aktif: !current }).eq('id', id);
   if (error) { toast('Gagal mengubah status: ' + error.message, 'error'); return; }
-  toast(!current ? '✅ Pengumuman diaktifkan dan tampil di website.' : '🔕 Pengumuman disembunyikan dari website.');
+  toast(!current ? 'Pengumuman diaktifkan dan tampil di website.' : 'Pengumuman disembunyikan dari website.');
   loadPengumuman();
   loadCounters();
+}
+
+// ══════════════════════════════════════════
+//  GALERI KEGIATAN
+// ══════════════════════════════════════════
+function updateGaleriPreview() {
+  const url = document.getElementById('g-foto').value.trim();
+  const img = document.getElementById('g-preview-img');
+  const empty = document.getElementById('g-preview-empty');
+  if (url) {
+    img.src = url;
+    img.style.display = 'block';
+    empty.style.display = 'none';
+  } else {
+    img.src = '';
+    img.style.display = 'none';
+    empty.style.display = 'block';
+    empty.textContent = 'Preview foto akan muncul di sini';
+  }
+}
+
+async function loadGaleri() {
+  const filter = document.getElementById('filter-kategori-galeri').value;
+  const el     = document.getElementById('galeri-content');
+  el.innerHTML = '<div class="empty-state"><p>Memuat data galeri…</p></div>';
+
+  let data = null;
+  try {
+    let q = db.from('galeri').select('*').order('urutan').order('tanggal', { ascending: false });
+    if (filter) q = q.eq('kategori', filter);
+    const res = await q;
+    if (!res.error && res.data) {
+      data = res.data;
+    }
+  } catch (e) {
+    console.warn('Database galeri fallback:', e);
+  }
+
+  // Default fallback if database table is empty or pending
+  if (!data || data.length === 0) {
+    const fallbackList = [
+      {
+        id: 'default-omk-1',
+        judul: 'Ziarah & Rekreasi OMK 2025',
+        kategori: 'omk',
+        foto_url: 'assets/img/galeri/kegiatanOMK.png',
+        tanggal: '2025-06-20',
+        keterangan: 'Kebersamaan kaum muda paroki dalam membangun persaudaraan dan iman.',
+        urutan: 0
+      }
+    ];
+    data = filter ? fallbackList.filter(item => item.kategori === filter) : fallbackList;
+  }
+
+  if (!data.length) {
+    el.innerHTML = `<div class="empty-state"><p>Belum ada foto kegiatan dalam kategori ini.<br>Klik "+ Tambah Foto Kegiatan" untuk mengunggah dokumentasi.</p></div>`;
+    return;
+  }
+
+  _galeriMap = {};
+  data.forEach(r => { _galeriMap[r.id] = r; });
+
+  el.innerHTML = `
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Foto</th>
+            <th>Judul Kegiatan</th>
+            <th>Kategori</th>
+            <th>Tanggal</th>
+            <th>Urutan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.map((r, i) => {
+            const kat = KAT_GALERI_MAP[r.kategori] || { label: r.kategori || 'Kegiatan', bg: 'var(--gold)' };
+            const tgl = r.tanggal ? new Date(r.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '—';
+            return `
+              <tr>
+                <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
+                <td>
+                  <img src="${escapeHtml(r.foto_url)}" alt="${escapeHtml(r.judul)}" class="galeri-thumb-mini" onerror="this.src='assets/img/galeri/kegiatanOMK.png'">
+                </td>
+                <td>
+                  <div style="font-weight:700;color:var(--ink);max-width:240px">${escapeHtml(r.judul)}</div>
+                  ${r.keterangan ? `<div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(r.keterangan)}</div>` : ''}
+                </td>
+                <td>
+                  <span class="badge" style="background:${kat.bg}18;color:${kat.bg};border:1px solid ${kat.bg}35">${escapeHtml(kat.label)}</span>
+                </td>
+                <td style="white-space:nowrap;font-size:0.78rem;color:var(--ink-soft)">${tgl}</td>
+                <td style="color:var(--ink-soft);font-size:0.75rem">${r.urutan ?? 0}</td>
+                <td>
+                  <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
+                    <button class="btn btn-edit btn-sm" onclick="editGaleri('${r.id}')" title="Edit foto kegiatan ini">
+                      Edit
+                    </button>
+                    <button class="btn btn-delete btn-sm" onclick="confirmDelete('galeri','${r.id}','foto kegiatan ini','loadGaleri')" title="Hapus foto kegiatan ini">
+                      Hapus
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+      <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
+        Menampilkan ${data.length} foto kegiatan
+      </div>
+    </div>
+  `;
+}
+
+function openGaleriModal(data = null) {
+  document.getElementById('gid').value          = data?.id && !String(data.id).startsWith('default-') ? data.id : '';
+  document.getElementById('g-judul').value      = data?.judul || '';
+  document.getElementById('g-kategori').value   = data?.kategori || 'omk';
+  document.getElementById('g-tanggal').value    = data?.tanggal || new Date().toISOString().split('T')[0];
+  document.getElementById('g-foto').value       = data?.foto_url || '';
+  document.getElementById('g-keterangan').value = data?.keterangan || '';
+  document.getElementById('g-urutan').value     = data?.urutan ?? 0;
+  document.getElementById('galeri-alert').style.display = 'none';
+
+  updateGaleriPreview();
+
+  const isEdit = !!(data?.id && !String(data.id).startsWith('default-'));
+  document.getElementById('modal-galeri-title').textContent = isEdit ? 'Edit Foto Kegiatan' : 'Tambah Foto Kegiatan';
+  document.getElementById('btn-galeri-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Foto Kegiatan';
+
+  openModal('modal-galeri');
+  setTimeout(() => document.getElementById('g-judul').focus(), 100);
+}
+
+function editGaleri(id) { openGaleriModal(_galeriMap[id]); }
+
+async function submitGaleri(e) {
+  e.preventDefault();
+  const id  = document.getElementById('gid').value;
+  const btn = document.getElementById('btn-submit-galeri');
+  const alertEl = document.getElementById('galeri-alert');
+
+  alertEl.style.display = 'none';
+  btn.disabled = true;
+  document.getElementById('btn-galeri-text').textContent = 'Menyimpan…';
+
+  const payload = {
+    judul:      document.getElementById('g-judul').value.trim(),
+    kategori:   document.getElementById('g-kategori').value,
+    tanggal:    document.getElementById('g-tanggal').value || null,
+    foto_url:   document.getElementById('g-foto').value.trim(),
+    keterangan: document.getElementById('g-keterangan').value.trim(),
+    urutan:     parseInt(document.getElementById('g-urutan').value) || 0,
+    updated_at: new Date().toISOString()
+  };
+
+  let error;
+  if (id) {
+    ({ error } = await db.from('galeri').update(payload).eq('id', id));
+  } else {
+    payload.created_at = new Date().toISOString();
+    ({ error } = await db.from('galeri').insert(payload));
+  }
+
+  btn.disabled = false;
+  document.getElementById('btn-galeri-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Foto Kegiatan';
+
+  if (error) {
+    alertEl.textContent = 'Gagal menyimpan ke database: ' + error.message;
+    alertEl.style.display = 'flex';
+    return;
+  }
+
+  closeModal('modal-galeri');
+  toast(id ? 'Foto kegiatan berhasil diperbarui.' : 'Foto kegiatan baru berhasil ditambahkan.');
+  loadGaleri();
+  loadCounters();
+}
+
+// ══════════════════════════════════════════
+//  DATA & FOTO STASI
+// ══════════════════════════════════════════
+function updateStasiPreview() {
+  const url = document.getElementById('s-foto').value.trim();
+  const img = document.getElementById('s-preview-img');
+  const empty = document.getElementById('s-preview-empty');
+  if (url) {
+    img.src = url;
+    img.style.display = 'block';
+    empty.style.display = 'none';
+  } else {
+    img.src = '';
+    img.style.display = 'none';
+    empty.style.display = 'block';
+    empty.textContent = 'Belum ada foto bangunan gereja';
+  }
+}
+
+async function loadStasiAdmin() {
+  const el = document.getElementById('stasi-content');
+  el.innerHTML = '<div class="empty-state"><p>Memuat data stasi…</p></div>';
+
+  _stasiMap = JSON.parse(JSON.stringify(DEFAULT_STASI_DATA));
+
+  try {
+    const { data, error } = await db.from('stasi').select('*');
+    if (!error && data && data.length > 0) {
+      data.forEach(s => {
+        if (_stasiMap[s.id]) {
+          Object.assign(_stasiMap[s.id], s);
+        } else {
+          _stasiMap[s.id] = s;
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('Stasi table fetch note:', err);
+  }
+
+  const stasiList = Object.values(_stasiMap);
+
+  el.innerHTML = `
+    <div class="stasi-admin-grid">
+      ${stasiList.map(s => {
+        const hasImg = !!s.foto_url;
+        return `
+          <div class="stasi-admin-card">
+            <div class="stasi-admin-cover">
+              ${hasImg ? `
+                <img src="${escapeHtml(s.foto_url)}" alt="${escapeHtml(s.nama)}" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--ink-soft);font-size:0.75rem\\'>Foto belum tersedia</div>';">
+              ` : `
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--gold);text-align:center;padding:1rem">
+                  <span style="font-size:1.5rem;font-weight:700">✝</span>
+                  <span style="font-size:0.75rem;font-weight:700;color:var(--ink);margin-top:4px">Tahap Pembangunan</span>
+                </div>
+              `}
+            </div>
+            <div class="stasi-admin-body">
+              <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:var(--gold);margin-bottom:0.25rem">
+                Pelindung: ${escapeHtml(s.pelindung)}
+              </div>
+              <h3 style="font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:0.4rem">
+                ${escapeHtml(s.nama)}
+              </h3>
+              <p style="font-size:0.75rem;color:var(--ink-soft);line-height:1.4;margin-bottom:1rem;flex:1">
+                ${escapeHtml(s.alamat)}
+              </p>
+              <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center" onclick="openStasiModal('${s.id}')">
+                Edit Foto &amp; Data
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function openStasiModal(key) {
+  const item = _stasiMap[key] || DEFAULT_STASI_DATA[key];
+  if (!item) return;
+
+  document.getElementById('s-id').value        = key;
+  document.getElementById('s-nama').value      = item.nama || '';
+  document.getElementById('s-pelindung').value = item.pelindung || '';
+  document.getElementById('s-pesta').value     = item.pesta_nama || '';
+  document.getElementById('s-role').value      = item.role || '';
+  document.getElementById('s-foto').value      = item.foto_url || '';
+  document.getElementById('s-alamat').value    = item.alamat || '';
+  document.getElementById('s-maps').value      = item.gmaps_url || '';
+  document.getElementById('stasi-alert').style.display = 'none';
+
+  updateStasiPreview();
+
+  document.getElementById('modal-stasi-title').textContent = 'Edit Data: ' + (item.nama || 'Stasi');
+  openModal('modal-stasi');
+  setTimeout(() => document.getElementById('s-foto').focus(), 100);
+}
+
+async function submitStasiAdmin(e) {
+  e.preventDefault();
+  const id  = document.getElementById('s-id').value;
+  const btn = document.getElementById('btn-submit-stasi');
+  const alertEl = document.getElementById('stasi-alert');
+
+  alertEl.style.display = 'none';
+  btn.disabled = true;
+  document.getElementById('btn-stasi-text').textContent = 'Menyimpan…';
+
+  const payload = {
+    id:         id,
+    nama:       document.getElementById('s-nama').value.trim(),
+    pelindung:  document.getElementById('s-pelindung').value.trim(),
+    pesta_nama: document.getElementById('s-pesta').value.trim(),
+    role:       document.getElementById('s-role').value.trim(),
+    foto_url:   document.getElementById('s-foto').value.trim(),
+    alamat:     document.getElementById('s-alamat').value.trim(),
+    gmaps_url:  document.getElementById('s-maps').value.trim(),
+    updated_at: new Date().toISOString()
+  };
+
+  let error = null;
+  try {
+    const res = await db.from('stasi').upsert(payload);
+    error = res.error;
+  } catch (err) {
+    error = err;
+  }
+
+  // Update in-memory and local storage backup
+  if (_stasiMap[id]) Object.assign(_stasiMap[id], payload);
+  try {
+    localStorage.setItem('saint_andrew_stasi_cache', JSON.stringify(_stasiMap));
+  } catch (e) {}
+
+  btn.disabled = false;
+  document.getElementById('btn-stasi-text').textContent = 'Simpan Perubahan Stasi';
+
+  closeModal('modal-stasi');
+  toast('Data & foto stasi berhasil diperbarui.');
+  loadStasiAdmin();
 }
 
 // ══════════════════════════════════════════
@@ -1144,7 +1863,11 @@ async function execDelete() {
   btn.disabled = true;
   btn.textContent = 'Menghapus…';
 
-  const { error } = await db.from(_deleteTable).delete().eq('id', _deleteId);
+  let error = null;
+  if (!String(_deleteId).startsWith('default-')) {
+    const res = await db.from(_deleteTable).delete().eq('id', _deleteId);
+    error = res.error;
+  }
 
   btn.disabled = false;
   btn.textContent = 'Hapus Sekarang';
@@ -1153,8 +1876,9 @@ async function execDelete() {
   if (error) { toast('Gagal menghapus: ' + error.message, 'error'); return; }
 
   toast('Data berhasil dihapus.');
-  if (_deleteCb === 'loadJadwal') loadJadwal();
+  if (_deleteCb === 'loadJadwal')     loadJadwal();
   if (_deleteCb === 'loadPengumuman') loadPengumuman();
+  if (_deleteCb === 'loadGaleri')     loadGaleri();
   loadCounters();
 }
 </script>

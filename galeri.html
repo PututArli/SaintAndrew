@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Galeri Paroki - Marga Agung</title>
-<meta name="description" content="Album foto dan dokumentasi kegiatan Gereja Katolik Paroki Santo Andreas Rasul Marga Agung.">
+<title>Galeri Kegiatan Paroki - Margo Agung</title>
+<meta name="description" content="Album foto dan dokumentasi kegiatan Gereja Katolik Paroki Santo Andreas Rasul Margo Agung.">
 <link rel="icon" href="assets/crossIcon.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="css/style.css">
@@ -22,136 +22,62 @@
   <!-- Page Hero -->
   <div class="page-hero">
     <div class="flex justify-center mb-4">
-      <div class="hero-badge">📸 Dokumentasi</div>
+      <div class="hero-badge">Dokumentasi Paroki</div>
     </div>
-    <div class="page-hero-title animate-fade-in">Galeri Paroki</div>
-    <p class="page-hero-subtitle animate-fade-in">Mengabadikan setiap momen dan perjalanan bertumbuh dalam iman umat Paroki Marga Agung</p>
+    <div class="page-hero-title animate-fade-in">Galeri Kegiatan Paroki</div>
+    <p class="page-hero-subtitle animate-fade-in">Mengabadikan momen kebersamaan, perayaan liturgi, dan karya pelayanan umat di Paroki Santo Andreas Rasul</p>
   </div>
 
   <div class="max-w-7xl mx-auto px-6 py-14">
 
     <!-- ── Filter ── -->
-    <div class="flex flex-wrap justify-center gap-3 mb-12 reveal">
+    <div class="flex flex-wrap justify-center gap-3 mb-12 reveal" id="gallery-filters">
       <button class="filter-btn active-filter px-5 py-2.5 rounded-full font-semibold text-sm shadow-md" data-filter="all">
         Semua Foto
       </button>
-      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="stasi">
-        ⛪ Stasi
-      </button>
       <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="omk">
-        🎉 Kegiatan OMK
+        OMK
+      </button>
+      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="liturgi">
+        Liturgi &amp; Misa
       </button>
       <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="perayaan">
-        ✝ Perayaan Besar
+        Perayaan Besar
+      </button>
+      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="sosial">
+        Sosial &amp; Lingkungan
       </button>
     </div>
 
     <!-- ── Gallery Grid ── -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 reveal" id="full-gallery">
-
-      <!-- Stasi -->
-      <div class="gallery-item" data-category="stasi">
-        <img src="assets/img/stasi/marga-agung.jpg" alt="Gereja Margo Agung">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Paroki</span>
-          <span class="gallery-sub">Margo Agung</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-category="stasi">
-        <img src="assets/img/stasi/marga-lestari.jpg" alt="Gereja Marga Lestari">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Marga Lestari</span>
-          <span class="gallery-sub">Santa Maria</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-category="stasi">
-        <img src="assets/img/stasi/rejomulyo.jpg" alt="Gereja Rejomulyo">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Rejomulyo</span>
-          <span class="gallery-sub">Tritunggal Mahakudus</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-category="stasi">
-        <img src="assets/img/stasi/sindang-sari.jpg" alt="Gereja Sindangsari">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Sindangsari</span>
-          <span class="gallery-sub">Santo Stefanus</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-category="stasi">
-        <img src="assets/img/stasi/jatimulyo.jpg" alt="Gereja Jatimulyo Perdana">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Jatimulyo</span>
-          <span class="gallery-sub">Santo Fransiskus Xaverius</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-category="stasi">
-        <img src="assets/img/stasi/way-galih.jpg" alt="Gereja Way Galih">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Way Galih</span>
-          <span class="gallery-sub">Santo Yohanes De Britto</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-category="stasi">
-        <img src="assets/img/stasi/sukadamai.jpg" alt="Gereja Sukadamai">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Sukadamai</span>
-          <span class="gallery-sub">Santo Yusuf</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-category="stasi">
-        <img src="assets/img/stasi/pendowo.jpg" alt="Gereja Pendowo">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Pendowo</span>
-          <span class="gallery-sub">Santo Aloysius</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-category="stasi">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='100%25' height='100%25' fill='%23f1f5f9'/%3E%3Cpath d='M250 400 L400 200 L550 400 Z' fill='%23e2e8f0' stroke='%23cbd5e1' stroke-width='4' stroke-linejoin='round'/%3E%3Crect x='360' y='300' width='80' height='100' fill='%23cbd5e1'/%3E%3Cpath d='M400 200 L400 150 M380 170 L420 170' stroke='%2394a3b8' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='400' cy='260' r='20' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4'/%3E%3Ctext x='400' y='460' font-family='sans-serif' font-size='24' font-weight='bold' fill='%2364748b' text-anchor='middle'%3EGereja Dalam Pembangunan%3C/text%3E%3Ctext x='400' y='490' font-family='sans-serif' font-size='16' fill='%2394a3b8' text-anchor='middle'%3EUmat rutin beribadah di rumah warga%3C/text%3E%3C/svg%3E" alt="Gereja Purwotani - Dalam Pembangunan">
-        <div class="gallery-overlay">
-          <span class="gallery-title">Gereja Purwotani</span>
-          <span class="gallery-sub">Santo Petrus · Dalam Pembangunan</span>
-        </div>
-      </div>
-
-      <!-- OMK -->
+      <!-- OMK Default Fallback -->
       <div class="gallery-item" data-category="omk">
-        <img src="assets/img/galeri/kegiatanOMK.png" alt="Kegiatan Bersama OMK">
+        <img src="assets/img/galeri/kegiatanOMK.png" alt="Ziarah & Rekreasi OMK 2025">
         <div class="gallery-badge" style="background:#0d9488">OMK</div>
         <div class="gallery-overlay">
-          <span class="gallery-title">Kegiatan OMK 2025</span>
-          <span class="gallery-sub">Ziarah &amp; Rekreasi</span>
+          <span class="gallery-title">Ziarah &amp; Rekreasi OMK 2025</span>
+          <span class="gallery-sub">Kebersamaan Kaum Muda Paroki</span>
         </div>
       </div>
-
-      <!--
-      ╔═══════════════════════════════════════════╗
-      ║  TAMBAHKAN FOTO BARU DI BAWAH INI        ║
-      ║  <div class="gallery-item" data-category="omk|stasi|perayaan">
-      ║    <img src="assets/img/galeri/namafile.jpg" alt="...">
-      ║    <div class="gallery-overlay">
-      ║      <span class="gallery-title">Judul</span>
-      ║      <span class="gallery-sub">Sub</span>
-      ║    </div>
-      ║  </div>
-      ╚═══════════════════════════════════════════╝
-      -->
-
     </div>
 
     <!-- Empty message -->
-    <div id="empty-msg" class="hidden text-center py-24 text-gray-400 reveal">
-      <div class="text-6xl mb-4">📷</div>
-      <p class="font-bold text-xl">Belum ada foto dalam kategori ini</p>
-      <p class="text-sm mt-2">Foto akan segera ditambahkan</p>
+    <div id="empty-msg" class="hidden text-center py-20 text-gray-400 reveal">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center" style="background:var(--bg-alt);color:var(--ink-soft)">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+      </div>
+      <p class="font-bold text-lg" style="color:var(--ink)">Belum ada foto dalam kategori ini</p>
+      <p class="text-sm mt-1 text-gray-500">Dokumentasi kegiatan akan segera ditambahkan oleh pengurus.</p>
+    </div>
+
+    <!-- Banner ke Halaman Stasi -->
+    <div class="mt-16 p-8 rounded-3xl text-center reveal" style="background:var(--bg-alt);border:1px solid var(--border)">
+      <h3 class="text-xl font-bold mb-2" style="color:var(--ink)">Mencari Foto &amp; Profil Gedung 9 Stasi?</h3>
+      <p class="text-sm text-gray-500 mb-6 max-w-xl mx-auto">Dokumentasi fisik bangunan gereja, sejarah, nama pelindung, dan peta navigasi stasi tersedia di halaman khusus Stasi.</p>
+      <a href="stasi.html" class="btn-primary inline-flex items-center gap-2 text-sm py-3 px-6 shadow-sm">
+        Lihat Profil &amp; Foto 9 Stasi →
+      </a>
     </div>
 
   </div>
@@ -159,8 +85,52 @@
 
 <modern-footer></modern-footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>
 <script src="js/script.js"></script>
+<script>
+// Dynamic Gallery Loader from Supabase
+const KAT_STYLE_MAP = {
+  'omk':      { label: 'OMK', bg: '#0d9488' },
+  'liturgi':  { label: 'Liturgi & Misa', bg: '#7c3aed' },
+  'perayaan': { label: 'Perayaan Besar', bg: '#d97706' },
+  'sosial':   { label: 'Sosial & Lingkungan', bg: '#2563eb' }
+};
+
+async function loadDynamicGaleri() {
+  if (typeof db === 'undefined') return;
+  try {
+    const { data, error } = await db.from('galeri').select('*').order('urutan').order('tanggal', { ascending: false });
+    if (!error && data && data.length > 0) {
+      const container = document.getElementById('full-gallery');
+      if (!container) return;
+
+      container.innerHTML = data.map(item => {
+        const kat = KAT_STYLE_MAP[item.kategori] || { label: item.kategori || 'Kegiatan', bg: 'var(--gold)' };
+        const sub = item.keterangan || (item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '');
+        return `
+          <div class="gallery-item" data-category="${item.kategori || 'omk'}">
+            <img src="${item.foto_url}" alt="${item.judul}" onerror="this.src='assets/img/galeri/kegiatanOMK.png'">
+            <div class="gallery-badge" style="background:${kat.bg}">${kat.label}</div>
+            <div class="gallery-overlay">
+              <span class="gallery-title">${item.judul}</span>
+              ${sub ? `<span class="gallery-sub">${sub}</span>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (typeof setupGalleryClicks === 'function') setupGalleryClicks();
+      if (typeof setupFilters === 'function') setupFilters();
+    }
+  } catch (e) {
+    console.warn('Galeri dynamic load fallback to static content:', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadDynamicGaleri);
+</script>
 </body>
 </html>

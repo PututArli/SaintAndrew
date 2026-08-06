@@ -46,7 +46,7 @@
                 <th>Keterangan</th>
               </tr>
             </thead>
-            <tbody id="jadwalPusatBody">
+            <tbody id="jadwalParokiBody">
               <tr>
                 <td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">
                   Memuat jadwal…
@@ -126,7 +126,7 @@
 <script>
 // ── Load Jadwal from Supabase ──────────────────────
 const STASI_INFO = {
-  'pusat':        { label: 'Margo Agung',         sub: 'Santo Andreas Rasul' },
+  'margo-agung':  { label: 'Margo Agung',         sub: 'Santo Andreas Rasul' },
   'marga-lestari':{ label: 'Marga Lestari',       sub: 'Santa Maria' },
   'rejomulyo':    { label: 'Rejomulyo',            sub: 'Tritunggal Mahakudus' },
   'sukadamai':    { label: 'Sukadamai',            sub: 'Santo Yusuf' },
@@ -143,23 +143,26 @@ function escapeHtml(str) {
 }
 
 (async () => {
-  const pusatEl = document.getElementById('jadwalPusatBody');
-  const stasiEl = document.getElementById('stasiJadwalGrid');
+  const parokiEl = document.getElementById('jadwalParokiBody');
+  const stasiEl  = document.getElementById('stasiJadwalGrid');
   try {
     const { data, error } = await db.from('jadwal_misa').select('*').order('urutan').order('created_at');
     if (error) throw error;
 
     if (!data || data.length === 0) {
-      if (pusatEl) pusatEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal gereja paroki.</td></tr>';
+      if (parokiEl) parokiEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal gereja paroki.</td></tr>';
       if (stasiEl) stasiEl.innerHTML = '<div class="info-card" style="text-align:center;grid-column:1/-1;padding:2rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal stasi.</div>';
       return;
     }
 
+    // Helper untuk mendeteksi gereja paroki (margo-agung / marga-agung)
+    const isGerejaParoki = (stasi) => ['margo-agung', 'marga-agung'].includes((stasi || '').toLowerCase());
+
     // Update tabel jadwal gereja paroki
-    const pusatRows = data.filter(r => (r.stasi || '').toLowerCase() === 'pusat');
-    if (pusatEl) {
-      if (pusatRows.length > 0) {
-        pusatEl.innerHTML = pusatRows.map(r => `
+    const parokiRows = data.filter(r => isGerejaParoki(r.stasi));
+    if (parokiEl) {
+      if (parokiRows.length > 0) {
+        parokiEl.innerHTML = parokiRows.map(r => `
           <tr>
             <td class="font-medium" style="color:var(--ink)">${escapeHtml(r.hari)}</td>
             <td><span class="font-bold" style="color:var(--ink)">${escapeHtml(r.waktu)}</span></td>
@@ -167,12 +170,12 @@ function escapeHtml(str) {
           </tr>
         `).join('');
       } else {
-        pusatEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal misa gereja paroki.</td></tr>';
+        parokiEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal misa gereja paroki.</td></tr>';
       }
     }
 
-    // Update kartu jadwal stasi (semua stasi selain pusat)
-    const stasiRows = data.filter(r => (r.stasi || '').toLowerCase() !== 'pusat');
+    // Update kartu jadwal stasi
+    const stasiRows = data.filter(r => !isGerejaParoki(r.stasi));
     const stasiList = [...new Set(stasiRows.map(r => r.stasi))];
     
     if (stasiEl) {
@@ -206,7 +209,7 @@ function escapeHtml(str) {
       }
     }
   } catch(e) {
-    if (pusatEl) pusatEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Gagal memuat jadwal.</td></tr>';
+    if (parokiEl) parokiEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Gagal memuat jadwal.</td></tr>';
     if (stasiEl) stasiEl.innerHTML = '<div class="info-card" style="text-align:center;grid-column:1/-1;padding:2rem;color:var(--ink-soft);font-size:0.85rem">Gagal memuat jadwal stasi.</div>';
   }
 })();
