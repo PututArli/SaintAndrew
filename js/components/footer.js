@@ -91,48 +91,43 @@ class ModernFooter extends HTMLElement {
         </footer>
 
         <!-- ═══════════════════════════════════════════
-             MODAL PORTAL KHUSUS ADMIN (HIGH SECURITY)
+             MODAL MASUK ADMIN (CLEAN & DIGNIFIED)
         ═══════════════════════════════════════════ -->
-        <div id="secretAdminModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4" style="background:rgba(15,15,18,0.85);backdrop-filter:blur(12px)">
-            <div class="relative w-full max-w-md rounded-3xl p-8 shadow-2xl text-left" style="background:rgba(28,28,32,0.95);border:1px solid rgba(184,134,11,0.25);box-shadow:0 25px 60px rgba(0,0,0,0.5)">
+        <div id="secretAdminModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(6px)">
+            <div class="relative w-full max-w-[380px] rounded-2xl p-7 text-left shadow-xl" style="background:#FFFFFF;border:1px solid rgba(0,0,0,0.08)">
                 <!-- Close Button -->
-                <button id="closeSecretModal" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-gray-400 hover:text-white transition-colors" style="background:rgba(255,255,255,0.06);border:none;cursor:pointer">✕</button>
+                <button id="closeSecretModal" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-sm text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors" style="background:transparent;border:none;cursor:pointer">✕</button>
 
                 <!-- Header -->
                 <div class="flex items-center gap-3 mb-6">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl text-white shadow-lg" style="background:linear-gradient(135deg,#B8860B,#D4A017);box-shadow:0 6px 20px rgba(184,134,11,0.4)">🔐</div>
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-base text-white" style="background:#1C1C1E">✝</div>
                     <div>
-                        <div class="text-[10px] font-bold uppercase tracking-widest text-[#D4A017]">Portal Keamanan</div>
-                        <h3 class="text-lg font-bold text-white tracking-tight">Otentikasi Pengurus Paroki</h3>
+                        <h3 class="text-base font-bold text-gray-900 leading-tight">Masuk Admin</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">Paroki Marga Agung</p>
                     </div>
                 </div>
 
-                <div id="secretErrorBox" class="hidden mb-4 p-3 rounded-xl text-xs font-medium bg-red-950/60 border border-red-800/80 text-red-300 items-center gap-2">
+                <div id="secretErrorBox" class="hidden mb-4 p-3 rounded-xl text-xs bg-red-50 border border-red-200 text-red-700 items-center gap-2">
                     <span>⚠️</span>
-                    <span id="secretErrorMsg">Akses ditolak: Kredensial tidak valid.</span>
+                    <span id="secretErrorMsg">Email atau kata sandi salah.</span>
                 </div>
 
                 <!-- Form -->
                 <form id="secretLoginForm" class="space-y-4" autocomplete="off">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1.5">ID / Email Admin</label>
-                        <input id="secretEmail" type="email" required placeholder="admin@paroki.com" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-white placeholder-gray-500 outline-none transition-all" style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12)">
+                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email</label>
+                        <input id="secretEmail" type="email" required placeholder="admin@paroki.com" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" style="background:#F9F9F8;border:1.5px solid #E5E5E3">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1.5">Kunci Akses (Password)</label>
-                        <input id="secretPassword" type="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-white placeholder-gray-500 outline-none transition-all" style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12)">
+                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Kata Sandi</label>
+                        <input id="secretPassword" type="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" style="background:#F9F9F8;border:1.5px solid #E5E5E3">
                     </div>
 
-                    <button id="secretSubmitBtn" type="submit" class="w-full py-3 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 mt-2 cursor-pointer transition-all duration-200" style="background:linear-gradient(135deg,#B8860B,#D4A017);box-shadow:0 6px 20px rgba(184,134,11,0.35);border:none">
-                        <span id="secretBtnIcon">🔑</span>
-                        <span id="secretBtnText">Verifikasi &amp; Masuk Dashboard</span>
+                    <button id="secretSubmitBtn" type="submit" class="w-full py-2.5 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2 mt-2 cursor-pointer transition-all duration-150" style="background:#1C1C1E;border:none">
+                        <span id="secretBtnText">Masuk</span>
                     </button>
                 </form>
-
-                <div class="mt-4 pt-4 text-center border-t border-white/10 text-[11px] text-gray-400">
-                    Sistem terlindungi Enkripsi TLS &amp; Supabase RLS.
-                </div>
             </div>
         </div>
         `;
@@ -149,7 +144,6 @@ class ModernFooter extends HTMLElement {
         const errMsg = document.getElementById('secretErrorMsg');
         const btn = document.getElementById('secretSubmitBtn');
         const btnText = document.getElementById('secretBtnText');
-        const btnIcon = document.getElementById('secretBtnIcon');
 
         const openPortal = () => {
             modal.classList.remove('hidden');
@@ -188,8 +182,14 @@ class ModernFooter extends HTMLElement {
         ['secretEmail', 'secretPassword'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
-                el.addEventListener('focus', () => el.style.borderColor = '#D4A017');
-                el.addEventListener('blur', () => el.style.borderColor = 'rgba(255,255,255,0.12)');
+                el.addEventListener('focus', () => {
+                    el.style.borderColor = '#1C1C1E';
+                    el.style.background = '#FFFFFF';
+                });
+                el.addEventListener('blur', () => {
+                    el.style.borderColor = '#E5E5E3';
+                    el.style.background = '#F9F9F8';
+                });
             }
         });
 
@@ -203,11 +203,9 @@ class ModernFooter extends HTMLElement {
                 errBox.classList.add('hidden');
                 errBox.classList.remove('flex');
                 btn.disabled = true;
-                btnText.textContent = 'Memverifikasi Otentikasi…';
-                btnIcon.textContent = '⏳';
+                btnText.textContent = 'Memverifikasi...';
 
                 try {
-                    // Pastikan Supabase client siap
                     let client = window.db;
                     if (!client) {
                         if (!window.supabase) {
@@ -228,29 +226,26 @@ class ModernFooter extends HTMLElement {
                     const { data, error } = await client.auth.signInWithPassword({ email, password });
 
                     if (error) {
-                        errMsg.textContent = 'Akses ditolak: Kredensial akun admin tidak sesuai.';
+                        errMsg.textContent = 'Email atau kata sandi salah.';
                         errBox.classList.remove('hidden');
                         errBox.classList.add('flex');
                         btn.disabled = false;
-                        btnText.textContent = 'Verifikasi & Masuk Dashboard';
-                        btnIcon.textContent = '🔑';
+                        btnText.textContent = 'Masuk';
                         return;
                     }
 
-                    btnText.textContent = 'Otentikasi Berhasil! Mengalihkan…';
-                    btnIcon.textContent = '✅';
+                    btnText.textContent = 'Berhasil! Mengalihkan...';
 
                     setTimeout(() => {
                         window.location.href = 'admin/dashboard.html';
                     }, 400);
 
                 } catch (err) {
-                    errMsg.textContent = err.message || 'Gagal memproses otentikasi.';
+                    errMsg.textContent = err.message || 'Terjadi kesalahan saat masuk.';
                     errBox.classList.remove('hidden');
                     errBox.classList.add('flex');
                     btn.disabled = false;
-                    btnText.textContent = 'Verifikasi & Masuk Dashboard';
-                    btnIcon.textContent = '🔑';
+                    btnText.textContent = 'Masuk';
                 }
             });
         }
