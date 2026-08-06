@@ -112,25 +112,10 @@
               Pengumuman Paroki
             </h3>
             <div id="pengumumanList" class="space-y-4">
-
-              <div class="announcement-card">
-                <span class="announcement-date">5 April 2026</span>
-                <h4 class="font-bold text-base mt-1" style="color:var(--ink)">Pendaftaran Komuni Pertama</h4>
-                <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--ink-soft)">Pendaftaran penerimaan Sakramen Komuni Pertama telah dibuka. Formulir dapat diambil di ketua lingkungan masing-masing.</p>
+              <div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">
+                <div style="font-size:1.5rem;margin-bottom:0.5rem">⏳</div>
+                Memuat pengumuman…
               </div>
-
-              <div class="announcement-card">
-                <span class="announcement-date">12 April 2026</span>
-                <h4 class="font-bold text-base mt-1" style="color:var(--ink)">Kerja Bakti Paskah</h4>
-                <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--ink-soft)">Seluruh umat diundang untuk mengikuti kerja bakti membersihkan area gereja pusat menjelang perayaan Paskah.</p>
-              </div>
-
-              <div class="announcement-card">
-                <span class="announcement-date">20 April 2026</span>
-                <h4 class="font-bold text-base mt-1" style="color:var(--ink)">Perayaan Paskah 2026</h4>
-                <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--ink-soft)">Misa Malam Paskah akan dimulai pukul 20:00 WIB. Pastikan hadir tepat waktu untuk prosesi cahaya lilin.</p>
-              </div>
-
             </div>
           </div>
         </div>
@@ -366,12 +351,13 @@
 // ── Load Pengumuman from Supabase ──────────────────
 const KAT_ICON = {
   'sakramen':    '🕊️',
-  'misa-khusus': '✠️',
+  'misa-khusus': '✝️',
   'kegiatan':    '🌟',
   'umum':        '📌'
 };
 
 (async () => {
+  const listEl = document.getElementById('pengumumanList');
   try {
     const { data, error } = await db
       .from('pengumuman')
@@ -380,9 +366,18 @@ const KAT_ICON = {
       .order('tanggal', { ascending: false })
       .limit(5);
 
-    if (error || !data || data.length === 0) return; // pakai data statis
+    if (error) throw error;
 
-    document.getElementById('pengumumanList').innerHTML = data.map(p => {
+    if (!data || data.length === 0) {
+      listEl.innerHTML = `
+        <div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">📋</div>
+          Belum ada pengumuman terbaru.
+        </div>`;
+      return;
+    }
+
+    listEl.innerHTML = data.map(p => {
       const tgl = new Date(p.tanggal).toLocaleDateString('id-ID', {
         day: 'numeric', month: 'long', year: 'numeric'
       });
@@ -395,8 +390,11 @@ const KAT_ICON = {
         </div>`;
     }).join('');
   } catch(e) {
-    // Supabase tidak tersedia — tampilkan data statis
-    console.log('Supabase unavailable, using static announcements.');
+    listEl.innerHTML = `
+      <div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">⚠️</div>
+        Gagal memuat pengumuman.
+      </div>`;
   }
 })();
 </script>
