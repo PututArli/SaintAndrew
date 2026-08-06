@@ -6,20 +6,25 @@
 <title>Dashboard Admin — Paroki Marga Agung</title>
 <link rel="icon" href="../assets/crossIcon.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
   :root {
     --gold:       #B8860B;
-    --gold-light: #D4A017;
-    --gold-muted: rgba(184,134,11,0.10);
-    --ink:        #111111;
-    --ink-soft:   #444444;
+    --gold-lt:    #D4A017;
+    --gold-pale:  rgba(184,134,11,0.10);
+    --ink:        #111;
+    --ink-mid:    #444;
+    --ink-soft:   #888;
     --bg:         #F5F3EF;
     --bg-alt:     #EDEAE4;
     --surface:    #FFFFFF;
     --border:     rgba(0,0,0,0.08);
-    --sidebar-w:  240px;
+    --danger:     #DC2626;
+    --danger-bg:  #FEF2F2;
+    --success:    #059669;
+    --success-bg: #ECFDF5;
+    --sw: 256px;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,427 +33,479 @@
     font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--ink);
-    min-height: 100vh;
     display: flex;
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── Sidebar ── */
+  /* ═══ SIDEBAR ═══ */
   .sidebar {
-    width: var(--sidebar-w);
+    width: var(--sw);
     flex-shrink: 0;
-    background: #1C1C1E;
+    background: #101012;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     position: fixed;
     top: 0; left: 0; bottom: 0;
-    z-index: 100;
-    transition: transform 0.3s ease;
-  }
-
-  .sidebar-logo {
-    padding: 1.5rem 1.25rem 1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-  }
-
-  .sidebar-logo .cross {
-    width: 40px; height: 40px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
-    color: white;
-    margin-bottom: 0.75rem;
-    box-shadow: 0 4px 12px rgba(184,134,11,0.35);
-  }
-
-  .sidebar-logo h2 {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.9);
-    line-height: 1.3;
-  }
-  .sidebar-logo p {
-    font-size: 0.68rem;
-    color: rgba(255,255,255,0.35);
-    margin-top: 2px;
-  }
-
-  .sidebar-nav {
-    flex: 1;
-    padding: 1rem 0.75rem;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    z-index: 200;
+    border-right: 1px solid rgba(255,255,255,0.05);
   }
 
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.65rem 0.85rem;
+  .sidebar-brand {
+    padding: 1.75rem 1.25rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .sidebar-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; color: white;
+    margin-bottom: 0.9rem;
+    box-shadow: 0 6px 20px rgba(184,134,11,0.4);
+  }
+  .sidebar-brand h2 {
+    font-size: 0.88rem; font-weight: 800;
+    color: rgba(255,255,255,0.92);
+    letter-spacing: -0.01em; line-height: 1.3;
+  }
+  .sidebar-brand p { font-size: 0.7rem; color: rgba(255,255,255,0.3); margin-top: 2px; }
+
+  .sidebar-section-label {
+    font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.25);
+    padding: 1.1rem 1.25rem 0.4rem;
+  }
+
+  .nav-btn {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.65rem 1rem; margin: 0 0.5rem;
     border-radius: 10px;
-    color: rgba(255,255,255,0.55);
-    font-size: 0.825rem;
-    font-weight: 500;
-    cursor: pointer;
+    font-size: 0.82rem; font-weight: 500;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer; border: none; background: none;
+    width: calc(100% - 1rem); text-align: left;
     transition: all 0.15s;
     text-decoration: none;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
   }
-  .nav-item:hover { color: #fff; background: rgba(255,255,255,0.08); }
-  .nav-item.active { color: #fff; background: var(--gold-muted); border: 1px solid rgba(184,134,11,0.2); color: #D4A017; }
-  .nav-item .nav-icon { font-size: 1rem; width: 1.25rem; text-align: center; }
+  .nav-btn:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.07); }
+  .nav-btn.active {
+    color: var(--gold-lt);
+    background: rgba(184,134,11,0.15);
+    border: 1px solid rgba(184,134,11,0.25);
+  }
+  .nav-btn .ni { width: 20px; text-align: center; font-size: 1rem; }
+  .nav-count {
+    margin-left: auto; min-width: 20px; height: 20px;
+    background: var(--gold-pale);
+    color: var(--gold); font-size: 0.65rem; font-weight: 700;
+    border-radius: 999px; display: flex; align-items: center; justify-content: center;
+    padding: 0 5px;
+  }
 
+  .sidebar-nav { flex: 1; padding: 0.5rem 0; }
   .sidebar-footer {
-    padding: 1rem 0.75rem;
-    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 0.75rem 0.5rem 1rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
   }
 
-  /* ── Main Content ── */
-  .main-content {
-    margin-left: var(--sidebar-w);
-    flex: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  /* ═══ MAIN ═══ */
+  .main {
+    margin-left: var(--sw);
+    flex: 1; min-height: 100vh;
+    display: flex; flex-direction: column;
   }
 
   .topbar {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 1rem 1.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+    padding: 0.9rem 1.75rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
   }
 
-  .topbar-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--ink);
+  .page-crumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.82rem; color: var(--ink-soft);
   }
+  .page-crumb strong { color: var(--ink); font-weight: 700; }
 
-  .admin-badge {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--gold-muted);
-    border: 1px solid rgba(184,134,11,0.2);
-    color: var(--gold);
-    padding: 0.35rem 0.85rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
+  .admin-chip {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: #101012; color: rgba(255,255,255,0.7);
+    padding: 0.4rem 0.9rem; border-radius: 999px;
+    font-size: 0.75rem; font-weight: 600;
+  }
+  .admin-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #22C55E;
+    box-shadow: 0 0 6px #22C55E;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
   }
 
   .page-body { padding: 1.75rem; flex: 1; }
 
-  /* ── Cards ── */
+  /* ═══ STATS ROW ═══ */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+    gap: 1rem; margin-bottom: 1.75rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.25rem;
+    display: flex; align-items: center; gap: 1rem;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+  }
+  .stat-icon {
+    width: 46px; height: 46px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+    background: var(--gold-pale);
+  }
+  .stat-val { font-size: 1.6rem; font-weight: 900; color: var(--ink); line-height: 1; }
+  .stat-lbl { font-size: 0.72rem; color: var(--ink-soft); margin-top: 3px; }
+
+  /* ═══ CARD ═══ */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.25rem;
-    padding-bottom: 1rem;
+  .card-head {
+    padding: 1.25rem 1.5rem;
     border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.75rem;
   }
+  .card-head-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; background: var(--gold-pale);
+  }
+  .card-head-title {
+    flex: 1;
+    font-size: 0.95rem; font-weight: 700; color: var(--ink);
+  }
+  .card-head-sub { font-size: 0.72rem; color: var(--ink-soft); margin-top: 1px; }
+  .card-body { padding: 0; }
 
-  .card-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  /* ── Buttons ── */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 0.8rem;
-    padding: 0.55rem 1.1rem;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    text-decoration: none;
-  }
-  .btn-gold {
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    color: white;
-    box-shadow: 0 3px 12px rgba(184,134,11,0.3);
-  }
-  .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(184,134,11,0.4); }
-  .btn-outline {
-    background: transparent;
-    color: var(--ink-soft);
-    border: 1.5px solid var(--border);
-  }
-  .btn-outline:hover { background: var(--bg-alt); color: var(--ink); }
-  .btn-red {
-    background: #FEF2F2;
-    color: #DC2626;
-    border: 1px solid #FECACA;
-  }
-  .btn-red:hover { background: #DC2626; color: white; }
-  .btn-sm { padding: 0.4rem 0.75rem; font-size: 0.75rem; border-radius: 8px; }
-
-  /* ── Table ── */
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.82rem;
-  }
+  /* ═══ TABLE ═══ */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
   .data-table th {
-    background: var(--bg-alt);
+    padding: 0.75rem 1rem; text-align: left;
+    background: var(--bg-alt); font-size: 0.7rem;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
     color: var(--ink-soft);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.75rem 1rem;
-    text-align: left;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
   }
-  .data-table th:first-child { border-radius: 8px 0 0 0; }
-  .data-table th:last-child  { border-radius: 0 8px 0 0; }
   .data-table td {
-    padding: 0.875rem 1rem;
-    border-bottom: 1px solid var(--border);
-    color: var(--ink-soft);
-    vertical-align: middle;
+    padding: 0.9rem 1rem; border-bottom: 1px solid var(--border);
+    color: var(--ink-mid); vertical-align: middle;
   }
   .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr:hover td { background: var(--bg-alt); }
+  .data-table tbody tr { transition: background 0.1s; }
+  .data-table tbody tr:hover td { background: #FAFAF7; }
 
-  /* ── Form ── */
-  .form-group { margin-bottom: 1rem; }
-  .form-label {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.4rem;
+  /* ═══ EMPTY / LOADING ═══ */
+  .empty-state {
+    text-align: center; padding: 4rem 1rem;
   }
-  .form-control {
-    width: 100%;
-    padding: 0.7rem 0.9rem;
+  .empty-state .es-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .empty-state p { font-size: 0.85rem; color: var(--ink-soft); }
+
+  /* ═══ BADGES ═══ */
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.25rem 0.65rem; border-radius: 999px;
+    font-size: 0.7rem; font-weight: 700;
+  }
+  .badge-green { background: var(--success-bg); color: var(--success); }
+  .badge-red   { background: var(--danger-bg);  color: var(--danger); }
+  .badge-gold  { background: var(--gold-pale);   color: var(--gold); }
+  .badge-gray  { background: var(--bg-alt);      color: var(--ink-soft); }
+
+  /* ═══ BUTTONS ═══ */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.8rem;
+    padding: 0.55rem 1.1rem; border-radius: 10px;
+    border: none; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    text-decoration: none;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+    color: white; box-shadow: 0 3px 12px rgba(184,134,11,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 20px rgba(184,134,11,0.4); transform: translateY(-1px); }
+  .btn-ghost {
+    background: var(--bg-alt); color: var(--ink-mid);
     border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
-    color: var(--ink);
-    background: var(--surface);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .btn-ghost:hover { background: var(--bg); color: var(--ink); }
+  .btn-edit {
+    background: rgba(79,70,229,0.08); color: #4F46E5;
+    border: 1px solid rgba(79,70,229,0.2);
+  }
+  .btn-edit:hover { background: #4F46E5; color: white; }
+  .btn-delete {
+    background: var(--danger-bg); color: var(--danger);
+    border: 1px solid rgba(220,38,38,0.2);
+  }
+  .btn-delete:hover { background: var(--danger); color: white; }
+  .btn-toggle-on  { background: var(--success-bg); color: var(--success); border: 1px solid rgba(5,150,105,0.2); }
+  .btn-toggle-on:hover  { background: var(--success); color: white; }
+  .btn-toggle-off { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220,38,38,0.2); }
+  .btn-toggle-off:hover { background: var(--danger); color: white; }
+  .btn-sm { padding: 0.38rem 0.75rem; font-size: 0.74rem; border-radius: 8px; }
+
+  /* ═══ FILTER BAR ═══ */
+  .filter-bar {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+    background: var(--bg-alt);
+  }
+  .filter-label { font-size: 0.75rem; font-weight: 600; color: var(--ink-soft); }
+  .filter-select {
+    padding: 0.45rem 0.85rem;
+    border: 1.5px solid var(--border); border-radius: 9px;
+    font-family: 'Inter', sans-serif; font-size: 0.8rem;
+    color: var(--ink); background: var(--surface);
+    cursor: pointer; outline: none; transition: border-color 0.15s;
     appearance: none;
   }
-  .form-control:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(184,134,11,0.12);
-  }
-  textarea.form-control { resize: vertical; min-height: 80px; }
-  select.form-control { cursor: pointer; }
+  .filter-select:focus { border-color: var(--gold); }
 
-  /* ── Modal ── */
+  /* ═══ MODAL ═══ */
   .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(28,28,30,0.75);
-    backdrop-filter: blur(8px);
-    z-index: 200;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(16,16,18,0.7); backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center; padding: 1rem;
   }
   .modal-overlay.open { display: flex; }
 
   .modal-box {
-    background: var(--surface);
-    border-radius: 20px;
-    padding: 1.75rem;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.2);
-    animation: slideUp 0.2s ease;
+    background: var(--surface); border-radius: 24px;
+    width: 100%; max-width: 520px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+    animation: modalIn 0.2s ease;
+    max-height: 90vh; overflow-y: auto;
   }
-  @keyframes slideUp {
-    from { transform: translateY(16px); opacity: 0; }
-    to   { transform: translateY(0); opacity: 1; }
+  @keyframes modalIn {
+    from { transform: translateY(20px) scale(0.97); opacity: 0; }
+    to   { transform: translateY(0) scale(1); opacity: 1; }
   }
-
-  .modal-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
+  .modal-head {
+    padding: 1.5rem 1.75rem 1.25rem;
     border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; background: var(--surface);
+    border-radius: 24px 24px 0 0;
+  }
+  .modal-head-title {
+    font-size: 1rem; font-weight: 800; color: var(--ink);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .modal-close {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--bg-alt); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; color: var(--ink-soft); transition: all 0.15s;
+  }
+  .modal-close:hover { background: var(--danger-bg); color: var(--danger); }
+  .modal-body { padding: 1.5rem 1.75rem; }
+  .modal-foot {
+    padding: 1.25rem 1.75rem;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem;
+    position: sticky; bottom: 0; background: var(--surface);
+    border-radius: 0 0 24px 24px;
   }
 
-  /* ── Tab ── */
-  .tabs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 0;
+  /* ═══ FORM ═══ */
+  .form-row { display: grid; gap: 1rem; margin-bottom: 1rem; }
+  .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label {
+    font-size: 0.75rem; font-weight: 700; color: var(--ink);
+    display: flex; align-items: center; gap: 0.35rem;
   }
-  .tab-btn {
-    padding: 0.6rem 1.1rem;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--ink-soft);
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
-    cursor: pointer;
-    transition: all 0.15s;
-    border-radius: 8px 8px 0 0;
+  .form-label .req { color: var(--danger); }
+  .form-hint { font-size: 0.68rem; color: var(--ink-soft); }
+  .form-ctrl {
+    padding: 0.7rem 0.9rem;
+    border: 1.5px solid var(--border); border-radius: 11px;
+    font-family: 'Inter', sans-serif; font-size: 0.84rem;
+    color: var(--ink); background: var(--surface);
+    outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    appearance: none; width: 100%;
   }
-  .tab-btn:hover { color: var(--ink); background: var(--bg-alt); }
-  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
-
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
-  /* ── Status badge ── */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.2rem 0.6rem;
-    border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 700;
+  .form-ctrl:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,134,11,0.1); }
+  textarea.form-ctrl { resize: vertical; min-height: 90px; }
+  select.form-ctrl { cursor: pointer; }
+  .form-check {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.75rem 0.9rem; border-radius: 11px;
+    border: 1.5px solid var(--border); background: var(--bg-alt);
+    cursor: pointer; transition: all 0.15s;
   }
-  .badge-aktif { background: #D1FAE5; color: #065F46; }
-  .badge-nonaktif { background: #FEE2E2; color: #991B1B; }
-  .badge-cat { background: var(--gold-muted); color: var(--gold); }
+  .form-check:hover { border-color: var(--gold); }
+  .form-check input { width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer; }
+  .form-check label { font-size: 0.83rem; font-weight: 600; color: var(--ink); cursor: pointer; }
+  .form-check .fc-sub { font-size: 0.72rem; color: var(--ink-soft); }
 
-  /* ── Loading/Empty ── */
-  .state-box {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--ink-soft);
+  /* ═══ SECTION DIVIDER ═══ */
+  .form-section {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--ink-soft);
+    padding: 0.5rem 0 0.75rem;
+    border-top: 1px dashed var(--border); margin-top: 0.5rem;
   }
-  .state-box .state-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-  .state-box p { font-size: 0.875rem; }
 
-  /* ── Toast ── */
+  /* ═══ ALERT ═══ */
+  .alert {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.85rem 1rem; border-radius: 12px;
+    font-size: 0.8rem; font-weight: 500; margin-bottom: 1rem;
+  }
+  .alert-err { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220,38,38,0.25); }
+  .alert-ok  { background: var(--success-bg); color: var(--success); border: 1px solid rgba(5,150,105,0.25); }
+
+  /* ═══ TOAST ═══ */
   #toast {
-    position: fixed;
-    bottom: 1.5rem; right: 1.5rem;
-    background: #111;
-    color: white;
-    padding: 0.75rem 1.25rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    z-index: 9999;
-    transform: translateY(80px);
-    opacity: 0;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    max-width: 300px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    position: fixed; bottom: 1.5rem; right: 1.5rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.85rem 1.25rem; border-radius: 14px;
+    font-size: 0.83rem; font-weight: 600;
+    color: white; z-index: 99999;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2); max-width: 320px;
   }
   #toast.show { transform: translateY(0); opacity: 1; }
-  #toast.success { background: #065F46; }
-  #toast.error   { background: #991B1B; }
+  #toast.success { background: #101012; border: 1px solid #22C55E; }
+  #toast.error   { background: #101012; border: 1px solid var(--danger); }
 
+  /* ═══ DELETE CONFIRM ═══ */
+  .confirm-box {
+    text-align: center; padding: 0.5rem 0 1rem;
+  }
+  .confirm-box .cb-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+  .confirm-box h3 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 0.5rem; }
+  .confirm-box p { font-size: 0.85rem; color: var(--ink-soft); max-width: 320px; margin: 0 auto; line-height: 1.5; }
+
+  /* ═══ RESPONSIVE ═══ */
   @media (max-width: 768px) {
     .sidebar { transform: translateX(-100%); }
     .sidebar.open { transform: translateX(0); }
-    .main-content { margin-left: 0; }
+    .main { margin-left: 0; }
+    .form-row.cols-2 { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<!-- Sidebar -->
+<!-- ═══ SIDEBAR ═══ -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <div class="cross">✝</div>
-    <h2>Admin Panel</h2>
-    <p>Paroki Marga Agung</p>
+  <div class="sidebar-brand">
+    <div class="sidebar-icon">✝</div>
+    <h2>Dashboard Admin</h2>
+    <p>Paroki Santo Andreas Rasul</p>
   </div>
 
   <nav class="sidebar-nav">
-    <button class="nav-item active" data-tab="jadwal" onclick="switchTab('jadwal', this)">
-      <span class="nav-icon">📅</span> Jadwal Misa
+    <div class="sidebar-section-label">Konten Website</div>
+    <button class="nav-btn active" id="nav-jadwal" onclick="showTab('jadwal', this)">
+      <span class="ni">📅</span> Jadwal Misa
+      <span class="nav-count" id="count-jadwal">—</span>
     </button>
-    <button class="nav-item" data-tab="pengumuman" onclick="switchTab('pengumuman', this)">
-      <span class="nav-icon">📢</span> Pengumuman
+    <button class="nav-btn" id="nav-pengumuman" onclick="showTab('pengumuman', this)">
+      <span class="ni">📢</span> Pengumuman
+      <span class="nav-count" id="count-pengumuman">—</span>
     </button>
   </nav>
 
   <div class="sidebar-footer">
-    <button class="nav-item w-full" onclick="handleLogout()" style="color:rgba(255,100,100,0.8)">
-      <span class="nav-icon">🚪</span> Logout
-    </button>
-    <a href="../index.html" class="nav-item mt-1" style="font-size:0.75rem">
-      <span class="nav-icon">🌐</span> Lihat Website
+    <a href="../index.html" class="nav-btn" style="font-size:0.76rem">
+      <span class="ni">🌐</span> Lihat Website
     </a>
+    <button class="nav-btn" onclick="doLogout()" style="color:rgba(255,100,100,0.8)">
+      <span class="ni">🚪</span> Keluar / Logout
+    </button>
   </div>
 </aside>
 
-<!-- Main -->
-<div class="main-content">
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="main">
 
   <!-- Topbar -->
   <header class="topbar">
-    <div class="topbar-title">Dashboard Admin</div>
-    <div class="admin-badge">
-      <span>🔐</span>
-      <span id="adminEmail">Admin</span>
+    <div class="page-crumb">
+      <span>Admin</span>
+      <span style="color:var(--border)">›</span>
+      <strong id="topbar-title">Jadwal Misa</strong>
+    </div>
+    <div class="admin-chip">
+      <div class="admin-dot"></div>
+      <span id="admin-email">Admin</span>
     </div>
   </header>
 
+  <!-- Body -->
   <div class="page-body">
 
-    <!-- ── TAB: Jadwal Misa ── -->
-    <div id="tab-jadwal" class="tab-panel active">
+    <!-- Stats Row -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div>
+          <div class="stat-val" id="stat-jadwal">—</div>
+          <div class="stat-lbl">Total Jadwal Misa</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⛪</div>
+        <div>
+          <div class="stat-val" id="stat-stasi">9</div>
+          <div class="stat-lbl">Stasi Paroki</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📢</div>
+        <div>
+          <div class="stat-val" id="stat-pengumuman">—</div>
+          <div class="stat-lbl">Pengumuman Aktif</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: Jadwal Misa ═══ -->
+    <div id="tab-jadwal" class="tab-panel">
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <span>📅</span> Jadwal Misa
+        <div class="card-head">
+          <div class="card-head-icon">📅</div>
+          <div style="flex:1">
+            <div class="card-head-title">Manajemen Jadwal Misa</div>
+            <div class="card-head-sub">Klik baris untuk memilih, lalu edit atau hapus</div>
           </div>
-          <button class="btn btn-gold" onclick="openJadwalModal()">
-            + Tambah Jadwal
+          <button class="btn btn-primary" onclick="openJadwalModal()">
+            <span>＋</span> Tambah Jadwal
           </button>
         </div>
 
-        <!-- Filter stasi -->
-        <div class="mb-4 flex flex-wrap gap-2">
-          <select id="filterStasi" class="form-control" style="width:auto;min-width:180px" onchange="loadJadwal()">
+        <!-- Filter -->
+        <div class="filter-bar">
+          <span class="filter-label">Filter Stasi:</span>
+          <select id="filter-stasi" class="filter-select" onchange="loadJadwal()">
             <option value="">Semua Stasi</option>
             <option value="pusat">Margo Agung (Pusat)</option>
             <option value="marga-lestari">Marga Lestari</option>
@@ -460,214 +517,329 @@
             <option value="jatimulyo">Jatimulyo</option>
             <option value="pendowo">Pendowo</option>
           </select>
-        </div>
-
-        <div id="jadwalContent">
-          <div class="state-box">
-            <div class="state-icon">⏳</div>
-            <p>Memuat data jadwal…</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── TAB: Pengumuman ── -->
-    <div id="tab-pengumuman" class="tab-panel">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <span>📢</span> Pengumuman Paroki
-          </div>
-          <button class="btn btn-gold" onclick="openPengumumanModal()">
-            + Tambah Pengumuman
+          <button class="btn btn-ghost btn-sm" onclick="loadJadwal()" style="margin-left:auto">
+            🔄 Muat Ulang
           </button>
         </div>
 
-        <div id="pengumumanContent">
-          <div class="state-box">
-            <div class="state-icon">⏳</div>
-            <p>Memuat data pengumuman…</p>
+        <div class="card-body">
+          <div id="jadwal-content">
+            <div class="empty-state"><div class="es-icon">⏳</div><p>Memuat data jadwal…</p></div>
           </div>
         </div>
       </div>
     </div>
 
-  </div>
-</div>
+    <!-- ═══ TAB: Pengumuman ═══ -->
+    <div id="tab-pengumuman" class="tab-panel" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-icon">📢</div>
+          <div style="flex:1">
+            <div class="card-head-title">Manajemen Pengumuman Paroki</div>
+            <div class="card-head-sub">Pengumuman aktif tampil di halaman utama website</div>
+          </div>
+          <button class="btn btn-primary" onclick="openPengumumanModal()">
+            <span>＋</span> Tambah Pengumuman
+          </button>
+        </div>
 
-<!-- ── Modal Jadwal ── -->
-<div class="modal-overlay" id="jadwalModal">
-  <div class="modal-box">
-    <div class="modal-title">
-      <span id="jadwalModalIcon">📅</span>
-      <span id="jadwalModalTitle">Tambah Jadwal Misa</span>
+        <div class="card-body">
+          <div id="pengumuman-content">
+            <div class="empty-state"><div class="es-icon">⏳</div><p>Memuat data pengumuman…</p></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <form id="jadwalForm">
-      <input type="hidden" id="jadwalId">
-      <div class="form-group">
-        <label class="form-label">Stasi</label>
-        <select id="jadwalStasi" class="form-control" required>
-          <option value="">— Pilih Stasi —</option>
-          <option value="pusat">Margo Agung (Pusat)</option>
-          <option value="marga-lestari">Marga Lestari</option>
-          <option value="rejomulyo">Rejomulyo</option>
-          <option value="sukadamai">Sukadamai</option>
-          <option value="way-galih">Way Galih</option>
-          <option value="sindang-sari">Sindang Sari</option>
-          <option value="purwotani">Purwotani</option>
-          <option value="jatimulyo">Jatimulyo</option>
-          <option value="pendowo">Pendowo</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Hari / Waktu</label>
-        <input id="jadwalHari" type="text" class="form-control" placeholder="cth: Minggu Pagi" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Jam</label>
-        <input id="jadwalWaktu" type="text" class="form-control" placeholder="cth: 07:00 WIB" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Keterangan</label>
-        <input id="jadwalKeterangan" type="text" class="form-control" placeholder="cth: Misa Umat" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Minggu ke- <span style="color:#aaa;font-weight:400">(kosongkan jika setiap minggu)</span></label>
-        <input id="jadwalMingguKe" type="text" class="form-control" placeholder="cth: Mg ke-1 & 3">
-      </div>
-      <div class="flex gap-2 mt-1.5 justify-end">
-        <button type="button" class="btn btn-outline" onclick="closeModal('jadwalModal')">Batal</button>
-        <button type="submit" class="btn btn-gold" id="jadwalSubmitBtn">Simpan</button>
+
+  </div><!-- /page-body -->
+</div><!-- /main -->
+
+<!-- ═══════════════════════════════════
+     MODAL: Jadwal Misa (Tambah / Edit)
+════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-jadwal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modal-jadwal-title">📅 Tambah Jadwal Misa</div>
+      <button class="modal-close" onclick="closeModal('modal-jadwal')">✕</button>
+    </div>
+    <form id="form-jadwal" onsubmit="submitJadwal(event)">
+      <input type="hidden" id="jid">
+      <div class="modal-body">
+
+        <div id="jadwal-alert" class="alert alert-err" style="display:none"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Stasi <span class="req">*</span></label>
+            <select id="j-stasi" class="form-ctrl" required>
+              <option value="">— Pilih Stasi —</option>
+              <option value="pusat">Margo Agung (Pusat)</option>
+              <option value="marga-lestari">Marga Lestari</option>
+              <option value="rejomulyo">Rejomulyo</option>
+              <option value="sukadamai">Sukadamai</option>
+              <option value="way-galih">Way Galih</option>
+              <option value="sindang-sari">Sindang Sari</option>
+              <option value="purwotani">Purwotani</option>
+              <option value="jatimulyo">Jatimulyo</option>
+              <option value="pendowo">Pendowo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Urutan Tampil</label>
+            <input id="j-urutan" type="number" class="form-ctrl" value="0" min="0" placeholder="0 = paling atas">
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Hari / Sesi <span class="req">*</span></label>
+            <input id="j-hari" type="text" class="form-ctrl" placeholder="cth: Minggu Pagi" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jam Misa <span class="req">*</span></label>
+            <input id="j-waktu" type="text" class="form-ctrl" placeholder="cth: 07:00 WIB" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Keterangan Misa <span class="req">*</span></label>
+            <input id="j-keterangan" type="text" class="form-ctrl" placeholder="cth: Misa Umat / Misa Harian / Misa Antisipasi" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">
+              Minggu ke-
+              <span class="form-hint" style="font-weight:400">(kosongkan = setiap Minggu)</span>
+            </label>
+            <input id="j-minggu" type="text" class="form-ctrl" placeholder="cth: Mg ke-1 &amp; 3  atau  Mg ke-2 &amp; 4">
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-jadwal')">Batal</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit-jadwal">
+          <span id="btn-jadwal-icon">💾</span>
+          <span id="btn-jadwal-text">Simpan Jadwal</span>
+        </button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- ── Modal Pengumuman ── -->
-<div class="modal-overlay" id="pengumumanModal">
+<!-- ═══════════════════════════════════
+     MODAL: Pengumuman (Tambah / Edit)
+════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-pengumuman">
   <div class="modal-box">
-    <div class="modal-title">
-      <span id="pengumumanModalIcon">📢</span>
-      <span id="pengumumanModalTitle">Tambah Pengumuman</span>
+    <div class="modal-head">
+      <div class="modal-head-title" id="modal-peng-title">📢 Tambah Pengumuman</div>
+      <button class="modal-close" onclick="closeModal('modal-pengumuman')">✕</button>
     </div>
-    <form id="pengumumanForm">
-      <input type="hidden" id="pengumumanId">
-      <div class="form-group">
-        <label class="form-label">Judul</label>
-        <input id="pengumumanJudul" type="text" class="form-control" placeholder="Judul pengumuman" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Isi Pengumuman</label>
-        <textarea id="pengumumanIsi" class="form-control" placeholder="Tulis isi pengumuman…" required></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Kategori</label>
-        <select id="pengumumanKategori" class="form-control">
-          <option value="umum">Umum</option>
-          <option value="sakramen">Sakramen</option>
-          <option value="misa-khusus">Misa Khusus</option>
-          <option value="kegiatan">Kegiatan</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Tanggal</label>
-        <input id="pengumumanTanggal" type="date" class="form-control" required>
-      </div>
-      <div class="form-group" style="display:flex;align-items:center;gap:0.5rem">
-        <input id="pengumumanAktif" type="checkbox" checked style="width:16px;height:16px;accent-color:var(--gold)">
-        <label class="form-label" style="margin:0;cursor:pointer" for="pengumumanAktif">Tampilkan di website</label>
-      </div>
-      <div class="flex gap-2 mt-1.5 justify-end">
-        <button type="button" class="btn btn-outline" onclick="closeModal('pengumumanModal')">Batal</button>
-        <button type="submit" class="btn btn-gold" id="pengumumanSubmitBtn">Simpan</button>
+    <form id="form-pengumuman" onsubmit="submitPengumuman(event)">
+      <input type="hidden" id="pid">
+      <div class="modal-body">
+
+        <div id="peng-alert" class="alert alert-err" style="display:none"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Judul Pengumuman <span class="req">*</span></label>
+            <input id="p-judul" type="text" class="form-ctrl" placeholder="Judul yang singkat dan jelas" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Isi Pengumuman <span class="req">*</span></label>
+            <textarea id="p-isi" class="form-ctrl" placeholder="Tulis isi pengumuman secara lengkap…" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Kategori</label>
+            <select id="p-kategori" class="form-ctrl">
+              <option value="umum">📌 Umum</option>
+              <option value="sakramen">🕊️ Sakramen</option>
+              <option value="misa-khusus">✝ Misa Khusus</option>
+              <option value="kegiatan">🌟 Kegiatan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tanggal <span class="req">*</span></label>
+            <input id="p-tanggal" type="date" class="form-ctrl" required>
+          </div>
+        </div>
+
+        <div class="form-check" onclick="document.getElementById('p-aktif').click()">
+          <input type="checkbox" id="p-aktif" checked>
+          <div>
+            <label for="p-aktif">Tampilkan di halaman website</label>
+            <div class="fc-sub">Hilangkan centang untuk menyembunyikan sementara tanpa menghapus</div>
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-pengumuman')">Batal</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit-peng">
+          <span id="btn-peng-icon">💾</span>
+          <span id="btn-peng-text">Simpan Pengumuman</span>
+        </button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Toast Notification -->
+<!-- ═══════════════════
+     MODAL: Konfirmasi Hapus
+══════════════════════ -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal-box" style="max-width:380px">
+    <div class="modal-head">
+      <div class="modal-head-title">⚠️ Konfirmasi Hapus</div>
+      <button class="modal-close" onclick="closeModal('modal-confirm')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="confirm-box">
+        <div class="cb-icon">🗑️</div>
+        <h3>Hapus data ini?</h3>
+        <p id="confirm-desc">Data yang dihapus tidak dapat dikembalikan.</p>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modal-confirm')">Batal</button>
+      <button class="btn btn-delete" id="btn-confirm-delete" onclick="execDelete()">Hapus Sekarang</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
 <div id="toast"></div>
 
-<!-- Supabase CDN -->
+<!-- ═══ SCRIPTS ═══ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-config.js"></script>
 <script>
-// ── Auth Guard ──────────────────────────────────────
+// ── Constants ──────────────────────────────────────────────
+const STASI_MAP = {
+  'pusat':        'Margo Agung (Pusat)',
+  'marga-lestari':'Marga Lestari',
+  'rejomulyo':    'Rejomulyo',
+  'sukadamai':    'Sukadamai',
+  'way-galih':    'Way Galih',
+  'sindang-sari': 'Sindang Sari',
+  'purwotani':    'Purwotani',
+  'jatimulyo':    'Jatimulyo',
+  'pendowo':      'Pendowo'
+};
+
+const KAT_MAP = {
+  'umum':       { label:'Umum',         icon:'📌' },
+  'sakramen':   { label:'Sakramen',      icon:'🕊️' },
+  'misa-khusus':{ label:'Misa Khusus',  icon:'✝' },
+  'kegiatan':   { label:'Kegiatan',      icon:'🌟' }
+};
+
+// State untuk delete
+let _deleteTable = '';
+let _deleteId    = '';
+let _deleteCb    = null;
+
+// ── Auth Guard ──────────────────────────────────────────────
 (async () => {
   const { data: { session } } = await db.auth.getSession();
-  if (!session) {
-    window.location.replace('login.html');
-    return;
-  }
-  // Show admin email
-  document.getElementById('adminEmail').textContent = session.user.email;
+  if (!session) { window.location.replace('login.html'); return; }
+  document.getElementById('admin-email').textContent = session.user.email;
+  loadJadwal();
+  loadCounters();
 })();
 
-// ── Logout ──────────────────────────────────────────
-async function handleLogout() {
-  if (!confirm('Yakin ingin logout?')) return;
+// ── Logout ─────────────────────────────────────────────────
+async function doLogout() {
+  if (!confirm('Keluar dari dashboard admin?')) return;
   await db.auth.signOut();
   window.location.replace('login.html');
 }
 
-// ── Toast ───────────────────────────────────────────
-function showToast(msg, type = 'success') {
+// ── Toast ───────────────────────────────────────────────────
+function toast(msg, type = 'success') {
   const t = document.getElementById('toast');
-  t.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+  t.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + msg;
   t.className = 'show ' + type;
-  setTimeout(() => { t.className = ''; }, 3200);
+  setTimeout(() => { t.className = ''; }, 3500);
 }
 
-// ── Tab Switcher ─────────────────────────────────────
-function switchTab(tab, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.add('active');
-  btn.classList.add('active');
-
-  if (tab === 'jadwal') loadJadwal();
-  if (tab === 'pengumuman') loadPengumuman();
+// ── Modal helpers ───────────────────────────────────────────
+function openModal(id) {
+  const el = document.getElementById(id);
+  el.classList.add('open');
 }
-
-// ── Modal helpers ─────────────────────────────────────
 function closeModal(id) {
   document.getElementById(id).classList.remove('open');
 }
+
+// Close on backdrop click
 document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('open'); });
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
 });
 
-// ─────────────────────────────────────────────────────
+// Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
+
+// ── Tab switcher ────────────────────────────────────────────
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).style.display = 'block';
+  btn.classList.add('active');
+  document.getElementById('topbar-title').textContent =
+    name === 'jadwal' ? 'Jadwal Misa' : 'Pengumuman';
+  if (name === 'jadwal')    loadJadwal();
+  if (name === 'pengumuman') loadPengumuman();
+}
+
+// ── Counters ────────────────────────────────────────────────
+async function loadCounters() {
+  const [{ count: cJ }, { count: cP }] = await Promise.all([
+    db.from('jadwal_misa').select('*', { count: 'exact', head: true }),
+    db.from('pengumuman').select('*', { count: 'exact', head: true }).eq('aktif', true)
+  ]);
+  document.getElementById('stat-jadwal').textContent      = cJ ?? '—';
+  document.getElementById('stat-pengumuman').textContent  = cP ?? '—';
+  document.getElementById('count-jadwal').textContent     = cJ ?? '—';
+  document.getElementById('count-pengumuman').textContent = cP ?? '—';
+}
+
+// ══════════════════════════════════════════
 //  JADWAL MISA
-// ─────────────────────────────────────────────────────
-const STASI_LABEL = {
-  'pusat': 'Margo Agung (Pusat)',
-  'marga-lestari': 'Marga Lestari',
-  'rejomulyo': 'Rejomulyo',
-  'sukadamai': 'Sukadamai',
-  'way-galih': 'Way Galih',
-  'sindang-sari': 'Sindang Sari',
-  'purwotani': 'Purwotani',
-  'jatimulyo': 'Jatimulyo',
-  'pendowo': 'Pendowo'
-};
-
+// ══════════════════════════════════════════
 async function loadJadwal() {
-  const stasi = document.getElementById('filterStasi').value;
-  const el    = document.getElementById('jadwalContent');
-  el.innerHTML = '<div class="state-box"><div class="state-icon">⏳</div><p>Memuat…</p></div>';
+  const stasi = document.getElementById('filter-stasi').value;
+  const el    = document.getElementById('jadwal-content');
+  el.innerHTML = '<div class="empty-state"><div class="es-icon">⏳</div><p>Memuat data…</p></div>';
 
-  let query = db.from('jadwal_misa').select('*').order('urutan').order('created_at');
-  if (stasi) query = query.eq('stasi', stasi);
+  let q = db.from('jadwal_misa').select('*').order('urutan').order('created_at');
+  if (stasi) q = q.eq('stasi', stasi);
 
-  const { data, error } = await query;
+  const { data, error } = await q;
 
   if (error) {
-    el.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><p>Gagal memuat data. Pastikan tabel sudah dibuat di Supabase.</p></div>`;
+    el.innerHTML = `<div class="empty-state"><div class="es-icon">⚠️</div><p>Gagal memuat: ${error.message}<br><small>Pastikan tabel sudah dibuat di Supabase.</small></p></div>`;
     return;
   }
-  if (!data || data.length === 0) {
-    el.innerHTML = `<div class="state-box"><div class="state-icon">📭</div><p>Belum ada jadwal misa. Klik "Tambah Jadwal" untuk menambahkan.</p></div>`;
+  if (!data?.length) {
+    el.innerHTML = `<div class="empty-state"><div class="es-icon">📭</div><p>Belum ada jadwal.<br>Klik "+ Tambah Jadwal" untuk menambahkan.</p></div>`;
     return;
   }
 
@@ -676,8 +848,9 @@ async function loadJadwal() {
       <table class="data-table">
         <thead>
           <tr>
+            <th>#</th>
             <th>Stasi</th>
-            <th>Hari/Waktu</th>
+            <th>Hari / Sesi</th>
             <th>Jam</th>
             <th>Keterangan</th>
             <th>Minggu ke-</th>
@@ -685,54 +858,78 @@ async function loadJadwal() {
           </tr>
         </thead>
         <tbody>
-          ${data.map(r => `
+          ${data.map((r, i) => `
             <tr>
-              <td><strong>${STASI_LABEL[r.stasi] || r.stasi}</strong></td>
-              <td>${r.hari}</td>
-              <td><strong>${r.waktu}</strong></td>
-              <td>${r.keterangan}</td>
-              <td style="color:#aaa">${r.minggu_ke || '—'}</td>
+              <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
               <td>
-                <div style="display:flex;gap:0.4rem">
-                  <button class="btn btn-outline btn-sm" onclick='editJadwal(${JSON.stringify(r)})'>✏️ Edit</button>
-                  <button class="btn btn-red btn-sm" onclick="deleteJadwal('${r.id}')">🗑️</button>
+                <span class="badge badge-gold">${STASI_MAP[r.stasi] || r.stasi}</span>
+              </td>
+              <td style="font-weight:600;color:var(--ink)">${r.hari}</td>
+              <td>
+                <span style="font-size:1rem;font-weight:900;color:var(--ink)">${r.waktu}</span>
+              </td>
+              <td>${r.keterangan}</td>
+              <td style="color:var(--ink-soft)">${r.minggu_ke || '<span style="color:#ccc">Setiap Minggu</span>'}</td>
+              <td>
+                <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
+                  <button class="btn btn-edit btn-sm" onclick='editJadwal(${JSON.stringify(r)})' title="Edit jadwal ini">
+                    ✏️ Edit
+                  </button>
+                  <button class="btn btn-delete btn-sm" onclick="confirmDelete('jadwal_misa','${r.id}','jadwal misa ini','loadJadwal')" title="Hapus jadwal ini">
+                    🗑️
+                  </button>
                 </div>
               </td>
             </tr>
           `).join('')}
         </tbody>
       </table>
+      <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
+        Menampilkan ${data.length} jadwal${stasi ? ' untuk stasi yang dipilih' : ' dari semua stasi'}
+      </div>
     </div>
   `;
 }
 
 function openJadwalModal(data = null) {
-  document.getElementById('jadwalId').value          = data?.id || '';
-  document.getElementById('jadwalStasi').value        = data?.stasi || '';
-  document.getElementById('jadwalHari').value         = data?.hari || '';
-  document.getElementById('jadwalWaktu').value        = data?.waktu || '';
-  document.getElementById('jadwalKeterangan').value   = data?.keterangan || '';
-  document.getElementById('jadwalMingguKe').value     = data?.minggu_ke || '';
-  document.getElementById('jadwalModalTitle').textContent = data ? 'Edit Jadwal Misa' : 'Tambah Jadwal Misa';
-  document.getElementById('jadwalModal').classList.add('open');
+  document.getElementById('jid').value         = data?.id || '';
+  document.getElementById('j-stasi').value      = data?.stasi || '';
+  document.getElementById('j-hari').value       = data?.hari || '';
+  document.getElementById('j-waktu').value      = data?.waktu || '';
+  document.getElementById('j-keterangan').value = data?.keterangan || '';
+  document.getElementById('j-minggu').value     = data?.minggu_ke || '';
+  document.getElementById('j-urutan').value     = data?.urutan ?? 0;
+  document.getElementById('jadwal-alert').style.display = 'none';
+
+  const isEdit = !!data?.id;
+  document.getElementById('modal-jadwal-title').textContent = isEdit ? '✏️ Edit Jadwal Misa' : '📅 Tambah Jadwal Misa';
+  document.getElementById('btn-jadwal-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Jadwal';
+  document.getElementById('btn-jadwal-icon').textContent    = isEdit ? '✅' : '💾';
+
+  openModal('modal-jadwal');
+  setTimeout(() => document.getElementById('j-stasi').focus(), 100);
 }
 
 function editJadwal(data) { openJadwalModal(data); }
 
-document.getElementById('jadwalForm').addEventListener('submit', async (e) => {
+async function submitJadwal(e) {
   e.preventDefault();
-  const id  = document.getElementById('jadwalId').value;
-  const btn = document.getElementById('jadwalSubmitBtn');
+  const id  = document.getElementById('jid').value;
+  const btn = document.getElementById('btn-submit-jadwal');
+  const alertEl = document.getElementById('jadwal-alert');
+
+  alertEl.style.display = 'none';
   btn.disabled = true;
-  btn.textContent = 'Menyimpan…';
+  document.getElementById('btn-jadwal-text').textContent = 'Menyimpan…';
 
   const payload = {
-    stasi:       document.getElementById('jadwalStasi').value,
-    hari:        document.getElementById('jadwalHari').value,
-    waktu:       document.getElementById('jadwalWaktu').value,
-    keterangan:  document.getElementById('jadwalKeterangan').value,
-    minggu_ke:   document.getElementById('jadwalMingguKe').value || null,
-    updated_at:  new Date().toISOString()
+    stasi:      document.getElementById('j-stasi').value,
+    hari:       document.getElementById('j-hari').value.trim(),
+    waktu:      document.getElementById('j-waktu').value.trim(),
+    keterangan: document.getElementById('j-keterangan').value.trim(),
+    minggu_ke:  document.getElementById('j-minggu').value.trim() || null,
+    urutan:     parseInt(document.getElementById('j-urutan').value) || 0,
+    updated_at: new Date().toISOString()
   };
 
   let error;
@@ -744,42 +941,35 @@ document.getElementById('jadwalForm').addEventListener('submit', async (e) => {
   }
 
   btn.disabled = false;
-  btn.textContent = 'Simpan';
+  document.getElementById('btn-jadwal-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Jadwal';
 
-  if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
-  showToast(id ? 'Jadwal berhasil diperbarui!' : 'Jadwal berhasil ditambahkan!');
-  closeModal('jadwalModal');
-  loadJadwal();
-});
+  if (error) {
+    alertEl.textContent = '⚠️ Gagal: ' + error.message;
+    alertEl.style.display = 'flex';
+    return;
+  }
 
-async function deleteJadwal(id) {
-  if (!confirm('Hapus jadwal ini?')) return;
-  const { error } = await db.from('jadwal_misa').delete().eq('id', id);
-  if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
-  showToast('Jadwal berhasil dihapus!');
+  closeModal('modal-jadwal');
+  toast(id ? 'Jadwal berhasil diperbarui!' : 'Jadwal baru berhasil ditambahkan!');
   loadJadwal();
+  loadCounters();
 }
 
-// ─────────────────────────────────────────────────────
+// ══════════════════════════════════════════
 //  PENGUMUMAN
-// ─────────────────────────────────────────────────────
-const KAT_LABEL = {
-  'umum': 'Umum', 'sakramen': 'Sakramen',
-  'misa-khusus': 'Misa Khusus', 'kegiatan': 'Kegiatan'
-};
-
+// ══════════════════════════════════════════
 async function loadPengumuman() {
-  const el = document.getElementById('pengumumanContent');
-  el.innerHTML = '<div class="state-box"><div class="state-icon">⏳</div><p>Memuat…</p></div>';
+  const el = document.getElementById('pengumuman-content');
+  el.innerHTML = '<div class="empty-state"><div class="es-icon">⏳</div><p>Memuat data…</p></div>';
 
   const { data, error } = await db.from('pengumuman').select('*').order('tanggal', { ascending: false });
 
   if (error) {
-    el.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><p>Gagal memuat data pengumuman.</p></div>`;
+    el.innerHTML = `<div class="empty-state"><div class="es-icon">⚠️</div><p>Gagal memuat: ${error.message}</p></div>`;
     return;
   }
-  if (!data || data.length === 0) {
-    el.innerHTML = `<div class="state-box"><div class="state-icon">📭</div><p>Belum ada pengumuman. Klik "Tambah Pengumuman".</p></div>`;
+  if (!data?.length) {
+    el.innerHTML = `<div class="empty-state"><div class="es-icon">📭</div><p>Belum ada pengumuman.<br>Klik "+ Tambah Pengumuman" untuk menambahkan.</p></div>`;
     return;
   }
 
@@ -788,6 +978,7 @@ async function loadPengumuman() {
       <table class="data-table">
         <thead>
           <tr>
+            <th>#</th>
             <th>Tanggal</th>
             <th>Judul</th>
             <th>Kategori</th>
@@ -796,56 +987,87 @@ async function loadPengumuman() {
           </tr>
         </thead>
         <tbody>
-          ${data.map(r => `
-            <tr>
-              <td style="white-space:nowrap">${new Date(r.tanggal).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})}</td>
-              <td><strong>${r.judul}</strong><br><span style="font-size:0.75rem;color:#aaa">${r.isi.slice(0,60)}…</span></td>
-              <td><span class="badge badge-cat">${KAT_LABEL[r.kategori] || r.kategori}</span></td>
-              <td>
-                <button onclick="toggleAktif('${r.id}', ${r.aktif})" class="badge ${r.aktif ? 'badge-aktif' : 'badge-nonaktif'}" style="cursor:pointer;border:none">
-                  ${r.aktif ? '● Aktif' : '○ Nonaktif'}
-                </button>
-              </td>
-              <td>
-                <div style="display:flex;gap:0.4rem">
-                  <button class="btn btn-outline btn-sm" onclick='editPengumuman(${JSON.stringify(r)})'>✏️ Edit</button>
-                  <button class="btn btn-red btn-sm" onclick="deletePengumuman('${r.id}')">🗑️</button>
-                </div>
-              </td>
-            </tr>
-          `).join('')}
+          ${data.map((r, i) => {
+            const tgl = new Date(r.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+            const kat = KAT_MAP[r.kategori] || { label: r.kategori, icon: '📌' };
+            return `
+              <tr>
+                <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
+                <td style="white-space:nowrap;font-size:0.78rem;color:var(--ink-soft)">${tgl}</td>
+                <td>
+                  <div style="font-weight:700;color:var(--ink);max-width:240px">${r.judul}</div>
+                  <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.isi}</div>
+                </td>
+                <td>
+                  <span class="badge badge-gold">${kat.icon} ${kat.label}</span>
+                </td>
+                <td>
+                  <button
+                    class="badge ${r.aktif ? 'badge-green' : 'badge-red'}"
+                    style="cursor:pointer;border:none;font-size:0.72rem;padding:0.3rem 0.7rem"
+                    onclick="toggleAktif('${r.id}', ${r.aktif})"
+                    title="${r.aktif ? 'Klik untuk menonaktifkan' : 'Klik untuk mengaktifkan'}"
+                  >
+                    ${r.aktif ? '● Aktif' : '○ Nonaktif'}
+                  </button>
+                </td>
+                <td>
+                  <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
+                    <button class="btn btn-edit btn-sm" onclick='editPengumuman(${JSON.stringify(r)})' title="Edit pengumuman ini">
+                      ✏️ Edit
+                    </button>
+                    <button class="btn btn-delete btn-sm" onclick="confirmDelete('pengumuman','${r.id}','pengumuman ini','loadPengumuman')" title="Hapus pengumuman ini">
+                      🗑️
+                    </button>
+                  </div>
+                </td>
+              </tr>`;
+          }).join('')}
         </tbody>
       </table>
+      <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
+        Total ${data.length} pengumuman · ${data.filter(r=>r.aktif).length} aktif ditampilkan di website
+      </div>
     </div>
   `;
 }
 
 function openPengumumanModal(data = null) {
-  document.getElementById('pengumumanId').value       = data?.id || '';
-  document.getElementById('pengumumanJudul').value    = data?.judul || '';
-  document.getElementById('pengumumanIsi').value      = data?.isi || '';
-  document.getElementById('pengumumanKategori').value = data?.kategori || 'umum';
-  document.getElementById('pengumumanTanggal').value  = data?.tanggal || new Date().toISOString().split('T')[0];
-  document.getElementById('pengumumanAktif').checked  = data ? data.aktif : true;
-  document.getElementById('pengumumanModalTitle').textContent = data ? 'Edit Pengumuman' : 'Tambah Pengumuman';
-  document.getElementById('pengumumanModal').classList.add('open');
+  document.getElementById('pid').value        = data?.id || '';
+  document.getElementById('p-judul').value    = data?.judul || '';
+  document.getElementById('p-isi').value      = data?.isi || '';
+  document.getElementById('p-kategori').value = data?.kategori || 'umum';
+  document.getElementById('p-tanggal').value  = data?.tanggal || new Date().toISOString().split('T')[0];
+  document.getElementById('p-aktif').checked  = data ? data.aktif : true;
+  document.getElementById('peng-alert').style.display = 'none';
+
+  const isEdit = !!data?.id;
+  document.getElementById('modal-peng-title').textContent = isEdit ? '✏️ Edit Pengumuman' : '📢 Tambah Pengumuman';
+  document.getElementById('btn-peng-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Pengumuman';
+  document.getElementById('btn-peng-icon').textContent    = isEdit ? '✅' : '💾';
+
+  openModal('modal-pengumuman');
+  setTimeout(() => document.getElementById('p-judul').focus(), 100);
 }
 
 function editPengumuman(data) { openPengumumanModal(data); }
 
-document.getElementById('pengumumanForm').addEventListener('submit', async (e) => {
+async function submitPengumuman(e) {
   e.preventDefault();
-  const id  = document.getElementById('pengumumanId').value;
-  const btn = document.getElementById('pengumumanSubmitBtn');
+  const id  = document.getElementById('pid').value;
+  const btn = document.getElementById('btn-submit-peng');
+  const alertEl = document.getElementById('peng-alert');
+
+  alertEl.style.display = 'none';
   btn.disabled = true;
-  btn.textContent = 'Menyimpan…';
+  document.getElementById('btn-peng-text').textContent = 'Menyimpan…';
 
   const payload = {
-    judul:    document.getElementById('pengumumanJudul').value,
-    isi:      document.getElementById('pengumumanIsi').value,
-    kategori: document.getElementById('pengumumanKategori').value,
-    tanggal:  document.getElementById('pengumumanTanggal').value,
-    aktif:    document.getElementById('pengumumanAktif').checked
+    judul:    document.getElementById('p-judul').value.trim(),
+    isi:      document.getElementById('p-isi').value.trim(),
+    kategori: document.getElementById('p-kategori').value,
+    tanggal:  document.getElementById('p-tanggal').value,
+    aktif:    document.getElementById('p-aktif').checked
   };
 
   let error;
@@ -856,33 +1078,57 @@ document.getElementById('pengumumanForm').addEventListener('submit', async (e) =
   }
 
   btn.disabled = false;
-  btn.textContent = 'Simpan';
+  document.getElementById('btn-peng-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Pengumuman';
 
-  if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
-  showToast(id ? 'Pengumuman berhasil diperbarui!' : 'Pengumuman berhasil ditambahkan!');
-  closeModal('pengumumanModal');
-  loadPengumuman();
-});
+  if (error) {
+    alertEl.textContent = '⚠️ Gagal: ' + error.message;
+    alertEl.style.display = 'flex';
+    return;
+  }
 
-async function deletePengumuman(id) {
-  if (!confirm('Hapus pengumuman ini?')) return;
-  const { error } = await db.from('pengumuman').delete().eq('id', id);
-  if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
-  showToast('Pengumuman berhasil dihapus!');
+  closeModal('modal-pengumuman');
+  toast(id ? 'Pengumuman berhasil diperbarui!' : 'Pengumuman baru berhasil ditambahkan!');
   loadPengumuman();
+  loadCounters();
 }
 
-async function toggleAktif(id, currentStatus) {
-  const { error } = await db.from('pengumuman').update({ aktif: !currentStatus }).eq('id', id);
-  if (error) { showToast('Gagal mengubah status.', 'error'); return; }
-  showToast(!currentStatus ? 'Pengumuman diaktifkan.' : 'Pengumuman dinonaktifkan.');
+async function toggleAktif(id, current) {
+  const { error } = await db.from('pengumuman').update({ aktif: !current }).eq('id', id);
+  if (error) { toast('Gagal mengubah status: ' + error.message, 'error'); return; }
+  toast(!current ? '✅ Pengumuman diaktifkan dan tampil di website.' : '🔕 Pengumuman disembunyikan dari website.');
   loadPengumuman();
+  loadCounters();
 }
 
-// ── Init ─────────────────────────────────────────────
-window.addEventListener('load', () => {
-  loadJadwal();
-});
+// ══════════════════════════════════════════
+//  HAPUS (Konfirmasi)
+// ══════════════════════════════════════════
+function confirmDelete(table, id, desc, cb) {
+  _deleteTable = table;
+  _deleteId    = id;
+  _deleteCb    = cb;
+  document.getElementById('confirm-desc').textContent = `"${desc}" akan dihapus permanen dan tidak dapat dikembalikan.`;
+  openModal('modal-confirm');
+}
+
+async function execDelete() {
+  const btn = document.getElementById('btn-confirm-delete');
+  btn.disabled = true;
+  btn.textContent = 'Menghapus…';
+
+  const { error } = await db.from(_deleteTable).delete().eq('id', _deleteId);
+
+  btn.disabled = false;
+  btn.textContent = 'Hapus Sekarang';
+  closeModal('modal-confirm');
+
+  if (error) { toast('Gagal menghapus: ' + error.message, 'error'); return; }
+
+  toast('Data berhasil dihapus.');
+  if (_deleteCb === 'loadJadwal') loadJadwal();
+  if (_deleteCb === 'loadPengumuman') loadPengumuman();
+  loadCounters();
+}
 </script>
 </body>
 </html>
