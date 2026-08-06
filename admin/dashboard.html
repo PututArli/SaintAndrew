@@ -1432,27 +1432,26 @@
   </div>
 </div>
 
-<!-- ═══════════════════
-     MODAL: Konfirmasi Hapus
-══════════════════════ -->
-<div class="modal-overlay" id="modal-confirm">
-  <div class="modal-box" style="max-width:380px">
-    <div class="modal-head">
-      <div class="modal-head-title">Konfirmasi Hapus</div>
-      <button class="modal-close" onclick="closeModal('modal-confirm')">✕</button>
+<!-- ═══════════════════════════════════
+     MODAL: Universal Action Confirmation
+════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-confirm" style="z-index:9999">
+  <div class="modal-box" style="max-width:420px;text-align:center">
+    <div class="modal-head" style="border-bottom:none;padding-bottom:0">
+      <div class="modal-head-title" id="confirm-modal-title">Konfirmasi</div>
+      <button class="modal-close" onclick="resolveConfirmModal(false)">✕</button>
     </div>
-    <div class="modal-body">
-      <div class="confirm-box">
-        <div class="cb-icon" style="color:var(--danger)">
-          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-        </div>
-        <h3>Hapus data ini?</h3>
-        <p id="confirm-desc">Data yang dihapus tidak dapat dikembalikan.</p>
+    <div class="modal-body" style="padding:0.75rem 1.5rem 1.25rem">
+      <div class="confirm-box" style="padding:0.25rem 0 0.5rem">
+        <div id="confirm-modal-icon" class="cb-icon" style="margin-bottom:0.75rem"></div>
+        <h3 id="confirm-modal-heading" style="font-size:1.08rem;font-weight:800;color:var(--ink);margin-bottom:0.4rem">Konfirmasi Tindakan</h3>
+        <p id="confirm-modal-desc" style="font-size:0.84rem;color:var(--ink-soft);line-height:1.5;margin:0 auto;max-width:320px"></p>
+        <div id="confirm-modal-details" style="display:none;margin-top:0.85rem;padding:0.65rem 0.85rem;border-radius:10px;background:var(--bg-alt);border:1px solid var(--border);font-size:0.78rem;text-align:left;color:var(--ink);line-height:1.5"></div>
       </div>
     </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('modal-confirm')">Batal</button>
-      <button class="btn btn-delete" id="btn-confirm-delete" onclick="execDelete()">Hapus Sekarang</button>
+    <div class="modal-foot" style="border-top:1px solid var(--border);padding:0.85rem 1.25rem 1.15rem;display:flex;gap:0.6rem">
+      <button type="button" class="btn btn-ghost" id="confirm-btn-cancel" onclick="resolveConfirmModal(false)" style="flex:1;justify-content:center">Batal</button>
+      <button type="button" class="btn btn-primary" id="confirm-btn-ok" onclick="resolveConfirmModal(true)" style="flex:1;justify-content:center">Ya, Lanjutkan</button>
     </div>
   </div>
 </div>
@@ -1598,9 +1597,94 @@ let _deleteCb    = null;
   loadCounters();
 })();
 
+// ── Universal Confirmation Engine (Promise-Based) ──────────
+let _confirmResolver = null;
+
+function showConfirmModal({
+  title = 'Konfirmasi',
+  heading = 'Konfirmasi Tindakan',
+  message = '',
+  detailsHtml = '',
+  confirmText = 'Ya, Lanjutkan',
+  cancelText = 'Batal',
+  type = 'save', // 'save' | 'delete' | 'warning'
+  danger = false
+} = {}) {
+  return new Promise((resolve) => {
+    _confirmResolver = resolve;
+
+    document.getElementById('confirm-modal-title').textContent = title;
+    document.getElementById('confirm-modal-heading').textContent = heading;
+    document.getElementById('confirm-modal-desc').textContent = message;
+
+    const detailsEl = document.getElementById('confirm-modal-details');
+    if (detailsHtml) {
+      detailsEl.innerHTML = detailsHtml;
+      detailsEl.style.display = 'block';
+    } else {
+      detailsEl.style.display = 'none';
+      detailsEl.innerHTML = '';
+    }
+
+    const okBtn = document.getElementById('confirm-btn-ok');
+    const cancelBtn = document.getElementById('confirm-btn-cancel');
+    okBtn.textContent = confirmText;
+    cancelBtn.textContent = cancelText;
+
+    const iconEl = document.getElementById('confirm-modal-icon');
+    if (type === 'delete' || danger) {
+      okBtn.className = 'btn btn-delete';
+      okBtn.style.background = 'var(--danger)';
+      okBtn.style.color = '#fff';
+      iconEl.innerHTML = `
+        <div style="width:54px;height:54px;border-radius:50%;background:rgba(239,68,68,0.12);color:var(--danger);display:flex;align-items:center;justify-content:center;margin:0 auto">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+        </div>
+      `;
+    } else if (type === 'warning') {
+      okBtn.className = 'btn btn-primary';
+      okBtn.style.background = '#d97706';
+      okBtn.style.color = '#fff';
+      iconEl.innerHTML = `
+        <div style="width:54px;height:54px;border-radius:50%;background:rgba(217,119,6,0.12);color:#d97706;display:flex;align-items:center;justify-content:center;margin:0 auto">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        </div>
+      `;
+    } else {
+      // Save / Primary (Gold/Green glow)
+      okBtn.className = 'btn btn-primary';
+      okBtn.style.background = '';
+      okBtn.style.color = '';
+      iconEl.innerHTML = `
+        <div style="width:54px;height:54px;border-radius:50%;background:rgba(184,134,11,0.14);color:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        </div>
+      `;
+    }
+
+    openModal('modal-confirm');
+  });
+}
+
+function resolveConfirmModal(value) {
+  closeModal('modal-confirm');
+  if (_confirmResolver) {
+    _confirmResolver(value);
+    _confirmResolver = null;
+  }
+}
+
 // ── Logout ─────────────────────────────────────────────────
 async function doLogout() {
-  if (!confirm('Keluar dari dashboard admin?')) return;
+  const confirmed = await showConfirmModal({
+    title: 'Konfirmasi Keluar',
+    heading: 'Keluar dari Dashboard Admin?',
+    message: 'Sesi login Anda akan diakhiri dan dialihkan kembali ke halaman utama.',
+    confirmText: 'Ya, Keluar',
+    cancelText: 'Batal',
+    type: 'warning'
+  });
+  if (!confirmed) return;
   await db.auth.signOut();
   window.location.replace('../index.html');
 }
@@ -1659,14 +1743,21 @@ function closeModal(id) {
   clearFormState(id);
 }
 
-function safeCloseModal(id) {
+async function safeCloseModal(id) {
   if (id === 'modal-confirm') {
-    closeModal(id);
+    resolveConfirmModal(false);
     return;
   }
   if (isFormDirty(id)) {
-    const yakin = confirm('Perubahan data belum disimpan. Apakah Anda yakin ingin membatalkan perubahan dan menutup formulir?');
-    if (!yakin) return;
+    const leave = await showConfirmModal({
+      title: 'Batalkan Perubahan?',
+      heading: 'Perubahan Belum Disimpan',
+      message: 'Perubahan data yang baru saja Anda masukkan belum disimpan. Apakah Anda yakin ingin membatalkan dan keluar?',
+      confirmText: 'Ya, Buang Perubahan',
+      cancelText: 'Lanjutkan Mengedit',
+      type: 'warning'
+    });
+    if (!leave) return;
   }
   closeModal(id);
 }
@@ -1674,13 +1765,24 @@ function safeCloseModal(id) {
 // Close on backdrop click (with safe dirty check)
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => {
-    if (e.target === m) safeCloseModal(m.id);
+    if (e.target === m) {
+      if (m.id === 'modal-confirm') {
+        resolveConfirmModal(false);
+      } else {
+        safeCloseModal(m.id);
+      }
+    }
   });
 });
 
 // Escape key (with safe dirty check)
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
+    const openConfirm = document.querySelector('#modal-confirm.open');
+    if (openConfirm) {
+      resolveConfirmModal(false);
+      return;
+    }
     document.querySelectorAll('.modal-overlay.open').forEach(m => safeCloseModal(m.id));
   }
 });
@@ -2049,15 +2151,7 @@ function toggleUrlInput(prefix) {
 function handleManualUrlInput(prefix) {
   const manualInput = document.getElementById(`${prefix}-foto-manual`);
   const val = (manualInput?.value || '').trim();
-  document.getElementById(`${prefix}-foto`).value = val;
   const hintEl = document.getElementById(`${prefix}-status-hint`);
-
-  if (!val) {
-    setDropzonePreview(prefix, '');
-    if (hintEl) hintEl.textContent = prefix === 'g' ? 'Tarik foto ke kotak di atas atau pilih berkas' : 'Kosongkan jika stasi dalam tahap pembangunan';
-    return;
-  }
-
   if (val.length > 5 && (val.startsWith('http://') || val.startsWith('https://') || val.startsWith('assets/') || val.startsWith('data:'))) {
     setDropzonePreview(prefix, val);
     if (hintEl) hintEl.textContent = '✓ URL foto diterapkan.';
@@ -2120,39 +2214,65 @@ function initDropzones() {
 }
 
 // ══════════════════════════════════════════
-//  SUBMIT JADWAL (CRUD + Error Handling)
+//  SUBMIT JADWAL (CRUD + Confirmation + Error Handling)
 // ══════════════════════════════════════════
 async function submitJadwal(e) {
   e.preventDefault();
   const id      = document.getElementById('jid').value;
-  const btn     = document.getElementById('btn-submit-jadwal');
   const alertEl = document.getElementById('jadwal-alert');
 
-  // Change detection for edit
+  // Change detection for edit: if no modifications made
   if (id && !isFormDirty('modal-jadwal')) {
-    toast('Tidak ada perubahan jadwal yang disimpan.', 'info');
+    toast('Tidak ada perubahan jadwal yang dilakukan.', 'info');
     closeModal('modal-jadwal');
     return;
   }
 
+  const stasiVal  = document.getElementById('j-stasi').value;
+  const hariVal   = document.getElementById('j-hari').value.trim();
+  const waktuVal  = document.getElementById('j-waktu').value.trim();
+  const ketVal    = document.getElementById('j-keterangan').value.trim();
+  const mingguVal = document.getElementById('j-minggu').value.trim();
+  const urutanVal = parseInt(document.getElementById('j-urutan').value) || 0;
+
+  if (!stasiVal || !hariVal || !waktuVal) {
+    alertEl.textContent = 'Harap lengkapi semua kolom wajib (Stasi, Hari, dan Waktu).';
+    alertEl.style.display = 'flex';
+    toast('Kolom wajib belum lengkap', 'error');
+    return;
+  }
+
+  // Confirmation handling
+  const stasiName = STASI_MAP[stasiVal] || stasiVal;
+  const confirmed = await showConfirmModal({
+    title: id ? 'Konfirmasi Simpan Perubahan' : 'Konfirmasi Tambah Jadwal',
+    heading: id ? 'Simpan Perubahan Jadwal Misa?' : 'Tambahkan Jadwal Misa Baru?',
+    message: id 
+      ? 'Perubahan jadwal misa ini akan langsung disimpan ke database dan tampil di website.' 
+      : 'Jadwal misa baru akan langsung ditambahkan ke jadwal paroki.',
+    detailsHtml: `<strong>Stasi:</strong> ${escapeHtml(stasiName)}<br><strong>Hari & Jam:</strong> ${escapeHtml(hariVal)}, ${escapeHtml(waktuVal)} ${ketVal ? `<br><strong>Keterangan:</strong> ${escapeHtml(ketVal)}` : ''}`,
+    confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Tambahkan Jadwal',
+    cancelText: 'Periksa Kembali',
+    type: 'save'
+  });
+
+  if (!confirmed) return;
+
+  const btn = document.getElementById('btn-submit-jadwal');
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-jadwal-text').textContent = 'Menyimpan…';
 
   try {
     const payload = {
-      stasi:      document.getElementById('j-stasi').value,
-      hari:       document.getElementById('j-hari').value.trim(),
-      waktu:      document.getElementById('j-waktu').value.trim(),
-      keterangan: document.getElementById('j-keterangan').value.trim(),
-      minggu_ke:  document.getElementById('j-minggu').value.trim() || null,
-      urutan:     parseInt(document.getElementById('j-urutan').value) || 0,
+      stasi:      stasiVal,
+      hari:       hariVal,
+      waktu:      waktuVal,
+      keterangan: ketVal,
+      minggu_ke:  mingguVal || null,
+      urutan:     urutanVal,
       updated_at: new Date().toISOString()
     };
-
-    if (!payload.stasi || !payload.hari || !payload.waktu) {
-      throw new Error('Harap lengkapi semua kolom wajib (Stasi, Hari, dan Waktu).');
-    }
 
     let error;
     if (id) {
@@ -2181,7 +2301,7 @@ async function submitJadwal(e) {
 }
 
 // ══════════════════════════════════════════
-//  PENGUMUMAN (CRUD + Error Handling)
+//  PENGUMUMAN (CRUD + Confirmation + Error Handling)
 // ══════════════════════════════════════════
 async function loadPengumuman() {
   const el = document.getElementById('pengumuman-content');
@@ -2205,61 +2325,45 @@ async function loadPengumuman() {
           <thead>
             <tr>
               <th>#</th>
-              <th>Tanggal</th>
               <th>Judul</th>
               <th>Kategori</th>
+              <th>Tanggal</th>
               <th>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
-            ${data.map((r, i) => {
-              const tgl = new Date(r.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
-              const kat = KAT_MAP[r.kategori] || { label: r.kategori };
-              return `
-                <tr>
-                  <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
-                  <td style="white-space:nowrap;font-size:0.78rem;color:var(--ink-soft)">${tgl}</td>
-                  <td>
-                    <div style="font-weight:700;color:var(--ink);max-width:240px">${escapeHtml(r.judul)}</div>
-                    <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(r.isi)}</div>
-                  </td>
-                  <td>
-                    <span class="badge badge-gold">${escapeHtml(kat.label)}</span>
-                  </td>
-                  <td>
-                    <button
-                      class="badge ${r.aktif ? 'badge-green' : 'badge-red'}"
-                      style="cursor:pointer;border:none;font-size:0.72rem;padding:0.3rem 0.7rem"
-                      onclick="toggleAktif('${r.id}', ${r.aktif})"
-                      title="${r.aktif ? 'Klik untuk menonaktifkan' : 'Klik untuk mengaktifkan'}"
-                    >
-                      ${r.aktif ? 'Aktif' : 'Nonaktif'}
-                    </button>
-                  </td>
-                  <td>
-                    <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
-                      <button class="btn btn-edit btn-sm" onclick="editPengumuman('${r.id}')" title="Edit pengumuman ini">
-                        Edit
-                      </button>
-                      <button class="btn btn-delete btn-sm" onclick="confirmDelete('pengumuman','${r.id}','pengumuman ini','loadPengumuman')" title="Hapus pengumuman ini">
-                        Hapus
-                      </button>
-                    </div>
-                  </td>
-                </tr>`;
-            }).join('')}
+            ${data.map((r, i) => `
+              <tr>
+                <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
+                <td>
+                  <div style="font-weight:700;color:var(--ink)">${escapeHtml(r.judul)}</div>
+                  <div style="font-size:0.75rem;color:var(--ink-soft);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(r.isi)}</div>
+                </td>
+                <td>
+                  <span class="badge ${r.kategori === 'liturgi' ? 'badge-gold' : r.kategori === 'kegiatan' ? 'badge-info' : 'badge-green'}">${escapeHtml(r.kategori)}</span>
+                </td>
+                <td style="font-size:0.8rem;color:var(--ink-soft);white-space:nowrap">${escapeHtml(r.tanggal || '—')}</td>
+                <td>
+                  <span class="badge ${r.aktif ? 'badge-green' : 'badge-danger'}">
+                    ${r.aktif ? '● Aktif' : '○ Nonaktif'}
+                  </span>
+                </td>
+                <td>
+                  <div class="action-cell">
+                    <button class="btn btn-ghost btn-sm" onclick="editPengumuman('${r.id}')">Edit</button>
+                    <button class="btn btn-ghost btn-sm" onclick="toggleAktif('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
+                    <button class="btn btn-danger btn-sm" onclick="confirmDelete('pengumuman', '${r.id}', '${escapeHtml(r.judul)}', 'loadPengumuman')">Hapus</button>
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
           </tbody>
         </table>
-        <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
-          Total ${data.length} pengumuman · ${data.filter(r=>r.aktif).length} aktif ditampilkan di website
-        </div>
       </div>
     `;
   } catch (err) {
-    const errMsg = formatDbError(err, 'Gagal memuat daftar pengumuman');
-    el.innerHTML = `<div class="empty-state"><p style="color:var(--danger)">${escapeHtml(errMsg)}</p></div>`;
-    toast(errMsg, 'error');
+    el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(err.message)}</p></div>`;
   }
 }
 
@@ -2286,32 +2390,56 @@ function editPengumuman(id) { openPengumumanModal(_pengMap[id]); }
 async function submitPengumuman(e) {
   e.preventDefault();
   const id      = document.getElementById('pid').value;
-  const btn     = document.getElementById('btn-submit-peng');
   const alertEl = document.getElementById('peng-alert');
 
   // Change detection for edit
   if (id && !isFormDirty('modal-pengumuman')) {
-    toast('Tidak ada perubahan pengumuman yang disimpan.', 'info');
+    toast('Tidak ada perubahan pengumuman yang dilakukan.', 'info');
     closeModal('modal-pengumuman');
     return;
   }
 
+  const judulVal = document.getElementById('p-judul').value.trim();
+  const isiVal   = document.getElementById('p-isi').value.trim();
+  const katVal   = document.getElementById('p-kategori').value;
+  const tglVal   = document.getElementById('p-tanggal').value;
+  const aktifVal = document.getElementById('p-aktif').checked;
+
+  if (!judulVal || !isiVal) {
+    alertEl.textContent = 'Judul dan isi pengumuman tidak boleh kosong.';
+    alertEl.style.display = 'flex';
+    toast('Judul dan isi wajib diisi', 'error');
+    return;
+  }
+
+  // Confirmation handling
+  const confirmed = await showConfirmModal({
+    title: id ? 'Konfirmasi Simpan Pengumuman' : 'Konfirmasi Tambah Pengumuman',
+    heading: id ? 'Simpan Perubahan Pengumuman?' : 'Terbitkan Pengumuman Baru?',
+    message: id 
+      ? 'Perubahan pengumuman akan langsung diperbarui di website.' 
+      : 'Pengumuman baru akan langsung tersimpan dan aktif.',
+    detailsHtml: `<strong>Judul:</strong> ${escapeHtml(judulVal)}<br><strong>Kategori:</strong> ${escapeHtml(katVal)} | <strong>Status:</strong> ${aktifVal ? 'Aktif (Tayang)' : 'Draft (Nonaktif)'}`,
+    confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Terbitkan',
+    cancelText: 'Periksa Kembali',
+    type: 'save'
+  });
+
+  if (!confirmed) return;
+
+  const btn = document.getElementById('btn-submit-peng');
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-peng-text').textContent = 'Menyimpan…';
 
   try {
     const payload = {
-      judul:    document.getElementById('p-judul').value.trim(),
-      isi:      document.getElementById('p-isi').value.trim(),
-      kategori: document.getElementById('p-kategori').value,
-      tanggal:  document.getElementById('p-tanggal').value,
-      aktif:    document.getElementById('p-aktif').checked
+      judul:    judulVal,
+      isi:      isiVal,
+      kategori: katVal,
+      tanggal:  tglVal,
+      aktif:    aktifVal
     };
-
-    if (!payload.judul || !payload.isi) {
-      throw new Error('Judul dan isi pengumuman tidak boleh kosong.');
-    }
 
     let error;
     if (id) {
@@ -2332,10 +2460,6 @@ async function submitPengumuman(e) {
     alertEl.textContent = errMsg;
     alertEl.style.display = 'flex';
     toast(errMsg, 'error');
-    console.error('Submit pengumuman error:', err);
-  } finally {
-    btn.disabled = false;
-    document.getElementById('btn-peng-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Pengumuman';
   }
 }
 
@@ -2349,7 +2473,6 @@ async function toggleAktif(id, current) {
   } catch (err) {
     const errMsg = formatDbError(err, 'Gagal mengubah status pengumuman');
     toast(errMsg, 'error');
-    console.error('Toggle aktif error:', err);
   }
 }
 
@@ -2367,111 +2490,68 @@ function resolveAdminImgUrl(url) {
 }
 
 // ══════════════════════════════════════════
-//  GALERI KEGIATAN (CRUD + Drag & Drop + Error Handling)
+//  GALERI KEGIATAN (CRUD + Confirmation + Error Handling)
 // ══════════════════════════════════════════
 async function loadGaleri() {
-  const filter = document.getElementById('filter-kategori-galeri').value;
-  const el     = document.getElementById('galeri-content');
-  el.innerHTML = '<div class="empty-state"><p>Memuat data galeri kegiatan…</p></div>';
+  const el = document.getElementById('galeri-content');
+  el.innerHTML = '<div class="empty-state"><p>Memuat data galeri…</p></div>';
 
-  let data = null;
   try {
-    let q = db.from('galeri').select('*').order('urutan').order('tanggal', { ascending: false });
-    if (filter) q = q.eq('kategori', filter);
-    const res = await q;
-    if (!res.error && res.data) {
-      data = res.data;
+    const { data, error } = await db.from('galeri').select('*').order('urutan').order('created_at', { ascending: false });
+
+    let allItems = [];
+    _galeriMap = {};
+
+    if (!error && data && data.length > 0) {
+      allItems = data;
+    } else {
+      allItems = DEFAULT_GALERI_FALLBACK;
     }
-  } catch (e) {
-    console.warn('Database galeri fallback:', e);
-  }
 
-  // Default fallback if database table is empty or pending
-  if (!data || data.length === 0) {
-    const fallbackList = [
-      {
-        id: 'default-omk-1',
-        judul: 'Ziarah & Rekreasi OMK 2025',
-        kategori: 'omk',
-        foto_url: 'assets/img/galeri/kegiatanOMK.png',
-        tanggal: '2025-06-20',
-        keterangan: 'Kebersamaan kaum muda paroki dalam membangun persaudaraan dan iman.',
-        urutan: 0
-      }
-    ];
-    data = filter ? fallbackList.filter(item => item.kategori === filter) : fallbackList;
-  }
+    allItems.forEach(r => { _galeriMap[r.id] = r; });
 
-  if (!data.length) {
-    el.innerHTML = `<div class="empty-state"><p>Belum ada foto kegiatan dalam kategori ini.<br>Klik "+ Tambah Foto Kegiatan" untuk mengunggah dokumentasi.</p></div>`;
-    return;
-  }
-
-  _galeriMap = {};
-  data.forEach(r => { _galeriMap[r.id] = r; });
-
-  el.innerHTML = `
-    <div style="overflow-x:auto">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Foto</th>
-            <th>Judul Kegiatan</th>
-            <th>Kategori</th>
-            <th>Tanggal</th>
-            <th>Urutan</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${data.map((r, i) => {
-            const kat = KAT_GALERI_MAP[r.kategori] || { label: r.kategori || 'Kegiatan', bg: 'var(--gold)' };
-            const tgl = r.tanggal ? new Date(r.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '—';
-            return `
-              <tr>
-                <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
-                <td>
-                  <img src="${escapeHtml(resolveAdminImgUrl(r.foto_url))}" alt="${escapeHtml(r.judul)}" class="galeri-thumb-mini" onerror="this.src='../assets/img/galeri/kegiatanOMK.png'">
-                </td>
-                <td>
-                  <div style="font-weight:700;color:var(--ink);max-width:240px">${escapeHtml(r.judul)}</div>
-                  ${r.keterangan ? `<div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(r.keterangan)}</div>` : ''}
-                </td>
-                <td>
-                  <span class="badge" style="background:${kat.bg}18;color:${kat.bg};border:1px solid ${kat.bg}35">${escapeHtml(kat.label)}</span>
-                </td>
-                <td style="white-space:nowrap;font-size:0.78rem;color:var(--ink-soft)">${tgl}</td>
-                <td style="color:var(--ink-soft);font-size:0.75rem">${r.urutan ?? 0}</td>
-                <td>
-                  <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
-                    <button class="btn btn-edit btn-sm" onclick="editGaleri('${r.id}')" title="Edit foto kegiatan ini">
-                      Edit
-                    </button>
-                    <button class="btn btn-delete btn-sm" onclick="confirmDelete('galeri','${r.id}','foto kegiatan ini','loadGaleri')" title="Hapus foto kegiatan ini">
-                      Hapus
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            `;
-          }).join('')}
-        </tbody>
-      </table>
-      <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
-        Menampilkan ${data.length} foto kegiatan
+    el.innerHTML = `
+      <div class="galeri-admin-grid">
+        ${allItems.map(r => {
+          const resolvedImg = resolveAdminImgUrl(r.foto_url);
+          return `
+            <div class="galeri-admin-card">
+              <div class="galeri-admin-thumb">
+                <img src="${escapeHtml(resolvedImg)}" alt="${escapeHtml(r.judul)}" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--ink-soft);font-size:0.75rem\\'>Foto tidak ditemukan</div>';">
+                <span class="badge badge-gold galeri-badge">${escapeHtml(r.kategori)}</span>
+              </div>
+              <div class="galeri-admin-body">
+                <h4 class="galeri-admin-title">${escapeHtml(r.judul)}</h4>
+                <div class="galeri-admin-meta">
+                  <span>📅 ${escapeHtml(r.tanggal || '—')}</span>
+                  ${r.keterangan ? `<span>📝 ${escapeHtml(r.keterangan)}</span>` : ''}
+                </div>
+                <div class="galeri-admin-actions">
+                  <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center" onclick="editGaleri('${r.id}')">
+                    Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" style="flex:1;justify-content:center" onclick="confirmDelete('galeri', '${r.id}', '${escapeHtml(r.judul)}', 'loadGaleri')">
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
       </div>
-    </div>
-  `;
+    `;
+  } catch (err) {
+    el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(err.message)}</p></div>`;
+  }
 }
 
 function openGaleriModal(data = null) {
-  document.getElementById('gid').value          = data?.id && !String(data.id).startsWith('default-') ? data.id : '';
+  document.getElementById('gid').value          = data?.id || '';
   document.getElementById('g-judul').value      = data?.judul || '';
-  document.getElementById('g-kategori').value   = data?.kategori || 'omk';
+  document.getElementById('g-kategori').value   = data?.kategori || 'ibadat';
   document.getElementById('g-tanggal').value    = data?.tanggal || new Date().toISOString().split('T')[0];
   document.getElementById('g-foto').value       = data?.foto_url || '';
-  document.getElementById('g-foto-manual').value = data?.foto_url || '';
+  document.getElementById('g-foto-manual').value= data?.foto_url || '';
   document.getElementById('g-keterangan').value = data?.keterangan || '';
   document.getElementById('g-urutan').value     = data?.urutan ?? 0;
   document.getElementById('galeri-alert').style.display = 'none';
@@ -2492,38 +2572,63 @@ function editGaleri(id) { openGaleriModal(_galeriMap[id]); }
 async function submitGaleri(e) {
   e.preventDefault();
   const id      = document.getElementById('gid').value;
-  const btn     = document.getElementById('btn-submit-galeri');
   const alertEl = document.getElementById('galeri-alert');
 
   // Change detection for edit
   if (id && !isFormDirty('modal-galeri')) {
-    toast('Tidak ada perubahan foto kegiatan yang disimpan.', 'info');
+    toast('Tidak ada perubahan foto kegiatan yang dilakukan.', 'info');
     closeModal('modal-galeri');
     return;
   }
 
+  const fotoUrl = document.getElementById('g-foto').value.trim();
+  const judul   = document.getElementById('g-judul').value.trim();
+  const kat     = document.getElementById('g-kategori').value;
+  const tgl     = document.getElementById('g-tanggal').value || null;
+  const ket     = document.getElementById('g-keterangan').value.trim();
+  const urutan  = parseInt(document.getElementById('g-urutan').value) || 0;
+
+  if (!judul) {
+    alertEl.textContent = 'Judul kegiatan tidak boleh kosong.';
+    alertEl.style.display = 'flex';
+    toast('Judul kegiatan wajib diisi', 'error');
+    return;
+  }
+  if (!fotoUrl) {
+    alertEl.textContent = 'Silakan pilih/tarik foto kegiatan ke dalam kotak unggah terlebih dahulu.';
+    alertEl.style.display = 'flex';
+    toast('Foto kegiatan belum dipilih', 'error');
+    return;
+  }
+
+  // Confirmation handling
+  const confirmed = await showConfirmModal({
+    title: id ? 'Konfirmasi Simpan Foto Galeri' : 'Konfirmasi Tambah Foto Galeri',
+    heading: id ? 'Simpan Perubahan Foto Kegiatan?' : 'Tambahkan Foto ke Galeri Kegiatan?',
+    message: id 
+      ? 'Perubahan judul, kategori, dan foto kegiatan akan diperbarui di galeri paroki.' 
+      : 'Foto dokumentasi kegiatan baru akan langsung tampil di galeri paroki.',
+    detailsHtml: `<strong>Judul:</strong> ${escapeHtml(judul)}<br><strong>Kategori:</strong> ${escapeHtml(kat)}`,
+    confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Tambahkan ke Galeri',
+    cancelText: 'Periksa Kembali',
+    type: 'save'
+  });
+
+  if (!confirmed) return;
+
+  const btn = document.getElementById('btn-submit-galeri');
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-galeri-text').textContent = 'Menyimpan…';
 
   try {
-    const fotoUrl = document.getElementById('g-foto').value.trim();
-    const judul   = document.getElementById('g-judul').value.trim();
-
-    if (!judul) {
-      throw new Error('Judul kegiatan tidak boleh kosong.');
-    }
-    if (!fotoUrl) {
-      throw new Error('Silakan pilih/tarik foto kegiatan ke dalam kotak unggah terlebih dahulu.');
-    }
-
     const payload = {
       judul:      judul,
-      kategori:   document.getElementById('g-kategori').value,
-      tanggal:    document.getElementById('g-tanggal').value || null,
+      kategori:   kat,
+      tanggal:    tgl,
       foto_url:   fotoUrl,
-      keterangan: document.getElementById('g-keterangan').value.trim(),
-      urutan:     parseInt(document.getElementById('g-urutan').value) || 0,
+      keterangan: ket,
+      urutan:     urutan,
       updated_at: new Date().toISOString()
     };
 
@@ -2546,7 +2651,6 @@ async function submitGaleri(e) {
     alertEl.textContent = errMsg;
     alertEl.style.display = 'flex';
     toast(errMsg, 'error');
-    console.error('Submit galeri error:', err);
   } finally {
     btn.disabled = false;
     document.getElementById('btn-galeri-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Foto Kegiatan';
@@ -2554,7 +2658,7 @@ async function submitGaleri(e) {
 }
 
 // ══════════════════════════════════════════
-//  DATA & FOTO STASI (CRUD + Drag & Drop + Error Handling)
+//  DATA & FOTO STASI (CRUD + Drag & Drop + Confirmation + Error Handling)
 // ══════════════════════════════════════════
 async function loadStasiAdmin() {
   const el = document.getElementById('stasi-content');
@@ -2641,16 +2745,44 @@ function openStasiModal(key) {
 async function submitStasiAdmin(e) {
   e.preventDefault();
   const id      = document.getElementById('s-id').value;
-  const btn     = document.getElementById('btn-submit-stasi');
   const alertEl = document.getElementById('stasi-alert');
 
   // Change detection for stasi
   if (!isFormDirty('modal-stasi')) {
-    toast('Tidak ada perubahan data stasi yang disimpan.', 'info');
+    toast('Tidak ada perubahan data stasi yang dilakukan.', 'info');
     closeModal('modal-stasi');
     return;
   }
 
+  const nama       = document.getElementById('s-nama').value.trim();
+  const pelindung  = document.getElementById('s-pelindung').value.trim();
+  const pesta_nama = document.getElementById('s-pesta').value.trim();
+  const role       = document.getElementById('s-role').value.trim();
+  const foto_url   = document.getElementById('s-foto').value.trim();
+  const alamat     = document.getElementById('s-alamat').value.trim();
+  const gmaps_url  = document.getElementById('s-maps').value.trim();
+
+  if (!pelindung || !alamat) {
+    alertEl.textContent = 'Nama pelindung dan alamat stasi wajib diisi.';
+    alertEl.style.display = 'flex';
+    toast('Nama pelindung & alamat wajib diisi', 'error');
+    return;
+  }
+
+  // Confirmation handling
+  const confirmed = await showConfirmModal({
+    title: 'Konfirmasi Simpan Data Stasi',
+    heading: `Simpan Perubahan Stasi ${escapeHtml(nama)}?`,
+    message: 'Data pelindung, alamat, tautan maps, dan foto bangunan stasi akan diperbarui di seluruh website paroki.',
+    detailsHtml: `<strong>Stasi:</strong> ${escapeHtml(nama)}<br><strong>Pelindung:</strong> ${escapeHtml(pelindung)}<br><strong>Alamat:</strong> ${escapeHtml(alamat)}`,
+    confirmText: 'Ya, Simpan Perubahan',
+    cancelText: 'Periksa Kembali',
+    type: 'save'
+  });
+
+  if (!confirmed) return;
+
+  const btn = document.getElementById('btn-submit-stasi');
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-stasi-text').textContent = 'Menyimpan…';
@@ -2697,21 +2829,29 @@ async function submitStasiAdmin(e) {
 }
 
 // ══════════════════════════════════════════
-//  HAPUS (Konfirmasi + Error Handling)
+//  HAPUS (Konfirmasi Universal + Error Handling)
 // ══════════════════════════════════════════
-function confirmDelete(table, id, desc, cb) {
+async function confirmDelete(table, id, desc, cb) {
   _deleteTable = table;
   _deleteId    = id;
   _deleteCb    = cb;
-  document.getElementById('confirm-desc').textContent = `"${desc}" akan dihapus permanen dan tidak dapat dikembalikan.`;
-  openModal('modal-confirm');
+
+  const confirmed = await showConfirmModal({
+    title: 'Konfirmasi Hapus Data',
+    heading: 'Hapus data ini secara permanen?',
+    message: 'Data yang dihapus tidak dapat dipulihkan kembali dari database.',
+    detailsHtml: `<strong>Target Data:</strong> ${escapeHtml(desc)}`,
+    confirmText: 'Hapus Sekarang',
+    cancelText: 'Batal',
+    type: 'delete',
+    danger: true
+  });
+
+  if (!confirmed) return;
+  await execDelete();
 }
 
 async function execDelete() {
-  const btn = document.getElementById('btn-confirm-delete');
-  btn.disabled = true;
-  btn.textContent = 'Menghapus…';
-
   try {
     let error = null;
     if (!String(_deleteId).startsWith('default-')) {
@@ -2721,7 +2861,6 @@ async function execDelete() {
 
     if (error) throw error;
 
-    closeModal('modal-confirm');
     toast('Data berhasil dihapus dari database.');
     if (_deleteCb === 'loadJadwal')     loadJadwal();
     if (_deleteCb === 'loadPengumuman') loadPengumuman();
@@ -2729,13 +2868,9 @@ async function execDelete() {
     if (_deleteCb === 'loadPesan')      loadPesan();
     loadCounters();
   } catch (err) {
-    closeModal('modal-confirm');
     const errMsg = formatDbError(err, 'Gagal menghapus data');
     toast(errMsg, 'error');
     console.error('Delete error:', err);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Hapus Sekarang';
   }
 }
 
