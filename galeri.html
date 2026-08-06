@@ -50,14 +50,17 @@
     </div>
 
     <!-- ── Gallery Grid ── -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 reveal" id="full-gallery">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 reveal" id="full-gallery">
       <!-- OMK Default Fallback -->
-      <div class="gallery-item" data-category="omk">
-        <img src="assets/img/galeri/kegiatanOMK.png" alt="Ziarah & Rekreasi OMK 2025">
-        <div class="gallery-badge" style="background:#0d9488">OMK</div>
-        <div class="gallery-overlay">
-          <span class="gallery-title">Ziarah &amp; Rekreasi OMK 2025</span>
-          <span class="gallery-sub">Kebersamaan Kaum Muda Paroki</span>
+      <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="omk" style="background:var(--surface);border:1px solid var(--border)">
+        <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
+          <img src="assets/img/galeri/kegiatanOMK.png" alt="Ziarah & Rekreasi OMK 2025" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="gallery-badge" style="background:#0d9488">OMK</div>
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">📅 2025</span>
+          <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Ziarah &amp; Rekreasi OMK 2025</h3>
+          <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Kebersamaan kaum muda paroki dalam membangun persaudaraan dan iman.</p>
         </div>
       </div>
     </div>
@@ -109,14 +112,17 @@ async function loadDynamicGaleri() {
 
       container.innerHTML = data.map(item => {
         const kat = KAT_STYLE_MAP[item.kategori] || { label: item.kategori || 'Kegiatan', bg: 'var(--gold)' };
-        const sub = item.keterangan || (item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '');
+        const formattedDate = item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '';
         return `
-          <div class="gallery-item" data-category="${item.kategori || 'omk'}">
-            <img src="${item.foto_url}" alt="${item.judul}" onerror="this.src='assets/img/galeri/kegiatanOMK.png'">
-            <div class="gallery-badge" style="background:${kat.bg}">${kat.label}</div>
-            <div class="gallery-overlay">
-              <span class="gallery-title">${item.judul}</span>
-              ${sub ? `<span class="gallery-sub">${sub}</span>` : ''}
+          <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="${item.kategori || 'omk'}" style="background:var(--surface);border:1px solid var(--border)">
+            <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
+              <img src="${item.foto_url}" alt="${item.judul}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/img/galeri/kegiatanOMK.png'">
+              <div class="gallery-badge" style="background:${kat.bg}">${kat.label}</div>
+            </div>
+            <div class="p-4 flex flex-col flex-grow">
+              ${formattedDate ? `<span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">📅 ${formattedDate}</span>` : ''}
+              <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">${item.judul}</h3>
+              ${item.keterangan ? `<p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">${item.keterangan}</p>` : ''}
             </div>
           </div>
         `;

@@ -309,10 +309,15 @@ function ensureLightboxInDOM() {
             <button class="lb-close" title="Tutup">&times;</button>
             <button class="lb-prev" title="Sebelumnya">&#10094;</button>
             <button class="lb-next" title="Selanjutnya">&#10095;</button>
-            <div id="lightbox-content">
-                <img id="lightbox-img" src="" alt="">
-                <div class="mt-6 text-center" style="width:100%">
-                    <p id="lightbox-caption" class="text-white text-lg font-bold px-4 py-2 mx-auto inline-block rounded-2xl" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px)"></p>
+            <div id="lightbox-content" style="max-width:min(92vw, 950px);width:100%;display:flex;flex-direction:column;align-items:center;">
+                <img id="lightbox-img" src="" alt="" style="max-height:70vh;width:auto;height:auto;object-fit:contain;border-radius:1rem;box-shadow:0 24px 64px rgba(0,0,0,0.6)">
+                <div id="lightbox-info-box" class="mt-4 text-center px-6 py-4 rounded-2xl max-w-xl mx-auto w-full" style="background:rgba(28,28,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12)">
+                    <div class="flex items-center justify-center gap-2 mb-1.5">
+                        <span id="lightbox-badge" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white" style="display:none"></span>
+                        <span id="lightbox-date" class="text-xs text-amber-400 font-medium" style="display:none"></span>
+                    </div>
+                    <h4 id="lightbox-title" class="text-white text-base md:text-lg font-bold leading-snug"></h4>
+                    <p id="lightbox-desc" class="text-gray-300 text-xs md:text-sm mt-1.5 leading-relaxed" style="display:none"></p>
                 </div>
             </div>
             <div id="lightbox-counter"></div>
@@ -335,12 +340,21 @@ function ensureLightboxInDOM() {
 }
 
 function buildLightboxImages() {
-    const items = document.querySelectorAll('.gallery-item:not([style*="display: none"])');
+    const items = document.querySelectorAll('.gallery-item:not([style*="display: none"]), .gallery-card:not([style*="display: none"])');
     lightboxImages = Array.from(items).map(item => {
         const img = item.querySelector('img');
+        const titleEl = item.querySelector('.gallery-title, h3, h4');
+        const descEl = item.querySelector('.gallery-desc, .gallery-sub, p');
+        const dateEl = item.querySelector('.gallery-date');
+        const badgeEl = item.querySelector('.gallery-badge');
         return {
             src: img ? img.src : '',
-            alt: img ? img.alt : ''
+            alt: img ? img.alt : '',
+            title: titleEl ? titleEl.textContent.trim() : (img ? img.alt : ''),
+            keterangan: descEl ? descEl.textContent.trim() : '',
+            date: dateEl ? dateEl.textContent.trim() : '',
+            badge: badgeEl ? badgeEl.textContent.trim() : '',
+            badgeBg: badgeEl ? (badgeEl.style.backgroundColor || badgeEl.style.background) : ''
         };
     }).filter(item => item.src);
 }
@@ -356,6 +370,7 @@ function openLightbox(src, alt) {
     if (lb) {
         lb.classList.remove('hidden');
         lb.classList.add('active');
+        document.body.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
     }
 }
@@ -366,6 +381,7 @@ function closeLightbox() {
         lb.classList.add('closing');
         setTimeout(() => {
             lb.classList.remove('active', 'closing');
+            document.body.classList.remove('modal-open');
             document.body.style.overflow = '';
         }, 250);
     }
@@ -382,14 +398,46 @@ function renderLightbox() {
     if (!data) return;
 
     const img = document.getElementById('lightbox-img');
-    const caption = document.getElementById('lightbox-caption');
+    const titleEl = document.getElementById('lightbox-title');
+    const descEl = document.getElementById('lightbox-desc');
+    const badgeEl = document.getElementById('lightbox-badge');
+    const dateEl = document.getElementById('lightbox-date');
     const counter = document.getElementById('lightbox-counter');
 
     if (img) {
         img.src = data.src;
-        img.alt = data.alt;
+        img.alt = data.title || data.alt;
     }
-    if (caption) caption.textContent = data.alt;
+    if (titleEl) titleEl.textContent = data.title || data.alt;
+
+    if (descEl) {
+        if (data.keterangan && data.keterangan !== data.title) {
+            descEl.textContent = data.keterangan;
+            descEl.style.display = 'block';
+        } else {
+            descEl.style.display = 'none';
+        }
+    }
+
+    if (badgeEl) {
+        if (data.badge) {
+            badgeEl.textContent = data.badge;
+            if (data.badgeBg) badgeEl.style.background = data.badgeBg;
+            badgeEl.style.display = 'inline-block';
+        } else {
+            badgeEl.style.display = 'none';
+        }
+    }
+
+    if (dateEl) {
+        if (data.date) {
+            dateEl.textContent = data.date;
+            dateEl.style.display = 'inline-block';
+        } else {
+            dateEl.style.display = 'none';
+        }
+    }
+
     if (counter) counter.textContent = `${currentLightboxIndex + 1} / ${lightboxImages.length}`;
 }
 
@@ -427,7 +475,7 @@ document.addEventListener('keydown', e => {
 
 // ── Gallery Initializer ──────────────────────────────────────
 function setupGalleryClicks() {
-    document.querySelectorAll('.gallery-item').forEach(item => {
+    document.querySelectorAll('.gallery-item, .gallery-card').forEach(item => {
         item.removeAttribute('onclick'); 
         item.addEventListener('click', () => {
             const img = item.querySelector('img');
@@ -446,7 +494,7 @@ function setupFilters() {
             btn.classList.add('active-filter');
 
             const filter = btn.dataset.filter || 'all';
-            const items = document.querySelectorAll('.gallery-item');
+            const items = document.querySelectorAll('.gallery-item, .gallery-card');
             let visibleCount = 0;
 
             items.forEach(item => {

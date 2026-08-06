@@ -238,12 +238,16 @@ class ModernFooter extends HTMLElement {
             }
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+            document.body.classList.add('modal-open');
+            document.body.style.overflow = 'hidden';
             document.getElementById('secretEmail').focus();
         };
 
         const closePortal = () => {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
             errBox.classList.add('hidden');
             errBox.classList.remove('flex');
         };

@@ -72,6 +72,24 @@
   justify-content: center;
   padding: 0 1rem;
   pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* ── Smoothly hide navigation when modal / lightbox is open ── */
+.floating-nav-container {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+body.modal-open .floating-nav-container {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-20px);
+}
+
+body.modal-open .mobile-bottom-dock {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(20px);
 }
 
 .dock-inner {

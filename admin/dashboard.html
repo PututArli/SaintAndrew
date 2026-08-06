@@ -945,7 +945,10 @@
                 <img id="g-preview-img" class="dropzone-preview-img" src="" alt="Preview Foto">
                 <div class="dropzone-actions">
                   <button type="button" class="btn btn-ghost btn-sm" onclick="triggerFileInput('g-file-input')">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Ganti Foto
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Ganti Berkas
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="toggleUrlInput('g')">
+                    🔗 Input URL
                   </button>
                   <button type="button" class="btn btn-delete btn-sm" onclick="removeImage('g')">
                     Hapus Foto
@@ -955,14 +958,17 @@
             </div>
 
             <!-- Optional manual URL input toggle -->
-            <div style="margin-top:0.4rem;display:flex;align-items:center;justify-content:space-between">
+            <div style="margin-top:0.45rem;display:flex;align-items:center;justify-content:space-between">
               <span class="form-hint" id="g-status-hint">Tarik foto ke kotak di atas atau pilih berkas dari komputer</span>
-              <button type="button" class="btn btn-ghost btn-sm" style="font-size:0.68rem;padding:0.2rem 0.55rem" onclick="toggleUrlInput('g')">
-                Atau input URL
+              <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-url-g" style="font-size:0.7rem;padding:0.25rem 0.6rem" onclick="toggleUrlInput('g')">
+                🔗 Input URL Gambar
               </button>
             </div>
-            <div id="g-url-wrap" style="display:none;margin-top:0.4rem">
-              <input id="g-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/galeri/..." oninput="handleManualUrlInput('g')">
+            <div id="g-url-wrap" style="display:none;margin-top:0.45rem;gap:0.4rem;align-items:center">
+              <input id="g-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/galeri/..." oninput="handleManualUrlInput('g')" onkeydown="if(event.key==='Enter'){event.preventDefault();applyManualUrl('g');}" style="flex:1">
+              <button type="button" class="btn btn-primary btn-sm" onclick="applyManualUrl('g')" style="white-space:nowrap;padding:0.45rem 0.75rem">
+                Terapkan
+              </button>
             </div>
           </div>
         </div>
@@ -1052,7 +1058,10 @@
                 <img id="s-preview-img" class="dropzone-preview-img" src="" alt="Preview Foto Stasi">
                 <div class="dropzone-actions">
                   <button type="button" class="btn btn-ghost btn-sm" onclick="triggerFileInput('s-file-input')">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Ganti Foto
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Ganti Berkas
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="toggleUrlInput('s')">
+                    🔗 Input URL
                   </button>
                   <button type="button" class="btn btn-delete btn-sm" onclick="removeImage('s')">
                     Hapus Foto
@@ -1062,11 +1071,8 @@
             </div>
 
             <!-- Optional manual URL input toggle -->
-            <div style="margin-top:0.4rem;display:flex;align-items:center;justify-content:space-between">
+            <div style="margin-top:0.45rem;display:flex;align-items:center;justify-content:space-between">
               <span class="form-hint" id="s-status-hint">Kosongkan jika stasi dalam tahap pembangunan</span>
-              <button type="button" class="btn btn-ghost btn-sm" style="font-size:0.68rem;padding:0.2rem 0.55rem" onclick="toggleUrlInput('s')">
-                Atau input URL
-              </button>
             </div>
             <div id="s-url-wrap" style="display:none;margin-top:0.4rem">
               <input id="s-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/stasi/..." oninput="handleManualUrlInput('s')">
@@ -1638,17 +1644,54 @@ function removeImage(prefix) {
 function toggleUrlInput(prefix) {
   const wrap = document.getElementById(`${prefix}-url-wrap`);
   if (!wrap) return;
-  wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
-  if (wrap.style.display === 'block') {
+  const isHidden = wrap.style.display === 'none' || !wrap.style.display;
+  wrap.style.display = isHidden ? 'flex' : 'none';
+  if (isHidden) {
     const manualInput = document.getElementById(`${prefix}-foto-manual`);
-    manualInput.focus();
+    if (manualInput) {
+      manualInput.focus();
+      manualInput.select();
+    }
   }
 }
 
 function handleManualUrlInput(prefix) {
-  const val = document.getElementById(`${prefix}-foto-manual`).value.trim();
+  const manualInput = document.getElementById(`${prefix}-foto-manual`);
+  const val = (manualInput?.value || '').trim();
+  document.getElementById(`${prefix}-foto`).value = val;
+  const hintEl = document.getElementById(`${prefix}-status-hint`);
+
+  if (!val) {
+    setDropzonePreview(prefix, '');
+    if (hintEl) hintEl.textContent = prefix === 'g' ? 'Tarik foto ke kotak di atas atau pilih berkas' : 'Kosongkan jika stasi dalam tahap pembangunan';
+    return;
+  }
+
+  if (val.length > 5 && (val.startsWith('http://') || val.startsWith('https://') || val.startsWith('assets/') || val.startsWith('data:'))) {
+    setDropzonePreview(prefix, val);
+    if (hintEl) hintEl.textContent = '✓ URL foto diterapkan.';
+  }
+}
+
+function applyManualUrl(prefix) {
+  const manualInput = document.getElementById(`${prefix}-foto-manual`);
+  const val = (manualInput?.value || '').trim();
+  const alertEl = document.getElementById(prefix === 'g' ? 'galeri-alert' : 'stasi-alert');
+  const hintEl = document.getElementById(`${prefix}-status-hint`);
+
+  if (alertEl) alertEl.style.display = 'none';
+
+  if (!val) {
+    document.getElementById(`${prefix}-foto`).value = '';
+    setDropzonePreview(prefix, '');
+    if (hintEl) hintEl.textContent = prefix === 'g' ? 'Silakan pilih foto atau masukkan URL.' : 'Kosongkan jika stasi dalam tahap pembangunan';
+    return;
+  }
+
   document.getElementById(`${prefix}-foto`).value = val;
   setDropzonePreview(prefix, val);
+  if (hintEl) hintEl.textContent = '✓ URL foto berhasil diterapkan.';
+  toast('URL foto berhasil diterapkan.');
 }
 
 function initDropzones() {
