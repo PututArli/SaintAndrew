@@ -58,19 +58,27 @@ class ModernFooter extends HTMLElement {
                         <h4 class="font-semibold text-sm tracking-widest uppercase mb-5" style="color:rgba(255,255,255,0.55)">Kontak</h4>
                         <ul class="space-y-3.5 text-sm list-none" style="color:rgba(255,255,255,0.45)">
                             <li class="flex items-start gap-3">
-                                <span class="mt-0.5" style="color:rgba(184,134,11,0.7)">📍</span>
+                                <span class="mt-1" style="color:rgba(184,134,11,0.7)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                </span>
                                 <span>Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365</span>
                             </li>
                             <li class="flex items-center gap-3">
-                                <span style="color:rgba(184,134,11,0.7)">📞</span>
+                                <span style="color:rgba(184,134,11,0.7)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                </span>
                                 <span>(0721) 755300</span>
                             </li>
                             <li class="flex items-center gap-3">
-                                <span style="color:rgba(184,134,11,0.7)">✉️</span>
+                                <span style="color:rgba(184,134,11,0.7)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                </span>
                                 <a href="mailto:parokimargaagung@gmail.com" class="transition-colors break-all" style="color:rgba(255,255,255,0.45)" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">parokimargaagung@gmail.com</a>
                             </li>
                             <li class="flex items-start gap-3">
-                                <span class="mt-0.5" style="color:rgba(184,134,11,0.7)">🕐</span>
+                                <span class="mt-1" style="color:rgba(184,134,11,0.7)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </span>
                                 <span>Sen–Jum: 08:00–15:00<br>Sab–Min: 08:00–12:00</span>
                             </li>
                         </ul>
@@ -81,9 +89,9 @@ class ModernFooter extends HTMLElement {
                 <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.28)">
                     <span>© 2026 Paroki Santo Andreas Rasul Marga Agung.</span>
                     <div class="flex items-center gap-3">
-                        <span class="flex items-center gap-1.5">Dibuat dengan <span style="color:#B8860B">♥</span> untuk umat paroki</span>
-                        <button id="adminPortalTrigger" class="text-[11px] opacity-20 hover:opacity-100 transition-opacity flex items-center gap-1 cursor-pointer bg-transparent border-0 p-1" style="color:rgba(255,255,255,0.6)" title="Portal Khusus">
-                            🔒
+                        <span class="flex items-center gap-1.5">Dibuat untuk umat paroki</span>
+                        <button id="adminPortalTrigger" class="text-[11px] opacity-20 hover:opacity-100 transition-opacity flex items-center gap-1 cursor-pointer bg-transparent border-0 p-1" style="color:rgba(255,255,255,0.6)" title="Akses Admin">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </button>
                     </div>
                 </div>
@@ -108,7 +116,6 @@ class ModernFooter extends HTMLElement {
                 </div>
 
                 <div id="secretErrorBox" class="hidden mb-4 p-3 rounded-xl text-xs bg-red-50 border border-red-200 text-red-700 items-center gap-2">
-                    <span>⚠️</span>
                     <span id="secretErrorMsg">Email atau kata sandi salah.</span>
                 </div>
 
@@ -138,7 +145,7 @@ class ModernFooter extends HTMLElement {
                     <p id="secretLoggedInEmail" class="text-xs text-gray-500 mt-1 mb-5">admin@paroki.com</p>
                     <div class="flex gap-2">
                         <a href="admin/dashboard.html" class="flex-1 py-2.5 rounded-xl font-semibold text-xs text-white text-center flex items-center justify-center gap-1.5 transition-all" style="background:#1C1C1E;text-decoration:none">
-                            ⚙️ Buka Dashboard
+                            Buka Dashboard
                         </a>
                         <button id="secretLogoutBtn" type="button" class="px-4 py-2.5 rounded-xl font-semibold text-xs transition-all" style="background:#FEF2F2;color:#DC2626;border:1px solid rgba(220,38,38,0.15);cursor:pointer">
                             Keluar
@@ -152,7 +159,7 @@ class ModernFooter extends HTMLElement {
         <div id="adminQuickPill" class="fixed bottom-5 right-5 z-[9990] hidden items-center gap-2 px-4 py-2.5 rounded-full shadow-2xl transition-all duration-200" style="background:#101012;border:1px solid rgba(184,134,11,0.3);box-shadow:0 8px 30px rgba(0,0,0,0.35)">
             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             <a href="admin/dashboard.html" class="text-xs font-semibold text-white hover:text-[#D4A017] transition-colors flex items-center gap-1.5" style="text-decoration:none">
-                ⚙️ Mode Admin <span class="text-gray-400 font-normal">| Buka Dashboard ›</span>
+                Mode Admin <span class="text-gray-400 font-normal">| Buka Dashboard ›</span>
             </a>
         </div>
         `;
