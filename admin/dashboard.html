@@ -512,7 +512,7 @@
         <div class="card-head">
           <div style="flex:1">
             <div class="card-head-title">Manajemen Jadwal Misa</div>
-            <div class="card-head-sub">Daftar jadwal perayaan Ekaristi di gereja pusat dan stasi</div>
+            <div class="card-head-sub">Daftar jadwal perayaan Ekaristi di gereja paroki dan stasi</div>
           </div>
           <button class="btn btn-primary" onclick="openJadwalModal()">
             <span>＋</span> Tambah Jadwal
@@ -524,7 +524,7 @@
           <span class="filter-label">Filter Stasi:</span>
           <select id="filter-stasi" class="filter-select" onchange="loadJadwal()">
             <option value="">Semua Stasi</option>
-            <option value="pusat">Margo Agung (Pusat)</option>
+            <option value="pusat">Margo Agung</option>
             <option value="marga-lestari">Marga Lestari</option>
             <option value="rejomulyo">Rejomulyo</option>
             <option value="sukadamai">Sukadamai</option>
@@ -591,7 +591,7 @@
             <label class="form-label">Stasi <span class="req">*</span></label>
             <select id="j-stasi" class="form-ctrl" required>
               <option value="">— Pilih Stasi —</option>
-              <option value="pusat">Margo Agung (Pusat)</option>
+              <option value="pusat">Margo Agung</option>
               <option value="marga-lestari">Marga Lestari</option>
               <option value="rejomulyo">Rejomulyo</option>
               <option value="sukadamai">Sukadamai</option>
@@ -743,7 +743,7 @@
 <script>
 // ── Constants ──────────────────────────────────────────────
 const STASI_MAP = {
-  'pusat':        'Margo Agung (Pusat)',
+  'pusat':        'Margo Agung',
   'marga-lestari':'Marga Lestari',
   'rejomulyo':    'Rejomulyo',
   'sukadamai':    'Sukadamai',

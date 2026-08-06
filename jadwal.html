@@ -26,13 +26,13 @@
 
   <div class="max-w-5xl mx-auto px-6 py-16 space-y-14">
 
-    <!-- ── Gereja Pusat ── -->
+    <!-- ── Gereja Paroki ── -->
     <section class="reveal">
       <div class="flex items-center gap-3 mb-6">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
         <div>
           <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold)">Gereja Paroki</div>
-          <h2 class="font-bold text-xl" style="color:var(--ink)">Margo Agung (Pusat)</h2>
+          <h2 class="font-bold text-xl" style="color:var(--ink)">Margo Agung</h2>
         </div>
       </div>
 
@@ -126,7 +126,7 @@
 <script>
 // ── Load Jadwal from Supabase ──────────────────────
 const STASI_INFO = {
-  'pusat':        { label: 'Margo Agung (Pusat)', sub: 'Santo Andreas Rasul' },
+  'pusat':        { label: 'Margo Agung',         sub: 'Santo Andreas Rasul' },
   'marga-lestari':{ label: 'Marga Lestari',       sub: 'Santa Maria' },
   'rejomulyo':    { label: 'Rejomulyo',            sub: 'Tritunggal Mahakudus' },
   'sukadamai':    { label: 'Sukadamai',            sub: 'Santo Yusuf' },
@@ -150,12 +150,12 @@ function escapeHtml(str) {
     if (error) throw error;
 
     if (!data || data.length === 0) {
-      if (pusatEl) pusatEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal pusat.</td></tr>';
+      if (pusatEl) pusatEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal gereja paroki.</td></tr>';
       if (stasiEl) stasiEl.innerHTML = '<div class="info-card" style="text-align:center;grid-column:1/-1;padding:2rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal stasi.</div>';
       return;
     }
 
-    // Update tabel jadwal pusat
+    // Update tabel jadwal gereja paroki
     const pusatRows = data.filter(r => (r.stasi || '').toLowerCase() === 'pusat');
     if (pusatEl) {
       if (pusatRows.length > 0) {
@@ -167,7 +167,7 @@ function escapeHtml(str) {
           </tr>
         `).join('');
       } else {
-        pusatEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal misa pusat.</td></tr>';
+        pusatEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Belum ada jadwal misa gereja paroki.</td></tr>';
       }
     }
 

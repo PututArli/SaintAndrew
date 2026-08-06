@@ -1,6 +1,6 @@
 const stasiData = {
     'margo-agung': {
-        title: 'Stasi Margo Agung (Pusat)',
+        title: 'Gereja Paroki Margo Agung',
         patron: 'Santo Andreas Rasul',
         patronFeast: '30 November',
         patronRole: 'Rasul Pertama & Saudara Simon Petrus',
