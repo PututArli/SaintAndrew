@@ -508,6 +508,28 @@ if (document.readyState === 'loading') {
 
 // ── Sync Stasi Data from Supabase ────────────────────────────
 async function syncStasiFromSupabase() {
+    // 1. First sync from localStorage cache if available
+    try {
+        const cached = localStorage.getItem('saint_andrew_stasi_cache');
+        if (cached) {
+            const parsed = JSON.parse(cached);
+            Object.values(parsed).forEach(item => {
+                if (stasiData[item.id]) {
+                    if (item.nama) stasiData[item.id].title = item.nama;
+                    if (item.pelindung) stasiData[item.id].patron = item.pelindung;
+                    if (item.pesta_nama) stasiData[item.id].patronFeast = item.pesta_nama;
+                    if (item.role || item.peran_pelindung) stasiData[item.id].patronRole = item.role || item.peran_pelindung;
+                    if (item.biografi_pelindung) stasiData[item.id].patronBio = item.biografi_pelindung;
+                    if (item.alamat) stasiData[item.id].address = item.alamat;
+                    if (item.gmaps_url) stasiData[item.id].gmapsUrl = item.gmaps_url;
+                    if (item.foto_url) stasiData[item.id].image = item.foto_url;
+                    if (item.sejarah) stasiData[item.id].history = item.sejarah;
+                }
+            });
+        }
+    } catch (e) {}
+
+    // 2. Fetch live data from Supabase
     if (typeof db === 'undefined') return;
     try {
         const { data, error } = await db.from('stasi').select('*');
@@ -517,7 +539,7 @@ async function syncStasiFromSupabase() {
                     if (item.nama) stasiData[item.id].title = item.nama;
                     if (item.pelindung) stasiData[item.id].patron = item.pelindung;
                     if (item.pesta_nama) stasiData[item.id].patronFeast = item.pesta_nama;
-                    if (item.peran_pelindung) stasiData[item.id].patronRole = item.peran_pelindung;
+                    if (item.role || item.peran_pelindung) stasiData[item.id].patronRole = item.role || item.peran_pelindung;
                     if (item.biografi_pelindung) stasiData[item.id].patronBio = item.biografi_pelindung;
                     if (item.alamat) stasiData[item.id].address = item.alamat;
                     if (item.gmaps_url) stasiData[item.id].gmapsUrl = item.gmaps_url;

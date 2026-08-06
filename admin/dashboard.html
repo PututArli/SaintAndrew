@@ -403,6 +403,57 @@
   .confirm-box h3 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 0.5rem; }
   .confirm-box p { font-size: 0.85rem; color: var(--ink-soft); max-width: 320px; margin: 0 auto; line-height: 1.5; }
 
+  /* ═══ DRAG & DROP UPLOAD ZONE ═══ */
+  .dropzone-box {
+    width: 100%; border: 2px dashed var(--border);
+    border-radius: 14px; background: var(--bg-alt);
+    padding: 1.5rem 1rem; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s ease; position: relative;
+    user-select: none;
+  }
+  .dropzone-box:hover, .dropzone-box.drag-active {
+    border-color: var(--gold);
+    background: rgba(184,134,11,0.05);
+  }
+  .dropzone-box.drag-active {
+    transform: scale(1.01);
+    box-shadow: 0 0 0 4px rgba(184,134,11,0.12);
+  }
+  .dropzone-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: rgba(184,134,11,0.12); color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 0.75rem; transition: transform 0.2s;
+  }
+  .dropzone-box:hover .dropzone-icon {
+    transform: translateY(-2px);
+  }
+  .dropzone-title {
+    font-size: 0.88rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem;
+  }
+  .dropzone-sub {
+    font-size: 0.72rem; color: var(--ink-soft); line-height: 1.4; max-width: 340px;
+  }
+  .dropzone-progress {
+    width: 100%; max-width: 240px; height: 6px; background: var(--border);
+    border-radius: 99px; overflow: hidden; margin-top: 0.75rem; display: none;
+  }
+  .dropzone-progress-bar {
+    height: 100%; background: var(--gold); width: 0%; transition: width 0.25s ease;
+  }
+  .dropzone-preview-wrap {
+    width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .dropzone-preview-img {
+    max-height: 180px; max-width: 100%; object-fit: cover;
+    border-radius: 10px; border: 1px solid var(--border);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  .dropzone-actions {
+    display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; justify-content: center;
+  }
+
   /* ═══ IMAGE PREVIEW & STASI ADMIN CARDS ═══ */
   .img-preview-box {
     width: 100%; border: 1.5px dashed var(--border);
@@ -874,13 +925,44 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">URL Foto / Gambar <span class="req">*</span></label>
-            <input id="g-foto" type="text" class="form-ctrl" placeholder="assets/img/galeri/nama-file.jpg atau link https://" required oninput="updateGaleriPreview()">
-            <span class="form-hint">Dapat berupa path gambar lokal (contoh: <code>assets/img/galeri/...</code>) atau URL gambar online.</span>
+            <label class="form-label">Foto Kegiatan <span class="req">*</span></label>
+            <input type="hidden" id="g-foto">
+            
+            <!-- Drag & Drop Zone -->
+            <div class="dropzone-box" id="g-dropzone" onclick="triggerFileInput('g-file-input')">
+              <input type="file" id="g-file-input" accept="image/*" style="display:none" onchange="handleFileSelected(event, 'g')">
+              
+              <div id="g-dropzone-prompt" style="display:flex;flex-direction:column;align-items:center;">
+                <div class="dropzone-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                </div>
+                <div class="dropzone-title">Tarik &amp; Lepas Foto di Sini, atau <span style="color:var(--gold);text-decoration:underline">Pilih Berkas</span></div>
+                <div class="dropzone-sub">Mendukung format JPG, PNG, WEBP (Otomatis dikompres &amp; diunggah ke database)</div>
+                <div class="dropzone-progress" id="g-progress"><div class="dropzone-progress-bar" id="g-progress-bar"></div></div>
+              </div>
 
-            <div class="img-preview-box" id="g-preview-box">
-              <span class="img-preview-empty" id="g-preview-empty">Preview foto akan muncul di sini</span>
-              <img id="g-preview-img" src="" alt="Preview Foto" style="display:none" onerror="this.style.display='none';document.getElementById('g-preview-empty').style.display='block';document.getElementById('g-preview-empty').textContent='Gambar tidak dapat dimuat';">
+              <div id="g-dropzone-preview" class="dropzone-preview-wrap" style="display:none" onclick="event.stopPropagation()">
+                <img id="g-preview-img" class="dropzone-preview-img" src="" alt="Preview Foto">
+                <div class="dropzone-actions">
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="triggerFileInput('g-file-input')">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Ganti Foto
+                  </button>
+                  <button type="button" class="btn btn-delete btn-sm" onclick="removeImage('g')">
+                    Hapus Foto
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Optional manual URL input toggle -->
+            <div style="margin-top:0.4rem;display:flex;align-items:center;justify-content:space-between">
+              <span class="form-hint" id="g-status-hint">Tarik foto ke kotak di atas atau pilih berkas dari komputer</span>
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size:0.68rem;padding:0.2rem 0.55rem" onclick="toggleUrlInput('g')">
+                Atau input URL
+              </button>
+            </div>
+            <div id="g-url-wrap" style="display:none;margin-top:0.4rem">
+              <input id="g-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/galeri/..." oninput="handleManualUrlInput('g')">
             </div>
           </div>
         </div>
@@ -950,13 +1032,44 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">URL Foto Bangunan Gereja / Stasi</label>
-            <input id="s-foto" type="text" class="form-ctrl" placeholder="assets/img/stasi/nama.jpg atau https://" oninput="updateStasiPreview()">
-            <span class="form-hint">Kosongkan jika stasi dalam tahap pembangunan/belum ada bangunan fisik.</span>
+            <label class="form-label">Foto Bangunan Gereja / Stasi</label>
+            <input type="hidden" id="s-foto">
+            
+            <!-- Drag & Drop Zone -->
+            <div class="dropzone-box" id="s-dropzone" onclick="triggerFileInput('s-file-input')">
+              <input type="file" id="s-file-input" accept="image/*" style="display:none" onchange="handleFileSelected(event, 's')">
+              
+              <div id="s-dropzone-prompt" style="display:flex;flex-direction:column;align-items:center;">
+                <div class="dropzone-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                </div>
+                <div class="dropzone-title">Tarik &amp; Lepas Foto di Sini, atau <span style="color:var(--gold);text-decoration:underline">Pilih Berkas</span></div>
+                <div class="dropzone-sub">Foto fisik gedung gereja atau stasi (JPG, PNG, WEBP)</div>
+                <div class="dropzone-progress" id="s-progress"><div class="dropzone-progress-bar" id="s-progress-bar"></div></div>
+              </div>
 
-            <div class="img-preview-box" id="s-preview-box">
-              <span class="img-preview-empty" id="s-preview-empty">Preview foto bangunan akan muncul di sini</span>
-              <img id="s-preview-img" src="" alt="Preview Foto Stasi" style="display:none" onerror="this.style.display='none';document.getElementById('s-preview-empty').style.display='block';document.getElementById('s-preview-empty').textContent='Gambar tidak dapat dimuat atau belum ada';">
+              <div id="s-dropzone-preview" class="dropzone-preview-wrap" style="display:none" onclick="event.stopPropagation()">
+                <img id="s-preview-img" class="dropzone-preview-img" src="" alt="Preview Foto Stasi">
+                <div class="dropzone-actions">
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="triggerFileInput('s-file-input')">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Ganti Foto
+                  </button>
+                  <button type="button" class="btn btn-delete btn-sm" onclick="removeImage('s')">
+                    Hapus Foto
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Optional manual URL input toggle -->
+            <div style="margin-top:0.4rem;display:flex;align-items:center;justify-content:space-between">
+              <span class="form-hint" id="s-status-hint">Kosongkan jika stasi dalam tahap pembangunan</span>
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size:0.68rem;padding:0.2rem 0.55rem" onclick="toggleUrlInput('s')">
+                Atau input URL
+              </button>
+            </div>
+            <div id="s-url-wrap" style="display:none;margin-top:0.4rem">
+              <input id="s-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/stasi/..." oninput="handleManualUrlInput('s')">
             </div>
           </div>
         </div>
@@ -1332,127 +1445,381 @@ function openJadwalModal(data = null) {
 
 function editJadwal(id) { openJadwalModal(_jadwalMap[id]); }
 
+// ── Database Error Formatter Helper ─────────────────────────
+function formatDbError(error, defaultMsg = 'Terjadi kesalahan pada database.') {
+  if (!error) return defaultMsg;
+  const msg = error.message || (typeof error === 'string' ? error : JSON.stringify(error));
+  if (msg.includes('row-level security') || msg.includes('policy') || msg.includes('permission denied') || msg.includes('JWT')) {
+    return 'Akses ditolak: Izin penyimpanan database (RLS) memerlukan login admin.';
+  }
+  if (msg.includes('Failed to fetch') || msg.includes('network') || msg.includes('NetworkError') || msg.includes('offline')) {
+    return 'Koneksi terputus: Gagal terhubung ke database. Periksa koneksi internet Anda.';
+  }
+  if (msg.includes('relation') && (msg.includes('does not exist') || msg.includes('not found'))) {
+    return 'Tabel database belum dibuat di Supabase. Silakan jalankan skrip SQL di SQL Editor Supabase.';
+  }
+  if (msg.includes('duplicate key') || msg.includes('unique constraint')) {
+    return 'Data dengan ID atau kunci ini sudah terdaftar sebelumnya.';
+  }
+  return `${defaultMsg} (${msg})`;
+}
+
+// ── Drag & Drop / Image Engine ──────────────────────────────
+function optimizeImage(file, maxWidth = 1600, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith('image/')) {
+      return reject(new Error('Berkas yang dipilih bukan berkas gambar.'));
+    }
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Gagal membaca berkas gambar dari perangkat Anda.'));
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Format berkas gambar tidak didukung atau rusak.'));
+      img.onload = () => {
+        try {
+          let w = img.width;
+          let h = img.height;
+          if (w > maxWidth || h > maxWidth) {
+            if (w > h) {
+              h = Math.round((h * maxWidth) / w);
+              w = maxWidth;
+            } else {
+              w = Math.round((w * maxWidth) / h);
+              h = maxWidth;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+
+          const dataUrl = canvas.toDataURL('image/jpeg', quality);
+          canvas.toBlob((blob) => {
+            resolve({ blob: blob || file, dataUrl, width: w, height: h });
+          }, 'image/jpeg', quality);
+        } catch (err) {
+          reject(err);
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function triggerFileInput(id) {
+  const el = document.getElementById(id);
+  if (el) el.click();
+}
+
+function handleFileSelected(event, prefix) {
+  const file = event.target.files?.[0];
+  if (file) {
+    handleFileUpload(file, prefix);
+  }
+}
+
+async function handleFileUpload(file, prefix) {
+  if (!file) return;
+  const alertEl    = document.getElementById(prefix === 'g' ? 'galeri-alert' : 'stasi-alert');
+  const progressEl = document.getElementById(`${prefix}-progress`);
+  const progBar    = document.getElementById(`${prefix}-progress-bar`);
+  const hintEl     = document.getElementById(`${prefix}-status-hint`);
+
+  alertEl.style.display = 'none';
+
+  if (!file.type.startsWith('image/')) {
+    alertEl.textContent = 'Berkas tidak valid: Harap unggah foto dengan format JPG, PNG, atau WEBP.';
+    alertEl.style.display = 'flex';
+    toast('Berkas harus berupa gambar!', 'error');
+    return;
+  }
+
+  if (file.size > 12 * 1024 * 1024) {
+    alertEl.textContent = 'Ukuran berkas terlalu besar (Maksimal 12 MB).';
+    alertEl.style.display = 'flex';
+    toast('Ukuran foto maksimal 12 MB', 'error');
+    return;
+  }
+
+  try {
+    progressEl.style.display = 'block';
+    progBar.style.width = '30%';
+    if (hintEl) hintEl.textContent = 'Mengompres dan memproses foto…';
+
+    const { blob, dataUrl } = await optimizeImage(file, 1600, 0.82);
+    progBar.style.width = '70%';
+
+    let finalUrl = null;
+    const bucket = prefix === 'g' ? 'galeri' : 'stasi';
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+    const fileName = `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${ext}`;
+
+    // Coba upload ke Supabase Storage jika bucket tersedia
+    try {
+      if (db.storage && db.storage.from) {
+        const { data: uploadData, error: uploadErr } = await db.storage.from(bucket).upload(fileName, blob, {
+          contentType: 'image/jpeg',
+          upsert: true
+        });
+        if (!uploadErr && uploadData) {
+          const { data: pubData } = db.storage.from(bucket).getPublicUrl(fileName);
+          if (pubData?.publicUrl) {
+            finalUrl = pubData.publicUrl;
+          }
+        }
+      }
+    } catch (storageErr) {
+      console.warn('Storage upload note (menggunakan fallback Base64):', storageErr);
+    }
+
+    // Fallback cerdas: jika storage belum dikonfigurasi, gunakan data URL terkompresi
+    if (!finalUrl) {
+      finalUrl = dataUrl;
+    }
+
+    progBar.style.width = '100%';
+    setTimeout(() => {
+      progressEl.style.display = 'none';
+      progBar.style.width = '0%';
+    }, 400);
+
+    document.getElementById(`${prefix}-foto`).value = finalUrl;
+    const manualInput = document.getElementById(`${prefix}-foto-manual`);
+    if (manualInput) manualInput.value = finalUrl.startsWith('data:') ? '[Foto berhasil diunggah langsung]' : finalUrl;
+
+    setDropzonePreview(prefix, finalUrl);
+    if (hintEl) hintEl.textContent = '✓ Foto siap disimpan ke database.';
+    toast('Foto berhasil diproses & siap disimpan.');
+  } catch (err) {
+    progressEl.style.display = 'none';
+    progBar.style.width = '0%';
+    if (hintEl) hintEl.textContent = 'Gagal memproses foto.';
+    const errMsg = formatDbError(err, 'Gagal memproses foto');
+    alertEl.textContent = errMsg;
+    alertEl.style.display = 'flex';
+    toast(errMsg, 'error');
+    console.error('File upload error:', err);
+  }
+}
+
+function setDropzonePreview(prefix, url) {
+  const promptEl    = document.getElementById(`${prefix}-dropzone-prompt`);
+  const previewWrap = document.getElementById(`${prefix}-dropzone-preview`);
+  const imgEl       = document.getElementById(`${prefix}-preview-img`);
+  const dropzone    = document.getElementById(`${prefix}-dropzone`);
+
+  if (url && url.trim()) {
+    const resolved = resolveAdminImgUrl(url.trim());
+    imgEl.src = resolved;
+    promptEl.style.display = 'none';
+    previewWrap.style.display = 'flex';
+    dropzone.classList.add('has-file');
+  } else {
+    imgEl.src = '';
+    promptEl.style.display = 'flex';
+    previewWrap.style.display = 'none';
+    dropzone.classList.remove('has-file');
+  }
+}
+
+function removeImage(prefix) {
+  document.getElementById(`${prefix}-foto`).value = '';
+  const manualInput = document.getElementById(`${prefix}-foto-manual`);
+  if (manualInput) manualInput.value = '';
+  const fileInput = document.getElementById(`${prefix}-file-input`);
+  if (fileInput) fileInput.value = '';
+  const hintEl = document.getElementById(`${prefix}-status-hint`);
+  if (hintEl) hintEl.textContent = prefix === 'g' ? 'Tarik foto ke kotak di atas atau pilih berkas' : 'Kosongkan jika stasi dalam tahap pembangunan';
+  setDropzonePreview(prefix, '');
+}
+
+function toggleUrlInput(prefix) {
+  const wrap = document.getElementById(`${prefix}-url-wrap`);
+  if (!wrap) return;
+  wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+  if (wrap.style.display === 'block') {
+    const manualInput = document.getElementById(`${prefix}-foto-manual`);
+    manualInput.focus();
+  }
+}
+
+function handleManualUrlInput(prefix) {
+  const val = document.getElementById(`${prefix}-foto-manual`).value.trim();
+  document.getElementById(`${prefix}-foto`).value = val;
+  setDropzonePreview(prefix, val);
+}
+
+function initDropzones() {
+  ['g', 's'].forEach(prefix => {
+    const dz = document.getElementById(`${prefix}-dropzone`);
+    if (!dz) return;
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dz.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dz.classList.add('drag-active');
+      }, false);
+    });
+
+    ['dragleave', 'dragend'].forEach(eventName => {
+      dz.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dz.classList.remove('drag-active');
+      }, false);
+    });
+
+    dz.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dz.classList.remove('drag-active');
+      const dt = e.dataTransfer;
+      const files = dt?.files;
+      if (files && files.length > 0) {
+        handleFileUpload(files[0], prefix);
+      }
+    }, false);
+  });
+}
+
+// ══════════════════════════════════════════
+//  SUBMIT JADWAL (CRUD + Error Handling)
+// ══════════════════════════════════════════
 async function submitJadwal(e) {
   e.preventDefault();
-  const id  = document.getElementById('jid').value;
-  const btn = document.getElementById('btn-submit-jadwal');
+  const id      = document.getElementById('jid').value;
+  const btn     = document.getElementById('btn-submit-jadwal');
   const alertEl = document.getElementById('jadwal-alert');
 
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-jadwal-text').textContent = 'Menyimpan…';
 
-  const payload = {
-    stasi:      document.getElementById('j-stasi').value,
-    hari:       document.getElementById('j-hari').value.trim(),
-    waktu:      document.getElementById('j-waktu').value.trim(),
-    keterangan: document.getElementById('j-keterangan').value.trim(),
-    minggu_ke:  document.getElementById('j-minggu').value.trim() || null,
-    urutan:     parseInt(document.getElementById('j-urutan').value) || 0,
-    updated_at: new Date().toISOString()
-  };
+  try {
+    const payload = {
+      stasi:      document.getElementById('j-stasi').value,
+      hari:       document.getElementById('j-hari').value.trim(),
+      waktu:      document.getElementById('j-waktu').value.trim(),
+      keterangan: document.getElementById('j-keterangan').value.trim(),
+      minggu_ke:  document.getElementById('j-minggu').value.trim() || null,
+      urutan:     parseInt(document.getElementById('j-urutan').value) || 0,
+      updated_at: new Date().toISOString()
+    };
 
-  let error;
-  if (id) {
-    ({ error } = await db.from('jadwal_misa').update(payload).eq('id', id));
-  } else {
-    payload.created_at = new Date().toISOString();
-    ({ error } = await db.from('jadwal_misa').insert(payload));
-  }
+    if (!payload.stasi || !payload.hari || !payload.waktu) {
+      throw new Error('Harap lengkapi semua kolom wajib (Stasi, Hari, dan Waktu).');
+    }
 
-  btn.disabled = false;
-  document.getElementById('btn-jadwal-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Jadwal';
+    let error;
+    if (id) {
+      ({ error } = await db.from('jadwal_misa').update(payload).eq('id', id));
+    } else {
+      payload.created_at = new Date().toISOString();
+      ({ error } = await db.from('jadwal_misa').insert(payload));
+    }
 
-  if (error) {
-    alertEl.textContent = 'Gagal: ' + error.message;
+    if (error) throw error;
+
+    closeModal('modal-jadwal');
+    toast(id ? 'Jadwal berhasil diperbarui.' : 'Jadwal baru berhasil ditambahkan.');
+    loadJadwal();
+    loadCounters();
+  } catch (err) {
+    const errMsg = formatDbError(err, 'Gagal menyimpan jadwal misa');
+    alertEl.textContent = errMsg;
     alertEl.style.display = 'flex';
-    return;
+    toast(errMsg, 'error');
+    console.error('Submit jadwal error:', err);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btn-jadwal-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Jadwal';
   }
-
-  closeModal('modal-jadwal');
-  toast(id ? 'Jadwal berhasil diperbarui.' : 'Jadwal baru berhasil ditambahkan.');
-  loadJadwal();
-  loadCounters();
 }
 
 // ══════════════════════════════════════════
-//  PENGUMUMAN
+//  PENGUMUMAN (CRUD + Error Handling)
 // ══════════════════════════════════════════
 async function loadPengumuman() {
   const el = document.getElementById('pengumuman-content');
-  el.innerHTML = '<div class="empty-state"><p>Memuat data…</p></div>';
+  el.innerHTML = '<div class="empty-state"><p>Memuat data pengumuman…</p></div>';
 
-  const { data, error } = await db.from('pengumuman').select('*').order('tanggal', { ascending: false });
+  try {
+    const { data, error } = await db.from('pengumuman').select('*').order('tanggal', { ascending: false });
+    if (error) throw error;
 
-  if (error) {
-    el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(error.message)}</p></div>`;
-    return;
-  }
-  if (!data?.length) {
-    el.innerHTML = `<div class="empty-state"><p>Belum ada pengumuman.<br>Klik "+ Tambah Pengumuman" untuk menambahkan.</p></div>`;
-    return;
-  }
+    if (!data?.length) {
+      el.innerHTML = `<div class="empty-state"><p>Belum ada pengumuman.<br>Klik "+ Tambah Pengumuman" untuk menambahkan.</p></div>`;
+      return;
+    }
 
-  _pengMap = {};
-  data.forEach(r => { _pengMap[r.id] = r; });
+    _pengMap = {};
+    data.forEach(r => { _pengMap[r.id] = r; });
 
-  el.innerHTML = `
-    <div style="overflow-x:auto">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Tanggal</th>
-            <th>Judul</th>
-            <th>Kategori</th>
-            <th>Status</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${data.map((r, i) => {
-            const tgl = new Date(r.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
-            const kat = KAT_MAP[r.kategori] || { label: r.kategori };
-            return `
-              <tr>
-                <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
-                <td style="white-space:nowrap;font-size:0.78rem;color:var(--ink-soft)">${tgl}</td>
-                <td>
-                  <div style="font-weight:700;color:var(--ink);max-width:240px">${escapeHtml(r.judul)}</div>
-                  <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(r.isi)}</div>
-                </td>
-                <td>
-                  <span class="badge badge-gold">${escapeHtml(kat.label)}</span>
-                </td>
-                <td>
-                  <button
-                    class="badge ${r.aktif ? 'badge-green' : 'badge-red'}"
-                    style="cursor:pointer;border:none;font-size:0.72rem;padding:0.3rem 0.7rem"
-                    onclick="toggleAktif('${r.id}', ${r.aktif})"
-                    title="${r.aktif ? 'Klik untuk menonaktifkan' : 'Klik untuk mengaktifkan'}"
-                  >
-                    ${r.aktif ? 'Aktif' : 'Nonaktif'}
-                  </button>
-                </td>
-                <td>
-                  <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
-                    <button class="btn btn-edit btn-sm" onclick="editPengumuman('${r.id}')" title="Edit pengumuman ini">
-                      Edit
+    el.innerHTML = `
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tanggal</th>
+              <th>Judul</th>
+              <th>Kategori</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map((r, i) => {
+              const tgl = new Date(r.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+              const kat = KAT_MAP[r.kategori] || { label: r.kategori };
+              return `
+                <tr>
+                  <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
+                  <td style="white-space:nowrap;font-size:0.78rem;color:var(--ink-soft)">${tgl}</td>
+                  <td>
+                    <div style="font-weight:700;color:var(--ink);max-width:240px">${escapeHtml(r.judul)}</div>
+                    <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(r.isi)}</div>
+                  </td>
+                  <td>
+                    <span class="badge badge-gold">${escapeHtml(kat.label)}</span>
+                  </td>
+                  <td>
+                    <button
+                      class="badge ${r.aktif ? 'badge-green' : 'badge-red'}"
+                      style="cursor:pointer;border:none;font-size:0.72rem;padding:0.3rem 0.7rem"
+                      onclick="toggleAktif('${r.id}', ${r.aktif})"
+                      title="${r.aktif ? 'Klik untuk menonaktifkan' : 'Klik untuk mengaktifkan'}"
+                    >
+                      ${r.aktif ? 'Aktif' : 'Nonaktif'}
                     </button>
-                    <button class="btn btn-delete btn-sm" onclick="confirmDelete('pengumuman','${r.id}','pengumuman ini','loadPengumuman')" title="Hapus pengumuman ini">
-                      Hapus
-                    </button>
-                  </div>
-                </td>
-              </tr>`;
-          }).join('')}
-        </tbody>
-      </table>
-      <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
-        Total ${data.length} pengumuman · ${data.filter(r=>r.aktif).length} aktif ditampilkan di website
+                  </td>
+                  <td>
+                    <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
+                      <button class="btn btn-edit btn-sm" onclick="editPengumuman('${r.id}')" title="Edit pengumuman ini">
+                        Edit
+                      </button>
+                      <button class="btn btn-delete btn-sm" onclick="confirmDelete('pengumuman','${r.id}','pengumuman ini','loadPengumuman')" title="Hapus pengumuman ini">
+                        Hapus
+                      </button>
+                    </div>
+                  </td>
+                </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+        <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
+          Total ${data.length} pengumuman · ${data.filter(r=>r.aktif).length} aktif ditampilkan di website
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  } catch (err) {
+    const errMsg = formatDbError(err, 'Gagal memuat daftar pengumuman');
+    el.innerHTML = `<div class="empty-state"><p style="color:var(--danger)">${escapeHtml(errMsg)}</p></div>`;
+    toast(errMsg, 'error');
+  }
 }
 
 function openPengumumanModal(data = null) {
@@ -1476,51 +1843,65 @@ function editPengumuman(id) { openPengumumanModal(_pengMap[id]); }
 
 async function submitPengumuman(e) {
   e.preventDefault();
-  const id  = document.getElementById('pid').value;
-  const btn = document.getElementById('btn-submit-peng');
+  const id      = document.getElementById('pid').value;
+  const btn     = document.getElementById('btn-submit-peng');
   const alertEl = document.getElementById('peng-alert');
 
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-peng-text').textContent = 'Menyimpan…';
 
-  const payload = {
-    judul:    document.getElementById('p-judul').value.trim(),
-    isi:      document.getElementById('p-isi').value.trim(),
-    kategori: document.getElementById('p-kategori').value,
-    tanggal:  document.getElementById('p-tanggal').value,
-    aktif:    document.getElementById('p-aktif').checked
-  };
+  try {
+    const payload = {
+      judul:    document.getElementById('p-judul').value.trim(),
+      isi:      document.getElementById('p-isi').value.trim(),
+      kategori: document.getElementById('p-kategori').value,
+      tanggal:  document.getElementById('p-tanggal').value,
+      aktif:    document.getElementById('p-aktif').checked
+    };
 
-  let error;
-  if (id) {
-    ({ error } = await db.from('pengumuman').update(payload).eq('id', id));
-  } else {
-    payload.created_at = new Date().toISOString();
-    ({ error } = await db.from('pengumuman').insert(payload));
-  }
+    if (!payload.judul || !payload.isi) {
+      throw new Error('Judul dan isi pengumuman tidak boleh kosong.');
+    }
 
-  btn.disabled = false;
-  document.getElementById('btn-peng-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Pengumuman';
+    let error;
+    if (id) {
+      ({ error } = await db.from('pengumuman').update(payload).eq('id', id));
+    } else {
+      payload.created_at = new Date().toISOString();
+      ({ error } = await db.from('pengumuman').insert(payload));
+    }
 
-  if (error) {
-    alertEl.textContent = 'Gagal: ' + error.message;
+    if (error) throw error;
+
+    closeModal('modal-pengumuman');
+    toast(id ? 'Pengumuman berhasil diperbarui.' : 'Pengumuman baru berhasil ditambahkan.');
+    loadPengumuman();
+    loadCounters();
+  } catch (err) {
+    const errMsg = formatDbError(err, 'Gagal menyimpan pengumuman');
+    alertEl.textContent = errMsg;
     alertEl.style.display = 'flex';
-    return;
+    toast(errMsg, 'error');
+    console.error('Submit pengumuman error:', err);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btn-peng-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Pengumuman';
   }
-
-  closeModal('modal-pengumuman');
-  toast(id ? 'Pengumuman berhasil diperbarui.' : 'Pengumuman baru berhasil ditambahkan.');
-  loadPengumuman();
-  loadCounters();
 }
 
 async function toggleAktif(id, current) {
-  const { error } = await db.from('pengumuman').update({ aktif: !current }).eq('id', id);
-  if (error) { toast('Gagal mengubah status: ' + error.message, 'error'); return; }
-  toast(!current ? 'Pengumuman diaktifkan dan tampil di website.' : 'Pengumuman disembunyikan dari website.');
-  loadPengumuman();
-  loadCounters();
+  try {
+    const { error } = await db.from('pengumuman').update({ aktif: !current }).eq('id', id);
+    if (error) throw error;
+    toast(!current ? 'Pengumuman diaktifkan dan tampil di website.' : 'Pengumuman disembunyikan dari website.');
+    loadPengumuman();
+    loadCounters();
+  } catch (err) {
+    const errMsg = formatDbError(err, 'Gagal mengubah status pengumuman');
+    toast(errMsg, 'error');
+    console.error('Toggle aktif error:', err);
+  }
 }
 
 // ── Image URL Helper for Admin Subdirectory ───────────────
@@ -1537,28 +1918,12 @@ function resolveAdminImgUrl(url) {
 }
 
 // ══════════════════════════════════════════
-//  GALERI KEGIATAN
+//  GALERI KEGIATAN (CRUD + Drag & Drop + Error Handling)
 // ══════════════════════════════════════════
-function updateGaleriPreview() {
-  const url = document.getElementById('g-foto').value.trim();
-  const img = document.getElementById('g-preview-img');
-  const empty = document.getElementById('g-preview-empty');
-  if (url) {
-    img.src = resolveAdminImgUrl(url);
-    img.style.display = 'block';
-    empty.style.display = 'none';
-  } else {
-    img.src = '';
-    img.style.display = 'none';
-    empty.style.display = 'block';
-    empty.textContent = 'Preview foto akan muncul di sini';
-  }
-}
-
 async function loadGaleri() {
   const filter = document.getElementById('filter-kategori-galeri').value;
   const el     = document.getElementById('galeri-content');
-  el.innerHTML = '<div class="empty-state"><p>Memuat data galeri…</p></div>';
+  el.innerHTML = '<div class="empty-state"><p>Memuat data galeri kegiatan…</p></div>';
 
   let data = null;
   try {
@@ -1657,11 +2022,12 @@ function openGaleriModal(data = null) {
   document.getElementById('g-kategori').value   = data?.kategori || 'omk';
   document.getElementById('g-tanggal').value    = data?.tanggal || new Date().toISOString().split('T')[0];
   document.getElementById('g-foto').value       = data?.foto_url || '';
+  document.getElementById('g-foto-manual').value = data?.foto_url || '';
   document.getElementById('g-keterangan').value = data?.keterangan || '';
   document.getElementById('g-urutan').value     = data?.urutan ?? 0;
   document.getElementById('galeri-alert').style.display = 'none';
 
-  updateGaleriPreview();
+  setDropzonePreview('g', data?.foto_url || '');
 
   const isEdit = !!(data?.id && !String(data.id).startsWith('default-'));
   document.getElementById('modal-galeri-title').textContent = isEdit ? 'Edit Foto Kegiatan' : 'Tambah Foto Kegiatan';
@@ -1675,66 +2041,64 @@ function editGaleri(id) { openGaleriModal(_galeriMap[id]); }
 
 async function submitGaleri(e) {
   e.preventDefault();
-  const id  = document.getElementById('gid').value;
-  const btn = document.getElementById('btn-submit-galeri');
+  const id      = document.getElementById('gid').value;
+  const btn     = document.getElementById('btn-submit-galeri');
   const alertEl = document.getElementById('galeri-alert');
 
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-galeri-text').textContent = 'Menyimpan…';
 
-  const payload = {
-    judul:      document.getElementById('g-judul').value.trim(),
-    kategori:   document.getElementById('g-kategori').value,
-    tanggal:    document.getElementById('g-tanggal').value || null,
-    foto_url:   document.getElementById('g-foto').value.trim(),
-    keterangan: document.getElementById('g-keterangan').value.trim(),
-    urutan:     parseInt(document.getElementById('g-urutan').value) || 0,
-    updated_at: new Date().toISOString()
-  };
+  try {
+    const fotoUrl = document.getElementById('g-foto').value.trim();
+    const judul   = document.getElementById('g-judul').value.trim();
 
-  let error;
-  if (id) {
-    ({ error } = await db.from('galeri').update(payload).eq('id', id));
-  } else {
-    payload.created_at = new Date().toISOString();
-    ({ error } = await db.from('galeri').insert(payload));
-  }
+    if (!judul) {
+      throw new Error('Judul kegiatan tidak boleh kosong.');
+    }
+    if (!fotoUrl) {
+      throw new Error('Silakan pilih/tarik foto kegiatan ke dalam kotak unggah terlebih dahulu.');
+    }
 
-  btn.disabled = false;
-  document.getElementById('btn-galeri-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Foto Kegiatan';
+    const payload = {
+      judul:      judul,
+      kategori:   document.getElementById('g-kategori').value,
+      tanggal:    document.getElementById('g-tanggal').value || null,
+      foto_url:   fotoUrl,
+      keterangan: document.getElementById('g-keterangan').value.trim(),
+      urutan:     parseInt(document.getElementById('g-urutan').value) || 0,
+      updated_at: new Date().toISOString()
+    };
 
-  if (error) {
-    alertEl.textContent = 'Gagal menyimpan ke database: ' + error.message;
+    let error;
+    if (id) {
+      ({ error } = await db.from('galeri').update(payload).eq('id', id));
+    } else {
+      payload.created_at = new Date().toISOString();
+      ({ error } = await db.from('galeri').insert(payload));
+    }
+
+    if (error) throw error;
+
+    closeModal('modal-galeri');
+    toast(id ? 'Foto kegiatan berhasil diperbarui.' : 'Foto kegiatan baru berhasil ditambahkan.');
+    loadGaleri();
+    loadCounters();
+  } catch (err) {
+    const errMsg = formatDbError(err, 'Gagal menyimpan foto kegiatan');
+    alertEl.textContent = errMsg;
     alertEl.style.display = 'flex';
-    return;
-  }
-
-  closeModal('modal-galeri');
-  toast(id ? 'Foto kegiatan berhasil diperbarui.' : 'Foto kegiatan baru berhasil ditambahkan.');
-  loadGaleri();
-  loadCounters();
-}
-
-// ══════════════════════════════════════════
-//  DATA & FOTO STASI
-// ══════════════════════════════════════════
-function updateStasiPreview() {
-  const url = document.getElementById('s-foto').value.trim();
-  const img = document.getElementById('s-preview-img');
-  const empty = document.getElementById('s-preview-empty');
-  if (url) {
-    img.src = resolveAdminImgUrl(url);
-    img.style.display = 'block';
-    empty.style.display = 'none';
-  } else {
-    img.src = '';
-    img.style.display = 'none';
-    empty.style.display = 'block';
-    empty.textContent = 'Belum ada foto bangunan gereja';
+    toast(errMsg, 'error');
+    console.error('Submit galeri error:', err);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btn-galeri-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Foto Kegiatan';
   }
 }
 
+// ══════════════════════════════════════════
+//  DATA & FOTO STASI (CRUD + Drag & Drop + Error Handling)
+// ══════════════════════════════════════════
 async function loadStasiAdmin() {
   const el = document.getElementById('stasi-content');
   el.innerHTML = '<div class="empty-state"><p>Memuat data stasi…</p></div>';
@@ -1799,69 +2163,76 @@ function openStasiModal(key) {
   const item = _stasiMap[key] || DEFAULT_STASI_DATA[key];
   if (!item) return;
 
-  document.getElementById('s-id').value        = key;
-  document.getElementById('s-nama').value      = item.nama || '';
-  document.getElementById('s-pelindung').value = item.pelindung || '';
-  document.getElementById('s-pesta').value     = item.pesta_nama || '';
-  document.getElementById('s-role').value      = item.role || '';
-  document.getElementById('s-foto').value      = item.foto_url || '';
-  document.getElementById('s-alamat').value    = item.alamat || '';
-  document.getElementById('s-maps').value      = item.gmaps_url || '';
+  document.getElementById('s-id').value         = key;
+  document.getElementById('s-nama').value       = item.nama || '';
+  document.getElementById('s-pelindung').value  = item.pelindung || '';
+  document.getElementById('s-pesta').value      = item.pesta_nama || '';
+  document.getElementById('s-role').value       = item.role || '';
+  document.getElementById('s-foto').value       = item.foto_url || '';
+  document.getElementById('s-foto-manual').value = item.foto_url || '';
+  document.getElementById('s-alamat').value     = item.alamat || '';
+  document.getElementById('s-maps').value       = item.gmaps_url || '';
   document.getElementById('stasi-alert').style.display = 'none';
 
-  updateStasiPreview();
+  setDropzonePreview('s', item.foto_url || '');
 
   document.getElementById('modal-stasi-title').textContent = 'Edit Data: ' + (item.nama || 'Stasi');
   openModal('modal-stasi');
-  setTimeout(() => document.getElementById('s-foto').focus(), 100);
 }
 
 async function submitStasiAdmin(e) {
   e.preventDefault();
-  const id  = document.getElementById('s-id').value;
-  const btn = document.getElementById('btn-submit-stasi');
+  const id      = document.getElementById('s-id').value;
+  const btn     = document.getElementById('btn-submit-stasi');
   const alertEl = document.getElementById('stasi-alert');
 
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-stasi-text').textContent = 'Menyimpan…';
 
-  const payload = {
-    id:         id,
-    nama:       document.getElementById('s-nama').value.trim(),
-    pelindung:  document.getElementById('s-pelindung').value.trim(),
-    pesta_nama: document.getElementById('s-pesta').value.trim(),
-    role:       document.getElementById('s-role').value.trim(),
-    foto_url:   document.getElementById('s-foto').value.trim(),
-    alamat:     document.getElementById('s-alamat').value.trim(),
-    gmaps_url:  document.getElementById('s-maps').value.trim(),
-    updated_at: new Date().toISOString()
-  };
-
-  let error = null;
   try {
-    const res = await db.from('stasi').upsert(payload);
-    error = res.error;
+    const payload = {
+      id:         id,
+      nama:       document.getElementById('s-nama').value.trim(),
+      pelindung:  document.getElementById('s-pelindung').value.trim(),
+      pesta_nama: document.getElementById('s-pesta').value.trim(),
+      role:       document.getElementById('s-role').value.trim(),
+      foto_url:   document.getElementById('s-foto').value.trim(),
+      alamat:     document.getElementById('s-alamat').value.trim(),
+      gmaps_url:  document.getElementById('s-maps').value.trim(),
+      updated_at: new Date().toISOString()
+    };
+
+    if (!payload.pelindung || !payload.alamat) {
+      throw new Error('Nama pelindung dan alamat stasi wajib diisi.');
+    }
+
+    const { error } = await db.from('stasi').upsert(payload);
+    if (error) throw error;
+
+    // Update in-memory & cache
+    if (_stasiMap[id]) Object.assign(_stasiMap[id], payload);
+    try {
+      localStorage.setItem('saint_andrew_stasi_cache', JSON.stringify(_stasiMap));
+    } catch (e) {}
+
+    closeModal('modal-stasi');
+    toast('Data & foto stasi berhasil diperbarui.');
+    loadStasiAdmin();
   } catch (err) {
-    error = err;
+    const errMsg = formatDbError(err, 'Gagal menyimpan data stasi');
+    alertEl.textContent = errMsg;
+    alertEl.style.display = 'flex';
+    toast(errMsg, 'error');
+    console.error('Submit stasi error:', err);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btn-stasi-text').textContent = 'Simpan Perubahan Stasi';
   }
-
-  // Update in-memory and local storage backup
-  if (_stasiMap[id]) Object.assign(_stasiMap[id], payload);
-  try {
-    localStorage.setItem('saint_andrew_stasi_cache', JSON.stringify(_stasiMap));
-  } catch (e) {}
-
-  btn.disabled = false;
-  document.getElementById('btn-stasi-text').textContent = 'Simpan Perubahan Stasi';
-
-  closeModal('modal-stasi');
-  toast('Data & foto stasi berhasil diperbarui.');
-  loadStasiAdmin();
 }
 
 // ══════════════════════════════════════════
-//  HAPUS (Konfirmasi)
+//  HAPUS (Konfirmasi + Error Handling)
 // ══════════════════════════════════════════
 function confirmDelete(table, id, desc, cb) {
   _deleteTable = table;
@@ -1876,24 +2247,37 @@ async function execDelete() {
   btn.disabled = true;
   btn.textContent = 'Menghapus…';
 
-  let error = null;
-  if (!String(_deleteId).startsWith('default-')) {
-    const res = await db.from(_deleteTable).delete().eq('id', _deleteId);
-    error = res.error;
+  try {
+    let error = null;
+    if (!String(_deleteId).startsWith('default-')) {
+      const res = await db.from(_deleteTable).delete().eq('id', _deleteId);
+      error = res.error;
+    }
+
+    if (error) throw error;
+
+    closeModal('modal-confirm');
+    toast('Data berhasil dihapus dari database.');
+    if (_deleteCb === 'loadJadwal')     loadJadwal();
+    if (_deleteCb === 'loadPengumuman') loadPengumuman();
+    if (_deleteCb === 'loadGaleri')     loadGaleri();
+    loadCounters();
+  } catch (err) {
+    closeModal('modal-confirm');
+    const errMsg = formatDbError(err, 'Gagal menghapus data');
+    toast(errMsg, 'error');
+    console.error('Delete error:', err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Hapus Sekarang';
   }
-
-  btn.disabled = false;
-  btn.textContent = 'Hapus Sekarang';
-  closeModal('modal-confirm');
-
-  if (error) { toast('Gagal menghapus: ' + error.message, 'error'); return; }
-
-  toast('Data berhasil dihapus.');
-  if (_deleteCb === 'loadJadwal')     loadJadwal();
-  if (_deleteCb === 'loadPengumuman') loadPengumuman();
-  if (_deleteCb === 'loadGaleri')     loadGaleri();
-  loadCounters();
 }
+
+// ── Inisialisasi Dropzones saat dokumen siap ─────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initDropzones();
+});
+initDropzones();
 </script>
 </body>
 </html>
