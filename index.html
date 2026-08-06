@@ -356,6 +356,11 @@ const KAT_ICON = {
   'umum':        '📌'
 };
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 (async () => {
   const listEl = document.getElementById('pengumumanList');
   try {
@@ -385,8 +390,8 @@ const KAT_ICON = {
       return `
         <div class="announcement-card">
           <span class="announcement-date">${icon} ${tgl}</span>
-          <h4 class="font-bold text-base mt-1" style="color:var(--ink)">${p.judul}</h4>
-          <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--ink-soft)">${p.isi}</p>
+          <h4 class="font-bold text-base mt-1" style="color:var(--ink)">${escapeHtml(p.judul)}</h4>
+          <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--ink-soft)">${escapeHtml(p.isi)}</p>
         </div>`;
     }).join('');
   } catch(e) {

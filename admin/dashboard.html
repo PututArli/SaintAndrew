@@ -821,6 +821,15 @@ async function loadCounters() {
   document.getElementById('count-pengumuman').textContent = cP ?? '—';
 }
 
+// Cache data by ID for safe edit calls
+let _jadwalMap = {};
+let _pengMap   = {};
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // ══════════════════════════════════════════
 //  JADWAL MISA
 // ══════════════════════════════════════════
@@ -843,6 +852,9 @@ async function loadJadwal() {
     return;
   }
 
+  _jadwalMap = {};
+  data.forEach(r => { _jadwalMap[r.id] = r; });
+
   el.innerHTML = `
     <div style="overflow-x:auto">
       <table class="data-table">
@@ -862,17 +874,17 @@ async function loadJadwal() {
             <tr>
               <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
               <td>
-                <span class="badge badge-gold">${STASI_MAP[r.stasi] || r.stasi}</span>
+                <span class="badge badge-gold">${escapeHtml(STASI_MAP[r.stasi] || r.stasi)}</span>
               </td>
-              <td style="font-weight:600;color:var(--ink)">${r.hari}</td>
+              <td style="font-weight:600;color:var(--ink)">${escapeHtml(r.hari)}</td>
               <td>
-                <span style="font-size:1rem;font-weight:900;color:var(--ink)">${r.waktu}</span>
+                <span style="font-size:1rem;font-weight:900;color:var(--ink)">${escapeHtml(r.waktu)}</span>
               </td>
-              <td>${r.keterangan}</td>
-              <td style="color:var(--ink-soft)">${r.minggu_ke || '<span style="color:#ccc">Setiap Minggu</span>'}</td>
+              <td>${escapeHtml(r.keterangan)}</td>
+              <td style="color:var(--ink-soft)">${r.minggu_ke ? escapeHtml(r.minggu_ke) : '<span style="color:#ccc">Setiap Minggu</span>'}</td>
               <td>
                 <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
-                  <button class="btn btn-edit btn-sm" onclick='editJadwal(${JSON.stringify(r)})' title="Edit jadwal ini">
+                  <button class="btn btn-edit btn-sm" onclick="editJadwal('${r.id}')" title="Edit jadwal ini">
                     ✏️ Edit
                   </button>
                   <button class="btn btn-delete btn-sm" onclick="confirmDelete('jadwal_misa','${r.id}','jadwal misa ini','loadJadwal')" title="Hapus jadwal ini">
@@ -910,7 +922,7 @@ function openJadwalModal(data = null) {
   setTimeout(() => document.getElementById('j-stasi').focus(), 100);
 }
 
-function editJadwal(data) { openJadwalModal(data); }
+function editJadwal(id) { openJadwalModal(_jadwalMap[id]); }
 
 async function submitJadwal(e) {
   e.preventDefault();
@@ -973,6 +985,9 @@ async function loadPengumuman() {
     return;
   }
 
+  _pengMap = {};
+  data.forEach(r => { _pengMap[r.id] = r; });
+
   el.innerHTML = `
     <div style="overflow-x:auto">
       <table class="data-table">
@@ -995,8 +1010,8 @@ async function loadPengumuman() {
                 <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
                 <td style="white-space:nowrap;font-size:0.78rem;color:var(--ink-soft)">${tgl}</td>
                 <td>
-                  <div style="font-weight:700;color:var(--ink);max-width:240px">${r.judul}</div>
-                  <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.isi}</div>
+                  <div style="font-weight:700;color:var(--ink);max-width:240px">${escapeHtml(r.judul)}</div>
+                  <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:2px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(r.isi)}</div>
                 </td>
                 <td>
                   <span class="badge badge-gold">${kat.icon} ${kat.label}</span>
@@ -1013,7 +1028,7 @@ async function loadPengumuman() {
                 </td>
                 <td>
                   <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
-                    <button class="btn btn-edit btn-sm" onclick='editPengumuman(${JSON.stringify(r)})' title="Edit pengumuman ini">
+                    <button class="btn btn-edit btn-sm" onclick="editPengumuman('${r.id}')" title="Edit pengumuman ini">
                       ✏️ Edit
                     </button>
                     <button class="btn btn-delete btn-sm" onclick="confirmDelete('pengumuman','${r.id}','pengumuman ini','loadPengumuman')" title="Hapus pengumuman ini">
@@ -1050,7 +1065,7 @@ function openPengumumanModal(data = null) {
   setTimeout(() => document.getElementById('p-judul').focus(), 100);
 }
 
-function editPengumuman(data) { openPengumumanModal(data); }
+function editPengumuman(id) { openPengumumanModal(_pengMap[id]); }
 
 async function submitPengumuman(e) {
   e.preventDefault();
