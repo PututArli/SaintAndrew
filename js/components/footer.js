@@ -112,40 +112,123 @@ class ModernFooter extends HTMLElement {
                     <span id="secretErrorMsg">Email atau kata sandi salah.</span>
                 </div>
 
-                <!-- Form -->
-                <form id="secretLoginForm" class="space-y-4" autocomplete="off">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email</label>
-                        <input id="secretEmail" type="email" required placeholder="admin@paroki.com" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" style="background:#F9F9F8;border:1.5px solid #E5E5E3">
-                    </div>
+                <!-- Form Login -->
+                <div id="secretLoginFormWrap">
+                    <form id="secretLoginForm" class="space-y-4" autocomplete="off">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email</label>
+                            <input id="secretEmail" type="email" required placeholder="admin@paroki.com" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" style="background:#F9F9F8;border:1.5px solid #E5E5E3">
+                        </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1.5">Kata Sandi</label>
-                        <input id="secretPassword" type="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" style="background:#F9F9F8;border:1.5px solid #E5E5E3">
-                    </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Kata Sandi</label>
+                            <input id="secretPassword" type="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" style="background:#F9F9F8;border:1.5px solid #E5E5E3">
+                        </div>
 
-                    <button id="secretSubmitBtn" type="submit" class="w-full py-2.5 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2 mt-2 cursor-pointer transition-all duration-150" style="background:#1C1C1E;border:none">
-                        <span id="secretBtnText">Masuk</span>
-                    </button>
-                </form>
+                        <button id="secretSubmitBtn" type="submit" class="w-full py-2.5 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2 mt-2 cursor-pointer transition-all duration-150" style="background:#1C1C1E;border:none">
+                            <span id="secretBtnText">Masuk</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Logged In View -->
+                <div id="secretLoggedInWrap" class="hidden text-center py-2">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-lg font-bold" style="background:#ECFDF5;color:#059669">✓</div>
+                    <h4 class="font-bold text-gray-900 text-sm">Sesi Admin Aktif</h4>
+                    <p id="secretLoggedInEmail" class="text-xs text-gray-500 mt-1 mb-5">admin@paroki.com</p>
+                    <div class="flex gap-2">
+                        <a href="admin/dashboard.html" class="flex-1 py-2.5 rounded-xl font-semibold text-xs text-white text-center flex items-center justify-center gap-1.5 transition-all" style="background:#1C1C1E;text-decoration:none">
+                            ⚙️ Buka Dashboard
+                        </a>
+                        <button id="secretLogoutBtn" type="button" class="px-4 py-2.5 rounded-xl font-semibold text-xs transition-all" style="background:#FEF2F2;color:#DC2626;border:1px solid rgba(220,38,38,0.15);cursor:pointer">
+                            Keluar
+                        </button>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- Floating Quick Return Pill for Logged-In Admins -->
+        <div id="adminQuickPill" class="fixed bottom-5 right-5 z-[9990] hidden items-center gap-2 px-4 py-2.5 rounded-full shadow-2xl transition-all duration-200" style="background:#101012;border:1px solid rgba(184,134,11,0.3);box-shadow:0 8px 30px rgba(0,0,0,0.35)">
+            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            <a href="admin/dashboard.html" class="text-xs font-semibold text-white hover:text-[#D4A017] transition-colors flex items-center gap-1.5" style="text-decoration:none">
+                ⚙️ Mode Admin <span class="text-gray-400 font-normal">| Buka Dashboard ›</span>
+            </a>
         </div>
         `;
 
         this.initAdminPortal();
     }
 
-    initAdminPortal() {
+    async getClient() {
+        if (window.db) return window.db;
+        if (!window.supabase) {
+            await new Promise((res, rej) => {
+                const s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+                s.onload = res;
+                s.onerror = rej;
+                document.head.appendChild(s);
+            });
+        }
+        const S_URL = 'https://wsdmmohdealnnecxfhoj.supabase.co';
+        const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzZG1tb2hkZWFsbm5lY3hmaG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5OTcyOTksImV4cCI6MjEwMTU3MzI5OX0.HgUVipJZcv8TUNE7BfAfBq3ZSGBzZxGD0KBnlpCzAd0';
+        window.db = window.supabase.createClient(S_URL, S_KEY);
+        return window.db;
+    }
+
+    async initAdminPortal() {
         const modal = document.getElementById('secretAdminModal');
         const trigger = document.getElementById('adminPortalTrigger');
         const closeBtn = document.getElementById('closeSecretModal');
         const form = document.getElementById('secretLoginForm');
+        const formWrap = document.getElementById('secretLoginFormWrap');
+        const loggedInWrap = document.getElementById('secretLoggedInWrap');
+        const loggedInEmail = document.getElementById('secretLoggedInEmail');
+        const logoutBtn = document.getElementById('secretLogoutBtn');
+        const quickPill = document.getElementById('adminQuickPill');
         const errBox = document.getElementById('secretErrorBox');
         const errMsg = document.getElementById('secretErrorMsg');
         const btn = document.getElementById('secretSubmitBtn');
         const btnText = document.getElementById('secretBtnText');
 
-        const openPortal = () => {
+        let currentSession = null;
+
+        const checkSession = async () => {
+            try {
+                const client = await this.getClient();
+                const { data: { session } } = await client.auth.getSession();
+                currentSession = session;
+                if (session && session.user) {
+                    if (quickPill) {
+                        quickPill.classList.remove('hidden');
+                        quickPill.classList.add('flex');
+                    }
+                    if (formWrap) formWrap.classList.add('hidden');
+                    if (loggedInWrap) loggedInWrap.classList.remove('hidden');
+                    if (loggedInEmail) loggedInEmail.textContent = session.user.email;
+                } else {
+                    if (quickPill) {
+                        quickPill.classList.add('hidden');
+                        quickPill.classList.remove('flex');
+                    }
+                    if (formWrap) formWrap.classList.remove('hidden');
+                    if (loggedInWrap) loggedInWrap.classList.add('hidden');
+                }
+            } catch (e) {
+                // Ignore silent errors
+            }
+        };
+
+        checkSession();
+
+        const openPortal = async () => {
+            await checkSession();
+            if (currentSession) {
+                // Jika sudah login, langsung lompat ke dashboard!
+                window.location.href = 'admin/dashboard.html';
+                return;
+            }
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             document.getElementById('secretEmail').focus();
@@ -158,7 +241,6 @@ class ModernFooter extends HTMLElement {
             errBox.classList.remove('flex');
         };
 
-        // Trigger via hidden lock icon
         if (trigger) trigger.addEventListener('click', openPortal);
         if (closeBtn) closeBtn.addEventListener('click', closePortal);
 
@@ -177,6 +259,17 @@ class ModernFooter extends HTMLElement {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closePortal();
         });
+
+        // Logout handler
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                const client = await this.getClient();
+                await client.auth.signOut();
+                currentSession = null;
+                checkSession();
+                closePortal();
+            });
+        }
 
         // Focus style helper
         ['secretEmail', 'secretPassword'].forEach(id => {
@@ -206,23 +299,7 @@ class ModernFooter extends HTMLElement {
                 btnText.textContent = 'Memverifikasi...';
 
                 try {
-                    let client = window.db;
-                    if (!client) {
-                        if (!window.supabase) {
-                            await new Promise((res, rej) => {
-                                const s = document.createElement('script');
-                                s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-                                s.onload = res;
-                                s.onerror = rej;
-                                document.head.appendChild(s);
-                            });
-                        }
-                        const S_URL = 'https://wsdmmohdealnnecxfhoj.supabase.co';
-                        const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzZG1tb2hkZWFsbm5lY3hmaG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5OTcyOTksImV4cCI6MjEwMTU3MzI5OX0.HgUVipJZcv8TUNE7BfAfBq3ZSGBzZxGD0KBnlpCzAd0';
-                        client = window.supabase.createClient(S_URL, S_KEY);
-                        window.db = client;
-                    }
-
+                    const client = await this.getClient();
                     const { data, error } = await client.auth.signInWithPassword({ email, password });
 
                     if (error) {
