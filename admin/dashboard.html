@@ -394,6 +394,7 @@
   #toast.show { transform: translateY(0); opacity: 1; }
   #toast.success { background: #101012; border: 1px solid #22C55E; }
   #toast.error   { background: #101012; border: 1px solid var(--danger); }
+  #toast.info    { background: #101012; border: 1px solid var(--gold); color: #FCD34D; }
 
   /* ═══ DELETE CONFIRM ═══ */
   .confirm-box {
@@ -752,7 +753,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-jadwal-title">Tambah Jadwal Misa</div>
-      <button class="modal-close" onclick="closeModal('modal-jadwal')">✕</button>
+      <button class="modal-close" onclick="safeCloseModal('modal-jadwal')">✕</button>
     </div>
     <form id="form-jadwal" onsubmit="submitJadwal(event)">
       <input type="hidden" id="jid">
@@ -812,7 +813,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-jadwal')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-jadwal')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-jadwal">
           <span id="btn-jadwal-text">Simpan Jadwal</span>
         </button>
@@ -828,7 +829,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-peng-title">Tambah Pengumuman</div>
-      <button class="modal-close" onclick="closeModal('modal-pengumuman')">✕</button>
+      <button class="modal-close" onclick="safeCloseModal('modal-pengumuman')">✕</button>
     </div>
     <form id="form-pengumuman" onsubmit="submitPengumuman(event)">
       <input type="hidden" id="pid">
@@ -876,7 +877,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-pengumuman')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-pengumuman')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-peng">
           <span id="btn-peng-text">Simpan Pengumuman</span>
         </button>
@@ -892,7 +893,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-galeri-title">Tambah Foto Kegiatan</div>
-      <button class="modal-close" onclick="closeModal('modal-galeri')">✕</button>
+      <button class="modal-close" onclick="safeCloseModal('modal-galeri')">✕</button>
     </div>
     <form id="form-galeri" onsubmit="submitGaleri(event)">
       <input type="hidden" id="gid">
@@ -990,7 +991,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-galeri')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-galeri')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-galeri">
           <span id="btn-galeri-text">Simpan Foto Kegiatan</span>
         </button>
@@ -1006,7 +1007,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-stasi-title">Edit Foto &amp; Data Stasi</div>
-      <button class="modal-close" onclick="closeModal('modal-stasi')">✕</button>
+      <button class="modal-close" onclick="safeCloseModal('modal-stasi')">✕</button>
     </div>
     <form id="form-stasi" onsubmit="submitStasiAdmin(event)">
       <input type="hidden" id="s-id">
@@ -1073,9 +1074,15 @@
             <!-- Optional manual URL input toggle -->
             <div style="margin-top:0.45rem;display:flex;align-items:center;justify-content:space-between">
               <span class="form-hint" id="s-status-hint">Kosongkan jika stasi dalam tahap pembangunan</span>
+              <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-url-s" style="font-size:0.7rem;padding:0.25rem 0.6rem" onclick="toggleUrlInput('s')">
+                🔗 Input URL Gambar
+              </button>
             </div>
-            <div id="s-url-wrap" style="display:none;margin-top:0.4rem">
-              <input id="s-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/stasi/..." oninput="handleManualUrlInput('s')">
+            <div id="s-url-wrap" style="display:none;margin-top:0.45rem;gap:0.4rem;align-items:center">
+              <input id="s-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/stasi/..." oninput="handleManualUrlInput('s')" onkeydown="if(event.key==='Enter'){event.preventDefault();applyManualUrl('s');}" style="flex:1">
+              <button type="button" class="btn btn-primary btn-sm" onclick="applyManualUrl('s')" style="white-space:nowrap;padding:0.45rem 0.75rem">
+                Terapkan
+              </button>
             </div>
           </div>
         </div>
@@ -1096,7 +1103,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-stasi')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-stasi')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-stasi">
           <span id="btn-stasi-text">Simpan Perubahan Stasi</span>
         </button>
@@ -1286,24 +1293,75 @@ function toast(msg, type = 'success') {
   setTimeout(() => { t.className = ''; }, 3500);
 }
 
+// ── Form Change Detection / Dirty Check Helpers ─────────────
+const _initialFormStates = {};
+
+function getFormSnapshot(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return {};
+  const form = modal.querySelector('form');
+  if (!form) return {};
+  const snapshot = {};
+  const elements = form.querySelectorAll('input, select, textarea');
+  elements.forEach(el => {
+    if (el.type === 'checkbox') {
+      snapshot[el.id] = el.checked;
+    } else if (el.type !== 'file') {
+      snapshot[el.id] = (el.value || '').trim();
+    }
+  });
+  return snapshot;
+}
+
+function saveInitialFormState(modalId) {
+  _initialFormStates[modalId] = JSON.stringify(getFormSnapshot(modalId));
+}
+
+function isFormDirty(modalId) {
+  if (!_initialFormStates[modalId]) return false;
+  const current = JSON.stringify(getFormSnapshot(modalId));
+  return current !== _initialFormStates[modalId];
+}
+
+function clearFormState(modalId) {
+  delete _initialFormStates[modalId];
+}
+
 // ── Modal helpers ───────────────────────────────────────────
 function openModal(id) {
   const el = document.getElementById(id);
-  el.classList.add('open');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
+  if (el) el.classList.add('open');
 }
 
-// Close on backdrop click
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
+  clearFormState(id);
+}
+
+function safeCloseModal(id) {
+  if (id === 'modal-confirm') {
+    closeModal(id);
+    return;
+  }
+  if (isFormDirty(id)) {
+    const yakin = confirm('Perubahan data belum disimpan. Apakah Anda yakin ingin membatalkan perubahan dan menutup formulir?');
+    if (!yakin) return;
+  }
+  closeModal(id);
+}
+
+// Close on backdrop click (with safe dirty check)
 document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+  m.addEventListener('click', e => {
+    if (e.target === m) safeCloseModal(m.id);
+  });
 });
 
-// Escape key
+// Escape key (with safe dirty check)
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.modal-overlay.open').forEach(m => safeCloseModal(m.id));
   }
 });
 
@@ -1446,6 +1504,7 @@ function openJadwalModal(data = null) {
   document.getElementById('btn-jadwal-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Jadwal';
 
   openModal('modal-jadwal');
+  saveInitialFormState('modal-jadwal');
   setTimeout(() => document.getElementById('j-stasi').focus(), 100);
 }
 
@@ -1737,6 +1796,13 @@ async function submitJadwal(e) {
   const btn     = document.getElementById('btn-submit-jadwal');
   const alertEl = document.getElementById('jadwal-alert');
 
+  // Change detection for edit
+  if (id && !isFormDirty('modal-jadwal')) {
+    toast('Tidak ada perubahan jadwal yang disimpan.', 'info');
+    closeModal('modal-jadwal');
+    return;
+  }
+
   alertEl.style.display = 'none';
   btn.disabled = true;
   document.getElementById('btn-jadwal-text').textContent = 'Menyimpan…';
@@ -1879,6 +1945,7 @@ function openPengumumanModal(data = null) {
   document.getElementById('btn-peng-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Pengumuman';
 
   openModal('modal-pengumuman');
+  saveInitialFormState('modal-pengumuman');
   setTimeout(() => document.getElementById('p-judul').focus(), 100);
 }
 
@@ -1889,6 +1956,13 @@ async function submitPengumuman(e) {
   const id      = document.getElementById('pid').value;
   const btn     = document.getElementById('btn-submit-peng');
   const alertEl = document.getElementById('peng-alert');
+
+  // Change detection for edit
+  if (id && !isFormDirty('modal-pengumuman')) {
+    toast('Tidak ada perubahan pengumuman yang disimpan.', 'info');
+    closeModal('modal-pengumuman');
+    return;
+  }
 
   alertEl.style.display = 'none';
   btn.disabled = true;
@@ -2077,6 +2151,7 @@ function openGaleriModal(data = null) {
   document.getElementById('btn-galeri-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Foto Kegiatan';
 
   openModal('modal-galeri');
+  saveInitialFormState('modal-galeri');
   setTimeout(() => document.getElementById('g-judul').focus(), 100);
 }
 
@@ -2087,6 +2162,13 @@ async function submitGaleri(e) {
   const id      = document.getElementById('gid').value;
   const btn     = document.getElementById('btn-submit-galeri');
   const alertEl = document.getElementById('galeri-alert');
+
+  // Change detection for edit
+  if (id && !isFormDirty('modal-galeri')) {
+    toast('Tidak ada perubahan foto kegiatan yang disimpan.', 'info');
+    closeModal('modal-galeri');
+    return;
+  }
 
   alertEl.style.display = 'none';
   btn.disabled = true;
@@ -2221,6 +2303,7 @@ function openStasiModal(key) {
 
   document.getElementById('modal-stasi-title').textContent = 'Edit Data: ' + (item.nama || 'Stasi');
   openModal('modal-stasi');
+  saveInitialFormState('modal-stasi');
 }
 
 async function submitStasiAdmin(e) {
@@ -2228,6 +2311,13 @@ async function submitStasiAdmin(e) {
   const id      = document.getElementById('s-id').value;
   const btn     = document.getElementById('btn-submit-stasi');
   const alertEl = document.getElementById('stasi-alert');
+
+  // Change detection for stasi
+  if (!isFormDirty('modal-stasi')) {
+    toast('Tidak ada perubahan data stasi yang disimpan.', 'info');
+    closeModal('modal-stasi');
+    return;
+  }
 
   alertEl.style.display = 'none';
   btn.disabled = true;

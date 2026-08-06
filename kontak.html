@@ -6,8 +6,11 @@
 <title>Kontak - Paroki Marga Agung</title>
 <meta name="description" content="Hubungi sekretariat Paroki Santo Andreas Rasul Marga Agung. Informasi alamat, telepon, dan formulir kontak.">
 <link rel="icon" href="assets/crossIcon.png" type="image/png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body class="flex flex-col min-h-screen">
 
@@ -96,26 +99,41 @@
           </h2>
           <p class="text-sm mb-7 pl-1" style="color:var(--ink-muted)">Isi formulir di bawah ini dan kami akan merespons secepatnya.</p>
 
+          <!-- Alert box -->
+          <div id="contact-alert" style="display:none" class="mb-5 flex items-start gap-3 p-4 rounded-xl text-sm font-medium" role="alert"></div>
+
           <form id="contactForm" class="space-y-5" novalidate>
-            <div class="form-group">
-              <label class="form-label" for="name">Nama Lengkap</label>
-              <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap Anda" class="form-input">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div class="form-group mb-0">
+                <label class="form-label" for="cf-name">Nama Lengkap <span style="color:var(--danger)">*</span></label>
+                <input type="text" id="cf-name" name="name" placeholder="Nama lengkap Anda" class="form-input" required>
+              </div>
+              <div class="form-group mb-0">
+                <label class="form-label" for="cf-email">Email <span style="color:var(--danger)">*</span></label>
+                <input type="email" id="cf-email" name="email" placeholder="email@contoh.com" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div class="form-group mb-0">
+                <label class="form-label" for="cf-telepon">No. HP / WhatsApp</label>
+                <input type="tel" id="cf-telepon" name="telepon" placeholder="0812xxxxxxxx" class="form-input">
+              </div>
+              <div class="form-group mb-0">
+                <label class="form-label" for="cf-subjek">Subjek <span style="color:var(--danger)">*</span></label>
+                <select id="cf-subjek" name="subjek" class="form-input" required>
+                  <option value="">Pilih Subjek</option>
+                  <option value="Informasi Baptis">Informasi Baptis / Sakramen</option>
+                  <option value="Intensi Misa">Pengajuan Intensi Misa</option>
+                  <option value="Pernikahan">Konsultasi Pernikahan</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="subject">Subjek</label>
-              <select id="subject" name="subject" class="form-input">
-                <option value="">Pilih Subjek</option>
-                <option value="Informasi Baptis">Informasi Baptis / Sakramen</option>
-                <option value="Intensi Misa">Pengajuan Intensi Misa</option>
-                <option value="Pernikahan">Konsultasi Pernikahan</option>
-                <option value="Lainnya">Lainnya</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="message">Pesan</label>
-              <textarea id="message" name="message" rows="5" placeholder="Tuliskan pesan atau pertanyaan Anda di sini…" class="form-input" style="resize:vertical;min-height:130px"></textarea>
+              <label class="form-label" for="cf-pesan">Pesan <span style="color:var(--danger)">*</span></label>
+              <textarea id="cf-pesan" name="pesan" rows="5" placeholder="Tuliskan pesan atau pertanyaan Anda di sini…" class="form-input" style="resize:vertical;min-height:130px" required></textarea>
             </div>
 
             <button type="submit" id="submitBtn" class="btn-primary w-full justify-center text-sm py-3.5">

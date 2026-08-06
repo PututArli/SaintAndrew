@@ -213,13 +213,33 @@ function openStasiModal(id) {
 
     let imageHtml = '';
     if (data.image) {
-        imageHtml = `<img src="${data.image}" alt="${data.title}" class="w-full object-cover rounded-2xl shadow-md mb-6" style="max-height:280px">`;
+        const safeTitle = (data.title || '').replace(/'/g, "\\'");
+        const safePatron = (data.patron || '').replace(/'/g, "\\'");
+        imageHtml = `
+        <div class="relative w-full rounded-2xl overflow-hidden shadow-lg mb-6 flex items-center justify-center cursor-pointer group border transition-all hover:shadow-xl" 
+             style="max-height:440px; min-height:220px; background:#141416; border-color:var(--border);"
+             onclick="openLightbox('${data.image}', '${safeTitle}', {title:'${safeTitle}', keterangan:'Gedung Gereja / Stasi ${safeTitle} · Pelindung: ${safePatron}', badge:'Gereja &amp; Stasi'})"
+             title="Klik untuk melihat foto penuh">
+            
+            <!-- Ambient blurred backdrop to seamlessly frame church photo -->
+            <img src="${data.image}" alt="" class="absolute inset-0 w-full h-full object-cover filter blur-xl opacity-35 scale-110 pointer-events-none" aria-hidden="true">
+            
+            <!-- Full uncropped church building photo -->
+            <img src="${data.image}" alt="${data.title}" class="relative z-10 max-h-[380px] md:max-h-[440px] w-auto max-w-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-[1.02] shadow-sm">
+            
+            <!-- Zoom Hint Badge -->
+            <div class="absolute bottom-3 right-3 z-20 px-3.5 py-1.5 rounded-full text-xs font-semibold text-white flex items-center gap-1.5 shadow-md transition-all group-hover:shadow-lg" 
+                 style="background:rgba(28,28,30,0.8);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                <span>Lihat Foto Penuh</span>
+            </div>
+        </div>`;
     } else {
         imageHtml = `
-        <div class="w-full rounded-2xl mb-6 p-6 flex flex-col items-center justify-center text-center" style="background:var(--gold-muted);border:1px dashed var(--gold)">
-            <span class="text-3xl font-bold mb-1" style="color:var(--gold)">✝</span>
-            <span class="font-bold text-sm" style="color:var(--ink)">Gereja Dalam Pembangunan</span>
-            <span class="text-xs text-gray-500 mt-0.5">Ibadat & Misa bergiliran di rumah umat</span>
+        <div class="w-full rounded-2xl mb-6 p-8 flex flex-col items-center justify-center text-center" style="background:var(--gold-muted);border:1.5px dashed var(--gold)">
+            <span class="text-3xl font-bold mb-1.5" style="color:var(--gold)">✝</span>
+            <span class="font-bold text-base" style="color:var(--ink)">Gereja Dalam Pembangunan</span>
+            <span class="text-xs text-gray-500 mt-1">Ibadat & Misa bergiliran di rumah umat stasi</span>
         </div>`;
     }
 
@@ -359,10 +379,22 @@ function buildLightboxImages() {
     }).filter(item => item.src);
 }
 
-function openLightbox(src, alt) {
+function openLightbox(src, alt, customData = null) {
     ensureLightboxInDOM();
     buildLightboxImages();
-    const idx = lightboxImages.findIndex(i => i.src === src);
+    let idx = lightboxImages.findIndex(i => i.src === src);
+    if (idx < 0 && src) {
+        lightboxImages = [{
+            src: src,
+            alt: alt || 'Foto',
+            title: (customData && customData.title) || alt || 'Foto',
+            keterangan: (customData && customData.keterangan) || '',
+            badge: (customData && customData.badge) || 'STASI',
+            badgeBg: 'var(--gold)',
+            date: (customData && customData.date) || ''
+        }];
+        idx = 0;
+    }
     currentLightboxIndex = idx >= 0 ? idx : 0;
     renderLightbox();
 
