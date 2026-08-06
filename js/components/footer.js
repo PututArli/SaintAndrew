@@ -156,7 +156,7 @@ class ModernFooter extends HTMLElement {
         </div>
 
         <!-- Floating Quick Return Pill for Logged-In Admins -->
-        <div id="adminQuickPill" class="fixed bottom-5 right-5 z-[9990] hidden items-center gap-2 px-4 py-2.5 rounded-full shadow-2xl transition-all duration-200" style="background:#101012;border:1px solid rgba(184,134,11,0.3);box-shadow:0 8px 30px rgba(0,0,0,0.35)">
+        <div id="adminQuickPill" class="fixed bottom-20 right-4 md:bottom-5 md:right-5 z-[9990] hidden items-center gap-2 px-3.5 py-2 md:px-4 md:py-2.5 rounded-full shadow-2xl transition-all duration-200" style="background:#101012;border:1px solid rgba(184,134,11,0.35);box-shadow:0 8px 30px rgba(0,0,0,0.45)">
             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             <a href="admin/dashboard.html" class="text-xs font-semibold text-white hover:text-[#D4A017] transition-colors flex items-center gap-1.5" style="text-decoration:none">
                 Mode Admin <span class="text-gray-400 font-normal">| Buka Dashboard ›</span>

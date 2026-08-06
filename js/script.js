@@ -381,9 +381,7 @@ function buildLightboxImages() {
 
 function openLightbox(src, alt, customData = null) {
     ensureLightboxInDOM();
-    buildLightboxImages();
-    let idx = lightboxImages.findIndex(i => i.src === src);
-    if (idx < 0 && src) {
+    if (customData) {
         lightboxImages = [{
             src: src,
             alt: alt || 'Foto',
@@ -393,9 +391,24 @@ function openLightbox(src, alt, customData = null) {
             badgeBg: 'var(--gold)',
             date: (customData && customData.date) || ''
         }];
-        idx = 0;
+        currentLightboxIndex = 0;
+    } else {
+        buildLightboxImages();
+        let idx = lightboxImages.findIndex(i => i.src === src);
+        if (idx < 0 && src) {
+            lightboxImages = [{
+                src: src,
+                alt: alt || 'Foto',
+                title: alt || 'Foto',
+                keterangan: '',
+                badge: 'GALERI',
+                badgeBg: 'var(--gold)',
+                date: ''
+            }];
+            idx = 0;
+        }
+        currentLightboxIndex = idx >= 0 ? idx : 0;
     }
-    currentLightboxIndex = idx >= 0 ? idx : 0;
     renderLightbox();
 
     const lb = document.getElementById('lightbox');
@@ -435,6 +448,8 @@ function renderLightbox() {
     const badgeEl = document.getElementById('lightbox-badge');
     const dateEl = document.getElementById('lightbox-date');
     const counter = document.getElementById('lightbox-counter');
+    const prevBtn = document.querySelector('.lb-prev');
+    const nextBtn = document.querySelector('.lb-next');
 
     if (img) {
         img.src = data.src;
@@ -470,7 +485,13 @@ function renderLightbox() {
         }
     }
 
-    if (counter) counter.textContent = `${currentLightboxIndex + 1} / ${lightboxImages.length}`;
+    const hasMultiple = lightboxImages.length > 1;
+    if (prevBtn) prevBtn.style.display = hasMultiple ? 'flex' : 'none';
+    if (nextBtn) nextBtn.style.display = hasMultiple ? 'flex' : 'none';
+    if (counter) {
+        counter.style.display = hasMultiple ? 'block' : 'none';
+        if (hasMultiple) counter.textContent = `${currentLightboxIndex + 1} / ${lightboxImages.length}`;
+    }
 }
 
 function changeLightboxImage(dir) {
@@ -684,8 +705,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (missing.length > 0) {
                 if (alertBox) {
-                    alertBox.className = 'mb-5 flex items-start gap-3 p-4 rounded-xl text-sm font-medium bg-red-50 text-red-700 border border-red-200';
-                    alertBox.innerHTML = `⚠️ Mohon lengkapi kolom wajib: <strong>${missing.join(', ')}</strong>`;
+                    alertBox.className = 'mb-5 flex items-center gap-2.5 p-3.5 rounded-xl text-sm font-medium bg-red-50 text-red-700 border border-red-200';
+                    alertBox.innerHTML = `<span class="flex-shrink-0 text-base">⚠️</span><div class="flex-grow leading-relaxed">Mohon lengkapi kolom wajib: <strong class="font-bold text-red-800">${missing.join(', ')}</strong></div>`;
                     alertBox.style.display = 'flex';
                 } else {
                     showAlert('Formulir Belum Lengkap', `Mohon isi kolom: <strong>${missing.join(', ')}</strong>`, 'error');
