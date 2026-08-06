@@ -80,12 +80,182 @@ class ModernFooter extends HTMLElement {
                 <!-- Bottom bar -->
                 <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.28)">
                     <span>© 2026 Paroki Santo Andreas Rasul Marga Agung.</span>
-                    <span class="flex items-center gap-1.5">Dibuat dengan <span style="color:#B8860B">♥</span> untuk umat paroki</span>
+                    <div class="flex items-center gap-3">
+                        <span class="flex items-center gap-1.5">Dibuat dengan <span style="color:#B8860B">♥</span> untuk umat paroki</span>
+                        <button id="adminPortalTrigger" class="text-[11px] opacity-20 hover:opacity-100 transition-opacity flex items-center gap-1 cursor-pointer bg-transparent border-0 p-1" style="color:rgba(255,255,255,0.6)" title="Portal Khusus">
+                            🔒
+                        </button>
+                    </div>
                 </div>
             </div>
         </footer>
+
+        <!-- ═══════════════════════════════════════════
+             MODAL PORTAL KHUSUS ADMIN (HIGH SECURITY)
+        ═══════════════════════════════════════════ -->
+        <div id="secretAdminModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4" style="background:rgba(15,15,18,0.85);backdrop-filter:blur(12px)">
+            <div class="relative w-full max-w-md rounded-3xl p-8 shadow-2xl text-left" style="background:rgba(28,28,32,0.95);border:1px solid rgba(184,134,11,0.25);box-shadow:0 25px 60px rgba(0,0,0,0.5)">
+                <!-- Close Button -->
+                <button id="closeSecretModal" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-gray-400 hover:text-white transition-colors" style="background:rgba(255,255,255,0.06);border:none;cursor:pointer">✕</button>
+
+                <!-- Header -->
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl text-white shadow-lg" style="background:linear-gradient(135deg,#B8860B,#D4A017);box-shadow:0 6px 20px rgba(184,134,11,0.4)">🔐</div>
+                    <div>
+                        <div class="text-[10px] font-bold uppercase tracking-widest text-[#D4A017]">Portal Keamanan</div>
+                        <h3 class="text-lg font-bold text-white tracking-tight">Otentikasi Pengurus Paroki</h3>
+                    </div>
+                </div>
+
+                <div id="secretErrorBox" class="hidden mb-4 p-3 rounded-xl text-xs font-medium bg-red-950/60 border border-red-800/80 text-red-300 items-center gap-2">
+                    <span>⚠️</span>
+                    <span id="secretErrorMsg">Akses ditolak: Kredensial tidak valid.</span>
+                </div>
+
+                <!-- Form -->
+                <form id="secretLoginForm" class="space-y-4" autocomplete="off">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1.5">ID / Email Admin</label>
+                        <input id="secretEmail" type="email" required placeholder="admin@paroki.com" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-white placeholder-gray-500 outline-none transition-all" style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12)">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1.5">Kunci Akses (Password)</label>
+                        <input id="secretPassword" type="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl text-sm text-white placeholder-gray-500 outline-none transition-all" style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12)">
+                    </div>
+
+                    <button id="secretSubmitBtn" type="submit" class="w-full py-3 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 mt-2 cursor-pointer transition-all duration-200" style="background:linear-gradient(135deg,#B8860B,#D4A017);box-shadow:0 6px 20px rgba(184,134,11,0.35);border:none">
+                        <span id="secretBtnIcon">🔑</span>
+                        <span id="secretBtnText">Verifikasi &amp; Masuk Dashboard</span>
+                    </button>
+                </form>
+
+                <div class="mt-4 pt-4 text-center border-t border-white/10 text-[11px] text-gray-400">
+                    Sistem terlindungi Enkripsi TLS &amp; Supabase RLS.
+                </div>
+            </div>
+        </div>
         `;
+
+        this.initAdminPortal();
+    }
+
+    initAdminPortal() {
+        const modal = document.getElementById('secretAdminModal');
+        const trigger = document.getElementById('adminPortalTrigger');
+        const closeBtn = document.getElementById('closeSecretModal');
+        const form = document.getElementById('secretLoginForm');
+        const errBox = document.getElementById('secretErrorBox');
+        const errMsg = document.getElementById('secretErrorMsg');
+        const btn = document.getElementById('secretSubmitBtn');
+        const btnText = document.getElementById('secretBtnText');
+        const btnIcon = document.getElementById('secretBtnIcon');
+
+        const openPortal = () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('secretEmail').focus();
+        };
+
+        const closePortal = () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            errBox.classList.add('hidden');
+            errBox.classList.remove('flex');
+        };
+
+        // Trigger via hidden lock icon
+        if (trigger) trigger.addEventListener('click', openPortal);
+        if (closeBtn) closeBtn.addEventListener('click', closePortal);
+
+        // Shortcut keyboard: Ctrl + Shift + A (atau Cmd + Shift + A di Mac)
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                e.preventDefault();
+                openPortal();
+            }
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closePortal();
+            }
+        });
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closePortal();
+        });
+
+        // Focus style helper
+        ['secretEmail', 'secretPassword'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('focus', () => el.style.borderColor = '#D4A017');
+                el.addEventListener('blur', () => el.style.borderColor = 'rgba(255,255,255,0.12)');
+            }
+        });
+
+        // Form Submit
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('secretEmail').value.trim();
+                const password = document.getElementById('secretPassword').value;
+
+                errBox.classList.add('hidden');
+                errBox.classList.remove('flex');
+                btn.disabled = true;
+                btnText.textContent = 'Memverifikasi Otentikasi…';
+                btnIcon.textContent = '⏳';
+
+                try {
+                    // Pastikan Supabase client siap
+                    let client = window.db;
+                    if (!client) {
+                        if (!window.supabase) {
+                            await new Promise((res, rej) => {
+                                const s = document.createElement('script');
+                                s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+                                s.onload = res;
+                                s.onerror = rej;
+                                document.head.appendChild(s);
+                            });
+                        }
+                        const S_URL = 'https://wsdmmohdealnnecxfhoj.supabase.co';
+                        const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzZG1tb2hkZWFsbm5lY3hmaG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5OTcyOTksImV4cCI6MjEwMTU3MzI5OX0.HgUVipJZcv8TUNE7BfAfBq3ZSGBzZxGD0KBnlpCzAd0';
+                        client = window.supabase.createClient(S_URL, S_KEY);
+                        window.db = client;
+                    }
+
+                    const { data, error } = await client.auth.signInWithPassword({ email, password });
+
+                    if (error) {
+                        errMsg.textContent = 'Akses ditolak: Kredensial akun admin tidak sesuai.';
+                        errBox.classList.remove('hidden');
+                        errBox.classList.add('flex');
+                        btn.disabled = false;
+                        btnText.textContent = 'Verifikasi & Masuk Dashboard';
+                        btnIcon.textContent = '🔑';
+                        return;
+                    }
+
+                    btnText.textContent = 'Otentikasi Berhasil! Mengalihkan…';
+                    btnIcon.textContent = '✅';
+
+                    setTimeout(() => {
+                        window.location.href = 'admin/dashboard.html';
+                    }, 400);
+
+                } catch (err) {
+                    errMsg.textContent = err.message || 'Gagal memproses otentikasi.';
+                    errBox.classList.remove('hidden');
+                    errBox.classList.add('flex');
+                    btn.disabled = false;
+                    btnText.textContent = 'Verifikasi & Masuk Dashboard';
+                    btnIcon.textContent = '🔑';
+                }
+            });
+        }
     }
 }
 
 customElements.define('modern-footer', ModernFooter);
+
