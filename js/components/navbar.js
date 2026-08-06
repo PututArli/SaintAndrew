@@ -35,8 +35,8 @@ class ModernNavbar extends HTMLElement {
         }).join('');
 
         this.innerHTML = `
-        <!-- Floating Top Pill Navbar (Desktop & Tablet) -->
-        <header class="floating-nav-container">
+        <!-- Floating Top Pill Navbar (Desktop & Tablet only) -->
+        <header class="floating-nav-container hidden md:flex">
             <nav class="floating-nav" id="main-nav">
                 <!-- Logo -->
                 <a href="index.html" class="flex items-center gap-2.5 no-underline pr-2">
@@ -48,16 +48,9 @@ class ModernNavbar extends HTMLElement {
                 </a>
 
                 <!-- Desktop Nav Links -->
-                <ul class="hidden md:flex items-center gap-1 list-none p-0 m-0">
+                <ul class="flex items-center gap-1 list-none p-0 m-0">
                     ${desktopLinks}
                 </ul>
-
-                <!-- Mobile Header Shortcut -->
-                <div class="md:hidden flex items-center">
-                    <a href="galeri.html" class="text-xs font-semibold px-3 py-1.5 rounded-full" style="background:var(--gold-muted);color:var(--gold)">
-                        Galeri
-                    </a>
-                </div>
             </nav>
         </header>
 

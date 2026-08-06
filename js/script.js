@@ -660,39 +660,75 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Update greeting once more to ensure all elements caught
     updateGreetings();
 
-    // 5. Contact form submission & validation
+    // 5. Contact form submission & validation (Supabase integrated)
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn      = contactForm.querySelector('button[type="submit"]');
-            const iconEl   = document.getElementById('submitIcon');
             const textEl   = document.getElementById('submitText');
+            const alertBox = document.getElementById('contact-alert');
             const origText = textEl ? textEl.textContent : (btn ? btn.textContent : 'Kirim Pesan');
 
-            if (textEl) textEl.textContent = 'Memproses…';
-            if (btn) btn.disabled = true;
+            const name    = (document.getElementById('cf-name') || document.getElementById('name'))?.value.trim() || '';
+            const email   = (document.getElementById('cf-email') || document.getElementById('email'))?.value.trim() || '';
+            const telepon = (document.getElementById('cf-telepon') || document.getElementById('telepon'))?.value.trim() || '';
+            const subject = (document.getElementById('cf-subjek') || document.getElementById('subject'))?.value || '';
+            const message = (document.getElementById('cf-pesan') || document.getElementById('message'))?.value.trim() || '';
 
-            setTimeout(() => {
-                const name    = document.getElementById('name')?.value.trim() || '';
-                const subject = document.getElementById('subject')?.value || '';
-                const message = document.getElementById('message')?.value.trim() || '';
+            const missing = [];
+            if (!name)    missing.push('Nama Lengkap');
+            if (!email)   missing.push('Email');
+            if (!subject) missing.push('Subjek');
+            if (!message) missing.push('Pesan');
 
-                const missing = [];
-                if (!name)    missing.push('Nama Lengkap');
-                if (!subject) missing.push('Subjek');
-                if (!message) missing.push('Pesan');
-
-                if (missing.length > 0) {
-                    showAlert('Formulir Belum Lengkap', `Mohon isi kolom: <strong>${missing.join(', ')}</strong>`, 'error');
+            if (missing.length > 0) {
+                if (alertBox) {
+                    alertBox.className = 'mb-5 flex items-start gap-3 p-4 rounded-xl text-sm font-medium bg-red-50 text-red-700 border border-red-200';
+                    alertBox.innerHTML = `⚠️ Mohon lengkapi kolom wajib: <strong>${missing.join(', ')}</strong>`;
+                    alertBox.style.display = 'flex';
                 } else {
-                    showAlert('Berhasil Terkirim!', `Terima kasih <strong>${name}</strong>! Pesan Anda telah kami terima dan akan segera ditindaklanjuti.`, 'success');
-                    contactForm.reset();
+                    showAlert('Formulir Belum Lengkap', `Mohon isi kolom: <strong>${missing.join(', ')}</strong>`, 'error');
+                }
+                return;
+            }
+
+            if (textEl) textEl.textContent = 'Mengirim pesan…';
+            if (btn) btn.disabled = true;
+            if (alertBox) alertBox.style.display = 'none';
+
+            try {
+                if (typeof db !== 'undefined' && db) {
+                    const payload = {
+                        nama:       name,
+                        email:      email,
+                        telepon:    telepon || null,
+                        subjek:     subject,
+                        pesan:      message,
+                        created_at: new Date().toISOString()
+                    };
+
+                    const { error } = await db.from('pesan').insert([payload]);
+                    if (error) throw error;
                 }
 
+                showAlert(
+                    'Pesan Berhasil Terkirim!',
+                    `Terima kasih <strong>${name}</strong>. Pesan Anda telah kami terima dan akan segera ditindaklanjuti oleh sekretariat paroki.`,
+                    'success'
+                );
+                contactForm.reset();
+            } catch (err) {
+                console.error('Gagal mengirim pesan kontak:', err);
+                // Show actual error — table may not be created yet
+                const errMsg = err?.code === '42P01'
+                    ? 'Tabel pesan belum disiapkan di database. Hubungi administrator.'
+                    : (err?.message || 'Terjadi kesalahan jaringan. Coba lagi.');
+                showAlert('Gagal Mengirim', errMsg, 'error');
+            } finally {
                 if (textEl) textEl.textContent = origText;
                 if (btn) btn.disabled = false;
-            }, 500);
+            }
         });
     }
 

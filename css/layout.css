@@ -13,6 +13,7 @@
   justify-content: center;
   padding: 0 1rem;
   pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .floating-nav {
@@ -61,6 +62,19 @@
   font-weight: 600;
 }
 
+/* ── Smoothly hide navigation when modal / lightbox is open ── */
+body.modal-open .floating-nav-container {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-20px);
+}
+
+body.modal-open .mobile-bottom-dock {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(20px);
+}
+
 /* ── Mobile Bottom Dock Bar ── */
 .mobile-bottom-dock {
   position: fixed;
@@ -73,23 +87,6 @@
   padding: 0 1rem;
   pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-/* ── Smoothly hide navigation when modal / lightbox is open ── */
-.floating-nav-container {
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-body.modal-open .floating-nav-container {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transform: translateY(-20px);
-}
-
-body.modal-open .mobile-bottom-dock {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transform: translateY(20px);
 }
 
 .dock-inner {
@@ -120,6 +117,7 @@ body.modal-open .mobile-bottom-dock {
   transition: all 0.2s ease;
   font-size: 0.65rem;
   font-weight: 500;
+  min-width: 44px; /* touch target */
 }
 
 .dock-icon {
@@ -147,6 +145,7 @@ body.modal-open .mobile-bottom-dock {
   align-items: center;
   overflow: hidden;
   background: linear-gradient(155deg, #1A1A1E 0%, #2C2C30 50%, #1C1C1E 100%);
+  padding-top: 5rem;
 }
 
 .hero-bg-orb {
@@ -234,24 +233,6 @@ body.modal-open .mobile-bottom-dock {
   overflow: hidden;
   padding: 6.5rem 1.5rem 4.5rem;
   text-align: center;
-}
-
-.hero-section {
-  position: relative;
-  min-height: 92vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  background: linear-gradient(155deg, #1A1A1E 0%, #2C2C30 50%, #1C1C1E 100%);
-  padding-top: 5rem;
-}
-
-/* ── Responsive ── */
-@media (max-width: 767px) {
-  .stat-item + .stat-item::before { display: none; }
-  .hero-section { min-height: 100svh; padding-top: 5.5rem; }
-  body { font-size: 15px; padding-bottom: 4.5rem; }
-  .page-hero { padding-top: 5.5rem; padding-bottom: 3.5rem; }
 }
 
 .page-hero::before {
@@ -346,9 +327,77 @@ body.modal-open .mobile-bottom-dock {
   transform: translateY(-3px);
 }
 
-/* ── Responsive ── */
+/* ════════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE  (≤ 767px)
+   ════════════════════════════════════════ */
 @media (max-width: 767px) {
+  /* Text sizing */
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-size: 15px;
+    /* Extra bottom padding so content isn't hidden behind mobile dock */
+    padding-bottom: 5.5rem;
+  }
+
+  /* ── Navbar ── */
+  .floating-nav-container { display: none !important; }
+
+  /* ── Hero (home) ── */
+  .hero-section {
+    min-height: auto;
+    padding-top: 2.25rem;
+    padding-bottom: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+  }
+
+  /* ── Page hero (inner pages) ── */
+  .page-hero {
+    padding: 2.75rem 1.25rem 1.75rem;
+  }
+
+  .page-hero-title {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+
+  .page-hero-subtitle {
+    font-size: 0.85rem;
+  }
+
+  /* ── Stats bar ── */
   .stat-item + .stat-item::before { display: none; }
-  .hero-section { min-height: 100svh; padding-top: 5rem; }
-  body { font-size: 15px; }
+  .stat-item { padding: 1rem 0.75rem; }
+
+  /* ── Section titles ── */
+  .section-title {
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
+  }
+
+  /* ── Glass cards — tighten padding ── */
+  .glass-card {
+    border-radius: 1rem !important;
+  }
+
+  /* ── Dock ── */
+  .dock-inner { max-width: 100%; margin: 0 0.5rem; }
+  .dock-item { padding: 0.3rem 0.5rem; font-size: 0.6rem; }
+  .dock-icon { font-size: 1.05rem; }
+}
+
+/* Small phones (≤ 400px) */
+@media (max-width: 400px) {
+  .dock-item { padding: 0.25rem 0.3rem; }
+  .dock-text { display: none; }
+  .dock-inner { padding: 0.5rem 0.75rem; }
+  .dock-icon { font-size: 1.15rem; margin-bottom: 0; }
 }
