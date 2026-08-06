@@ -511,12 +511,15 @@
   }
 
   /* ═══ RESPONSIVE + MOBILE ═══ */
+  /* ═══ RESPONSIVE + MOBILE ═══ */
   @media (max-width: 768px) {
     /* Sidebar slides in from left */
     .sidebar {
       transform: translateX(-100%);
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 500;
+      width: min(82vw, 290px);
+      box-shadow: 10px 0 30px rgba(0,0,0,0.5);
     }
     .sidebar.open { transform: translateX(0); }
     .main {
@@ -527,13 +530,13 @@
       overflow-x: hidden;
     }
     .page-body {
-      padding: 0.85rem 0.75rem;
+      padding: 0.75rem 0.65rem 1.5rem;
       width: 100%;
       max-width: 100%;
       min-width: 0;
     }
     .topbar {
-      padding: 0.75rem 0.85rem;
+      padding: 0.7rem 0.75rem;
       width: 100%;
       max-width: 100%;
       gap: 0.5rem;
@@ -546,10 +549,22 @@
       white-space: nowrap;
     }
     .topbar .admin-chip {
-      padding: 0.3rem 0.6rem;
-      font-size: 0.68rem;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.7rem;
       flex-shrink: 0;
-      max-width: 140px;
+      max-width: 125px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .topbar .admin-chip .admin-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      flex-shrink: 0;
+    }
+    .topbar .admin-chip span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -557,13 +572,17 @@
     .stats-row {
       grid-template-columns: repeat(2, 1fr);
       gap: 0.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
       width: 100%;
     }
+    /* 5th card spans full width for balanced visual symmetry */
+    .stats-row > :last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
     .stat-card {
-      padding: 0.75rem;
-      gap: 0.6rem;
-      border-radius: 12px;
+      padding: 0.75rem 0.85rem;
+      gap: 0.65rem;
+      border-radius: 14px;
     }
     .stat-val { font-size: 1.15rem; }
     .stat-lbl { font-size: 0.65rem; }
@@ -572,26 +591,54 @@
       font-size: 1rem;
       border-radius: 8px;
     }
+    .card {
+      border-radius: 16px;
+    }
     .card-head {
       padding: 0.85rem 1rem;
       flex-direction: column;
       align-items: stretch;
       gap: 0.75rem;
     }
-    .card-head .btn, .card-head .btn-primary {
+    .card-head .btn-primary {
       width: 100%;
       justify-content: center;
+      padding: 0.65rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
     }
-    .card-head-title { font-size: 0.88rem; }
-    .card-head-sub { font-size: 0.68rem; }
+    .card-head .btn-ghost {
+      align-self: flex-start;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.75rem;
+    }
+    .card-head-title { font-size: 0.9rem; }
+    .card-head-sub { font-size: 0.7rem; }
     .filter-bar {
       padding: 0.65rem 0.85rem;
-      gap: 0.5rem;
-      flex-direction: column;
-      align-items: stretch;
+      gap: 0.45rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      width: 100%;
+      margin-bottom: -0.15rem;
     }
     .filter-select {
-      width: 100%;
+      flex: 1;
+      min-width: 0;
+      font-size: 0.82rem;
+      padding: 0.45rem 0.7rem;
+    }
+    .filter-bar .btn-ghost {
+      flex-shrink: 0;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.75rem;
+      margin-left: 0 !important;
     }
     .card-body {
       overflow-x: auto;
@@ -599,44 +646,77 @@
       width: 100%;
     }
     .data-table {
-      min-width: 480px;
-      font-size: 0.75rem;
+      min-width: 460px;
+      font-size: 0.74rem;
     }
     .data-table th {
-      padding: 0.55rem 0.65rem;
+      padding: 0.5rem 0.6rem;
       font-size: 0.65rem;
     }
     .data-table td {
-      padding: 0.65rem 0.65rem;
+      padding: 0.6rem 0.6rem;
     }
     .stasi-admin-grid {
       grid-template-columns: 1fr;
       gap: 0.75rem;
       width: 100%;
     }
-    .modal-box {
-      max-width: 100%;
-      border-radius: 20px 20px 0 0;
-      max-height: 92vh;
-    }
     .modal-overlay {
       padding: 0;
       align-items: flex-end;
     }
-    .modal-head { padding: 1rem 1.15rem 0.85rem; border-radius: 20px 20px 0 0; }
-    .modal-body { padding: 1rem 1.15rem; }
-    .modal-foot { padding: 0.85rem 1.15rem; border-radius: 0; }
+    .modal-box {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 20px 20px 0 0;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+    .modal-head {
+      padding: 0.95rem 1.15rem;
+      border-radius: 20px 20px 0 0;
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      z-index: 10;
+    }
+    .modal-body {
+      padding: 1rem 1.15rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1;
+    }
+    .modal-foot {
+      padding: 0.85rem 1.15rem 1.25rem;
+      border-radius: 0;
+      display: flex;
+      gap: 0.6rem;
+      position: sticky;
+      bottom: 0;
+      background: var(--surface);
+      z-index: 10;
+      border-top: 1px solid var(--border);
+    }
+    .modal-foot .btn {
+      flex: 1;
+      justify-content: center;
+      padding: 0.7rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .form-ctrl {
+      font-size: 16px !important; /* Prevents auto-zoom on iOS */
+      padding: 0.65rem 0.8rem;
+    }
     #toast { bottom: auto; top: 1rem; right: 0.75rem; left: 0.75rem; max-width: none; }
-    .btn { font-size: 0.75rem; padding: 0.45rem 0.85rem; }
-    .btn-sm { font-size: 0.7rem; padding: 0.35rem 0.6rem; }
     .form-row.cols-2 { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 480px) {
     .stats-row { grid-template-columns: 1fr 1fr; }
     .stasi-admin-grid { grid-template-columns: 1fr; }
-    .modal-overlay { padding: 0; align-items: flex-end; }
-    .modal-box { border-radius: 24px 24px 0 0; max-height: 90vh; }
   }
 
   /* ─── Sidebar Backdrop ─── */
@@ -648,6 +728,24 @@
     transition: opacity 0.3s ease;
   }
   .sidebar-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  /* ─── Sidebar Close Button ─── */
+  .sidebar-close-btn {
+    display: none;
+    align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sidebar-close-btn:hover { background: rgba(255,255,255,0.18); color: white; }
+  @media (max-width: 768px) {
+    .sidebar-close-btn { display: flex; }
+  }
 
   /* ─── Hamburger Button ─── */
   .topbar-hamburger {
@@ -682,10 +780,13 @@
 
 <!-- ═══ SIDEBAR ═══ -->
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
-    <div class="sidebar-icon">✝</div>
-    <h2>Dashboard Admin</h2>
-    <p>Paroki Santo Andreas Rasul</p>
+  <div class="sidebar-brand" style="display:flex;align-items:flex-start;justify-content:space-between">
+    <div>
+      <div class="sidebar-icon">✝</div>
+      <h2>Dashboard Admin</h2>
+      <p>Paroki Santo Andreas Rasul</p>
+    </div>
+    <button class="sidebar-close-btn" onclick="toggleSidebar()" aria-label="Tutup Menu">✕</button>
   </div>
 
   <nav class="sidebar-nav">
