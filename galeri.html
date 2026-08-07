@@ -30,18 +30,20 @@
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
 
-    <!-- ── Highlight Pills ── -->
-    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 reveal">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.22);color:var(--gold)">
+    <!-- ── Overview Meta Strip (Non-button informative banner) ── -->
+    <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 py-2.5 px-4 rounded-xl text-xs mb-6 sm:mb-8 reveal" style="background:rgba(184,134,11,0.04);border:1px dashed rgba(184,134,11,0.22);color:var(--ink-soft)">
+      <span class="inline-flex items-center gap-1.5 font-bold" style="color:var(--gold)">
         <span>✝</span>
         <span>4 Kategori Pelayanan</span>
-      </div>
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:var(--surface);border:1px solid var(--border);color:var(--ink-mid)">
-        <span>9 Wilayah Stasi</span>
-      </div>
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:var(--surface);border:1px solid var(--border);color:var(--ink-mid)">
-        <span>Arsip Foto Resmi</span>
-      </div>
+      </span>
+      <span class="hidden sm:inline" style="color:var(--border)">•</span>
+      <span class="font-medium flex items-center gap-1.5" style="color:var(--ink)">
+        <span class="w-1.5 h-1.5 rounded-full" style="background:var(--gold)"></span> 9 Wilayah Stasi
+      </span>
+      <span class="hidden sm:inline" style="color:var(--border)">•</span>
+      <span class="font-medium flex items-center gap-1.5" style="color:var(--ink)">
+        <span class="w-1.5 h-1.5 rounded-full" style="background:var(--gold)"></span> Arsip Foto Resmi
+      </span>
     </div>
 
     <!-- ── Filter ── -->
@@ -127,24 +129,23 @@
       <p class="text-xs sm:text-sm mt-1 text-gray-500">Dokumentasi kegiatan akan segera diperbarui oleh pengurus.</p>
     </div>
 
+    <!-- ── Aesthetic Divider ── -->
+    <aesthetic-divider reveal></aesthetic-divider>
+
     <!-- Callout Kirim Dokumentasi -->
-    <div class="mt-8 sm:mt-12 p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 reveal" style="background:linear-gradient(135deg, rgba(184,134,11,0.07) 0%, rgba(255,255,255,0.9) 100%);border:1px solid rgba(184,134,11,0.25)">
-      <div class="flex items-center gap-3.5 text-center sm:text-left">
-        <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 text-base font-bold shadow-sm" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.3)">
-          ✝
-        </div>
-        <div>
-          <h4 class="font-bold text-sm sm:text-base leading-snug" style="color:var(--ink)">Punya Foto Dokumentasi Kegiatan?</h4>
-          <p class="text-xs sm:text-sm mt-0.5" style="color:var(--ink-soft)">Bagikan dokumentasi kegiatan stasi atau kelompok kategorial Anda ke Sekretariat Paroki.</p>
-        </div>
-      </div>
-      <a href="kontak.html" class="btn-primary inline-flex items-center justify-center text-xs sm:text-sm py-2.5 px-5 rounded-xl flex-shrink-0 shadow-sm w-full sm:w-auto">
-        Hubungi Sekretariat
-      </a>
-    </div>
+    <callout-banner
+      icon="✝"
+      title="Punya Foto Dokumentasi Kegiatan?"
+      desc="Bagikan dokumentasi kegiatan stasi atau kelompok kategorial Anda ke Sekretariat Paroki."
+      btn-text="Hubungi Sekretariat"
+      btn-href="kontak.html">
+    </callout-banner>
+
+    <!-- ── Aesthetic Divider ── -->
+    <aesthetic-divider reveal></aesthetic-divider>
 
     <!-- Banner ke Halaman Stasi -->
-    <div class="mt-6 sm:mt-8 p-6 sm:p-8 rounded-2xl sm:rounded-3xl text-center reveal" style="background:var(--bg-alt);border:1px solid var(--border)">
+    <div class="p-6 sm:p-8 rounded-2xl sm:rounded-3xl text-center reveal" style="background:var(--bg-alt);border:1px solid var(--border)">
       <h3 class="text-lg sm:text-xl font-bold mb-2" style="color:var(--ink)">Mencari Foto &amp; Profil Gedung 9 Stasi?</h3>
       <p class="text-xs sm:text-sm text-gray-500 mb-5 max-w-xl mx-auto">Dokumentasi fisik bangunan gereja, sejarah, nama pelindung, dan peta navigasi stasi tersedia di halaman khusus Stasi.</p>
       <a href="stasi.html" class="btn-primary inline-flex items-center justify-center gap-2 text-xs sm:text-sm py-2.5 sm:py-3 px-5 sm:px-6 shadow-sm w-full sm:w-auto">
@@ -161,6 +162,7 @@
 <script src="js/supabase-config.js"></script>
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>
+<script src="js/components/ui-components.js"></script>
 <script src="js/script.js"></script>
 <script>
 // Dynamic Gallery Loader from Supabase

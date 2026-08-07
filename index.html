@@ -139,11 +139,7 @@
   </section>
 
   <!-- ── Aesthetic Divider ── -->
-  <div class="aesthetic-divider" style="max-width:100%;padding:0 2rem">
-    <div class="divider-line"></div>
-    <div class="divider-icon">✝</div>
-    <div class="divider-line"></div>
-  </div>
+  <aesthetic-divider reveal style="padding:0 2rem"></aesthetic-divider>
 
   <!-- ═══════════════════════════════════════════
        QUICK ACCESS (Jadwal Singkat)
@@ -192,11 +188,7 @@
   </section>
 
   <!-- ── Aesthetic Divider ── -->
-  <div class="aesthetic-divider" style="max-width:100%;padding:0 2rem">
-    <div class="divider-line"></div>
-    <div class="divider-icon">✝</div>
-    <div class="divider-line"></div>
-  </div>
+  <aesthetic-divider reveal style="padding:0 2rem"></aesthetic-divider>
 
   <!-- ═══════════════════════════════════════════
        GALERI
@@ -257,11 +249,7 @@
   </section>
 
   <!-- ── Aesthetic Divider ── -->
-  <div class="aesthetic-divider" style="max-width:100%;padding:0 2rem">
-    <div class="divider-line"></div>
-    <div class="divider-icon">✝</div>
-    <div class="divider-line"></div>
-  </div>
+  <aesthetic-divider reveal style="padding:0 2rem"></aesthetic-divider>
 
   <!-- ═══════════════════════════════════════════
        STASI HIGHLIGHT
@@ -357,15 +345,11 @@
 <script src="js/supabase-config.js"></script>
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>
+<script src="js/components/ui-components.js"></script>
 <script src="js/script.js"></script>
 <script src="js/renungan.js"></script>
 <script>
 // ── Load Pengumuman from Supabase ──────────────────
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
 (async () => {
   const listEl = document.getElementById('pengumumanList');
   try {
