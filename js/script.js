@@ -631,22 +631,33 @@ function setupGalleryClicks() {
     });
 }
 
-// Global click delegation for all gallery items (supports dynamic & static content)
+// Global click delegation for all interactive elements (supports dynamic & static content)
 document.addEventListener('click', (e) => {
-    // If clicked on a filter button, filter gallery
-    const filterBtn = e.target.closest('.filter-btn');
+    // 1. If clicked on a filter button, filter gallery
+    const filterBtn = e.target.closest('.filter-btn, [data-filter]');
     if (filterBtn) {
         const filter = filterBtn.getAttribute('data-filter') || 'all';
         window.filterGallery(filter, filterBtn);
         return;
     }
 
-    // If clicked on a gallery card/item, open lightbox
-    const card = e.target.closest('.gallery-item, .gallery-card');
+    // 2. If clicked on stasi card or button
+    const stasiEl = e.target.closest('[data-stasi]');
+    if (stasiEl) {
+        e.preventDefault();
+        const stasiId = stasiEl.getAttribute('data-stasi');
+        if (stasiId) {
+            openStasiModal(stasiId);
+        }
+        return;
+    }
+
+    // 3. If clicked on a gallery card/item, open lightbox
+    const card = e.target.closest('.gallery-item, .gallery-card, [data-lightbox]');
     if (card) {
         // If clicking a link or button inside the card, let it proceed
         if (e.target.closest('button:not(.filter-btn), a')) return;
-        const img = card.querySelector('img');
+        const img = card.querySelector('img') || (card.tagName === 'IMG' ? card : null);
         if (img) {
             e.preventDefault();
             const src = img.currentSrc || img.src || img.getAttribute('src');
@@ -779,18 +790,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 3. Stasi card / button click triggers (opens interactive detail modal)
-    document.querySelectorAll('[data-stasi]').forEach(el => {
-        el.addEventListener('click', function(e) {
-            const stasiId = this.getAttribute('data-stasi');
-            if (stasiId && typeof openStasiModal === 'function') {
-                e.preventDefault();
-                openStasiModal(stasiId);
-            }
-        });
-    });
-
-    // 4. Update greeting once more to ensure all elements caught
+    // 3. Update greeting once more to ensure all elements caught
     updateGreetings();
 
     // 5. Contact form submission & validation (Supabase integrated)
@@ -930,6 +930,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// ── Global Window Exports for public interaction ─────────────
+window.openStasiModal = openStasiModal;
+window.closeStasiModal = closeStasiModal;
+window.openLightbox = openLightbox;
+window.closeLightbox = closeLightbox;
+window.changeLightboxImage = changeLightboxImage;
+window.filterGallery = filterGallery;
 
 // ── Web Component: <aesthetic-divider> ──
 class AestheticDivider extends HTMLElement {

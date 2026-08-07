@@ -485,9 +485,14 @@
   .modal-overlay {
     position: fixed; inset: 0; z-index: 9000;
     background: rgba(16,16,18,0.7); backdrop-filter: blur(10px);
-    display: none; align-items: center; justify-content: center; padding: 1rem;
+    display: none !important;
+    pointer-events: none !important;
+    align-items: center; justify-content: center; padding: 1rem;
   }
-  .modal-overlay.open { display: flex; }
+  .modal-overlay.open {
+    display: flex !important;
+    pointer-events: auto !important;
+  }
 
   .modal-box {
     background: var(--surface); border-radius: 24px;
