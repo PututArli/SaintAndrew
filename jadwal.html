@@ -24,11 +24,28 @@
     <p class="page-hero-subtitle animate-fade-in">Informasi waktu perayaan Ekaristi dan Sakramen Paroki Marga Agung</p>
   </div>
 
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-10 sm:space-y-14">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8">
+
+    <!-- ── Highlight Pills ── -->
+    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 reveal">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.22);color:var(--gold)">
+        <span>✝</span>
+        <span>Perayaan Ekaristi Mingguan</span>
+      </div>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:var(--surface);border:1px solid var(--border);color:var(--ink-mid)">
+        <span>1 Gereja Paroki Pusat</span>
+      </div>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:var(--surface);border:1px solid var(--border);color:var(--ink-mid)">
+        <span>9 Wilayah Stasi</span>
+      </div>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:var(--surface);border:1px solid var(--border);color:var(--ink-mid)">
+        <span>Pelayanan Sakramen</span>
+      </div>
+    </div>
 
     <!-- ── Gereja Paroki ── -->
     <section class="reveal">
-      <div class="flex items-center gap-3 mb-6">
+      <div class="flex items-center gap-3 mb-4 sm:mb-5">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
         <div>
           <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold)">Gereja Paroki</div>
@@ -36,31 +53,36 @@
         </div>
       </div>
 
-      <div class="glass-card overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="schedule-table">
-            <thead>
-              <tr>
-                <th>Hari</th>
-                <th>Waktu</th>
-                <th>Keterangan</th>
-              </tr>
-            </thead>
-            <tbody id="jadwalParokiBody">
-              <tr>
-                <td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">
-                  Memuat jadwal…
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="schedule-table-wrapper">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Hari</th>
+              <th>Waktu</th>
+              <th style="text-align:right">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="jadwalParokiBody">
+            <tr>
+              <td class="font-medium" style="color:var(--ink)">Minggu</td>
+              <td><span class="font-bold" style="color:var(--ink)">07:30 WIB</span></td>
+              <td style="text-align:right"><span class="schedule-badge">Misa Umat</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
+    <!-- ── Aesthetic Divider ── -->
+    <div class="aesthetic-divider reveal">
+      <div class="divider-line"></div>
+      <div class="divider-icon">✝</div>
+      <div class="divider-line"></div>
+    </div>
+
     <!-- ── Jadwal Stasi ── -->
     <section class="reveal">
-      <div class="flex items-center gap-3 mb-6">
+      <div class="flex items-center gap-3 mb-4 sm:mb-5">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center text-base font-bold" style="background:var(--gold-muted);color:var(--gold)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         </div>
@@ -70,26 +92,49 @@
         </div>
       </div>
 
-      <div id="stasiJadwalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div id="stasiJadwalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 sm:mb-5">
         <div class="info-card" style="text-align:center;grid-column:1/-1;padding:2rem;color:var(--ink-soft);font-size:0.85rem">
           Memuat jadwal stasi…
         </div>
       </div>
 
       <!-- Info box -->
-      <div class="glass-card p-5 flex items-start gap-4 reveal">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:var(--gold-muted);color:var(--gold)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      <div class="glass-card p-4 sm:p-5 flex items-start gap-3.5 reveal">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:var(--gold-muted);color:var(--gold)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
         </div>
-        <p class="text-sm leading-relaxed" style="color:var(--ink-soft)">
+        <p class="text-xs sm:text-sm leading-relaxed" style="color:var(--ink-soft)">
           Di luar jadwal Misa mingguan yang tertera di atas, umat dapat mengikuti <strong style="color:var(--ink)">Ibadat Sabda</strong> yang dipimpin oleh Prodiakon atau Ketua Lingkungan pada waktu yang sama.
         </p>
       </div>
     </section>
 
+    <!-- ── Callout Intensi Misa ── -->
+    <div class="p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 reveal" style="background:linear-gradient(135deg, rgba(184,134,11,0.07) 0%, rgba(255,255,255,0.95) 100%);border:1px solid rgba(184,134,11,0.25)">
+      <div class="flex items-center gap-3.5 text-center sm:text-left">
+        <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 text-base font-bold shadow-sm" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.3)">
+          ✝
+        </div>
+        <div>
+          <h4 class="font-bold text-sm sm:text-base leading-snug" style="color:var(--ink)">Pengajuan Intensi Misa &amp; Ujud Doa</h4>
+          <p class="text-xs sm:text-sm mt-0.5" style="color:var(--ink-soft)">Pendaftaran ujud Misa syukur, arwah, atau permohonan khusus dapat diajukan ke Sekretariat Paroki.</p>
+        </div>
+      </div>
+      <a href="kontak.html" class="btn-primary inline-flex items-center justify-center text-xs sm:text-sm py-2.5 px-5 rounded-xl flex-shrink-0 shadow-sm w-full sm:w-auto">
+        Hubungi Sekretariat
+      </a>
+    </div>
+
+    <!-- ── Aesthetic Divider ── -->
+    <div class="aesthetic-divider reveal">
+      <div class="divider-line"></div>
+      <div class="divider-icon">✝</div>
+      <div class="divider-line"></div>
+    </div>
+
     <!-- ── Pelayanan Sakramen ── -->
     <section class="reveal">
-      <div class="flex items-center gap-3 mb-6">
+      <div class="flex items-center gap-3 mb-4 sm:mb-5">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
         <div>
           <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold)">Pelayanan</div>
@@ -97,18 +142,59 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div class="glass-card p-6 hover:scale-[1.01] transition-transform">
-          <div class="flex items-center gap-3 mb-3">
-            <h4 class="font-bold" style="color:var(--ink)">Sakramen Tobat</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+        <div class="glass-card p-5 sm:p-6 hover:scale-[1.01] transition-transform">
+          <div class="flex items-center gap-3 mb-2.5">
+            <h4 class="font-bold text-base" style="color:var(--ink)">Sakramen Tobat / Rekonsiliasi</h4>
           </div>
-          <p class="text-sm leading-relaxed" style="color:var(--ink-soft)">Setiap setengah jam sebelum Misa Minggu atau dengan perjanjian khusus dengan Pastor Paroki.</p>
+          <p class="text-xs sm:text-sm leading-relaxed" style="color:var(--ink-soft)">Setiap setengah jam sebelum perayaan Misa Minggu atau dengan perjanjian khusus melalui Pastor Paroki di sekretariat.</p>
         </div>
-        <div class="glass-card p-6 hover:scale-[1.01] transition-transform">
-          <div class="flex items-center gap-3 mb-3">
-            <h4 class="font-bold" style="color:var(--ink)">Sakramen Baptis Bayi</h4>
+        <div class="glass-card p-5 sm:p-6 hover:scale-[1.01] transition-transform">
+          <div class="flex items-center gap-3 mb-2.5">
+            <h4 class="font-bold text-base" style="color:var(--ink)">Sakramen Baptis Bayi</h4>
           </div>
-          <p class="text-sm leading-relaxed" style="color:var(--ink-soft)">Minggu kedua setiap bulan genap. Pendaftaran maksimal 2 minggu sebelum pelaksanaan di sekretariat.</p>
+          <p class="text-xs sm:text-sm leading-relaxed" style="color:var(--ink-soft)">Minggu kedua setiap bulan genap. Pendaftaran maksimal 2 minggu sebelum pelaksanaan di sekretariat paroki.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Aesthetic Divider ── -->
+    <div class="aesthetic-divider reveal">
+      <div class="divider-line"></div>
+      <div class="divider-icon">✝</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- ── Tata Tertib & Panduan Menghadiri Misa ── -->
+    <section class="reveal">
+      <div class="flex items-center gap-3 mb-4 sm:mb-5">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
+        <div>
+          <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold)">Tata Tertib</div>
+          <h2 class="font-bold text-xl" style="color:var(--ink)">Panduan Menghadiri Perayaan Ekaristi</h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <div class="glass-card p-4 sm:p-5 hover:scale-[1.01] transition-transform">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold mb-2.5" style="background:var(--gold-muted);color:var(--gold)">01</div>
+          <h4 class="font-bold text-sm mb-1" style="color:var(--ink)">Kesiapan Hati &amp; Waktu</h4>
+          <p class="text-xs leading-relaxed" style="color:var(--ink-soft)">Hadir 15 menit sebelum perayaan Ekaristi dimulai untuk mempersiapkan batin dalam keheningan doa pribadi.</p>
+        </div>
+        <div class="glass-card p-4 sm:p-5 hover:scale-[1.01] transition-transform">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold mb-2.5" style="background:var(--gold-muted);color:var(--gold)">02</div>
+          <h4 class="font-bold text-sm mb-1" style="color:var(--ink)">Busana Pantas &amp; Sopan</h4>
+          <p class="text-xs leading-relaxed" style="color:var(--ink-soft)">Mengenakan pakaian yang rapi, pantas, dan bersahaja sebagai wujud hormat di hadapan Tuhan dan sesama umat.</p>
+        </div>
+        <div class="glass-card p-4 sm:p-5 hover:scale-[1.01] transition-transform">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold mb-2.5" style="background:var(--gold-muted);color:var(--gold)">03</div>
+          <h4 class="font-bold text-sm mb-1" style="color:var(--ink)">Puasa Ekaristi 1 Jam</h4>
+          <p class="text-xs leading-relaxed" style="color:var(--ink-soft)">Berpuasa dari makanan dan minuman (kecuali air putih dan obat) satu jam sebelum menyambut Komuni Kudus.</p>
+        </div>
+        <div class="glass-card p-4 sm:p-5 hover:scale-[1.01] transition-transform">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold mb-2.5" style="background:var(--gold-muted);color:var(--gold)">04</div>
+          <h4 class="font-bold text-sm mb-1" style="color:var(--ink)">Keheningan Ibadat</h4>
+          <p class="text-xs leading-relaxed" style="color:var(--ink-soft)">Menonaktifkan nada dering ponsel dan menjaga suasana hening agar seluruh umat dapat beribadat dengan khidmat.</p>
         </div>
       </div>
     </section>
@@ -166,7 +252,7 @@ function escapeHtml(str) {
           <tr>
             <td class="font-medium" style="color:var(--ink)">${escapeHtml(r.hari)}</td>
             <td><span class="font-bold" style="color:var(--ink)">${escapeHtml(r.waktu)}</span></td>
-            <td><span class="px-2.5 py-1 rounded-full text-xs font-bold" style="background:var(--gold-muted);color:var(--gold)">${escapeHtml(r.keterangan || 'Misa')}</span></td>
+            <td style="text-align:right"><span class="schedule-badge">${escapeHtml(r.keterangan || 'Misa Umat')}</span></td>
           </tr>
         `).join('');
       } else {

@@ -217,27 +217,35 @@
 }
 
 /* ── Schedule Table ── */
-.schedule-table {
+.schedule-table-wrapper {
   width: 100%;
-  border-collapse: collapse;
-  border-radius: var(--r-md);
+  background: var(--surface);
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
 
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
 .schedule-table thead th {
-  background: var(--ink);
-  color: rgba(255,255,255,0.88);
+  background: #111113;
+  color: rgba(255,255,255,0.92);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 1rem 1.25rem;
   text-align: left;
 }
 
-.schedule-table thead th:first-child { border-radius: 0; }
-.schedule-table thead th:last-child  { border-radius: 0; }
+.schedule-table thead th:last-child {
+  text-align: right;
+}
 
 .schedule-table tbody tr {
   background: var(--surface);
@@ -249,14 +257,65 @@
 .schedule-table tbody tr:hover { background: var(--surface-alt); }
 
 .schedule-table tbody td {
-  padding: 0.875rem 1.25rem;
+  padding: 0.95rem 1.25rem;
   font-size: 0.875rem;
   color: var(--ink-soft);
+  vertical-align: middle;
 }
 
 .schedule-table tbody td:first-child {
   font-weight: 600;
   color: var(--ink);
+}
+
+.schedule-table tbody td:last-child {
+  text-align: right;
+}
+
+.schedule-badge {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--gold-muted);
+  color: var(--gold);
+  border: 1px solid rgba(184,134,11,0.22);
+}
+
+/* ── Aesthetic Divider with Cross Ornament ── */
+.aesthetic-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 520px;
+  margin: 1.5rem auto;
+  opacity: 0.95;
+}
+
+.aesthetic-divider .divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,134,11,0.35), transparent);
+}
+
+.aesthetic-divider .divider-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--gold);
+  background: var(--gold-muted);
+  border: 1px solid rgba(184,134,11,0.3);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(184,134,11,0.12);
+  flex-shrink: 0;
 }
 
 /* ── Stasi Cards ── */
@@ -631,23 +690,35 @@ select.form-input {
    ════════════════════════════════════════ */
 @media (max-width: 767px) {
 
-  /* ── Schedule Table — Smooth & Airy ── */
+  /* ── Schedule Table — Smooth & Proportional ── */
   .schedule-table {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-    border-radius: 1.15rem;
+    display: table;
+    width: 100%;
+    table-layout: auto;
   }
   .schedule-table thead,
-  .schedule-table tbody,
-  .schedule-table tr { display: table; width: 100%; table-layout: fixed; }
+  .schedule-table tbody {
+    display: table-row-group;
+    width: 100%;
+  }
+  .schedule-table tr {
+    display: table-row;
+    width: 100%;
+  }
   .schedule-table thead th,
   .schedule-table tbody td {
-    padding: 1rem 1.15rem;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    white-space: normal;
+    padding: 0.85rem 0.65rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  .schedule-table thead th:first-child,
+  .schedule-table tbody td:first-child {
+    padding-left: 1rem;
+  }
+  .schedule-table thead th:last-child,
+  .schedule-table tbody td:last-child {
+    padding-right: 1rem;
+    text-align: right;
   }
 
   /* ── Stasi Cards — Airy & Well-Paced ── */
