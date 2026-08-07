@@ -1,0 +1,7 @@
+# Netlify Pretty URLs / Clean URLs
+/index.html   /   301!
+/profil.html  /profil  301!
+/stasi.html   /stasi   301!
+/jadwal.html  /jadwal  301!
+/galeri.html  /galeri  301!
+/kontak.html  /kontak  301!

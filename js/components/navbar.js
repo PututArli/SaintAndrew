@@ -13,9 +13,12 @@ class ModernNavbar extends HTMLElement {
             { href: 'kontak.html',  text: 'Kontak' }
         ];
 
+        const normalizePage = (p) => String(p || '').replace(/^\//, '').replace(/\.html$/, '').toLowerCase() || 'index';
+        const currentCleanPage = normalizePage(activePage);
+
         let desktopLinks = '';
         links.forEach(link => {
-            const isActive = activePage === link.href;
+            const isActive = currentCleanPage === normalizePage(link.href);
             desktopLinks += `<li><a href="${link.href}" class="nav-pill-link${isActive ? ' active' : ''}">${link.text}</a></li>`;
         });
 
@@ -27,7 +30,7 @@ class ModernNavbar extends HTMLElement {
             { href: 'galeri.html',  text: 'Galeri',  icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>' },
             { href: 'kontak.html',  text: 'Kontak',  icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>' }
         ].map(item => {
-            const isActive = activePage === item.href;
+            const isActive = currentCleanPage === normalizePage(item.href);
             return `<a href="${item.href}" class="dock-item${isActive ? ' active' : ''}">
                 <span class="dock-icon flex items-center justify-center">${item.icon}</span>
                 <span class="dock-text">${item.text}</span>
