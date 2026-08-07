@@ -443,27 +443,68 @@ function escapeHtml(str) {
 // ══════════════════════════════════════════
 //  JADWAL MISA
 // ══════════════════════════════════════════
+let _allJadwalList = [];
+
 async function loadJadwal() {
-  const stasi = document.getElementById('filter-stasi').value;
-  const el    = document.getElementById('jadwal-content');
+  const el = document.getElementById('jadwal-content');
   el.innerHTML = '<div class="empty-state"><p>Memuat data…</p></div>';
 
-  let q = db.from('jadwal_misa').select('*').order('urutan').order('created_at');
-  if (stasi) q = q.eq('stasi', stasi);
+  try {
+    const { data, error } = await db.from('jadwal_misa').select('*').order('urutan').order('created_at');
+    if (error) throw error;
 
-  const { data, error } = await q;
+    _allJadwalList = data || [];
+    _jadwalMap = {};
+    _allJadwalList.forEach(r => { _jadwalMap[r.id] = r; });
 
-  if (error) {
-    el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(error.message)}<br><small>Pastikan tabel sudah dibuat di Supabase.</small></p></div>`;
-    return;
+    filterJadwalList();
+  } catch (err) {
+    el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(err.message)}<br><small>Pastikan tabel sudah dibuat di Supabase.</small></p></div>`;
   }
+}
+
+function filterJadwalList() {
+  const stasi = document.getElementById('filter-stasi')?.value || '';
+  const search = (document.getElementById('filter-search-jadwal')?.value || '').toLowerCase().trim();
+
+  let filtered = _allJadwalList;
+  if (stasi) {
+    filtered = filtered.filter(r => r.stasi === stasi);
+  }
+  if (search) {
+    filtered = filtered.filter(r => {
+      const stasiName = (STASI_MAP[r.stasi] || r.stasi || '').toLowerCase();
+      const hari = (r.hari || '').toLowerCase();
+      const waktu = (r.waktu || '').toLowerCase();
+      const ket = (r.keterangan || '').toLowerCase();
+      const minggu = (r.minggu_ke || '').toLowerCase();
+      return stasiName.includes(search) || hari.includes(search) || waktu.includes(search) || ket.includes(search) || minggu.includes(search);
+    });
+  }
+
+  renderJadwalView(filtered, !!(stasi || search));
+}
+
+function resetJadwalFilter() {
+  const stasiEl = document.getElementById('filter-stasi');
+  const searchEl = document.getElementById('filter-search-jadwal');
+  if (stasiEl) stasiEl.value = '';
+  if (searchEl) searchEl.value = '';
+  filterJadwalList();
+}
+
+function renderJadwalView(data, isFiltered = false) {
+  const el = document.getElementById('jadwal-content');
+  if (!el) return;
+
   if (!data?.length) {
-    el.innerHTML = `<div class="empty-state"><p>Belum ada jadwal.<br>Klik "+ Tambah Jadwal" untuk menambahkan.</p></div>`;
+    if (isFiltered) {
+      el.innerHTML = `<div class="empty-state"><p>Tidak ada jadwal yang cocok dengan kata kunci/filter.</p></div>`;
+    } else {
+      el.innerHTML = `<div class="empty-state"><p>Belum ada jadwal.<br>Klik "+ Tambah Jadwal" untuk menambahkan.</p></div>`;
+    }
     return;
   }
-
-  _jadwalMap = {};
-  data.forEach(r => { _jadwalMap[r.id] = r; });
 
   el.innerHTML = `
     <!-- Desktop Table View -->
@@ -541,7 +582,7 @@ async function loadJadwal() {
     </div>
 
     <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
-      Menampilkan ${data.length} jadwal${stasi ? ' untuk stasi yang dipilih' : ' dari semua stasi'}
+      Menampilkan ${data.length} dari ${_allJadwalList.length} jadwal misa
     </div>
   `;
 }
@@ -1227,6 +1268,8 @@ async function toggleAktifRenungan(id, current) {
 // ══════════════════════════════════════════
 //  PENGUMUMAN (CRUD + Confirmation + Error Handling)
 // ══════════════════════════════════════════
+let _allPengumumanList = [];
+
 async function loadPengumuman() {
   const el = document.getElementById('pengumuman-content');
   el.innerHTML = '<div class="empty-state"><p>Memuat data pengumuman…</p></div>';
@@ -1235,85 +1278,135 @@ async function loadPengumuman() {
     const { data, error } = await db.from('pengumuman').select('*').order('tanggal', { ascending: false });
     if (error) throw error;
 
-    if (!data?.length) {
-      el.innerHTML = `<div class="empty-state"><p>Belum ada pengumuman.<br>Klik "+ Tambah Pengumuman" untuk menambahkan.</p></div>`;
-      return;
-    }
-
+    _allPengumumanList = data || [];
     _pengMap = {};
-    data.forEach(r => { _pengMap[r.id] = r; });
+    _allPengumumanList.forEach(r => { _pengMap[r.id] = r; });
 
-    el.innerHTML = `
-      <!-- Desktop Table View -->
-      <div class="desktop-table-view">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Judul</th>
-              <th>Kategori</th>
-              <th>Tanggal</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${data.map((r, i) => `
-              <tr>
-                <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
-                <td>
-                  <div style="font-weight:700;color:var(--ink)">${escapeHtml(r.judul)}</div>
-                  <div style="font-size:0.75rem;color:var(--ink-soft);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(r.isi)}</div>
-                </td>
-                <td>
-                  <span class="badge ${r.kategori === 'liturgi' ? 'badge-gold' : r.kategori === 'kegiatan' ? 'badge-info' : 'badge-green'}">${escapeHtml(r.kategori)}</span>
-                </td>
-                <td style="font-size:0.8rem;color:var(--ink-soft);white-space:nowrap">${escapeHtml(r.tanggal || '—')}</td>
-                <td>
-                  <span class="badge ${r.aktif ? 'badge-green' : 'badge-danger'}">
-                    ${r.aktif ? '● Aktif' : '○ Nonaktif'}
-                  </span>
-                </td>
-                <td>
-                  <div class="action-cell">
-                    <button class="btn btn-ghost btn-sm" onclick="editPengumuman('${r.id}')">Edit</button>
-                    <button class="btn btn-ghost btn-sm" onclick="toggleAktif('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
-                    <button class="btn btn-danger btn-sm" onclick="confirmDelete('pengumuman', '${r.id}', '${escapeHtml(r.judul)}', 'loadPengumuman')">Hapus</button>
-                  </div>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Mobile Cards View -->
-      <div class="mobile-cards-view">
-        ${data.map((r, i) => `
-          <div class="admin-data-card">
-            <div class="admin-data-card-head">
-              <span class="badge ${r.kategori === 'liturgi' ? 'badge-gold' : r.kategori === 'kegiatan' ? 'badge-info' : 'badge-green'}">${escapeHtml(r.kategori)}</span>
-              <span class="badge ${r.aktif ? 'badge-green' : 'badge-danger'}">
-                ${r.aktif ? '● Aktif' : '○ Nonaktif'}
-              </span>
-            </div>
-            <div class="admin-data-card-body">
-              <div class="admin-data-card-title">${escapeHtml(r.judul)}</div>
-              <div style="font-size:0.75rem;color:var(--ink-soft)">📅 ${escapeHtml(r.tanggal || '—')}</div>
-              <div class="admin-data-card-sub" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(r.isi)}</div>
-            </div>
-            <div class="admin-data-card-actions">
-              <button class="btn btn-ghost btn-sm" onclick="editPengumuman('${r.id}')">✏️ Edit</button>
-              <button class="btn btn-ghost btn-sm" onclick="toggleAktif('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
-              <button class="btn btn-danger btn-sm" onclick="confirmDelete('pengumuman', '${r.id}', '${escapeHtml(r.judul)}', 'loadPengumuman')">🗑️</button>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+    filterPengumumanList();
   } catch (err) {
     el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(err.message)}</p></div>`;
   }
+}
+
+function filterPengumumanList() {
+  const search = (document.getElementById('filter-search-pengumuman')?.value || '').toLowerCase().trim();
+  const kat = document.getElementById('filter-kategori-pengumuman')?.value || '';
+  const status = document.getElementById('filter-status-pengumuman')?.value || '';
+
+  let filtered = _allPengumumanList;
+  if (kat) {
+    filtered = filtered.filter(r => r.kategori === kat);
+  }
+  if (status) {
+    if (status === 'aktif') filtered = filtered.filter(r => r.aktif);
+    else if (status === 'nonaktif') filtered = filtered.filter(r => !r.aktif);
+  }
+  if (search) {
+    filtered = filtered.filter(r => {
+      const j = (r.judul || '').toLowerCase();
+      const isi = (r.isi || '').toLowerCase();
+      return j.includes(search) || isi.includes(search);
+    });
+  }
+
+  renderPengumumanView(filtered, !!(search || kat || status));
+}
+
+function resetPengumumanFilter() {
+  const s = document.getElementById('filter-search-pengumuman');
+  const k = document.getElementById('filter-kategori-pengumuman');
+  const st = document.getElementById('filter-status-pengumuman');
+  if (s) s.value = '';
+  if (k) k.value = '';
+  if (st) st.value = '';
+  filterPengumumanList();
+}
+
+function renderPengumumanView(data, isFiltered = false) {
+  const el = document.getElementById('pengumuman-content');
+  if (!el) return;
+
+  if (!data?.length) {
+    if (isFiltered) {
+      el.innerHTML = `<div class="empty-state"><p>Tidak ada pengumuman yang cocok dengan kata kunci / filter.</p></div>`;
+    } else {
+      el.innerHTML = `<div class="empty-state"><p>Belum ada pengumuman.<br>Klik "+ Tambah Pengumuman" untuk menambahkan.</p></div>`;
+    }
+    return;
+  }
+
+  el.innerHTML = `
+    <!-- Desktop Table View -->
+    <div class="desktop-table-view">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Judul</th>
+            <th>Kategori</th>
+            <th>Tanggal</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.map((r, i) => `
+            <tr>
+              <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
+              <td>
+                <div style="font-weight:700;color:var(--ink)">${escapeHtml(r.judul)}</div>
+                <div style="font-size:0.75rem;color:var(--ink-soft);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(r.isi)}</div>
+              </td>
+              <td>
+                <span class="badge ${r.kategori === 'liturgi' ? 'badge-gold' : r.kategori === 'kegiatan' ? 'badge-info' : 'badge-green'}">${escapeHtml(r.kategori)}</span>
+              </td>
+              <td style="font-size:0.8rem;color:var(--ink-soft);white-space:nowrap">${escapeHtml(r.tanggal || '—')}</td>
+              <td>
+                <span class="badge ${r.aktif ? 'badge-green' : 'badge-danger'}">
+                  ${r.aktif ? '● Aktif' : '○ Nonaktif'}
+                </span>
+              </td>
+              <td>
+                <div class="action-cell">
+                  <button class="btn btn-ghost btn-sm" onclick="editPengumuman('${r.id}')">Edit</button>
+                  <button class="btn btn-ghost btn-sm" onclick="toggleAktif('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
+                  <button class="btn btn-danger btn-sm" onclick="confirmDelete('pengumuman', '${r.id}', '${escapeHtml(r.judul)}', 'loadPengumuman')">Hapus</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile Cards View -->
+    <div class="mobile-cards-view">
+      ${data.map((r, i) => `
+        <div class="admin-data-card">
+          <div class="admin-data-card-head">
+            <span class="badge ${r.kategori === 'liturgi' ? 'badge-gold' : r.kategori === 'kegiatan' ? 'badge-info' : 'badge-green'}">${escapeHtml(r.kategori)}</span>
+            <span class="badge ${r.aktif ? 'badge-green' : 'badge-danger'}">
+              ${r.aktif ? '● Aktif' : '○ Nonaktif'}
+            </span>
+          </div>
+          <div class="admin-data-card-body">
+            <div class="admin-data-card-title">${escapeHtml(r.judul)}</div>
+            <div style="font-size:0.75rem;color:var(--ink-soft)">📅 ${escapeHtml(r.tanggal || '—')}</div>
+            <div class="admin-data-card-sub" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(r.isi)}</div>
+          </div>
+          <div class="admin-data-card-actions">
+            <button class="btn btn-ghost btn-sm" onclick="editPengumuman('${r.id}')">✏️ Edit</button>
+            <button class="btn btn-ghost btn-sm" onclick="toggleAktif('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDelete('pengumuman', '${r.id}', '${escapeHtml(r.judul)}', 'loadPengumuman')">🗑️</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
+      Menampilkan ${data.length} dari ${_allPengumumanList.length} pengumuman
+    </div>
+  `;
 }
 
 function openPengumumanModal(data = null) {

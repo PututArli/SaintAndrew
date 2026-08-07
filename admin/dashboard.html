@@ -210,8 +210,8 @@
 
         <!-- Filter -->
         <div class="filter-bar">
-          <span class="filter-label">Filter Stasi:</span>
-          <select id="filter-stasi" class="filter-select" onchange="loadJadwal()">
+          <span class="filter-label">Filter &amp; Pencarian:</span>
+          <select id="filter-stasi" class="filter-select" onchange="filterJadwalList()">
             <option value="">Semua Stasi</option>
             <option value="margo-agung">Margo Agung</option>
             <option value="marga-lestari">Marga Lestari</option>
@@ -223,8 +223,9 @@
             <option value="jatimulyo">Jatimulyo</option>
             <option value="pendowo">Pendowo</option>
           </select>
-          <button class="btn btn-ghost btn-sm" onclick="loadJadwal()" style="margin-left:auto">
-            Muat Ulang
+          <input type="text" id="filter-search-jadwal" class="filter-select" placeholder="Cari hari, jam, atau perayaan…" oninput="filterJadwalList()" style="flex:2;min-width:180px">
+          <button class="btn btn-ghost btn-sm" onclick="resetJadwalFilter()">
+            Reset
           </button>
         </div>
 
@@ -286,6 +287,24 @@
           <button class="btn btn-primary" onclick="openPengumumanModal()">
             <span>＋</span> Tambah Pengumuman
           </button>
+        </div>
+
+        <!-- Filter & Search Pengumuman -->
+        <div class="filter-bar">
+          <span class="filter-label">Cari &amp; Filter:</span>
+          <input type="text" id="filter-search-pengumuman" class="filter-select" placeholder="Cari judul atau isi pengumuman…" oninput="filterPengumumanList()" style="flex:2;min-width:180px">
+          <select id="filter-kategori-pengumuman" class="filter-select" onchange="filterPengumumanList()">
+            <option value="">Semua Kategori</option>
+            <option value="liturgi">Liturgi</option>
+            <option value="kegiatan">Kegiatan</option>
+            <option value="umum">Umum</option>
+          </select>
+          <select id="filter-status-pengumuman" class="filter-select" onchange="filterPengumumanList()">
+            <option value="">Semua Status</option>
+            <option value="aktif">Aktif Saja</option>
+            <option value="nonaktif">Nonaktif Saja</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="resetPengumumanFilter()">Reset</button>
         </div>
 
         <div class="card-body">
