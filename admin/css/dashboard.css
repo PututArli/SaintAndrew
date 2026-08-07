@@ -270,6 +270,38 @@
   .badge-gray   { background: var(--bg-alt);      color: var(--ink-soft); }
   .badge-info   { background: rgba(59,130,246,0.1); color: #2563eb; }
 
+  /* ═══ AESTHETIC DIVIDER WITH CROSS ORNAMENT ═══ */
+  .aesthetic-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 520px;
+    margin: 1.5rem auto;
+    opacity: 0.95;
+  }
+  .aesthetic-divider .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(184,134,11,0.35), transparent);
+  }
+  .aesthetic-divider .divider-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--gold);
+    background: var(--gold-pale);
+    border: 1px solid rgba(184,134,11,0.3);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(184,134,11,0.12);
+    flex-shrink: 0;
+  }
+
   /* ═══ ACTION CELL ═══ */
   .action-cell { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 
