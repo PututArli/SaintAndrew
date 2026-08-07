@@ -153,29 +153,46 @@
   .page-crumb strong { color: var(--ink); font-weight: 700; }
   .crumb-prefix, .crumb-sep { display: inline-block; }
 
-  .admin-chip {
-    display: flex; align-items: center; gap: 0.5rem;
-    background: #101012; color: rgba(255,255,255,0.7);
-    padding: 0.4rem 0.9rem; border-radius: 999px;
-    font-size: 0.75rem; font-weight: 600;
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-  .admin-email-full {
-    display: inline-block;
-    max-width: 240px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .topbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.42rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    line-height: 1;
   }
-  .admin-email-short { display: none; }
-  .admin-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #22C55E;
-    box-shadow: 0 0 6px #22C55E;
-    animation: pulse 2s infinite;
+  .topbar-btn-web {
+    background: var(--bg-alt);
+    color: var(--ink);
+    border-color: var(--border);
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+  .topbar-btn-web:hover {
+    background: var(--gold-muted);
+    color: var(--gold);
+    border-color: rgba(184,134,11,0.3);
+    transform: translateY(-1px);
+  }
+  .topbar-btn-logout {
+    background: #FFF1F2;
+    color: #E11D48;
+    border-color: #FFE4E6;
+  }
+  .topbar-btn-logout:hover {
+    background: #FFE4E6;
+    color: #BE123C;
+    border-color: #FDA4AF;
+    transform: translateY(-1px);
   }
 
   .page-body { padding: 1.75rem; flex: 1; }
@@ -918,31 +935,15 @@
       color: var(--ink);
       letter-spacing: -0.01em;
     }
-    .topbar .admin-chip {
-      padding: 0.35rem 0.65rem;
+    .topbar .topbar-actions {
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+    .topbar .topbar-btn {
+      padding: 0.38rem 0.65rem;
       font-size: 0.72rem;
       font-weight: 700;
-      flex-shrink: 0;
-      max-width: none;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      border-radius: 999px;
-      background: #101012;
-      color: rgba(255,255,255,0.85);
-    }
-    .topbar .admin-chip .admin-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10B981;
-      flex-shrink: 0;
-    }
-    .admin-email-full {
-      display: none !important;
-    }
-    .admin-email-short {
-      display: inline-block !important;
+      gap: 0.35rem;
     }
 
     /* Stats Grid — Airy & Balanced (No text cut off) */
