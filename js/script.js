@@ -667,6 +667,27 @@ document.addEventListener('DOMContentLoaded', () => {
     setupGalleryClicks();
     setupFilters();
 
+    // 2b. Scroll Reveal — IntersectionObserver
+    // Make above-fold elements visible immediately, rest on scroll
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target); // fire once
+            }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+        // If already in viewport (above the fold), mark visible immediately
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+            el.classList.add('visible');
+        } else {
+            revealObserver.observe(el);
+        }
+    });
+
     // 3. Stasi card / button click triggers (opens interactive detail modal)
     document.querySelectorAll('[data-stasi]').forEach(el => {
         el.addEventListener('click', function(e) {
