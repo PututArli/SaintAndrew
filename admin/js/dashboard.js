@@ -343,11 +343,24 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Tab switcher ────────────────────────────────────────────
-function showTab(name, btn) {
+function showTab(name, btn = null) {
   document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).style.display = 'block';
-  btn.classList.add('active');
+  document.querySelectorAll('.mobile-tab-btn').forEach(b => b.classList.remove('active'));
+
+  const targetPanel = document.getElementById('tab-' + name);
+  if (targetPanel) targetPanel.style.display = 'block';
+
+  // Active state pada sidebar nav
+  const sideBtn = btn || document.getElementById('nav-' + name);
+  if (sideBtn) sideBtn.classList.add('active');
+
+  // Active state pada mobile quick tab bar
+  const mobBtn = document.getElementById('mobile-tab-' + name);
+  if (mobBtn) {
+    mobBtn.classList.add('active');
+    mobBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
 
   const titles = {
     'jadwal': 'Jadwal Misa',
@@ -358,6 +371,14 @@ function showTab(name, btn) {
     'pesan': 'Pesan Masuk'
   };
   document.getElementById('topbar-title').textContent = titles[name] || 'Admin';
+
+  // Tutup sidebar di mobile secara halus jika sedang terbuka
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (sidebar && sidebar.classList.contains('open')) {
+    sidebar.classList.remove('open');
+    backdrop?.classList.remove('open');
+  }
 
   if (name === 'jadwal')     loadJadwal();
   if (name === 'renungan')   loadRenungan();
@@ -445,7 +466,8 @@ async function loadJadwal() {
   data.forEach(r => { _jadwalMap[r.id] = r; });
 
   el.innerHTML = `
-    <div style="overflow-x:auto">
+    <!-- Desktop Table View -->
+    <div class="desktop-table-view">
       <table class="data-table">
         <thead>
           <tr>
@@ -469,7 +491,7 @@ async function loadJadwal() {
               <td>
                 <span style="font-size:1rem;font-weight:900;color:var(--ink)">${escapeHtml(r.waktu)}</span>
               </td>
-              <td>${escapeHtml(r.keterangan)}</td>
+              <td>${escapeHtml(r.keterangan || '—')}</td>
               <td style="color:var(--ink-soft)">${r.minggu_ke ? escapeHtml(r.minggu_ke) : '<span style="color:#ccc">Setiap Minggu</span>'}</td>
               <td>
                 <div style="display:flex;gap:0.4rem;flex-wrap:nowrap">
@@ -485,9 +507,41 @@ async function loadJadwal() {
           `).join('')}
         </tbody>
       </table>
-      <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
-        Menampilkan ${data.length} jadwal${stasi ? ' untuk stasi yang dipilih' : ' dari semua stasi'}
-      </div>
+    </div>
+
+    <!-- Mobile Cards View (No horizontal scroll, 100% visible & ergonomic) -->
+    <div class="mobile-cards-view">
+      ${data.map((r, i) => `
+        <div class="admin-data-card">
+          <div class="admin-data-card-head">
+            <span class="badge badge-gold">${escapeHtml(STASI_MAP[r.stasi] || r.stasi)}</span>
+            <div class="admin-data-card-time">
+              <span>⏰</span> <span>${escapeHtml(r.waktu)}</span>
+            </div>
+          </div>
+          <div class="admin-data-card-body">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <span class="admin-data-card-title">🗓️ ${escapeHtml(r.hari)}</span>
+              <span style="font-size:0.72rem;font-weight:600;color:var(--ink-soft);background:var(--bg-alt);padding:2px 8px;border-radius:6px;border:1px solid var(--border)">
+                ${r.minggu_ke ? escapeHtml(r.minggu_ke) : 'Setiap Minggu'}
+              </span>
+            </div>
+            ${r.keterangan ? `<div class="admin-data-card-sub" style="margin-top:3px">ℹ️ ${escapeHtml(r.keterangan)}</div>` : ''}
+          </div>
+          <div class="admin-data-card-actions">
+            <button class="btn btn-edit btn-sm" onclick="editJadwal('${r.id}')">
+              ✏️ Edit Jadwal
+            </button>
+            <button class="btn btn-delete btn-sm" onclick="confirmDelete('jadwal_misa','${r.id}','jadwal misa ini','loadJadwal')">
+              🗑️ Hapus
+            </button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div style="padding:0.75rem 1rem;font-size:0.72rem;color:var(--ink-soft);border-top:1px solid var(--border);background:var(--bg-alt)">
+      Menampilkan ${data.length} jadwal${stasi ? ' untuk stasi yang dipilih' : ' dari semua stasi'}
     </div>
   `;
 }
@@ -960,7 +1014,8 @@ function renderRenunganTable(list, isFiltered = false) {
   }
 
   el.innerHTML = `
-    <div style="overflow-x:auto">
+    <!-- Desktop Table View -->
+    <div class="desktop-table-view">
       <table class="data-table">
         <thead>
           <tr>
@@ -1005,6 +1060,28 @@ function renderRenunganTable(list, isFiltered = false) {
           `).join('')}
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile Cards View -->
+    <div class="mobile-cards-view">
+      ${list.map((r, i) => `
+        <div class="admin-data-card">
+          <div class="admin-data-card-head">
+            <div style="font-weight:700;font-size:0.84rem;color:var(--ink)">📅 ${escapeHtml(formatTanggalIndo(r.tanggal))}</div>
+            <span class="badge ${getLiturgiBadgeClass(r.liturgi)}">${escapeHtml(r.liturgi || 'Masa Biasa')}</span>
+          </div>
+          <div class="admin-data-card-body">
+            <div class="admin-data-card-title">${escapeHtml(r.tema)}</div>
+            <div style="font-size:0.78rem;color:var(--gold);font-weight:700">📖 ${escapeHtml(r.perikop)}</div>
+            <div class="admin-data-card-sub" style="font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">"${escapeHtml(r.ayat)}"</div>
+          </div>
+          <div class="admin-data-card-actions">
+            <button class="btn btn-ghost btn-sm" onclick="editRenungan('${r.id}')">✏️ Edit</button>
+            <button class="btn btn-ghost btn-sm" onclick="toggleAktifRenungan('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDelete('renungan', '${r.id}', '${escapeHtml(r.tema)} (${escapeHtml(r.tanggal)})', 'loadRenungan')">🗑️</button>
+          </div>
+        </div>
+      `).join('')}
     </div>
   `;
 }
@@ -1167,7 +1244,8 @@ async function loadPengumuman() {
     data.forEach(r => { _pengMap[r.id] = r; });
 
     el.innerHTML = `
-      <div style="overflow-x:auto">
+      <!-- Desktop Table View -->
+      <div class="desktop-table-view">
         <table class="data-table">
           <thead>
             <tr>
@@ -1207,6 +1285,30 @@ async function loadPengumuman() {
             `).join('')}
           </tbody>
         </table>
+      </div>
+
+      <!-- Mobile Cards View -->
+      <div class="mobile-cards-view">
+        ${data.map((r, i) => `
+          <div class="admin-data-card">
+            <div class="admin-data-card-head">
+              <span class="badge ${r.kategori === 'liturgi' ? 'badge-gold' : r.kategori === 'kegiatan' ? 'badge-info' : 'badge-green'}">${escapeHtml(r.kategori)}</span>
+              <span class="badge ${r.aktif ? 'badge-green' : 'badge-danger'}">
+                ${r.aktif ? '● Aktif' : '○ Nonaktif'}
+              </span>
+            </div>
+            <div class="admin-data-card-body">
+              <div class="admin-data-card-title">${escapeHtml(r.judul)}</div>
+              <div style="font-size:0.75rem;color:var(--ink-soft)">📅 ${escapeHtml(r.tanggal || '—')}</div>
+              <div class="admin-data-card-sub" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(r.isi)}</div>
+            </div>
+            <div class="admin-data-card-actions">
+              <button class="btn btn-ghost btn-sm" onclick="editPengumuman('${r.id}')">✏️ Edit</button>
+              <button class="btn btn-ghost btn-sm" onclick="toggleAktif('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
+              <button class="btn btn-danger btn-sm" onclick="confirmDelete('pengumuman', '${r.id}', '${escapeHtml(r.judul)}', 'loadPengumuman')">🗑️</button>
+            </div>
+          </div>
+        `).join('')}
       </div>
     `;
   } catch (err) {

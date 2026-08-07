@@ -415,16 +415,19 @@ async function shareDevotion(btnElement = null) {
   }
   if (!d) return;
 
-  const currentUrl = window.location.origin && window.location.origin !== 'null' ? window.location.origin : window.location.href;
-  const textToShare = `🕊️ *RENUNGAN HARIAN KATOLIK*\n*Paroki Santo Andreas Rasul Marga Agung*\n📅 ${d.tanggalFormatted} (${d.liturgi})\n\n📖 *${d.tema}*\n_Bacaan: ${d.perikop}_\n\n"${d.ayat}"\n\n💡 *Refleksi:*\n${d.refleksi}\n\n🙏 *Doa:*\n"${d.doa}"\n\n✨ Berkah Dalem — ${currentUrl}`;
+  // Single clean canonical URL without index.html suffix
+  const siteUrl = (window.location.origin && window.location.origin !== 'null') 
+    ? window.location.origin 
+    : window.location.href.split('?')[0].split('#')[0].replace(/\/index\.html$/, '');
 
-  // 1. Mobile Web Share API
+  const textToShare = `🕊️ *RENUNGAN HARIAN KATOLIK*\n*Paroki Santo Andreas Rasul Marga Agung*\n📅 ${d.tanggalFormatted} (${d.liturgi})\n\n📖 *${d.tema}*\n_Bacaan: ${d.perikop}_\n\n"${d.ayat}"\n\n💡 *Refleksi:*\n${d.refleksi}\n\n🙏 *Doa:*\n"${d.doa}"\n\n✨ Berkah Dalem — ${siteUrl}`;
+
+  // 1. Mobile Web Share API (Pass ONLY text to avoid WhatsApp displaying duplicate URLs)
   if (navigator.share) {
     try {
       await navigator.share({
         title: `Renungan Harian: ${d.tema}`,
-        text: textToShare,
-        url: window.location.href
+        text: textToShare
       });
       return;
     } catch (err) {
