@@ -16,6 +16,12 @@
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
+@media (max-width: 767px) {
+  .floating-nav-container {
+    display: none !important;
+  }
+}
+
 .floating-nav {
   pointer-events: auto;
   display: flex;
@@ -87,6 +93,12 @@ body.modal-open .mobile-bottom-dock {
   padding: 0 1rem;
   pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+@media (min-width: 768px) {
+  .mobile-bottom-dock {
+    display: none !important;
+  }
 }
 
 .dock-inner {

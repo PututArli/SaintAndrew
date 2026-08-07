@@ -36,7 +36,7 @@ class ModernNavbar extends HTMLElement {
 
         this.innerHTML = `
         <!-- Floating Top Pill Navbar (Desktop & Tablet only) -->
-        <header class="floating-nav-container hidden md:flex">
+        <header class="floating-nav-container">
             <nav class="floating-nav" id="main-nav">
                 <!-- Logo -->
                 <a href="index.html" class="flex items-center gap-2.5 no-underline pr-2">
@@ -55,7 +55,7 @@ class ModernNavbar extends HTMLElement {
         </header>
 
         <!-- Mobile Bottom Floating Dock Bar -->
-        <nav class="mobile-bottom-dock md:hidden" aria-label="Mobile Navigation">
+        <nav class="mobile-bottom-dock" aria-label="Mobile Navigation">
             <div class="dock-inner">
                 ${mobileDockLinks}
             </div>

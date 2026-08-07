@@ -12,8 +12,3 @@
 @import url('layout.css');
 @import url('components.css');
 @import url('animations.css');
-
-/* ── Global Utility Overrides ── */
-.hidden {
-  display: none !important;
-}
