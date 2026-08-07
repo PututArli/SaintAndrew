@@ -351,6 +351,7 @@ function showTab(name, btn) {
 
   const titles = {
     'jadwal': 'Jadwal Misa',
+    'renungan': 'Renungan Harian',
     'pengumuman': 'Pengumuman Paroki',
     'galeri': 'Galeri Kegiatan',
     'stasi': 'Data & Foto Stasi',
@@ -359,6 +360,7 @@ function showTab(name, btn) {
   document.getElementById('topbar-title').textContent = titles[name] || 'Admin';
 
   if (name === 'jadwal')     loadJadwal();
+  if (name === 'renungan')   loadRenungan();
   if (name === 'pengumuman')  loadPengumuman();
   if (name === 'galeri')      loadGaleri();
   if (name === 'stasi')       loadStasiAdmin();
@@ -380,6 +382,16 @@ async function loadCounters() {
     document.getElementById('count-pengumuman').textContent = cP ?? '—';
     document.getElementById('count-galeri').textContent     = cG ?? '1';
 
+    // Count active renungan
+    try {
+      const { count: cR } = await db.from('renungan').select('*', { count: 'exact', head: true }).eq('aktif', true);
+      document.getElementById('stat-renungan').textContent  = cR ?? '0';
+      document.getElementById('count-renungan').textContent = cR ?? '0';
+    } catch (e) {
+      document.getElementById('stat-renungan').textContent  = '0';
+      document.getElementById('count-renungan').textContent = '0';
+    }
+
     // Count unread pesan if table exists
     try {
       const { count: cM } = await db.from('pesan').select('*', { count: 'exact', head: true }).eq('dibaca', false);
@@ -395,10 +407,12 @@ async function loadCounters() {
 }
 
 // Cache data by ID for safe edit calls
-let _jadwalMap = {};
-let _pengMap   = {};
-let _galeriMap = {};
-let _stasiMap  = {};
+let _jadwalMap   = {};
+let _renunganMap = {};
+let _renunganList= [];
+let _pengMap     = {};
+let _galeriMap   = {};
+let _stasiMap    = {};
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -852,6 +866,284 @@ async function submitJadwal(e) {
   } finally {
     btn.disabled = false;
     document.getElementById('btn-jadwal-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Jadwal';
+  }
+}
+
+// ══════════════════════════════════════════
+//  RENUNGAN HARIAN (CRUD + Filtering + Confirmation + Error Handling)
+// ══════════════════════════════════════════
+function formatTanggalIndo(dateStr) {
+  if (!dateStr) return '—';
+  try {
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return dateStr;
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    const d = parseInt(parts[2], 10);
+    const date = new Date(y, m - 1, d);
+    const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][date.getDay()];
+    const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][m - 1];
+    return `${hari}, ${d} ${bulan} ${y}`;
+  } catch (e) {
+    return dateStr;
+  }
+}
+
+function getLiturgiBadgeClass(liturgi) {
+  if (!liturgi) return 'badge-green';
+  const l = liturgi.toLowerCase();
+  if (l.includes('adven') || l.includes('prapaskah')) return 'badge-purple';
+  if (l.includes('natal') || l.includes('paskah') || l.includes('pesta') || l.includes('raya')) return 'badge-gold';
+  return 'badge-green';
+}
+
+async function loadRenungan() {
+  const el = document.getElementById('renungan-content');
+  if (!el) return;
+  el.innerHTML = '<div class="empty-state"><p>Memuat data renungan…</p></div>';
+
+  try {
+    const { data, error } = await db.from('renungan').select('*').order('tanggal', { ascending: false });
+    if (error) throw error;
+
+    _renunganList = data || [];
+    _renunganMap  = {};
+    _renunganList.forEach(r => { _renunganMap[r.id] = r; });
+
+    renderRenunganTable(_renunganList);
+  } catch (err) {
+    console.error('Load renungan error:', err);
+    el.innerHTML = `
+      <div class="empty-state">
+        <p style="color:var(--danger)">Gagal memuat renungan: ${escapeHtml(err.message || 'Tabel belum tersedia')}</p>
+        <p style="font-size:0.8rem;color:var(--ink-soft);margin-top:8px">Pastikan tabel <code>renungan</code> telah dibuat di Supabase SQL Editor menggunakan skrip <code>supabase-schema.sql</code>.</p>
+        <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="loadRenungan()">Coba Lagi</button>
+      </div>`;
+  }
+}
+
+function filterRenunganList() {
+  const q   = (document.getElementById('filter-search-renungan')?.value || '').toLowerCase().trim();
+  const lit = document.getElementById('filter-liturgi-renungan')?.value || '';
+
+  const filtered = _renunganList.filter(r => {
+    const matchQ = !q ||
+      (r.tema && r.tema.toLowerCase().includes(q)) ||
+      (r.perikop && r.perikop.toLowerCase().includes(q)) ||
+      (r.ayat && r.ayat.toLowerCase().includes(q)) ||
+      (r.refleksi && r.refleksi.toLowerCase().includes(q)) ||
+      (r.tanggal && r.tanggal.includes(q));
+
+    const matchLit = !lit || (r.liturgi === lit);
+    return matchQ && matchLit;
+  });
+
+  renderRenunganTable(filtered, true);
+}
+
+function renderRenunganTable(list, isFiltered = false) {
+  const el = document.getElementById('renungan-content');
+  if (!el) return;
+
+  if (!list.length) {
+    if (isFiltered) {
+      el.innerHTML = `<div class="empty-state"><p>Tidak ada data renungan yang sesuai dengan kata kunci / filter.</p></div>`;
+    } else {
+      el.innerHTML = `
+        <div class="empty-state">
+          <div style="font-size:2.4rem;margin-bottom:10px;opacity:0.6">📖</div>
+          <p style="font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:6px">Belum Ada Renungan Khusus Paroki</p>
+          <p style="color:var(--ink-soft);font-size:0.85rem">Klik "+ Tambah Renungan" untuk menulis dan menjadwalkan renungan harian khusus yang tampil otomatis di website.</p>
+        </div>`;
+    }
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:40px">#</th>
+            <th style="min-width:160px">Tanggal &amp; Liturgi</th>
+            <th style="min-width:200px">Tema &amp; Perikop</th>
+            <th style="min-width:220px">Kutipan Ayat Emas</th>
+            <th style="min-width:90px">Status</th>
+            <th style="min-width:180px">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${list.map((r, i) => `
+            <tr>
+              <td style="color:var(--ink-soft);font-size:0.75rem">${i + 1}</td>
+              <td>
+                <div style="font-weight:700;font-size:0.86rem;color:var(--ink)">${escapeHtml(formatTanggalIndo(r.tanggal))}</div>
+                <div style="margin-top:4px">
+                  <span class="badge ${getLiturgiBadgeClass(r.liturgi)}" style="font-size:0.7rem">${escapeHtml(r.liturgi || 'Masa Biasa')}</span>
+                </div>
+              </td>
+              <td>
+                <div style="font-weight:700;color:var(--ink);font-size:0.9rem">${escapeHtml(r.tema)}</div>
+                <div style="font-size:0.78rem;color:var(--gold);font-weight:600;margin-top:2px">📖 ${escapeHtml(r.perikop)}</div>
+              </td>
+              <td>
+                <div style="font-size:0.8rem;color:var(--ink-soft);max-width:280px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(r.ayat)}</div>
+              </td>
+              <td>
+                <span class="badge ${r.aktif ? 'badge-green' : 'badge-danger'}">
+                  ${r.aktif ? '● Aktif' : '○ Nonaktif'}
+                </span>
+              </td>
+              <td>
+                <div class="action-cell">
+                  <button class="btn btn-ghost btn-sm" onclick="editRenungan('${r.id}')">Edit</button>
+                  <button class="btn btn-ghost btn-sm" onclick="toggleAktifRenungan('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
+                  <button class="btn btn-danger btn-sm" onclick="confirmDelete('renungan', '${r.id}', '${escapeHtml(r.tema)} (${escapeHtml(r.tanggal)})', 'loadRenungan')">Hapus</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openRenunganModal(data = null) {
+  const isEdit = !!data?.id;
+  document.getElementById('rid').value        = data?.id || '';
+  
+  // Default today's date if new
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  document.getElementById('r-tanggal').value  = data?.tanggal || todayStr;
+  document.getElementById('r-liturgi').value  = data?.liturgi || 'Masa Biasa';
+  document.getElementById('r-tema').value     = data?.tema || '';
+  document.getElementById('r-perikop').value  = data?.perikop || '';
+  document.getElementById('r-ayat').value     = data?.ayat || '';
+  document.getElementById('r-refleksi').value = data?.refleksi || '';
+  document.getElementById('r-doa').value      = data?.doa || '';
+  document.getElementById('r-aktif').checked  = data ? (data.aktif !== false) : true;
+  document.getElementById('renungan-alert').style.display = 'none';
+
+  document.getElementById('modal-renungan-title').textContent = isEdit ? 'Edit Renungan Harian' : 'Tambah Renungan Harian';
+  document.getElementById('btn-renungan-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Renungan';
+
+  openModal('modal-renungan');
+  saveInitialFormState('modal-renungan');
+  setTimeout(() => document.getElementById('r-tema').focus(), 100);
+}
+
+function editRenungan(id) {
+  if (_renunganMap[id]) {
+    openRenunganModal(_renunganMap[id]);
+  }
+}
+
+async function submitRenungan(e) {
+  e.preventDefault();
+  const id      = document.getElementById('rid').value;
+  const alertEl = document.getElementById('renungan-alert');
+
+  // Change detection for edit
+  if (id && !isFormDirty('modal-renungan')) {
+    toast('Tidak ada perubahan renungan yang dilakukan.', 'info');
+    closeModal('modal-renungan');
+    return;
+  }
+
+  const tanggalVal  = document.getElementById('r-tanggal').value;
+  const liturgiVal  = document.getElementById('r-liturgi').value;
+  const temaVal     = document.getElementById('r-tema').value.trim();
+  const perikopVal  = document.getElementById('r-perikop').value.trim();
+  const ayatVal     = document.getElementById('r-ayat').value.trim();
+  const refleksiVal = document.getElementById('r-refleksi').value.trim();
+  const doaVal      = document.getElementById('r-doa').value.trim();
+  const aktifVal    = document.getElementById('r-aktif').checked;
+
+  if (!tanggalVal || !temaVal || !perikopVal || !ayatVal || !refleksiVal) {
+    alertEl.textContent = 'Semua kolom bertanda bintang (*) wajib diisi.';
+    alertEl.style.display = 'flex';
+    toast('Mohon lengkapi semua data renungan', 'error');
+    return;
+  }
+
+  // Confirmation before saving
+  const confirmed = await showConfirmModal({
+    title: id ? 'Konfirmasi Edit Renungan' : 'Konfirmasi Simpan Renungan',
+    heading: id ? 'Simpan perubahan renungan ini?' : 'Terbitkan renungan harian baru?',
+    message: `Renungan akan ditayangkan pada tanggal ${formatTanggalIndo(tanggalVal)}.`,
+    detailsHtml: `
+      <strong>Tema:</strong> ${escapeHtml(temaVal)}<br>
+      <strong>Perikop:</strong> ${escapeHtml(perikopVal)}<br>
+      <strong>Masa Liturgi:</strong> ${escapeHtml(liturgiVal)}<br>
+      <strong>Status:</strong> ${aktifVal ? 'Aktif (Akan tampil)' : 'Nonaktif'}
+    `,
+    confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Terbitkan Renungan',
+    cancelText: 'Batal',
+    type: 'save'
+  });
+
+  if (!confirmed) return;
+
+  const btn = document.getElementById('btn-submit-renungan');
+  btn.disabled = true;
+  document.getElementById('btn-renungan-text').textContent = 'Menyimpan…';
+
+  try {
+    const payload = {
+      tanggal:    tanggalVal,
+      liturgi:    liturgiVal,
+      tema:       temaVal,
+      perikop:    perikopVal,
+      ayat:       ayatVal,
+      refleksi:   refleksiVal,
+      doa:        doaVal || null,
+      aktif:      aktifVal,
+      updated_at: new Date().toISOString()
+    };
+
+    let error;
+    if (id) {
+      ({ error } = await db.from('renungan').update(payload).eq('id', id));
+    } else {
+      payload.created_at = new Date().toISOString();
+      ({ error } = await db.from('renungan').insert([payload]));
+    }
+
+    if (error) {
+      if (error.code === '23505' || error.message?.includes('duplicate key') || error.message?.includes('unique constraint')) {
+        throw new Error(`Sudah ada renungan untuk tanggal ${formatTanggalIndo(tanggalVal)}. Pilih tanggal lain atau edit data yang sudah ada.`);
+      }
+      throw error;
+    }
+
+    closeModal('modal-renungan');
+    toast(id ? 'Renungan harian berhasil diperbarui.' : 'Renungan harian baru berhasil disimpan.');
+    loadRenungan();
+    loadCounters();
+  } catch (err) {
+    const errMsg = formatDbError(err, 'Gagal menyimpan renungan harian');
+    alertEl.textContent = errMsg;
+    alertEl.style.display = 'flex';
+    toast(errMsg, 'error');
+    console.error('Submit renungan error:', err);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btn-renungan-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Renungan';
+  }
+}
+
+async function toggleAktifRenungan(id, current) {
+  try {
+    const { error } = await db.from('renungan').update({ aktif: !current, updated_at: new Date().toISOString() }).eq('id', id);
+    if (error) throw error;
+    toast(!current ? 'Renungan diaktifkan dan akan tampil di website.' : 'Renungan dinonaktifkan sementara.');
+    loadRenungan();
+    loadCounters();
+  } catch (err) {
+    const errMsg = formatDbError(err, 'Gagal mengubah status renungan');
+    toast(errMsg, 'error');
   }
 }
 
@@ -1422,6 +1714,7 @@ async function execDelete() {
 
     toast('Data berhasil dihapus dari database.');
     if (_deleteCb === 'loadJadwal')     loadJadwal();
+    if (_deleteCb === 'loadRenungan')   loadRenungan();
     if (_deleteCb === 'loadPengumuman') loadPengumuman();
     if (_deleteCb === 'loadGaleri')     loadGaleri();
     if (_deleteCb === 'loadPesan')      loadPesan();

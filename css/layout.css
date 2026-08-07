@@ -329,75 +329,153 @@ body.modal-open .mobile-bottom-dock {
 
 /* ════════════════════════════════════════
    MOBILE-FIRST RESPONSIVE  (≤ 767px)
+   Spacious, Clean & Professional Breathing Room
    ════════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* Text sizing */
+  /* Text sizing & smooth rendering */
   html { -webkit-text-size-adjust: 100%; }
   body {
     font-size: 15px;
-    /* Extra bottom padding so content isn't hidden behind mobile dock */
-    padding-bottom: 5.5rem;
+    line-height: 1.75;
+    /* Generous bottom padding so content has plenty of air above mobile dock */
+    padding-bottom: 6.5rem;
+  }
+
+  /* ── General Section Spacing on Mobile ── */
+  section {
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
   }
 
   /* ── Navbar ── */
   .floating-nav-container { display: none !important; }
 
-  /* ── Hero (home) ── */
+  /* ── Hero (Home) — Spacious & Dramatic ── */
   .hero-section {
     min-height: auto;
-    padding-top: 2.25rem;
-    padding-bottom: 2.5rem;
+    padding-top: 4.5rem !important;
+    padding-bottom: 4rem !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
     align-items: flex-start;
   }
 
+  .hero-badge {
+    margin-bottom: 1.25rem;
+    padding: 0.45rem 1.1rem;
+    font-size: 0.75rem;
+  }
+
   .hero-title {
-    font-size: clamp(2rem, 9vw, 2.75rem);
-    line-height: 1.15;
+    font-size: clamp(2.15rem, 8.5vw, 2.85rem);
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
   }
 
   .hero-subtitle {
-    font-size: 0.9rem;
-    line-height: 1.7;
-    margin-bottom: 1.75rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 2.25rem;
   }
 
-  /* ── Page hero (inner pages) ── */
+  /* ── Page Hero (Inner Pages) ── */
   .page-hero {
-    padding: 2.75rem 1.25rem 1.75rem;
+    padding: 4.5rem 1.5rem 3rem !important;
   }
 
   .page-hero-title {
-    font-size: clamp(1.5rem, 7vw, 2rem);
+    font-size: clamp(1.75rem, 7.5vw, 2.25rem);
+    line-height: 1.25;
+    margin-bottom: 0.65rem;
   }
 
   .page-hero-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  /* ── Stats bar ── */
+  /* ── Stats Bar ── */
   .stat-item + .stat-item::before { display: none; }
-  .stat-item { padding: 1rem 0.75rem; }
-
-  /* ── Section titles ── */
-  .section-title {
-    font-size: clamp(1.4rem, 6vw, 1.8rem);
+  .stat-item {
+    padding: 1.35rem 1rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    margin-bottom: 0.75rem;
   }
 
-  /* ── Glass cards — tighten padding ── */
+  /* ── Section Titles & Badges ── */
+  .section-badge {
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 6.5vw, 1.95rem);
+    line-height: 1.28;
+    margin-bottom: 0.85rem;
+  }
+
+  .section-divider {
+    margin-top: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── Glass Cards — Airy & Spacious ── */
   .glass-card {
-    border-radius: 1rem !important;
+    border-radius: 1.25rem !important;
+    padding: 1.75rem 1.4rem !important;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
   }
 
   /* ── Dock ── */
-  .dock-inner { max-width: 100%; margin: 0 0.5rem; }
-  .dock-item { padding: 0.3rem 0.5rem; font-size: 0.6rem; }
-  .dock-icon { font-size: 1.05rem; }
+  .mobile-bottom-dock {
+    bottom: 1.25rem;
+    padding: 0 1.25rem;
+  }
+
+  .dock-inner {
+    max-width: 100%;
+    padding: 0.45rem 0.75rem;
+    gap: 0.25rem;
+  }
+
+  .dock-item {
+    padding: 0.4rem 0.55rem;
+    font-size: 0.65rem;
+  }
+
+  .dock-icon {
+    font-size: 1.15rem;
+  }
 }
 
 /* Small phones (≤ 400px) */
 @media (max-width: 400px) {
-  .dock-item { padding: 0.25rem 0.3rem; }
+  section {
+    padding-top: 2.75rem !important;
+    padding-bottom: 2.75rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .hero-section {
+    padding-top: 3.75rem !important;
+    padding-bottom: 3.25rem !important;
+  }
+
+  .glass-card {
+    padding: 1.4rem 1.15rem !important;
+  }
+
+  .dock-item { padding: 0.3rem 0.35rem; }
   .dock-text { display: none; }
-  .dock-inner { padding: 0.5rem 0.75rem; }
-  .dock-icon { font-size: 1.15rem; margin-bottom: 0; }
+  .dock-inner { padding: 0.55rem 0.85rem; }
+  .dock-icon { font-size: 1.25rem; margin-bottom: 0; }
 }

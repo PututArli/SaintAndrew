@@ -32,6 +32,13 @@
       <span>Jadwal Misa</span>
       <span class="nav-count" id="count-jadwal">—</span>
     </button>
+    <button class="nav-btn" id="nav-renungan" onclick="showTab('renungan', this)">
+      <span class="ni">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+      </span>
+      <span>Renungan Harian</span>
+      <span class="nav-count" id="count-renungan">—</span>
+    </button>
     <button class="nav-btn" id="nav-pengumuman" onclick="showTab('pengumuman', this)">
       <span class="ni">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -130,6 +137,15 @@
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="color:var(--gold)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        </div>
+        <div>
+          <div class="stat-val" id="stat-renungan">—</div>
+          <div class="stat-lbl">Renungan Khusus</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="color:var(--gold)">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </div>
         <div>
@@ -193,6 +209,45 @@
         <div class="card-body">
           <div id="jadwal-content">
             <div class="empty-state"><p>Memuat data jadwal…</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: Renungan Harian ═══ -->
+    <div id="tab-renungan" class="tab-panel" style="display:none">
+      <div class="card">
+        <div class="card-head">
+          <div style="flex:1">
+            <div class="card-head-title">Manajemen Renungan Harian</div>
+            <div class="card-head-sub">Tulis dan jadwalkan renungan, bacaan Injil, serta doa khusus untuk umat di website</div>
+          </div>
+          <button class="btn btn-primary" onclick="openRenunganModal()">
+            <span>＋</span> Tambah Renungan
+          </button>
+        </div>
+
+        <!-- Filter & Search -->
+        <div class="filter-bar">
+          <span class="filter-label">Cari &amp; Filter:</span>
+          <input type="text" id="filter-search-renungan" class="filter-select" placeholder="Cari tema, perikop, atau ayat…" oninput="filterRenunganList()" style="flex:2;min-width:180px">
+          <select id="filter-liturgi-renungan" class="filter-select" onchange="filterRenunganList()">
+            <option value="">Semua Masa Liturgi</option>
+            <option value="Masa Biasa">Masa Biasa</option>
+            <option value="Masa Adven">Masa Adven</option>
+            <option value="Masa Natal">Masa Natal</option>
+            <option value="Masa Prapaskah">Masa Prapaskah</option>
+            <option value="Masa Paskah">Masa Paskah</option>
+            <option value="Hari Raya / Pesta">Hari Raya / Pesta</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="loadRenungan()" style="margin-left:auto">
+            Muat Ulang
+          </button>
+        </div>
+
+        <div class="card-body">
+          <div id="renungan-content">
+            <div class="empty-state"><p>Memuat data renungan…</p></div>
           </div>
         </div>
       </div>
@@ -370,6 +425,90 @@
         <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-jadwal')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-jadwal">
           <span id="btn-jadwal-text">Simpan Jadwal</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     MODAL: Renungan Harian (Tambah / Edit)
+════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-renungan">
+  <div class="modal-box" style="max-width:680px">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modal-renungan-title">Tambah Renungan Harian</div>
+      <button class="modal-close" onclick="safeCloseModal('modal-renungan')">✕</button>
+    </div>
+    <form id="form-renungan" onsubmit="submitRenungan(event)">
+      <input type="hidden" id="rid">
+      <div class="modal-body">
+
+        <div id="renungan-alert" class="alert alert-err" style="display:none"></div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Tanggal Tayang <span class="req">*</span></label>
+            <input id="r-tanggal" type="date" class="form-ctrl" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Masa / Konteks Liturgi</label>
+            <select id="r-liturgi" class="form-ctrl">
+              <option value="Masa Biasa">Masa Biasa</option>
+              <option value="Masa Adven">Masa Adven</option>
+              <option value="Masa Natal">Masa Natal</option>
+              <option value="Masa Prapaskah">Masa Prapaskah</option>
+              <option value="Masa Paskah">Masa Paskah</option>
+              <option value="Hari Raya / Pesta">Hari Raya / Pesta Khusus</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row cols-2">
+          <div class="form-group">
+            <label class="form-label">Tema Renungan <span class="req">*</span></label>
+            <input id="r-tema" type="text" class="form-ctrl" placeholder="cth: Menjadi Garam dan Terang Dunia" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Perikop Kitab Suci <span class="req">*</span></label>
+            <input id="r-perikop" type="text" class="form-ctrl" placeholder="cth: Injil Matius 5:13-16" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Kutipan Ayat Emas Sabda <span class="req">*</span></label>
+            <textarea id="r-ayat" class="form-ctrl" style="min-height:75px" placeholder="cth: Kamu adalah garam dunia. Jika garam itu menjadi tawar, dengan apakah ia diasinkan?..." required></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Isi Refleksi / Renungan <span class="req">*</span></label>
+            <textarea id="r-refleksi" class="form-ctrl" style="min-height:130px" placeholder="Tuliskan ulasan refleksi sabda dan panduan hidup beriman secara mendalam…" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Doa Harian Singkat <span class="form-hint">(Opsional)</span></label>
+            <textarea id="r-doa" class="form-ctrl" style="min-height:80px" placeholder="cth: Ya Tuhan, mampukanlah kami menjadi terang kasih-Mu bagi sesama hari ini. Amin."></textarea>
+          </div>
+        </div>
+
+        <div class="form-check" onclick="document.getElementById('r-aktif').click()">
+          <input type="checkbox" id="r-aktif" checked>
+          <div>
+            <label for="r-aktif">Aktifkan Renungan Ini</label>
+            <div class="fc-sub">Bila aktif, renungan ini akan otomatis tayang di Beranda website pada tanggal yang ditentukan.</div>
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-renungan')">Batal</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit-renungan">
+          <span id="btn-renungan-text">Simpan Renungan</span>
         </button>
       </div>
     </form>

@@ -123,25 +123,14 @@
         </div>
 
         <!-- Renungan Harian (right) -->
-        <div class="lg:col-span-2 reveal reveal-right">
-          <div class="devotion-card h-full">
+        <div class="lg:col-span-2 reveal reveal-right" id="dailyDevotionContainer">
+          <div class="devotion-card h-full flex flex-col justify-between">
             <div class="mb-4 flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3)">🕊️</div>
               <div>
                 <div class="text-xs font-bold uppercase tracking-widest text-yellow-400/80">Renungan Harian</div>
-                <div class="font-bold text-white text-base mt-0.5">Sabda Hari Ini</div>
+                <div class="font-bold text-white text-base mt-0.5">Memuat Sabda Hari Ini…</div>
               </div>
-            </div>
-            <h4 class="text-yellow-300 font-bold text-lg mb-1 font-serif">Menjadi Garam dan Terang Dunia</h4>
-            <p class="text-xs text-white/45 mb-4 italic">— Matius 5:13-16</p>
-            <p class="devotion-verse">"Kamu adalah garam dunia. Jika garam itu menjadi tawar, dengan apakah ia diasinkan? Tidak ada lagi gunanya selain dibuang dan diinjak orang."</p>
-            <div class="mt-6 pt-5 border-t border-white/10">
-              <p class="text-sm text-white/60 leading-relaxed">Mari kita merefleksikan peran kita di tengah masyarakat. Apakah kehadiran kita membawa kasih dan damai seperti yang diajarkan Kristus?</p>
-            </div>
-            <div class="mt-6">
-              <a href="profil.html" class="inline-flex items-center gap-2 text-yellow-300 text-sm font-semibold hover:text-yellow-200 transition-colors">
-                Pelajari lebih lanjut <span>→</span>
-              </a>
             </div>
           </div>
         </div>
@@ -349,6 +338,7 @@
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>
 <script src="js/script.js"></script>
+<script src="js/renungan.js"></script>
 <script>
 // ── Load Pengumuman from Supabase ──────────────────
 function escapeHtml(str) {
