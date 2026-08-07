@@ -204,6 +204,16 @@ async function fetchTodayDevotion() {
   };
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 /**
  * Render renungan ke elemen UI di index.html
  */
@@ -213,6 +223,7 @@ async function initDailyDevotion() {
 
   try {
     const devotion = await fetchTodayDevotion();
+    window._currentDevotion = devotion;
     
     container.innerHTML = `
       <div class="devotion-card h-full flex flex-col justify-between" id="devotionCard">
@@ -226,51 +237,49 @@ async function initDailyDevotion() {
                   <span>Renungan Harian</span>
                   <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 </div>
-                <div class="font-semibold text-white/80 text-xs mt-0.5" id="devotionDate">${devotion.tanggalFormatted}</div>
+                <div class="font-semibold text-white/80 text-xs mt-0.5" id="devotionDate">${escapeHtml(devotion.tanggalFormatted)}</div>
               </div>
             </div>
-            <span class="text-[0.68rem] px-2.5 py-1 rounded-full font-medium" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.1)">
-              ${devotion.liturgi}
+            <span class="text-[0.68rem] px-2.5 py-1 rounded-full font-medium" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.12)">
+              ${escapeHtml(devotion.liturgi)}
             </span>
           </div>
 
           <!-- Judul & Perikop -->
           <h4 class="text-yellow-300 font-bold text-lg lg:text-xl mb-1 font-serif leading-snug tracking-tight">
-            ${devotion.tema}
+            ${escapeHtml(devotion.tema)}
           </h4>
-          <p class="text-xs text-white/50 mb-3.5 italic font-medium flex items-center gap-1">
-            <span>📖</span> Bacaan: ${devotion.perikop}
+          <p class="text-xs text-white/60 mb-3.5 italic font-medium flex items-center gap-1">
+            <span>📖</span> Bacaan: ${escapeHtml(devotion.perikop)}
           </p>
 
           <!-- Ayat Emas Sabda -->
-          <div class="my-3.5 pl-3.5 border-l-2 border-yellow-400/50 bg-white/[0.02] py-1.5 rounded-r-lg">
+          <div class="my-3.5 pl-3.5 border-l-2 border-yellow-400/50 bg-white/[0.03] py-2 rounded-r-lg">
             <p class="devotion-verse text-sm lg:text-[0.95rem] text-white/90 leading-relaxed font-serif">
-              "${devotion.ayat}"
+              "${escapeHtml(devotion.ayat)}"
             </p>
           </div>
 
           <!-- Refleksi Singkat -->
           <div class="mt-4 pt-3.5 border-t border-white/10">
-            <p class="text-sm text-white/70 leading-relaxed">
-              ${devotion.refleksi}
+            <p class="text-sm text-white/75 leading-relaxed">
+              ${escapeHtml(devotion.refleksi)}
             </p>
           </div>
         </div>
 
         <!-- Action Buttons -->
         <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
-          <button type="button" onclick="openDevotionModal()" class="inline-flex items-center gap-2 text-yellow-300 text-xs font-bold hover:text-yellow-200 transition-colors bg-white/5 hover:bg-white/10 px-3.5 py-2 rounded-lg border border-yellow-400/20">
+          <button type="button" onclick="openDevotionModal()" class="inline-flex items-center gap-2 text-yellow-300 text-xs font-bold hover:text-yellow-200 transition-colors bg-white/5 hover:bg-white/10 px-3.5 py-2.5 rounded-lg border border-yellow-400/25 cursor-pointer">
             <span>🙏</span> Baca Doa Harian
           </button>
-          <button type="button" onclick="copyDevotionShare()" class="inline-flex items-center gap-1.5 text-white/60 hover:text-white text-xs font-semibold transition-colors bg-transparent hover:bg-white/5 px-3 py-2 rounded-lg" title="Salin renungan untuk dibagikan">
-            <span id="copyIcon">📋</span> <span id="copyText">Bagikan Sabda</span>
+          <button type="button" id="btnShareDevotion" onclick="shareDevotion(this)" class="inline-flex items-center gap-1.5 text-white/75 hover:text-white text-xs font-semibold transition-colors bg-white/5 hover:bg-white/10 px-3.5 py-2.5 rounded-lg border border-white/10 cursor-pointer" title="Bagikan renungan ke WhatsApp / Media Sosial">
+            <span id="copyIcon">📤</span> <span id="copyText">Bagikan Sabda</span>
           </button>
         </div>
       </div>
     `;
 
-    // Simpan data di global window untuk modal & share
-    window._currentDevotion = devotion;
     ensureDevotionModal();
 
   } catch (e) {
@@ -282,24 +291,26 @@ async function initDailyDevotion() {
  * Modal untuk menampilkan Doa & Refleksi Harian Lengkap
  */
 function ensureDevotionModal() {
-  if (document.getElementById('devotionModal')) return;
+  let modal = document.getElementById('devotionModal');
+  if (modal) return modal;
 
   const modalHtml = `
-    <div id="devotionModal" class="modal-overlay" style="z-index:99999;">
-      <div class="modal-box" style="max-width:540px;border-radius:24px;">
-        <div class="modal-head" style="background:var(--surface);">
-          <div class="modal-head-title" style="display:flex;align-items:center;gap:0.5rem;font-size:1.05rem;">
-            <span>🕊️</span> Doa &amp; Refleksi Harian
+    <div id="devotionModal" class="devotion-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="devotionModalTitle">
+      <div class="devotion-modal-card">
+        <div class="devotion-modal-head">
+          <div class="devotion-modal-title" id="devotionModalTitle">
+            <span style="font-size:1.25rem">🕊️</span>
+            <span>Doa &amp; Refleksi Harian</span>
           </div>
-          <button class="modal-close" onclick="closeDevotionModal()">✕</button>
+          <button type="button" class="devotion-modal-close" onclick="closeDevotionModal()" aria-label="Tutup Modal">✕</button>
         </div>
-        <div class="modal-body" style="padding:1.5rem 1.75rem;">
-          <div id="modalDevotionContent"></div>
+        <div class="devotion-modal-body" id="modalDevotionContent">
+          <!-- Diisi secara dinamis -->
         </div>
-        <div class="modal-foot" style="display:flex;gap:0.75rem;justify-content:flex-end;">
-          <button type="button" class="btn btn-ghost" onclick="closeDevotionModal()">Tutup</button>
-          <button type="button" class="btn btn-primary" onclick="copyDevotionShare();closeDevotionModal();">
-            <span>📋</span> Bagikan Sabda
+        <div class="devotion-modal-foot">
+          <button type="button" class="btn btn-secondary" onclick="closeDevotionModal()" style="font-size:0.85rem;padding:0.6rem 1.2rem;border-radius:999px;cursor:pointer">Tutup</button>
+          <button type="button" class="btn btn-primary" onclick="shareDevotion(this)" style="font-size:0.85rem;padding:0.6rem 1.3rem;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:0.4rem">
+            <span>📤</span> <span>Bagikan Sabda</span>
           </button>
         </div>
       </div>
@@ -307,73 +318,137 @@ function ensureDevotionModal() {
   `;
 
   document.body.insertAdjacentHTML('beforeend', modalHtml);
+  modal = document.getElementById('devotionModal');
+
+  // Tutup jika klik latar belakang gelap
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeDevotionModal();
+    }
+  });
+
+  return modal;
 }
 
-function openDevotionModal() {
-  const modal = document.getElementById('devotionModal');
+/**
+ * Buka modal Doa & Refleksi Harian
+ */
+async function openDevotionModal() {
+  const modal = ensureDevotionModal();
+  let d = window._currentDevotion;
+
+  if (!d) {
+    d = await fetchTodayDevotion();
+    window._currentDevotion = d;
+  }
+
   const content = document.getElementById('modalDevotionContent');
-  const d = window._currentDevotion;
-  if (!modal || !content || !d) return;
+  if (content && d) {
+    content.innerHTML = `
+      <div style="margin-bottom:1.2rem">
+        <div style="display:inline-block;padding:0.25rem 0.65rem;border-radius:999px;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;background:rgba(184,134,11,0.12);color:var(--gold);margin-bottom:0.5rem">
+          ${escapeHtml(d.tanggalFormatted)} · ${escapeHtml(d.liturgi)}
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:var(--ink);line-height:1.3;margin:0 0 0.35rem 0">
+          ${escapeHtml(d.tema)}
+        </h3>
+        <div style="font-size:0.82rem;color:var(--ink-soft);font-style:italic">
+          📖 Bacaan Kitab Suci: <strong>${escapeHtml(d.perikop)}</strong>
+        </div>
+      </div>
 
-  content.innerHTML = `
-    <div class="mb-3">
-      <div class="text-xs font-bold uppercase tracking-wider text-amber-600">${d.tanggalFormatted} · ${d.liturgi}</div>
-      <h3 class="text-xl font-bold text-gray-900 mt-1 font-serif">${d.tema}</h3>
-      <div class="text-xs text-gray-500 italic mt-0.5">Bacaan: ${d.perikop}</div>
-    </div>
+      <div style="padding:1rem 1.25rem;border-radius:14px;background:rgba(184,134,11,0.06);border-left:4px solid var(--gold);margin-bottom:1.25rem">
+        <p style="font-family:'Playfair Display',serif;font-size:0.95rem;font-style:italic;color:var(--ink);line-height:1.65;margin:0">
+          "${escapeHtml(d.ayat)}"
+        </p>
+      </div>
 
-    <div class="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/60 my-4">
-      <p class="text-sm text-amber-950 font-serif italic leading-relaxed">"${d.ayat}"</p>
-    </div>
+      <div style="margin-bottom:1.25rem">
+        <h4 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:0.4rem">
+          💡 Refleksi Sabda
+        </h4>
+        <p style="font-size:0.88rem;color:var(--ink-mid);line-height:1.7;margin:0">
+          ${escapeHtml(d.refleksi)}
+        </p>
+      </div>
 
-    <div class="text-sm text-gray-700 leading-relaxed space-y-3 mb-5">
-      <p>${d.refleksi}</p>
-    </div>
-
-    <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
-      <h4 class="font-bold text-xs uppercase tracking-wider text-gray-800 mb-1.5 flex items-center gap-1.5">
-        <span>🙏</span> Doa Harian
-      </h4>
-      <p class="text-sm text-gray-700 leading-relaxed italic font-serif">
-        "${d.doa}"
-      </p>
-    </div>
-  `;
+      <div style="padding:1.15rem 1.25rem;border-radius:16px;background:var(--bg-alt);border:1px solid var(--border)">
+        <h4 style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--gold);margin:0 0 0.5rem 0;display:flex;align-items:center;gap:0.4rem">
+          <span>🙏</span> Doa Harian
+        </h4>
+        <p style="font-family:'Playfair Display',serif;font-size:0.92rem;font-style:italic;color:var(--ink);line-height:1.65;margin:0">
+          "${escapeHtml(d.doa)}"
+        </p>
+      </div>
+    `;
+  }
 
   modal.classList.add('open');
-  modal.style.display = 'flex';
   document.body.classList.add('modal-open');
 }
 
+/**
+ * Tutup modal Doa & Refleksi Harian
+ */
 function closeDevotionModal() {
   const modal = document.getElementById('devotionModal');
   if (!modal) return;
   modal.classList.remove('open');
-  modal.style.display = 'none';
   document.body.classList.remove('modal-open');
 }
 
+// Global escape key listener
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeDevotionModal();
+  }
+});
+
 /**
- * Salin teks renungan ke clipboard untuk dibagikan ke WhatsApp / Media Sosial
+ * Bagikan Renungan (Mendukung Web Share API Native di Mobile & Salin Teks Elegan di Desktop)
  */
-async function copyDevotionShare() {
-  const d = window._currentDevotion;
+async function shareDevotion(btnElement = null) {
+  let d = window._currentDevotion;
+  if (!d) {
+    d = await fetchTodayDevotion();
+    window._currentDevotion = d;
+  }
   if (!d) return;
 
-  const textToShare = `🕊️ *RENUNGAN HARIAN KATOLIK*\n*Paroki Santo Andreas Rasul Marga Agung*\n📅 ${d.tanggalFormatted} (${d.liturgi})\n\n📖 *${d.tema}*\n_Bacaan: ${d.perikop}_\n\n"${d.ayat}"\n\n💡 *Refleksi:*\n${d.refleksi}\n\n🙏 *Doa:*\n"${d.doa}"\n\n✨ Berkah Dalem — ${window.location.origin}`;
+  const currentUrl = window.location.origin && window.location.origin !== 'null' ? window.location.origin : window.location.href;
+  const textToShare = `🕊️ *RENUNGAN HARIAN KATOLIK*\n*Paroki Santo Andreas Rasul Marga Agung*\n📅 ${d.tanggalFormatted} (${d.liturgi})\n\n📖 *${d.tema}*\n_Bacaan: ${d.perikop}_\n\n"${d.ayat}"\n\n💡 *Refleksi:*\n${d.refleksi}\n\n🙏 *Doa:*\n"${d.doa}"\n\n✨ Berkah Dalem — ${currentUrl}`;
 
+  // 1. Mobile Web Share API
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: `Renungan Harian: ${d.tema}`,
+        text: textToShare,
+        url: window.location.href
+      });
+      return;
+    } catch (err) {
+      if (err.name === 'AbortError') return; // User cancelled
+      // Else fallback to clipboard
+    }
+  }
+
+  // 2. Desktop Clipboard Fallback
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(textToShare);
     } else {
       const textarea = document.createElement('textarea');
       textarea.value = textToShare;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
       document.body.appendChild(textarea);
       textarea.select();
       document.execCommand('copy');
       document.body.removeChild(textarea);
     }
 
+    // Update button visual feedback
     const copyText = document.getElementById('copyText');
     const copyIcon = document.getElementById('copyIcon');
     if (copyText && copyIcon) {
@@ -381,15 +456,25 @@ async function copyDevotionShare() {
       copyIcon.textContent = '✅';
       setTimeout(() => {
         copyText.textContent = 'Bagikan Sabda';
-        copyIcon.textContent = '📋';
+        copyIcon.textContent = '📤';
+      }, 2500);
+    }
+
+    if (btnElement && btnElement.querySelector('span:last-child')) {
+      const originalText = btnElement.querySelector('span:last-child').textContent;
+      btnElement.querySelector('span:last-child').textContent = 'Tersalin!';
+      setTimeout(() => {
+        btnElement.querySelector('span:last-child').textContent = originalText;
       }, 2500);
     }
 
     if (typeof showToast === 'function') {
-      showToast('Renungan harian berhasil disalin ke clipboard!', 'success');
+      showToast('✨ Renungan harian berhasil disalin ke clipboard! Siap dibagikan ke WhatsApp atau media sosial.', 'success');
     }
   } catch (err) {
-    alert('Sabda hari ini telah disalin!');
+    if (typeof showToast === 'function') {
+      showToast('Gagal menyalin renungan ke clipboard.', 'error');
+    }
   }
 }
 
@@ -399,3 +484,4 @@ if (document.readyState === 'loading') {
 } else {
   initDailyDevotion();
 }
+
