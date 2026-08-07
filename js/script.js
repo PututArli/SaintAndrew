@@ -741,10 +741,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 contactForm.reset();
             } catch (err) {
                 console.error('Gagal mengirim pesan kontak:', err);
-                // Show actual error — table may not be created yet
-                const errMsg = err?.code === '42P01'
-                    ? 'Tabel pesan belum disiapkan di database. Hubungi administrator.'
-                    : (err?.message || 'Terjadi kesalahan jaringan. Coba lagi.');
+                // Give specific, actionable error messages per error code
+                let errMsg;
+                if (err?.code === '42P01') {
+                    errMsg = 'Tabel pesan belum disiapkan di database. Hubungi administrator.';
+                } else if (err?.code === '42501' || err?.message?.includes('row-level security') || err?.message?.includes('security policy')) {
+                    errMsg = 'Konfigurasi izin database belum lengkap. Hubungi administrator untuk mengaktifkan RLS policy tabel "pesan".';
+                } else {
+                    errMsg = err?.message || 'Terjadi kesalahan jaringan. Coba lagi.';
+                }
                 showAlert('Gagal Mengirim', errMsg, 'error');
             } finally {
                 if (textEl) textEl.textContent = origText;

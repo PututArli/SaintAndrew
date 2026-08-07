@@ -239,10 +239,60 @@
     padding: 0.25rem 0.65rem; border-radius: 999px;
     font-size: 0.7rem; font-weight: 700;
   }
-  .badge-green { background: var(--success-bg); color: var(--success); }
-  .badge-red   { background: var(--danger-bg);  color: var(--danger); }
-  .badge-gold  { background: var(--gold-pale);   color: var(--gold); }
-  .badge-gray  { background: var(--bg-alt);      color: var(--ink-soft); }
+  .badge-green  { background: var(--success-bg); color: var(--success); }
+  .badge-red,
+  .badge-danger { background: var(--danger-bg);  color: var(--danger); }
+  .badge-gold   { background: var(--gold-pale);   color: var(--gold); }
+  .badge-gray   { background: var(--bg-alt);      color: var(--ink-soft); }
+  .badge-info   { background: rgba(59,130,246,0.1); color: #2563eb; }
+
+  /* ═══ ACTION CELL ═══ */
+  .action-cell { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  /* ═══ GALERI ADMIN GRID ═══ */
+  .galeri-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    padding: 0.25rem;
+  }
+  .galeri-admin-card {
+    background: var(--surface); border-radius: 16px;
+    border: 1px solid var(--border); overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s;
+  }
+  .galeri-admin-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+  .galeri-admin-thumb {
+    position: relative; height: 140px; overflow: hidden;
+    background: var(--bg-alt);
+  }
+  .galeri-admin-thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .galeri-badge {
+    position: absolute; top: 8px; right: 8px;
+  }
+  .galeri-admin-body {
+    padding: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1;
+  }
+  .galeri-admin-title {
+    font-size: 0.88rem; font-weight: 700; color: var(--ink);
+    line-height: 1.3;
+    overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  }
+  .galeri-admin-meta {
+    display: flex; flex-direction: column; gap: 0.2rem;
+    font-size: 0.72rem; color: var(--ink-soft);
+  }
+  .galeri-admin-actions {
+    display: flex; gap: 0.4rem; margin-top: auto; padding-top: 0.4rem;
+  }
+  @media (max-width: 640px) {
+    .galeri-admin-grid { grid-template-columns: repeat(2, 1fr); }
+  }
 
   /* ═══ BUTTONS ═══ */
   .btn {
@@ -1578,10 +1628,24 @@ const KAT_MAP = {
 
 const KAT_GALERI_MAP = {
   'omk':      { label: 'OMK', bg: '#0d9488' },
+  'ibadat':   { label: 'Ibadat', bg: '#7c3aed' },
   'liturgi':  { label: 'Liturgi & Misa', bg: '#7c3aed' },
   'perayaan': { label: 'Perayaan Besar', bg: '#d97706' },
-  'sosial':   { label: 'Sosial & Lingkungan', bg: '#2563eb' }
+  'sosial':   { label: 'Sosial & Lingkungan', bg: '#2563eb' },
+  'kegiatan': { label: 'Kegiatan', bg: '#2563eb' }
 };
+
+const DEFAULT_GALERI_FALLBACK = [
+  {
+    id: 'default-omk-1',
+    judul: 'Ziarah & Rekreasi OMK 2025',
+    kategori: 'omk',
+    foto_url: 'assets/img/galeri/kegiatanOMK.png',
+    tanggal: '2025-06-20',
+    keterangan: 'Kebersamaan kaum muda paroki dalam membangun persaudaraan dan iman.',
+    urutan: 0
+  }
+];
 
 // State untuk delete
 let _deleteTable = '';
@@ -2460,6 +2524,10 @@ async function submitPengumuman(e) {
     alertEl.textContent = errMsg;
     alertEl.style.display = 'flex';
     toast(errMsg, 'error');
+    console.error('Submit pengumuman error:', err);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btn-peng-text').textContent = id ? 'Simpan Perubahan' : 'Simpan Pengumuman';
   }
 }
 
@@ -2548,7 +2616,7 @@ async function loadGaleri() {
 function openGaleriModal(data = null) {
   document.getElementById('gid').value          = data?.id || '';
   document.getElementById('g-judul').value      = data?.judul || '';
-  document.getElementById('g-kategori').value   = data?.kategori || 'ibadat';
+  document.getElementById('g-kategori').value   = data?.kategori || 'omk';
   document.getElementById('g-tanggal').value    = data?.tanggal || new Date().toISOString().split('T')[0];
   document.getElementById('g-foto').value       = data?.foto_url || '';
   document.getElementById('g-foto-manual').value= data?.foto_url || '';
