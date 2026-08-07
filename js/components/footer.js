@@ -89,7 +89,7 @@ class ModernFooter extends HTMLElement {
                 <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.28)">
                     <span>© 2026 Paroki Santo Andreas Rasul Marga Agung.</span>
                     <div class="flex items-center gap-3">
-                        <span class="flex items-center gap-1.5">Dibuat untuk umat paroki</span>
+                        <span class="flex items-center gap-1.5">Dibuat oleh umat dan untuk umat</span>
                         <button id="adminPortalTrigger" class="text-[11px] opacity-20 hover:opacity-100 transition-opacity flex items-center gap-1 cursor-pointer bg-transparent border-0 p-1" style="color:rgba(255,255,255,0.6)" title="Akses Admin">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </button>

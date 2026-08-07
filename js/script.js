@@ -286,13 +286,15 @@ function openStasiModal(id) {
         ${imageHtml}
 
         <!-- Patron Box -->
-        <div class="p-5 rounded-2xl mb-6" style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25)">
-            <div class="flex items-center gap-2 mb-2">
-                <span class="text-sm font-bold" style="color:var(--gold)">Mengenal Pelindung: ${data.patron}</span>
-                ${data.patronFeast ? `<span class="text-[11px] px-2 py-0.5 rounded-full font-semibold ml-auto" style="background:var(--gold-muted);color:var(--gold)">Pesta: ${data.patronFeast}</span>` : ''}
+        <div class="p-5 md:p-6 rounded-2xl mb-6" style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25)">
+            <div class="flex flex-wrap items-center justify-between gap-2.5 mb-2.5">
+                <div class="text-sm md:text-base font-bold flex items-center gap-1.5" style="color:var(--gold)">
+                    <span>✝</span> Mengenal Pelindung: ${data.patron}
+                </div>
+                ${data.patronFeast ? `<span class="inline-flex items-center text-[11px] md:text-xs px-3 py-1 rounded-full font-bold whitespace-nowrap flex-shrink-0 tracking-wide" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(201,168,76,0.25)">Pesta: ${data.patronFeast}</span>` : ''}
             </div>
-            <div class="text-xs font-semibold mb-1.5" style="color:var(--ink)">${data.patronRole || ''}</div>
-            <p class="text-xs leading-relaxed text-gray-600" style="text-align:justify">${data.patronBio || ''}</p>
+            <div class="text-xs font-semibold mb-2" style="color:var(--ink)">${data.patronRole || ''}</div>
+            <p class="text-xs md:text-sm leading-relaxed text-gray-600" style="text-align:justify">${data.patronBio || ''}</p>
         </div>
 
         <!-- Address Bar -->
