@@ -76,4 +76,6 @@ class ModernNavbar extends HTMLElement {
     }
 }
 
-customElements.define('modern-navbar', ModernNavbar);
+if (!customElements.get('modern-navbar')) {
+    customElements.define('modern-navbar', ModernNavbar);
+}

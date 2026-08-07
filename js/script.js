@@ -109,6 +109,20 @@ const stasiData = {
     }
 };
 
+// Map aliases to guarantee all 9 stasi keys work under any naming convention
+stasiData['marga-agung']   = stasiData['margo-agung'];
+stasiData['margoagung']    = stasiData['margo-agung'];
+stasiData['marga-lestari'] = stasiData['marga-lestari'];
+stasiData['margalestari']  = stasiData['marga-lestari'];
+stasiData['sindang-sari']  = stasiData['sindang-sari'];
+stasiData['sindangsari']   = stasiData['sindang-sari'];
+stasiData['way-galih']     = stasiData['way-galih'];
+stasiData['waygalih']      = stasiData['way-galih'];
+stasiData['sinar-rejeki']  = stasiData['rejomulyo'];
+stasiData['sinarrejeki']   = stasiData['rejomulyo'];
+stasiData['budi-lestari']  = stasiData['purwotani'];
+stasiData['budilestari']   = stasiData['purwotani'];
+
 function showAlert(title, message, type = 'success') {
     const overlay = document.createElement('div');
     overlay.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300';
@@ -204,7 +218,8 @@ function ensureStasiModalInDOM() {
 }
 
 function openStasiModal(id) {
-    const data = stasiData[id];
+    const cleanId = String(id || '').trim().toLowerCase().replace(/_/g, '-');
+    const data = stasiData[cleanId] || stasiData[id];
     
     if (!data) {
         showToast('Informasi untuk stasi ini belum tersedia.', 'error');
@@ -940,25 +955,26 @@ window.changeLightboxImage = changeLightboxImage;
 window.filterGallery = filterGallery;
 
 // ── Web Component: <aesthetic-divider> ──
-class AestheticDivider extends HTMLElement {
-    connectedCallback() {
-        const isReveal = this.hasAttribute('reveal') ? ' reveal' : '';
-        const customStyle = this.getAttribute('style') || '';
-        const extraClass = this.getAttribute('class') || '';
-        this.innerHTML = `
-        <div class="aesthetic-divider${isReveal} ${extraClass}" style="${customStyle}">
-            <div class="divider-line"></div>
-            <div class="divider-icon">✝</div>
-            <div class="divider-line"></div>
-        </div>`;
-    }
-}
 if (!customElements.get('aesthetic-divider')) {
-    customElements.define('aesthetic-divider', AestheticDivider);
+    customElements.define('aesthetic-divider', class extends HTMLElement {
+        connectedCallback() {
+            const isReveal = this.hasAttribute('reveal') ? ' reveal' : '';
+            const customStyle = this.getAttribute('style') || '';
+            const extraClass = this.getAttribute('class') || '';
+            this.innerHTML = `
+            <div class="aesthetic-divider${isReveal} ${extraClass}" style="${customStyle}">
+                <div class="divider-line"></div>
+                <div class="divider-icon">✝</div>
+                <div class="divider-line"></div>
+            </div>`;
+        }
+    });
 }
 
 // Global helper function for JS-driven templates
-window.renderAestheticDivider = function(extraClass = '', customStyle = '') {
-    const styleAttr = customStyle ? ` style="${customStyle}"` : '';
-    return `<div class="aesthetic-divider ${extraClass}"${styleAttr}><div class="divider-line"></div><div class="divider-icon">✝</div><div class="divider-line"></div></div>`;
-};
+if (!window.renderAestheticDivider) {
+    window.renderAestheticDivider = function(extraClass = '', customStyle = '') {
+        const styleAttr = customStyle ? ` style="${customStyle}"` : '';
+        return `<div class="aesthetic-divider ${extraClass}"${styleAttr}><div class="divider-line"></div><div class="divider-icon">✝</div><div class="divider-line"></div></div>`;
+    };
+}

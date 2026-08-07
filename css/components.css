@@ -590,20 +590,19 @@ select.form-input {
   background: rgba(12, 12, 15, 0.76);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  display: flex;
+  display: none !important;
   align-items: center;
   justify-content: center;
   padding: 1.25rem;
   opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  pointer-events: none !important;
+  transition: opacity 0.25s ease;
 }
 
 .devotion-modal-overlay.open {
+  display: flex !important;
   opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+  pointer-events: auto !important;
 }
 
 .devotion-modal-card {

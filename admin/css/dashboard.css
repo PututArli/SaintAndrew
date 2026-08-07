@@ -1180,7 +1180,13 @@
     }
 
     /* Bottom Sheet Modals on Mobile */
-    .modal-overlay {
+    .modal-overlay:not(.open) {
+      display: none !important;
+      pointer-events: none !important;
+    }
+    .modal-overlay.open {
+      display: flex !important;
+      pointer-events: auto !important;
       padding: 0;
       align-items: flex-end;
     }

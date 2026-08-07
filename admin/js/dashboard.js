@@ -2120,25 +2120,26 @@ window.openGaleriModal = typeof openGaleriModal === 'function' ? openGaleriModal
 window.openStasiModal = typeof openStasiModal === 'function' ? openStasiModal : undefined;
 
 // Web Component: <aesthetic-divider>
-class AestheticDivider extends HTMLElement {
-  connectedCallback() {
-    const isReveal = this.hasAttribute('reveal') ? ' reveal' : '';
-    const customStyle = this.getAttribute('style') || '';
-    const extraClass = this.getAttribute('class') || '';
-    this.innerHTML = `
-    <div class="aesthetic-divider${isReveal} ${extraClass}" style="${customStyle}">
-      <div class="divider-line"></div>
-      <div class="divider-icon">✝</div>
-      <div class="divider-line"></div>
-    </div>`;
-  }
-}
 if (!customElements.get('aesthetic-divider')) {
-  customElements.define('aesthetic-divider', AestheticDivider);
+  customElements.define('aesthetic-divider', class extends HTMLElement {
+    connectedCallback() {
+      const isReveal = this.hasAttribute('reveal') ? ' reveal' : '';
+      const customStyle = this.getAttribute('style') || '';
+      const extraClass = this.getAttribute('class') || '';
+      this.innerHTML = `
+      <div class="aesthetic-divider${isReveal} ${extraClass}" style="${customStyle}">
+        <div class="divider-line"></div>
+        <div class="divider-icon">✝</div>
+        <div class="divider-line"></div>
+      </div>`;
+    }
+  });
 }
 
 // Global helper function for JS-driven templates
-window.renderAestheticDivider = function(extraClass = '', customStyle = '') {
-  const styleAttr = customStyle ? ` style="${customStyle}"` : '';
-  return `<div class="aesthetic-divider ${extraClass}"${styleAttr}><div class="divider-line"></div><div class="divider-icon">✝</div><div class="divider-line"></div></div>`;
-};
+if (!window.renderAestheticDivider) {
+  window.renderAestheticDivider = function(extraClass = '', customStyle = '') {
+    const styleAttr = customStyle ? ` style="${customStyle}"` : '';
+    return `<div class="aesthetic-divider ${extraClass}"${styleAttr}><div class="divider-line"></div><div class="divider-icon">✝</div><div class="divider-line"></div></div>`;
+  };
+}

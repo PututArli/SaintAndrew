@@ -170,18 +170,24 @@ class ModernFooter extends HTMLElement {
 
     async getClient() {
         if (window.db) return window.db;
-        if (!window.supabase) {
-            await new Promise((res, rej) => {
-                const s = document.createElement('script');
-                s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-                s.onload = res;
-                s.onerror = rej;
-                document.head.appendChild(s);
-            });
+        try {
+            if (!window.supabase && typeof document !== 'undefined') {
+                await new Promise((res) => {
+                    const s = document.createElement('script');
+                    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+                    s.onload = res;
+                    s.onerror = res; // never reject
+                    document.head.appendChild(s);
+                });
+            }
+            if (window.supabase && typeof window.supabase.createClient === 'function') {
+                const S_URL = 'https://wsdmmohdealnnecxfhoj.supabase.co';
+                const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzZG1tb2hkZWFsbm5lY3hmaG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5OTcyOTksImV4cCI6MjEwMTU3MzI5OX0.HgUVipJZcv8TUNE7BfAfBq3ZSGBzZxGD0KBnlpCzAd0';
+                window.db = window.supabase.createClient(S_URL, S_KEY);
+            }
+        } catch (e) {
+            console.warn('Footer Supabase client note:', e);
         }
-        const S_URL = 'https://wsdmmohdealnnecxfhoj.supabase.co';
-        const S_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzZG1tb2hkZWFsbm5lY3hmaG9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5OTcyOTksImV4cCI6MjEwMTU3MzI5OX0.HgUVipJZcv8TUNE7BfAfBq3ZSGBzZxGD0KBnlpCzAd0';
-        window.db = window.supabase.createClient(S_URL, S_KEY);
         return window.db;
     }
 
@@ -345,5 +351,7 @@ class ModernFooter extends HTMLElement {
     }
 }
 
-customElements.define('modern-footer', ModernFooter);
+if (!customElements.get('modern-footer')) {
+    customElements.define('modern-footer', ModernFooter);
+}
 
