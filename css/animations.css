@@ -72,7 +72,8 @@ body {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  display: none;
+  display: none !important;
+  pointer-events: none !important;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.92);
@@ -83,7 +84,7 @@ body {
   overflow: hidden;
 }
 
-#lightbox.active  { display: flex; opacity: 1; }
+#lightbox.active  { display: flex !important; pointer-events: auto !important; opacity: 1; }
 #lightbox.closing { opacity: 0; }
 
 #lightbox .lb-close,
@@ -206,10 +207,27 @@ body {
   position: fixed;
   inset: 0;
   z-index: 9999;
+  display: none !important;
+  pointer-events: none !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   background: rgba(18, 18, 20, 0.78);
   transition: opacity 0.25s ease;
+}
+
+#stasiModal.flex {
+  display: flex !important;
+  pointer-events: auto !important;
+}
+
+#secretAdminModal {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+#secretAdminModal.flex {
+  display: flex !important;
+  pointer-events: auto !important;
 }
 
 #stasiModal .modal-card {

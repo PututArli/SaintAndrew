@@ -184,6 +184,8 @@ function ensureStasiModalInDOM() {
         modal = document.createElement('div');
         modal.id = 'stasiModal';
         modal.className = 'fixed inset-0 z-[60] hidden items-center justify-center p-3 md:p-6';
+        modal.style.setProperty('display', 'none', 'important');
+        modal.style.setProperty('pointer-events', 'none', 'important');
         modal.style.background = 'rgba(28,28,30,0.8)';
         modal.innerHTML = `
             <div class="modal-card w-full max-w-4xl max-h-[90vh] md:max-h-[88vh] relative flex flex-col overflow-hidden">
@@ -313,6 +315,9 @@ function openStasiModal(id) {
     
     modal.classList.remove('hidden');
     modal.classList.add('flex');
+    modal.style.setProperty('display', 'flex', 'important');
+    modal.style.setProperty('pointer-events', 'auto', 'important');
+    document.body.classList.add('modal-open');
     document.body.style.overflow = 'hidden';
 }
 
@@ -321,6 +326,9 @@ function closeStasiModal() {
     if (!modal) return;
     modal.classList.add('hidden');
     modal.classList.remove('flex');
+    modal.style.setProperty('display', 'none', 'important');
+    modal.style.setProperty('pointer-events', 'none', 'important');
+    document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
 }
 
@@ -333,6 +341,8 @@ function ensureLightboxInDOM() {
     if (!lb) {
         lb = document.createElement('div');
         lb.id = 'lightbox';
+        lb.style.setProperty('display', 'none', 'important');
+        lb.style.setProperty('pointer-events', 'none', 'important');
         lb.innerHTML = `
             <button class="lb-close" title="Tutup">&times;</button>
             <button class="lb-prev" title="Sebelumnya">&#10094;</button>
@@ -376,7 +386,8 @@ function buildLightboxImages() {
         const dateEl = item.querySelector('.gallery-date');
         const badgeEl = item.querySelector('.gallery-badge');
         return {
-            src: img ? img.src : '',
+            src: img ? (img.currentSrc || img.src) : '',
+            rawSrc: img ? (img.getAttribute('src') || '') : '',
             alt: img ? img.alt : '',
             title: titleEl ? titleEl.textContent.trim() : (img ? img.alt : ''),
             keterangan: descEl ? descEl.textContent.trim() : '',
@@ -388,41 +399,46 @@ function buildLightboxImages() {
 }
 
 function openLightbox(src, alt, customData = null) {
-    ensureLightboxInDOM();
-    if (customData) {
+    const lb = ensureLightboxInDOM();
+    if (customData && customData.single) {
         lightboxImages = [{
             src: src,
             alt: alt || 'Foto',
             title: (customData && customData.title) || alt || 'Foto',
             keterangan: (customData && customData.keterangan) || '',
             badge: (customData && customData.badge) || 'STASI',
-            badgeBg: 'var(--gold)',
+            badgeBg: (customData && customData.badgeBg) || 'var(--gold)',
             date: (customData && customData.date) || ''
         }];
         currentLightboxIndex = 0;
     } else {
         buildLightboxImages();
-        let idx = lightboxImages.findIndex(i => i.src === src);
-        if (idx < 0 && src) {
-            lightboxImages = [{
-                src: src,
-                alt: alt || 'Foto',
-                title: alt || 'Foto',
-                keterangan: '',
-                badge: 'GALERI',
-                badgeBg: 'var(--gold)',
-                date: ''
-            }];
-            idx = 0;
+        let idx = lightboxImages.findIndex(i => i.src === src || (i.rawSrc && src && (src.endsWith(i.rawSrc) || i.rawSrc.endsWith(src))));
+        if (idx < 0) {
+            if (src) {
+                lightboxImages.push({
+                    src: src,
+                    alt: alt || 'Foto',
+                    title: (customData && customData.title) || alt || 'Foto',
+                    keterangan: (customData && customData.keterangan) || '',
+                    badge: (customData && customData.badge) || 'GALERI',
+                    badgeBg: (customData && customData.badgeBg) || 'var(--gold)',
+                    date: (customData && customData.date) || ''
+                });
+                idx = lightboxImages.length - 1;
+            } else {
+                idx = 0;
+            }
         }
         currentLightboxIndex = idx >= 0 ? idx : 0;
     }
     renderLightbox();
 
-    const lb = document.getElementById('lightbox');
     if (lb) {
         lb.classList.remove('hidden');
         lb.classList.add('active');
+        lb.style.setProperty('display', 'flex', 'important');
+        lb.style.setProperty('pointer-events', 'auto', 'important');
         document.body.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
     }
@@ -434,9 +450,11 @@ function closeLightbox() {
         lb.classList.add('closing');
         setTimeout(() => {
             lb.classList.remove('active', 'closing');
+            lb.style.setProperty('display', 'none', 'important');
+            lb.style.setProperty('pointer-events', 'none', 'important');
             document.body.classList.remove('modal-open');
             document.body.style.overflow = '';
-        }, 250);
+        }, 200);
     }
 }
 
@@ -534,44 +552,109 @@ document.addEventListener('keydown', e => {
     }
 });
 
-// ── Gallery Initializer ──────────────────────────────────────
-function setupGalleryClicks() {
-    document.querySelectorAll('.gallery-item, .gallery-card').forEach(item => {
-        item.removeAttribute('onclick'); 
-        item.addEventListener('click', () => {
-            const img = item.querySelector('img');
-            if (img) openLightbox(img.src, img.alt);
-        });
+// ── Gallery Initializer & Filtering ──────────────────────────
+window.currentGalleryFilter = 'all';
+
+window.filterGallery = function(filterCategory, btnElement) {
+    const rawFilter = (filterCategory || 'all').toLowerCase().trim();
+    window.currentGalleryFilter = rawFilter;
+
+    // Update filter button states
+    const btns = document.querySelectorAll('.filter-btn');
+    btns.forEach(btn => {
+        const bFilter = (btn.getAttribute('data-filter') || '').toLowerCase().trim();
+        const isActive = (btnElement && btn === btnElement) || (bFilter === rawFilter);
+        if (isActive) {
+            btn.classList.add('active-filter');
+            btn.setAttribute('aria-pressed', 'true');
+        } else {
+            btn.classList.remove('active-filter');
+            btn.setAttribute('aria-pressed', 'false');
+        }
     });
-}
+
+    // Filter gallery cards
+    const items = document.querySelectorAll('.gallery-item, .gallery-card');
+    let visibleCount = 0;
+
+    items.forEach(item => {
+        const cat = (item.getAttribute('data-category') || item.dataset.category || '').toLowerCase().trim();
+        let show = false;
+
+        if (rawFilter === 'all') {
+            show = true;
+        } else if (cat === rawFilter) {
+            show = true;
+        } else if (rawFilter === 'omk' && cat.includes('omk')) {
+            show = true;
+        } else if (rawFilter === 'liturgi' && (cat.includes('liturgi') || cat.includes('misa'))) {
+            show = true;
+        } else if (rawFilter === 'perayaan' && (cat.includes('perayaan') || cat.includes('natal') || cat.includes('paskah'))) {
+            show = true;
+        } else if (rawFilter === 'sosial' && (cat.includes('sosial') || cat.includes('lingkungan'))) {
+            show = true;
+        }
+
+        item.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+    });
+
+    // Toggle empty state message
+    const emptyMsg = document.getElementById('empty-msg');
+    if (emptyMsg) {
+        if (visibleCount === 0) {
+            emptyMsg.classList.remove('hidden');
+            emptyMsg.style.display = 'block';
+        } else {
+            emptyMsg.classList.add('hidden');
+            emptyMsg.style.display = 'none';
+        }
+    }
+};
 
 function setupFilters() {
     const btns = document.querySelectorAll('.filter-btn');
     if (!btns.length) return;
 
     btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            btns.forEach(b => b.classList.remove('active-filter'));
-            btn.classList.add('active-filter');
-
-            const filter = btn.dataset.filter || 'all';
-            const items = document.querySelectorAll('.gallery-item, .gallery-card');
-            let visibleCount = 0;
-
-            items.forEach(item => {
-                const cat = item.dataset.category || '';
-                const show = (filter === 'all' || cat === filter);
-                item.style.display = show ? '' : 'none';
-                if (show) visibleCount++;
-            });
-
-            const emptyMsg = document.getElementById('empty-msg');
-            if (emptyMsg) {
-                emptyMsg.classList.toggle('hidden', visibleCount > 0);
-            }
-        });
+        btn.onclick = function(e) {
+            e.preventDefault();
+            const filter = this.getAttribute('data-filter') || 'all';
+            window.filterGallery(filter, this);
+        };
     });
 }
+
+function setupGalleryClicks() {
+    document.querySelectorAll('.gallery-item, .gallery-card').forEach(item => {
+        item.style.cursor = 'pointer';
+    });
+}
+
+// Global click delegation for all gallery items (supports dynamic & static content)
+document.addEventListener('click', (e) => {
+    // If clicked on a filter button, filter gallery
+    const filterBtn = e.target.closest('.filter-btn');
+    if (filterBtn) {
+        const filter = filterBtn.getAttribute('data-filter') || 'all';
+        window.filterGallery(filter, filterBtn);
+        return;
+    }
+
+    // If clicked on a gallery card/item, open lightbox
+    const card = e.target.closest('.gallery-item, .gallery-card');
+    if (card) {
+        // If clicking a link or button inside the card, let it proceed
+        if (e.target.closest('button:not(.filter-btn), a')) return;
+        const img = card.querySelector('img');
+        if (img) {
+            e.preventDefault();
+            const src = img.currentSrc || img.src || img.getAttribute('src');
+            const alt = img.alt || '';
+            openLightbox(src, alt);
+        }
+    }
+});
 
 // ── Scroll To Top Initializer ────────────────────────────────
 function ensureScrollTopInDOM() {

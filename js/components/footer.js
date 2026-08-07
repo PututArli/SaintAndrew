@@ -101,7 +101,7 @@ class ModernFooter extends HTMLElement {
         <!-- ═══════════════════════════════════════════
              MODAL MASUK ADMIN (CLEAN & DIGNIFIED)
         ═══════════════════════════════════════════ -->
-        <div id="secretAdminModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(6px)">
+        <div id="secretAdminModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4" style="display:none !important;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px)">
             <div class="relative w-full max-w-[380px] rounded-2xl p-7 text-left shadow-xl" style="background:#FFFFFF;border:1px solid rgba(0,0,0,0.08)">
                 <!-- Close Button -->
                 <button id="closeSecretModal" class="absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center text-sm text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors" style="background:transparent;border:none;cursor:pointer">✕</button>
@@ -239,6 +239,8 @@ class ModernFooter extends HTMLElement {
             }
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+            modal.style.setProperty('display', 'flex', 'important');
+            modal.style.setProperty('pointer-events', 'auto', 'important');
             document.body.classList.add('modal-open');
             document.body.style.overflow = 'hidden';
             document.getElementById('secretEmail').focus();
@@ -247,6 +249,8 @@ class ModernFooter extends HTMLElement {
         const closePortal = () => {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+            modal.style.setProperty('display', 'none', 'important');
+            modal.style.setProperty('pointer-events', 'none', 'important');
             document.body.classList.remove('modal-open');
             document.body.style.overflow = '';
             errBox.classList.add('hidden');

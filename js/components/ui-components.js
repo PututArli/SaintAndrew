@@ -94,14 +94,51 @@ if (!customElements.get('section-header')) {
     customElements.define('section-header', SectionHeader);
 }
 
+// 5. <cross-ornament>
+class CrossOrnament extends HTMLElement {
+    connectedCallback() {
+        const size = this.getAttribute('size') || 'md';
+        const icon = this.getAttribute('icon') || '✝';
+        const customClass = this.getAttribute('class') || '';
+        const customStyle = this.getAttribute('style') || '';
+        const sizeMap = {
+            xs: 'w-6 h-6 text-[10px] rounded-md',
+            sm: 'w-8 h-8 text-xs rounded-lg',
+            md: 'w-10 h-10 text-base rounded-xl',
+            lg: 'w-12 h-12 text-lg rounded-2xl'
+        };
+        const sizeClass = sizeMap[size] || sizeMap.md;
+        this.innerHTML = `<div class="${sizeClass} flex items-center justify-center font-bold flex-shrink-0 shadow-sm ${customClass}" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.2);${customStyle}">${icon}</div>`;
+    }
+}
+if (!customElements.get('cross-ornament')) {
+    customElements.define('cross-ornament', CrossOrnament);
+}
+
 // Global Helper Functions
 window.escapeHtml = function(str) {
     if (!str) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 };
 
+window.renderCrossOrnament = function(size = 'md', extraClass = '', icon = '✝', style = '') {
+    const sizeMap = {
+        xs: 'w-6 h-6 text-[10px] rounded-md',
+        sm: 'w-8 h-8 text-xs rounded-lg',
+        md: 'w-10 h-10 text-base rounded-xl',
+        lg: 'w-12 h-12 text-lg rounded-2xl'
+    };
+    const sizeClass = sizeMap[size] || sizeMap.md;
+    const styleAttr = style ? `style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.2);${style}"` : 'style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.2)"';
+    return `<div class="${sizeClass} flex items-center justify-center font-bold flex-shrink-0 shadow-sm ${extraClass}" ${styleAttr}>${icon}</div>`;
+};
+
 window.renderAestheticDivider = function(extraClass = '', customStyle = '') {
     const styleAttr = customStyle ? ` style="${customStyle}"` : '';
     return `<div class="aesthetic-divider ${extraClass}"${styleAttr}><div class="divider-line"></div><div class="divider-icon">✝</div><div class="divider-line"></div></div>`;
+};
+
+window.renderInfoBadge = function(icon = '✝', text = '', variant = 'gold') {
+    return `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.2)"><span>${icon}</span><span>${escapeHtml(text)}</span></span>`;
 };
 

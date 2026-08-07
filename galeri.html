@@ -8,10 +8,6 @@
 <link rel="icon" href="assets/crossIcon.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="css/style.css">
-<style>
-/* Lightbox override for galeri page */
-#lightbox { position:fixed; }
-</style>
 </head>
 <body class="flex flex-col min-h-screen">
 
@@ -48,19 +44,19 @@
 
     <!-- ── Filter ── -->
     <div class="flex flex-wrap justify-center gap-2.5 sm:gap-3 mb-6 sm:mb-10 reveal" id="gallery-filters">
-      <button class="filter-btn active-filter px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm shadow-md" data-filter="all">
+      <button type="button" class="filter-btn active-filter px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm shadow-md" data-filter="all" onclick="filterGallery('all', this)">
         Semua Foto
       </button>
-      <button class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="omk">
+      <button type="button" class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="omk" onclick="filterGallery('omk', this)">
         OMK
       </button>
-      <button class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="liturgi">
+      <button type="button" class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="liturgi" onclick="filterGallery('liturgi', this)">
         Liturgi &amp; Misa
       </button>
-      <button class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="perayaan">
+      <button type="button" class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="perayaan" onclick="filterGallery('perayaan', this)">
         Perayaan Besar
       </button>
-      <button class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="sosial">
+      <button type="button" class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="sosial" onclick="filterGallery('sosial', this)">
         Sosial &amp; Lingkungan
       </button>
     </div>
@@ -182,10 +178,11 @@ async function loadDynamicGaleri() {
       if (!container) return;
 
       container.innerHTML = data.map(item => {
-        const kat = KAT_STYLE_MAP[item.kategori] || { label: item.kategori || 'Kegiatan', bg: 'var(--gold)' };
+        const catKey = (item.kategori || 'omk').toLowerCase().trim();
+        const kat = KAT_STYLE_MAP[catKey] || { label: item.kategori || 'Kegiatan', bg: 'var(--gold)' };
         const formattedDate = item.tanggal ? new Date(item.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '';
         return `
-          <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="${item.kategori || 'omk'}" style="background:var(--surface);border:1px solid var(--border)">
+          <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="${catKey}" style="background:var(--surface);border:1px solid var(--border)">
             <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
               <img src="${item.foto_url}" alt="${item.judul}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='assets/img/galeri/kegiatanOMK.png'">
               <div class="gallery-badge" style="background:${kat.bg}">${kat.label}</div>
@@ -199,8 +196,10 @@ async function loadDynamicGaleri() {
         `;
       }).join('');
 
+      if (typeof window.filterGallery === 'function') {
+        window.filterGallery(window.currentGalleryFilter || 'all');
+      }
       if (typeof setupGalleryClicks === 'function') setupGalleryClicks();
-      if (typeof setupFilters === 'function') setupFilters();
     }
   } catch (e) {
     console.warn('Galeri dynamic load fallback to static content:', e);

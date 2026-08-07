@@ -48,31 +48,62 @@
 
     <!-- ── Gereja Paroki ── -->
     <section class="reveal">
-      <div class="flex items-center gap-3 mb-4 sm:mb-5">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
-        <div>
-          <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold)">Gereja Paroki</div>
-          <h2 class="font-bold text-xl" style="color:var(--ink)">Margo Agung</h2>
-        </div>
-      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Table Jadwal Utama -->
+        <div class="lg:col-span-7">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold)">Gereja Paroki Pusat</div>
+              <h2 class="font-bold text-xl" style="color:var(--ink)">Santo Andreas Rasul Margo Agung</h2>
+            </div>
+          </div>
 
-      <div class="schedule-table-wrapper">
-        <table class="schedule-table">
-          <thead>
-            <tr>
-              <th>Hari</th>
-              <th>Waktu</th>
-              <th style="text-align:right">Keterangan</th>
-            </tr>
-          </thead>
-          <tbody id="jadwalParokiBody">
-            <tr>
-              <td class="font-medium" style="color:var(--ink)">Minggu</td>
-              <td><span class="font-bold" style="color:var(--ink)">07:30 WIB</span></td>
-              <td style="text-align:right"><span class="schedule-badge">Misa Umat</span></td>
-            </tr>
-          </tbody>
-        </table>
+          <div class="schedule-table-wrapper">
+            <table class="schedule-table">
+              <thead>
+                <tr>
+                  <th>Hari</th>
+                  <th>Waktu</th>
+                  <th style="text-align:right">Keterangan</th>
+                </tr>
+              </thead>
+              <tbody id="jadwalParokiBody">
+                <tr>
+                  <td class="font-medium" style="color:var(--ink)">Minggu</td>
+                  <td><span class="font-bold" style="color:var(--ink)">07:30 WIB</span></td>
+                  <td style="text-align:right"><span class="schedule-badge">Misa Umat</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Info Misa Tambahan & Adorasi -->
+        <div class="lg:col-span-5">
+          <div class="glass-card p-5 sm:p-6 flex flex-col gap-4" style="background:var(--surface);border:1px solid var(--border)">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
+              <h3 class="font-bold text-sm" style="color:var(--ink)">Misa Khusus &amp; Adorasi</h3>
+            </div>
+            
+            <div class="space-y-3 text-xs leading-relaxed" style="color:var(--ink-soft)">
+              <div class="p-3 rounded-xl" style="background:var(--bg-alt);border:1px solid var(--border)">
+                <div class="font-bold text-xs" style="color:var(--ink)">Misa Jumat Pertama</div>
+                <div class="text-[11px] mt-0.5" style="color:var(--gold)">Setiap Jumat Pertama pkl 18:00 WIB</div>
+                <div class="text-[11px] text-gray-500 mt-1">Dilanjutkan Adorasi dan Salve Sakramen Mahakudus di Gereja Paroki.</div>
+              </div>
+
+              <div class="p-3 rounded-xl" style="background:var(--bg-alt);border:1px solid var(--border)">
+                <div class="font-bold text-xs" style="color:var(--ink)">Misa Lingkungan / Ujud Khusus</div>
+                <div class="text-[11px] mt-0.5" style="color:var(--gold)">Sesuai Jadwal Wilayah &amp; Permohonan</div>
+                <div class="text-[11px] text-gray-500 mt-1">Dikoordinasikan bersama Ketua Lingkungan dan Sekretariat Paroki.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
