@@ -158,8 +158,12 @@ async function initDashboard() {
     console.warn('Auth session check note:', authErr);
   }
 
-  // Load initial active tab data & statistics
-  showTab('jadwal');
+  // Load initial active tab data & statistics based on URL hash (without push loop)
+  const initialTab = location.hash.replace('#', '') || 'jadwal';
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState({ tab: initialTab }, '', '#' + initialTab);
+  }
+  showTab(initialTab, null, false);
   loadCounters();
 }
 
@@ -304,26 +308,37 @@ function clearFormState(modalId) {
 }
 
 // ── Modal helpers ───────────────────────────────────────────
-function openModal(id) {
+let _adminModalScrollPos = 0;
+let _currentTab = 'jadwal';
+let _isPopStateNav = false;
+
+function openModal(id, pushHistory = true) {
   const el = document.getElementById(id);
   if (el) {
+    _adminModalScrollPos = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
     el.classList.add('open');
-    document.documentElement.classList.add('modal-open');
     document.body.classList.add('modal-open');
-    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
+
+    if (pushHistory && window.history && window.history.pushState) {
+      window.history.pushState({ adminModal: id, tab: _currentTab }, '', '#' + _currentTab);
+    }
   }
 }
 
-function closeModal(id) {
+function closeModal(id, fromPopState = false) {
   const el = document.getElementById(id);
   if (el) el.classList.remove('open');
   clearFormState(id);
+
+  if (!fromPopState && window.history && history.state && history.state.adminModal === id) {
+    window.history.back();
+  }
+
   if (!document.querySelector('.modal-overlay.open')) {
-    document.documentElement.classList.remove('modal-open');
     document.body.classList.remove('modal-open');
-    document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
+    window.scrollTo({ top: _adminModalScrollPos, behavior: 'instant' });
   }
 }
 
@@ -353,7 +368,7 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
       if (m.id === 'modal-confirm') {
         resolveConfirmModal(false);
       } else {
-        safeCloseModal(m.id);
+        closeModal(m.id);
       }
     }
   });
@@ -367,12 +382,50 @@ document.addEventListener('keydown', e => {
       resolveConfirmModal(false);
       return;
     }
-    document.querySelectorAll('.modal-overlay.open').forEach(m => safeCloseModal(m.id));
+    document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
   }
 });
 
+// ── Device / Browser Back Button Listener (Prevents Navigation Loops) ───────
+window.addEventListener('popstate', (e) => {
+  _isPopStateNav = true;
+
+  // 1. If sidebar is open on mobile, close it
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar && sidebar.classList.contains('open')) {
+    closeSidebar();
+    _isPopStateNav = false;
+    return;
+  }
+
+  // 2. If confirm modal is open, dismiss it
+  const openConfirm = document.querySelector('#modal-confirm.open');
+  if (openConfirm) {
+    resolveConfirmModal(false);
+    _isPopStateNav = false;
+    return;
+  }
+
+  // 3. If any data modal is open, close it cleanly without page loop
+  const openModals = document.querySelectorAll('.modal-overlay.open');
+  if (openModals.length > 0) {
+    openModals.forEach(m => closeModal(m.id, true));
+    _isPopStateNav = false;
+    return;
+  }
+
+  // 4. Switch to target tab according to state / hash
+  const targetTab = e.state?.tab || location.hash.replace('#', '') || 'jadwal';
+  showTab(targetTab, null, false);
+
+  _isPopStateNav = false;
+});
+
 // ── Tab switcher ────────────────────────────────────────────
-function showTab(name, btn = null) {
+function showTab(name, btn = null, pushHistory = true) {
+  if (!name) name = 'jadwal';
+  _currentTab = name;
+
   document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.mobile-tab-btn').forEach(b => b.classList.remove('active'));
@@ -400,6 +453,13 @@ function showTab(name, btn = null) {
     'pesan': 'Pesan Masuk'
   };
   document.getElementById('topbar-title').textContent = titles[name] || 'Admin';
+
+  // Update URL hash cleanly without duplicate history accumulation
+  if (pushHistory && !_isPopStateNav && window.history && window.history.pushState) {
+    if (location.hash.replace('#', '') !== name) {
+      window.history.pushState({ tab: name }, '', '#' + name);
+    }
+  }
 
   // Tutup sidebar di mobile secara halus jika sedang terbuka
   const sidebar = document.getElementById('sidebar');
@@ -656,15 +716,73 @@ function renderJadwalView(data, isFiltered = false) {
   `;
 }
 
+// ── Unified Dropdown & Custom Input Helpers (DRY) ─────────────
+function handleCustomSelectChange(selectEl, customInputId, isRequired = true) {
+  const customInput = document.getElementById(customInputId);
+  if (!customInput) return;
+  const isCustom = selectEl.value === 'custom';
+  customInput.style.display = isCustom ? 'block' : 'none';
+  customInput.required = isCustom && isRequired;
+  if (isCustom) {
+    customInput.focus();
+  } else {
+    customInput.value = selectEl.value;
+  }
+}
+
+// Backward-compatible named aliases
+const handleHariSelectChange       = (el) => handleCustomSelectChange(el, 'j-hari', true);
+const handleWaktuSelectChange      = (el) => handleCustomSelectChange(el, 'j-waktu', true);
+const handleKeteranganSelectChange = (el) => handleCustomSelectChange(el, 'j-keterangan', false);
+const handleMingguSelectChange     = (el) => handleCustomSelectChange(el, 'j-minggu', false);
+
+function syncSelectWithCustomInput(selectId, inputId, rawVal = '') {
+  const select = document.getElementById(selectId);
+  const input  = document.getElementById(inputId);
+  if (!select || !input) return;
+
+  const val = String(rawVal || '').trim();
+  let matched = false;
+  if (val) {
+    for (let opt of select.options) {
+      if (opt.value && opt.value.toLowerCase() === val.toLowerCase()) {
+        select.value = opt.value;
+        matched = true;
+        break;
+      }
+    }
+  }
+
+  if (!matched && val) {
+    select.value = 'custom';
+    input.style.display = 'block';
+    input.value = val;
+  } else {
+    select.value = matched ? select.value : '';
+    input.style.display = 'none';
+    input.value = select.value;
+  }
+}
+
+function getCustomSelectValue(selectId, inputId) {
+  const select = document.getElementById(selectId);
+  const input  = document.getElementById(inputId);
+  if (select && select.value === 'custom') {
+    return input ? input.value.trim() : '';
+  }
+  return select ? select.value.trim() : (input ? input.value.trim() : '');
+}
+
 function openJadwalModal(data = null) {
-  document.getElementById('jid').value         = data?.id || '';
-  document.getElementById('j-stasi').value      = data?.stasi || '';
-  document.getElementById('j-hari').value       = data?.hari || '';
-  document.getElementById('j-waktu').value      = data?.waktu || '';
-  document.getElementById('j-keterangan').value = data?.keterangan || '';
-  document.getElementById('j-minggu').value     = data?.minggu_ke || '';
-  document.getElementById('j-urutan').value     = data?.urutan ?? 0;
+  document.getElementById('jid').value      = data?.id || '';
+  document.getElementById('j-stasi').value  = data?.stasi || '';
+  document.getElementById('j-urutan').value = data?.urutan ?? 0;
   document.getElementById('jadwal-alert').style.display = 'none';
+
+  syncSelectWithCustomInput('j-hari-select', 'j-hari', data?.hari);
+  syncSelectWithCustomInput('j-waktu-select', 'j-waktu', data?.waktu);
+  syncSelectWithCustomInput('j-keterangan-select', 'j-keterangan', data?.keterangan);
+  syncSelectWithCustomInput('j-minggu-select', 'j-minggu', data?.minggu_ke);
 
   const isEdit = !!data?.id;
   document.getElementById('modal-jadwal-title').textContent = isEdit ? 'Edit Jadwal Misa' : 'Tambah Jadwal Misa';
@@ -962,10 +1080,10 @@ async function submitJadwal(e) {
   }
 
   const stasiVal  = document.getElementById('j-stasi').value;
-  const hariVal   = document.getElementById('j-hari').value.trim();
-  const waktuVal  = document.getElementById('j-waktu').value.trim();
-  const ketVal    = document.getElementById('j-keterangan').value.trim();
-  const mingguVal = document.getElementById('j-minggu').value.trim();
+  const hariVal   = getCustomSelectValue('j-hari-select', 'j-hari');
+  const waktuVal  = getCustomSelectValue('j-waktu-select', 'j-waktu');
+  const ketVal    = getCustomSelectValue('j-keterangan-select', 'j-keterangan');
+  const mingguVal = getCustomSelectValue('j-minggu-select', 'j-minggu');
   const urutanVal = parseInt(document.getElementById('j-urutan').value) || 0;
 
   if (!stasiVal || !hariVal || !waktuVal) {
@@ -2106,7 +2224,13 @@ function closeSidebar() {
   document.body.style.overflow = '';
 }
 
-// ── Window Exports for HTML Inline Event Handlers ────────────
+window.handleCustomSelectChange = handleCustomSelectChange;
+window.syncSelectWithCustomInput = syncSelectWithCustomInput;
+window.getCustomSelectValue = getCustomSelectValue;
+window.handleHariSelectChange = handleHariSelectChange;
+window.handleWaktuSelectChange = handleWaktuSelectChange;
+window.handleKeteranganSelectChange = handleKeteranganSelectChange;
+window.handleMingguSelectChange = handleMingguSelectChange;
 window.showTab = showTab;
 window.loadCounters = loadCounters;
 window.loadJadwal = loadJadwal;
@@ -2126,6 +2250,7 @@ window.toggleSidebar = toggleSidebar;
 window.closeSidebar = closeSidebar;
 window.doLogout = doLogout;
 window.toast = toast;
+window.editJadwal = editJadwal;
 window.openJadwalModal = typeof openJadwalModal === 'function' ? openJadwalModal : undefined;
 window.openRenunganModal = typeof openRenunganModal === 'function' ? openRenunganModal : undefined;
 window.openPengumumanModal = typeof openPengumumanModal === 'function' ? openPengumumanModal : undefined;

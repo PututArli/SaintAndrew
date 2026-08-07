@@ -206,10 +206,8 @@ body {
 }
 
 /* ── Global Modal Scroll Lock & Containment ── */
-html.modal-open,
 body.modal-open {
   overflow: hidden !important;
-  height: 100% !important;
   overscroll-behavior: none !important;
 }
 

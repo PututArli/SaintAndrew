@@ -217,6 +217,29 @@ function ensureStasiModalInDOM() {
     return modal;
 }
 
+let _globalModalScrollPos = 0;
+let _openModalCount = 0;
+
+function lockBodyScroll() {
+    if (_openModalCount === 0) {
+        _globalModalScrollPos = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+        document.body.classList.add('modal-open');
+        document.documentElement.classList.add('modal-open');
+        document.body.style.overflow = 'hidden';
+    }
+    _openModalCount++;
+}
+
+function unlockBodyScroll() {
+    _openModalCount = Math.max(0, _openModalCount - 1);
+    if (_openModalCount === 0) {
+        document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        window.scrollTo({ top: _globalModalScrollPos, behavior: 'instant' });
+    }
+}
+
 function openStasiModal(id) {
     const cleanId = String(id || '').trim().toLowerCase().replace(/_/g, '-');
     const data = stasiData[cleanId] || stasiData[id];
@@ -334,23 +357,25 @@ function openStasiModal(id) {
     modal.classList.add('flex');
     modal.style.setProperty('display', 'flex', 'important');
     modal.style.setProperty('pointer-events', 'auto', 'important');
-    document.documentElement.classList.add('modal-open');
-    document.body.classList.add('modal-open');
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll();
+
+    if (window.history && window.history.pushState) {
+        window.history.pushState({ modal: 'stasiModal', id: cleanId }, '');
+    }
 }
 
-function closeStasiModal() {
+function closeStasiModal(fromPopState = false) {
     const modal = document.getElementById('stasiModal');
     if (!modal) return;
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     modal.style.setProperty('display', 'none', 'important');
     modal.style.setProperty('pointer-events', 'none', 'important');
-    document.documentElement.classList.remove('modal-open');
-    document.body.classList.remove('modal-open');
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
+    unlockBodyScroll();
+
+    if (!fromPopState && window.history && history.state && history.state.modal === 'stasiModal') {
+        window.history.back();
+    }
 }
 
 // ── Lightbox Functions ───────────────────────────────────────
@@ -460,14 +485,15 @@ function openLightbox(src, alt, customData = null) {
         lb.classList.add('active');
         lb.style.setProperty('display', 'flex', 'important');
         lb.style.setProperty('pointer-events', 'auto', 'important');
-        document.documentElement.classList.add('modal-open');
-        document.body.classList.add('modal-open');
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
+        lockBodyScroll();
+
+        if (window.history && window.history.pushState) {
+            window.history.pushState({ modal: 'lightbox' }, '');
+        }
     }
 }
 
-function closeLightbox() {
+function closeLightbox(fromPopState = false) {
     const lb = document.getElementById('lightbox');
     if (lb) {
         lb.classList.add('closing');
@@ -475,11 +501,11 @@ function closeLightbox() {
             lb.classList.remove('active', 'closing');
             lb.style.setProperty('display', 'none', 'important');
             lb.style.setProperty('pointer-events', 'none', 'important');
-            document.documentElement.classList.remove('modal-open');
-            document.body.classList.remove('modal-open');
-            document.documentElement.style.overflow = '';
-            document.body.style.overflow = '';
+            unlockBodyScroll();
         }, 200);
+    }
+    if (!fromPopState && window.history && history.state && history.state.modal === 'lightbox') {
+        window.history.back();
     }
 }
 

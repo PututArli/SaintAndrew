@@ -416,7 +416,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-jadwal-title">Tambah Jadwal Misa</div>
-      <button class="modal-close" onclick="safeCloseModal('modal-jadwal')">✕</button>
+      <button class="modal-close" type="button" onclick="closeModal('modal-jadwal')">✕</button>
     </div>
     <form id="form-jadwal" onsubmit="submitJadwal(event)">
       <input type="hidden" id="jid">
@@ -426,7 +426,7 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Stasi <span class="req">*</span></label>
+            <label class="form-label">Stasi / Lokasi <span class="req">*</span></label>
             <select id="j-stasi" class="form-ctrl" required>
               <option value="">— Pilih Stasi / Lokasi —</option>
               <option value="margo-agung">Margo Agung (Gereja Paroki)</option>
@@ -450,18 +450,70 @@
         <div class="form-row cols-2">
           <div class="form-group">
             <label class="form-label">Hari / Sesi <span class="req">*</span></label>
-            <input id="j-hari" type="text" class="form-ctrl" placeholder="cth: Minggu Pagi" required>
+            <select id="j-hari-select" class="form-ctrl" required onchange="handleCustomSelectChange(this, 'j-hari', true)">
+              <option value="">— Pilih Hari —</option>
+              <option value="Minggu">Minggu (Misa Utama)</option>
+              <option value="Minggu Pagi">Minggu Pagi</option>
+              <option value="Minggu Sore">Minggu Sore</option>
+              <option value="Sabtu (Antisipasi)">Sabtu (Misa Antisipasi)</option>
+              <option value="Jumat Pertama">Jumat Pertama (Jumat I)</option>
+              <option value="Senin">Senin</option>
+              <option value="Selasa">Selasa</option>
+              <option value="Rabu">Rabu</option>
+              <option value="Kamis">Kamis</option>
+              <option value="Jumat">Jumat</option>
+              <option value="Sabtu">Sabtu</option>
+              <option value="Hari Raya">Hari Raya / Pesta Khusus</option>
+              <option value="Sesuai Permohonan">Sesuai Permohonan</option>
+              <option value="custom">✏️ Tulis Hari Lainnya...</option>
+            </select>
+            <input id="j-hari" type="text" class="form-ctrl" placeholder="Tulis nama hari..." style="display:none;margin-top:0.35rem">
           </div>
+
           <div class="form-group">
             <label class="form-label">Jam Misa <span class="req">*</span></label>
-            <input id="j-waktu" type="text" class="form-ctrl" placeholder="cth: 07:00 WIB" required>
+            <select id="j-waktu-select" class="form-ctrl" required onchange="handleCustomSelectChange(this, 'j-waktu', true)">
+              <option value="">— Pilih Jam Misa —</option>
+              <option value="06:00 WIB">06:00 WIB</option>
+              <option value="06:30 WIB">06:30 WIB</option>
+              <option value="07:00 WIB">07:00 WIB</option>
+              <option value="07:30 WIB">07:30 WIB</option>
+              <option value="08:00 WIB">08:00 WIB</option>
+              <option value="08:30 WIB">08:30 WIB</option>
+              <option value="09:00 WIB">09:00 WIB</option>
+              <option value="10:00 WIB">10:00 WIB</option>
+              <option value="16:00 WIB">16:00 WIB</option>
+              <option value="16:30 WIB">16:30 WIB</option>
+              <option value="17:00 WIB">17:00 WIB</option>
+              <option value="17:30 WIB">17:30 WIB</option>
+              <option value="18:00 WIB">18:00 WIB</option>
+              <option value="18:30 WIB">18:30 WIB</option>
+              <option value="19:00 WIB">19:00 WIB</option>
+              <option value="19:30 WIB">19:30 WIB</option>
+              <option value="custom">✏️ Tulis Jam Lainnya...</option>
+            </select>
+            <input id="j-waktu" type="text" class="form-ctrl" placeholder="cth: 07:15 WIB" style="display:none;margin-top:0.35rem">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Keterangan Misa <span class="req">*</span></label>
-            <input id="j-keterangan" type="text" class="form-ctrl" placeholder="cth: Misa Umat / Misa Harian / Misa Antisipasi" required>
+            <select id="j-keterangan-select" class="form-ctrl" required onchange="handleCustomSelectChange(this, 'j-keterangan', true)">
+              <option value="">— Pilih Keterangan —</option>
+              <option value="Misa Umat">Misa Umat</option>
+              <option value="Misa Harian">Misa Harian</option>
+              <option value="Misa Utama Paroki">Misa Utama Paroki</option>
+              <option value="Misa Jumat Pertama & Adorasi">Misa Jumat Pertama &amp; Adorasi</option>
+              <option value="Misa Lingkungan / Ujud Khusus">Misa Lingkungan / Ujud Khusus</option>
+              <option value="Misa Lansia & Orang Sakit">Misa Lansia &amp; Orang Sakit</option>
+              <option value="Misa Anak & Remaja (BIA/BIR)">Misa Anak &amp; Remaja (BIA/BIR)</option>
+              <option value="Misa OMK (Orang Muda Katolik)">Misa OMK (Orang Muda Katolik)</option>
+              <option value="Misa Hari Raya & Pesta Nama">Misa Hari Raya &amp; Pesta Nama</option>
+              <option value="Misa Syukur & Peringatan Arwah">Misa Syukur &amp; Peringatan Arwah</option>
+              <option value="custom">✏️ Tulis Keterangan Lainnya...</option>
+            </select>
+            <input id="j-keterangan" type="text" class="form-ctrl" placeholder="Tulis keterangan misa..." style="display:none;margin-top:0.35rem">
           </div>
         </div>
 
@@ -469,15 +521,28 @@
           <div class="form-group">
             <label class="form-label">
               Minggu ke-
-              <span class="form-hint" style="font-weight:400">(kosongkan jika setiap Minggu)</span>
+              <span class="form-hint" style="font-weight:400">(pilih jadwal pekan jika berkala)</span>
             </label>
-            <input id="j-minggu" type="text" class="form-ctrl" placeholder="cth: Mg ke-1 &amp; 3  atau  Mg ke-2 &amp; 4">
+            <select id="j-minggu-select" class="form-ctrl" onchange="handleCustomSelectChange(this, 'j-minggu', false)">
+              <option value="">Setiap Minggu (Semua Pekan)</option>
+              <option value="Mg ke-1 & 3">Mg ke-1 &amp; 3</option>
+              <option value="Mg ke-2 & 4">Mg ke-2 &amp; 4</option>
+              <option value="Mg ke-1, 3 & 5">Mg ke-1, 3 &amp; 5</option>
+              <option value="Mg ke-2, 4 & 5">Mg ke-2, 4 &amp; 5</option>
+              <option value="Minggu ke-1">Minggu ke-1 Saja</option>
+              <option value="Minggu ke-2">Minggu ke-2 Saja</option>
+              <option value="Minggu ke-3">Minggu ke-3 Saja</option>
+              <option value="Minggu ke-4">Minggu ke-4 Saja</option>
+              <option value="Minggu ke-5">Minggu ke-5 Saja</option>
+              <option value="custom">✏️ Tulis Pekan Kustom...</option>
+            </select>
+            <input id="j-minggu" type="text" class="form-ctrl" placeholder="cth: Bergiliran tiap 2 minggu" style="display:none;margin-top:0.35rem">
           </div>
         </div>
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-jadwal')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-jadwal')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-jadwal">
           <span id="btn-jadwal-text">Simpan Jadwal</span>
         </button>
@@ -490,10 +555,10 @@
      MODAL: Renungan Harian (Tambah / Edit)
 ════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-renungan">
-  <div class="modal-box" style="max-width:680px">
+  <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-renungan-title">Tambah Renungan Harian</div>
-      <button class="modal-close" onclick="safeCloseModal('modal-renungan')">✕</button>
+      <button class="modal-close" type="button" onclick="closeModal('modal-renungan')">✕</button>
     </div>
     <form id="form-renungan" onsubmit="submitRenungan(event)">
       <input type="hidden" id="rid">
@@ -503,65 +568,58 @@
 
         <div class="form-row cols-2">
           <div class="form-group">
-            <label class="form-label">Tanggal Tayang <span class="req">*</span></label>
+            <label class="form-label">Tanggal <span class="req">*</span></label>
             <input id="r-tanggal" type="date" class="form-ctrl" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Masa / Konteks Liturgi</label>
-            <select id="r-liturgi" class="form-ctrl">
-              <option value="Masa Biasa">Masa Biasa</option>
-              <option value="Masa Adven">Masa Adven</option>
-              <option value="Masa Natal">Masa Natal</option>
-              <option value="Masa Prapaskah">Masa Prapaskah</option>
-              <option value="Masa Paskah">Masa Paskah</option>
-              <option value="Hari Raya / Pesta">Hari Raya / Pesta Khusus</option>
+            <label class="form-label">Warna / Masa Liturgi <span class="req">*</span></label>
+            <select id="r-liturgi" class="form-ctrl" required>
+              <option value="hijau">Hijau (Masa Biasa)</option>
+              <option value="ungu">Ungu (Adven / Prapaskah)</option>
+              <option value="putih">Putih / Emas (Paskah / Natal / Hari Raya)</option>
+              <option value="merah">Merah (Martir / Pentakosta / Jumat Agung)</option>
             </select>
           </div>
         </div>
 
-        <div class="form-row cols-2">
+        <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Tema Renungan <span class="req">*</span></label>
-            <input id="r-tema" type="text" class="form-ctrl" placeholder="cth: Menjadi Garam dan Terang Dunia" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Perikop Kitab Suci <span class="req">*</span></label>
-            <input id="r-perikop" type="text" class="form-ctrl" placeholder="cth: Injil Matius 5:13-16" required>
+            <label class="form-label">Judul Renungan <span class="req">*</span></label>
+            <input id="r-judul" type="text" class="form-ctrl" placeholder="Contoh: Menjadi Garam dan Terang Dunia" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Kutipan Ayat Emas Sabda <span class="req">*</span></label>
-            <textarea id="r-ayat" class="form-ctrl" style="min-height:75px" placeholder="cth: Kamu adalah garam dunia. Jika garam itu menjadi tawar, dengan apakah ia diasinkan?..." required></textarea>
+            <label class="form-label">Bacaan Kitab Suci <span class="req">*</span></label>
+            <input id="r-bacaan" type="text" class="form-ctrl" placeholder="Contoh: Matius 5:13-16" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Isi Refleksi / Renungan <span class="req">*</span></label>
-            <textarea id="r-refleksi" class="form-ctrl" style="min-height:130px" placeholder="Tuliskan ulasan refleksi sabda dan panduan hidup beriman secara mendalam…" required></textarea>
+            <label class="form-label">Ayat Kunci / Ayat Emas</label>
+            <textarea id="r-ayat" class="form-ctrl" style="min-height:65px" placeholder="Kutipan ayat kunci dari bacaan Kitab Suci…"></textarea>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Doa Harian Singkat <span class="form-hint">(Opsional)</span></label>
-            <textarea id="r-doa" class="form-ctrl" style="min-height:80px" placeholder="cth: Ya Tuhan, mampukanlah kami menjadi terang kasih-Mu bagi sesama hari ini. Amin."></textarea>
+            <label class="form-label">Isi Renungan <span class="req">*</span></label>
+            <textarea id="r-isi" class="form-ctrl" style="min-height:120px" placeholder="Tuliskan renungan, permenungan, dan pesan rohani…" required></textarea>
           </div>
         </div>
 
-        <div class="form-check" onclick="document.getElementById('r-aktif').click()">
-          <input type="checkbox" id="r-aktif" checked>
-          <div>
-            <label for="r-aktif">Aktifkan Renungan Ini</label>
-            <div class="fc-sub">Bila aktif, renungan ini akan otomatis tayang di Beranda website pada tanggal yang ditentukan.</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Doa / Refleksi Penutup</label>
+            <textarea id="r-doa" class="form-ctrl" style="min-height:65px" placeholder="Doa singkat penutup renungan…"></textarea>
           </div>
         </div>
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-renungan')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-renungan')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-renungan">
           <span id="btn-renungan-text">Simpan Renungan</span>
         </button>
@@ -576,33 +634,33 @@
 <div class="modal-overlay" id="modal-pengumuman">
   <div class="modal-box">
     <div class="modal-head">
-      <div class="modal-head-title" id="modal-peng-title">Tambah Pengumuman</div>
-      <button class="modal-close" onclick="safeCloseModal('modal-pengumuman')">✕</button>
+      <div class="modal-head-title" id="modal-pengumuman-title">Tambah Pengumuman</div>
+      <button class="modal-close" type="button" onclick="closeModal('modal-pengumuman')">✕</button>
     </div>
     <form id="form-pengumuman" onsubmit="submitPengumuman(event)">
       <input type="hidden" id="pid">
       <div class="modal-body">
 
-        <div id="peng-alert" class="alert alert-err" style="display:none"></div>
+        <div id="pengumuman-alert" class="alert alert-err" style="display:none"></div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Judul Pengumuman <span class="req">*</span></label>
-            <input id="p-judul" type="text" class="form-ctrl" placeholder="Judul yang singkat dan jelas" required>
+            <input id="p-judul" type="text" class="form-ctrl" placeholder="Contoh: Jadwal Misa Pekan Suci 2026" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Isi Pengumuman <span class="req">*</span></label>
-            <textarea id="p-isi" class="form-ctrl" placeholder="Tulis isi pengumuman secara lengkap…" required></textarea>
+            <textarea id="p-isi" class="form-ctrl" style="min-height:100px" placeholder="Tuliskan detail isi pengumuman paroki…" required></textarea>
           </div>
         </div>
 
         <div class="form-row cols-2">
           <div class="form-group">
-            <label class="form-label">Kategori</label>
-            <select id="p-kategori" class="form-ctrl">
+            <label class="form-label">Kategori <span class="req">*</span></label>
+            <select id="p-kategori" class="form-ctrl" required>
               <option value="umum">Umum</option>
               <option value="sakramen">Sakramen</option>
               <option value="misa-khusus">Misa Khusus</option>
@@ -625,7 +683,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-pengumuman')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-pengumuman')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-peng">
           <span id="btn-peng-text">Simpan Pengumuman</span>
         </button>
@@ -641,7 +699,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-galeri-title">Tambah Foto Kegiatan</div>
-      <button class="modal-close" onclick="safeCloseModal('modal-galeri')">✕</button>
+      <button class="modal-close" type="button" onclick="closeModal('modal-galeri')">✕</button>
     </div>
     <form id="form-galeri" onsubmit="submitGaleri(event)">
       <input type="hidden" id="gid">
@@ -731,7 +789,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-galeri')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-galeri')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-galeri">
           <span id="btn-galeri-text">Simpan Foto Kegiatan</span>
         </button>
@@ -747,7 +805,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-stasi-title">Edit Foto &amp; Data Stasi</div>
-      <button class="modal-close" onclick="safeCloseModal('modal-stasi')">✕</button>
+      <button class="modal-close" type="button" onclick="closeModal('modal-stasi')">✕</button>
     </div>
     <form id="form-stasi" onsubmit="submitStasiAdmin(event)">
       <input type="hidden" id="s-id">
@@ -809,7 +867,7 @@
 
             <!-- Optional manual URL input toggle -->
             <div style="margin-top:0.45rem;display:flex;align-items:center;justify-content:space-between">
-              <span class="form-hint" id="s-status-hint">Kosongkan jika stasi dalam tahap pembangunan</span>
+              <span class="form-hint" id="s-status-hint">Tarik foto ke kotak di atas atau pilih berkas dari komputer</span>
               <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-url-s" style="font-size:0.7rem;padding:0.25rem 0.6rem" onclick="toggleUrlInput('s')">🔗 Input URL Gambar</button>
             </div>
             <div id="s-url-wrap" style="display:none;margin-top:0.45rem;gap:0.4rem;align-items:center">
@@ -821,12 +879,6 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Alamat Lengkap <span class="req">*</span></label>
-            <input id="s-alamat" type="text" class="form-ctrl" placeholder="Desa / Jalan, Kecamatan..." required>
-          </div>
-        </div>
-
-        <div class="form-row">
           <div class="form-group">
             <label class="form-label">Tautan Google Maps</label>
             <input id="s-maps" type="text" class="form-ctrl" placeholder="https://maps.app.goo.gl/...">

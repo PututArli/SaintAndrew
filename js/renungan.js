@@ -383,24 +383,36 @@ async function openDevotionModal() {
     `;
   }
 
+  if (typeof window.lockBodyScroll === 'function') {
+    window.lockBodyScroll();
+  } else {
+    document.body.classList.add('modal-open');
+    document.body.style.overflow = 'hidden';
+  }
   modal.classList.add('open');
-  document.documentElement.classList.add('modal-open');
-  document.body.classList.add('modal-open');
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
+
+  if (window.history && window.history.pushState) {
+    window.history.pushState({ modal: 'devotionModal' }, '');
+  }
 }
 
 /**
  * Tutup modal Doa & Refleksi Harian
  */
-function closeDevotionModal() {
+function closeDevotionModal(fromPopState = false) {
   const modal = document.getElementById('devotionModal');
   if (!modal) return;
   modal.classList.remove('open');
-  document.documentElement.classList.remove('modal-open');
-  document.body.classList.remove('modal-open');
-  document.documentElement.style.overflow = '';
-  document.body.style.overflow = '';
+  if (typeof window.unlockBodyScroll === 'function') {
+    window.unlockBodyScroll();
+  } else {
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+  }
+
+  if (!fromPopState && window.history && history.state && history.state.modal === 'devotionModal') {
+    window.history.back();
+  }
 }
 
 // Global escape key listener
