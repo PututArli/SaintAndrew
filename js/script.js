@@ -159,10 +159,10 @@ function showToast(message, type = 'success') {
     toast.id = 'global-toast';
     const isError = type === 'error';
     const bgColor = isError ? 'bg-[#DC2626] text-white border border-red-400/40 shadow-red-900/40' : 'bg-[#101012] text-amber-300 border border-amber-500/40 shadow-black/50';
-    const icon = isError ? '⚠️' : '✅';
+    const icon = isError ? '✕' : '✓';
     
     toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 max-w-[92vw] md:max-w-md w-max px-5 py-3.5 rounded-2xl font-semibold shadow-2xl backdrop-blur-md transform transition-all duration-300 translate-y-16 opacity-0 z-[999999] flex items-center gap-3 text-sm ${bgColor}`;
-    toast.innerHTML = `<span class="text-base flex-shrink-0">${icon}</span><span class="leading-snug text-center">${message}</span>`;
+    toast.innerHTML = `<span class="text-base flex-shrink-0 font-bold">${icon}</span><span class="leading-snug text-center">${message}</span>`;
     
     document.body.appendChild(toast);
 
@@ -754,7 +754,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (alertBox) {
                     alertBox.className = 'mb-5 flex items-center gap-2.5 p-3.5 rounded-xl text-sm font-medium bg-red-50 text-red-700 border border-red-200';
-                    alertBox.innerHTML = `<span class="flex-shrink-0 text-base">⚠️</span><div class="flex-grow leading-relaxed">Mohon lengkapi kolom wajib: <strong class="font-bold text-red-800">${missing.join(', ')}</strong></div>`;
+                    alertBox.innerHTML = `<span class="flex-shrink-0 text-base font-bold">✕</span><div class="flex-grow leading-relaxed">Mohon lengkapi kolom wajib: <strong class="font-bold text-red-800">${missing.join(', ')}</strong></div>`;
                     alertBox.style.display = 'flex';
                     
                     // Smoothly scroll into view so mobile user sees it instantly

@@ -28,57 +28,126 @@
     <p class="page-hero-subtitle animate-fade-in">Mengabadikan momen kebersamaan, perayaan liturgi, dan karya pelayanan umat di Paroki Santo Andreas Rasul</p>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+    <!-- ── Highlight Pills ── -->
+    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 reveal">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:rgba(184,134,11,0.08);border:1px solid rgba(184,134,11,0.22);color:var(--gold)">
+        <span>✝</span>
+        <span>4 Kategori Pelayanan</span>
+      </div>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:var(--surface);border:1px solid var(--border);color:var(--ink-mid)">
+        <span>9 Wilayah Stasi</span>
+      </div>
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:var(--surface);border:1px solid var(--border);color:var(--ink-mid)">
+        <span>Arsip Foto Resmi</span>
+      </div>
+    </div>
 
     <!-- ── Filter ── -->
-    <div class="flex flex-wrap justify-center gap-3 mb-12 reveal" id="gallery-filters">
-      <button class="filter-btn active-filter px-5 py-2.5 rounded-full font-semibold text-sm shadow-md" data-filter="all">
+    <div class="flex flex-wrap justify-center gap-2.5 sm:gap-3 mb-6 sm:mb-10 reveal" id="gallery-filters">
+      <button class="filter-btn active-filter px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm shadow-md" data-filter="all">
         Semua Foto
       </button>
-      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="omk">
+      <button class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="omk">
         OMK
       </button>
-      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="liturgi">
+      <button class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="liturgi">
         Liturgi &amp; Misa
       </button>
-      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="perayaan">
+      <button class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="perayaan">
         Perayaan Besar
       </button>
-      <button class="filter-btn px-5 py-2.5 rounded-full font-medium text-sm shadow-sm" data-filter="sosial">
+      <button class="filter-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-sm" data-filter="sosial">
         Sosial &amp; Lingkungan
       </button>
     </div>
 
     <!-- ── Gallery Grid ── -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 reveal" id="full-gallery">
-      <!-- OMK Default Fallback -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 reveal" id="full-gallery">
+      <!-- OMK Card -->
       <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="omk" style="background:var(--surface);border:1px solid var(--border)">
         <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
           <img src="assets/img/galeri/kegiatanOMK.png" alt="Ziarah & Rekreasi OMK 2025" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
           <div class="gallery-badge" style="background:#0d9488">OMK</div>
         </div>
         <div class="p-4 flex flex-col flex-grow">
-          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">📅 2025</span>
+          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">2025</span>
           <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Ziarah &amp; Rekreasi OMK 2025</h3>
           <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Kebersamaan kaum muda paroki dalam membangun persaudaraan dan iman.</p>
+        </div>
+      </div>
+
+      <!-- Liturgi & Misa Card -->
+      <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="liturgi" style="background:var(--surface);border:1px solid var(--border)">
+        <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
+          <img src="assets/img/stasi/marga-agung.jpg" alt="Perayaan Ekaristi Paroki" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="gallery-badge" style="background:#7c3aed">Liturgi &amp; Misa</div>
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">Minggu &amp; Hari Raya</span>
+          <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Perayaan Ekaristi Kudus</h3>
+          <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Perayaan Ekaristi Kudus bersama umat di Gereja Paroki Santo Andreas Rasul.</p>
+        </div>
+      </div>
+
+      <!-- Perayaan Besar Card -->
+      <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="perayaan" style="background:var(--surface);border:1px solid var(--border)">
+        <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
+          <img src="assets/img/stasi/marga-lestari.jpg" alt="Peringatan Hari Raya Pelindung" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="gallery-badge" style="background:#d97706">Perayaan Besar</div>
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">Pesta Pelindung</span>
+          <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Peringatan Hari Raya Pelindung</h3>
+          <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Momen syukur kebersamaan seluruh stasi dalam pesta nama pelindung paroki.</p>
+        </div>
+      </div>
+
+      <!-- Sosial & Lingkungan Card -->
+      <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="sosial" style="background:var(--surface);border:1px solid var(--border)">
+        <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
+          <img src="assets/img/stasi/sindang-sari.jpg" alt="Aksi Sosial & Gotong Royong" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="gallery-badge" style="background:#2563eb">Sosial &amp; Lingkungan</div>
+        </div>
+        <div class="p-4 flex flex-col flex-grow">
+          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">Aksi Peduli</span>
+          <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Aksi Sosial &amp; Gotong Royong Umat</h3>
+          <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Aksi nyata persaudaraan dan kepedulian sosial bagi sesama dan lingkungan.</p>
         </div>
       </div>
     </div>
 
     <!-- Empty message -->
-    <div id="empty-msg" class="hidden text-center py-20 text-gray-400 reveal">
-      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center" style="background:var(--bg-alt);color:var(--ink-soft)">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+    <div id="empty-msg" class="hidden text-center py-12 text-gray-400 reveal">
+      <div class="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center" style="background:var(--bg-alt);color:var(--ink-soft)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
       </div>
-      <p class="font-bold text-lg" style="color:var(--ink)">Belum ada foto dalam kategori ini</p>
-      <p class="text-sm mt-1 text-gray-500">Dokumentasi kegiatan akan segera ditambahkan oleh pengurus.</p>
+      <p class="font-bold text-base" style="color:var(--ink)">Belum ada foto dalam kategori ini</p>
+      <p class="text-xs sm:text-sm mt-1 text-gray-500">Dokumentasi kegiatan akan segera diperbarui oleh pengurus.</p>
+    </div>
+
+    <!-- Callout Kirim Dokumentasi -->
+    <div class="mt-8 sm:mt-12 p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 reveal" style="background:linear-gradient(135deg, rgba(184,134,11,0.07) 0%, rgba(255,255,255,0.9) 100%);border:1px solid rgba(184,134,11,0.25)">
+      <div class="flex items-center gap-3.5 text-center sm:text-left">
+        <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 text-base font-bold shadow-sm" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.3)">
+          ✝
+        </div>
+        <div>
+          <h4 class="font-bold text-sm sm:text-base leading-snug" style="color:var(--ink)">Punya Foto Dokumentasi Kegiatan?</h4>
+          <p class="text-xs sm:text-sm mt-0.5" style="color:var(--ink-soft)">Bagikan dokumentasi kegiatan stasi atau kelompok kategorial Anda ke Sekretariat Paroki.</p>
+        </div>
+      </div>
+      <a href="kontak.html" class="btn-primary inline-flex items-center justify-center text-xs sm:text-sm py-2.5 px-5 rounded-xl flex-shrink-0 shadow-sm w-full sm:w-auto">
+        Hubungi Sekretariat
+      </a>
     </div>
 
     <!-- Banner ke Halaman Stasi -->
-    <div class="mt-16 p-8 rounded-3xl text-center reveal" style="background:var(--bg-alt);border:1px solid var(--border)">
-      <h3 class="text-xl font-bold mb-2" style="color:var(--ink)">Mencari Foto &amp; Profil Gedung 9 Stasi?</h3>
-      <p class="text-sm text-gray-500 mb-6 max-w-xl mx-auto">Dokumentasi fisik bangunan gereja, sejarah, nama pelindung, dan peta navigasi stasi tersedia di halaman khusus Stasi.</p>
-      <a href="stasi.html" class="btn-primary inline-flex items-center gap-2 text-sm py-3 px-6 shadow-sm">
+    <div class="mt-6 sm:mt-8 p-6 sm:p-8 rounded-2xl sm:rounded-3xl text-center reveal" style="background:var(--bg-alt);border:1px solid var(--border)">
+      <h3 class="text-lg sm:text-xl font-bold mb-2" style="color:var(--ink)">Mencari Foto &amp; Profil Gedung 9 Stasi?</h3>
+      <p class="text-xs sm:text-sm text-gray-500 mb-5 max-w-xl mx-auto">Dokumentasi fisik bangunan gereja, sejarah, nama pelindung, dan peta navigasi stasi tersedia di halaman khusus Stasi.</p>
+      <a href="stasi.html" class="btn-primary inline-flex items-center justify-center gap-2 text-xs sm:text-sm py-2.5 sm:py-3 px-5 sm:px-6 shadow-sm w-full sm:w-auto">
         Lihat Profil &amp; Foto 9 Stasi →
       </a>
     </div>
@@ -120,7 +189,7 @@ async function loadDynamicGaleri() {
               <div class="gallery-badge" style="background:${kat.bg}">${kat.label}</div>
             </div>
             <div class="p-4 flex flex-col flex-grow">
-              ${formattedDate ? `<span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">📅 ${formattedDate}</span>` : ''}
+              ${formattedDate ? `<span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">${formattedDate}</span>` : ''}
               <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">${item.judul}</h3>
               ${item.keterangan ? `<p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">${item.keterangan}</p>` : ''}
             </div>

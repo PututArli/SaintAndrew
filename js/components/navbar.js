@@ -5,12 +5,12 @@ class ModernNavbar extends HTMLElement {
         const activePage = this.getAttribute('active-page') || 'index.html';
 
         const links = [
-            { href: 'index.html',   text: 'Beranda',     icon: '🏠' },
-            { href: 'profil.html',  text: 'Profil',      icon: '📖' },
-            { href: 'stasi.html',   text: 'Stasi',       icon: '⛪' },
-            { href: 'jadwal.html',  text: 'Jadwal Misa', icon: '📅' },
-            { href: 'galeri.html',  text: 'Galeri',      icon: '🖼️' },
-            { href: 'kontak.html',  text: 'Kontak',      icon: '✉️' }
+            { href: 'index.html',   text: 'Beranda' },
+            { href: 'profil.html',  text: 'Profil' },
+            { href: 'stasi.html',   text: 'Stasi' },
+            { href: 'jadwal.html',  text: 'Jadwal Misa' },
+            { href: 'galeri.html',  text: 'Galeri' },
+            { href: 'kontak.html',  text: 'Kontak' }
         ];
 
         let desktopLinks = '';

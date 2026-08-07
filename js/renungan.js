@@ -231,7 +231,7 @@ async function initDailyDevotion() {
           <!-- Header Tag -->
           <div class="mb-4 flex items-center justify-between flex-wrap gap-2">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shadow-sm" style="background:rgba(201,168,76,0.18);border:1px solid rgba(201,168,76,0.35)">🕊️</div>
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold shadow-sm" style="background:rgba(201,168,76,0.18);border:1px solid rgba(201,168,76,0.35);color:var(--gold)">✝</div>
               <div>
                 <div class="text-xs font-bold uppercase tracking-widest text-yellow-400/90 flex items-center gap-1.5">
                   <span>Renungan Harian</span>
@@ -250,7 +250,7 @@ async function initDailyDevotion() {
             ${escapeHtml(devotion.tema)}
           </h4>
           <p class="text-xs text-white/60 mb-3.5 italic font-medium flex items-center gap-1">
-            <span>📖</span> Bacaan: ${escapeHtml(devotion.perikop)}
+            Bacaan: ${escapeHtml(devotion.perikop)}
           </p>
 
           <!-- Ayat Emas Sabda -->
@@ -271,10 +271,10 @@ async function initDailyDevotion() {
         <!-- Action Buttons -->
         <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
           <button type="button" onclick="openDevotionModal()" class="inline-flex items-center gap-2 text-yellow-300 text-xs font-bold hover:text-yellow-200 transition-colors bg-white/5 hover:bg-white/10 px-3.5 py-2.5 rounded-lg border border-yellow-400/25 cursor-pointer">
-            <span>🙏</span> Baca Doa Harian
+            Baca Doa Harian
           </button>
           <button type="button" id="btnShareDevotion" onclick="shareDevotion(this)" class="inline-flex items-center gap-1.5 text-white/75 hover:text-white text-xs font-semibold transition-colors bg-white/5 hover:bg-white/10 px-3.5 py-2.5 rounded-lg border border-white/10 cursor-pointer" title="Bagikan renungan ke WhatsApp / Media Sosial">
-            <span id="copyIcon">📤</span> <span id="copyText">Bagikan Sabda</span>
+            <span id="copyText">Bagikan Sabda</span>
           </button>
         </div>
       </div>
@@ -299,7 +299,7 @@ function ensureDevotionModal() {
       <div class="devotion-modal-card">
         <div class="devotion-modal-head">
           <div class="devotion-modal-title" id="devotionModalTitle">
-            <span style="font-size:1.25rem">🕊️</span>
+            <span style="font-size:1.25rem;color:var(--gold);font-weight:bold">✝</span>
             <span>Doa &amp; Refleksi Harian</span>
           </div>
           <button type="button" class="devotion-modal-close" onclick="closeDevotionModal()" aria-label="Tutup Modal">✕</button>
@@ -310,7 +310,7 @@ function ensureDevotionModal() {
         <div class="devotion-modal-foot">
           <button type="button" class="btn btn-secondary" onclick="closeDevotionModal()" style="font-size:0.85rem;padding:0.6rem 1.2rem;border-radius:999px;cursor:pointer">Tutup</button>
           <button type="button" class="btn btn-primary" onclick="shareDevotion(this)" style="font-size:0.85rem;padding:0.6rem 1.3rem;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:0.4rem">
-            <span>📤</span> <span>Bagikan Sabda</span>
+            <span>Bagikan Sabda</span>
           </button>
         </div>
       </div>
@@ -353,7 +353,7 @@ async function openDevotionModal() {
           ${escapeHtml(d.tema)}
         </h3>
         <div style="font-size:0.82rem;color:var(--ink-soft);font-style:italic">
-          📖 Bacaan Kitab Suci: <strong>${escapeHtml(d.perikop)}</strong>
+          Bacaan Kitab Suci: <strong>${escapeHtml(d.perikop)}</strong>
         </div>
       </div>
 
@@ -365,7 +365,7 @@ async function openDevotionModal() {
 
       <div style="margin-bottom:1.25rem">
         <h4 style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:0.4rem">
-          💡 Refleksi Sabda
+          Refleksi Sabda
         </h4>
         <p style="font-size:0.88rem;color:var(--ink-mid);line-height:1.7;margin:0">
           ${escapeHtml(d.refleksi)}
@@ -374,7 +374,7 @@ async function openDevotionModal() {
 
       <div style="padding:1.15rem 1.25rem;border-radius:16px;background:var(--bg-alt);border:1px solid var(--border)">
         <h4 style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--gold);margin:0 0 0.5rem 0;display:flex;align-items:center;gap:0.4rem">
-          <span>🙏</span> Doa Harian
+          Doa Harian
         </h4>
         <p style="font-family:'Playfair Display',serif;font-size:0.92rem;font-style:italic;color:var(--ink);line-height:1.65;margin:0">
           "${escapeHtml(d.doa)}"
@@ -420,7 +420,7 @@ async function shareDevotion(btnElement = null) {
     ? window.location.origin 
     : window.location.href.split('?')[0].split('#')[0].replace(/\/index\.html$/, '');
 
-  const textToShare = `🕊️ *RENUNGAN HARIAN KATOLIK*\n*Paroki Santo Andreas Rasul Marga Agung*\n📅 ${d.tanggalFormatted} (${d.liturgi})\n\n📖 *${d.tema}*\n_Bacaan: ${d.perikop}_\n\n"${d.ayat}"\n\n💡 *Refleksi:*\n${d.refleksi}\n\n🙏 *Doa:*\n"${d.doa}"\n\n✨ Berkah Dalem — ${siteUrl}`;
+  const textToShare = `*RENUNGAN HARIAN KATOLIK*\n*Paroki Santo Andreas Rasul Marga Agung*\n${d.tanggalFormatted} (${d.liturgi})\n\n*${d.tema}*\n_Bacaan: ${d.perikop}_\n\n"${d.ayat}"\n\n*Refleksi:*\n${d.refleksi}\n\n*Doa:*\n"${d.doa}"\n\nBerkah Dalem — ${siteUrl}`;
 
   // 1. Mobile Web Share API (Pass ONLY text to avoid WhatsApp displaying duplicate URLs)
   if (navigator.share) {
@@ -453,13 +453,10 @@ async function shareDevotion(btnElement = null) {
 
     // Update button visual feedback
     const copyText = document.getElementById('copyText');
-    const copyIcon = document.getElementById('copyIcon');
-    if (copyText && copyIcon) {
+    if (copyText) {
       copyText.textContent = 'Tersalin!';
-      copyIcon.textContent = '✅';
       setTimeout(() => {
         copyText.textContent = 'Bagikan Sabda';
-        copyIcon.textContent = '📤';
       }, 2500);
     }
 
@@ -472,7 +469,7 @@ async function shareDevotion(btnElement = null) {
     }
 
     if (typeof showToast === 'function') {
-      showToast('✨ Renungan harian berhasil disalin ke clipboard! Siap dibagikan ke WhatsApp atau media sosial.', 'success');
+      showToast('Renungan harian berhasil disalin ke clipboard! Siap dibagikan ke WhatsApp atau media sosial.', 'success');
     }
   } catch (err) {
     if (typeof showToast === 'function') {

@@ -557,24 +557,24 @@ function renderJadwalView(data, isFiltered = false) {
           <div class="admin-data-card-head">
             <span class="badge badge-gold">${escapeHtml(STASI_MAP[r.stasi] || r.stasi)}</span>
             <div class="admin-data-card-time">
-              <span>⏰</span> <span>${escapeHtml(r.waktu)}</span>
+              <span>${escapeHtml(r.waktu)}</span>
             </div>
           </div>
           <div class="admin-data-card-body">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-              <span class="admin-data-card-title">🗓️ ${escapeHtml(r.hari)}</span>
+              <span class="admin-data-card-title">${escapeHtml(r.hari)}</span>
               <span style="font-size:0.72rem;font-weight:600;color:var(--ink-soft);background:var(--bg-alt);padding:2px 8px;border-radius:6px;border:1px solid var(--border)">
                 ${r.minggu_ke ? escapeHtml(r.minggu_ke) : 'Setiap Minggu'}
               </span>
             </div>
-            ${r.keterangan ? `<div class="admin-data-card-sub" style="margin-top:3px">ℹ️ ${escapeHtml(r.keterangan)}</div>` : ''}
+            ${r.keterangan ? `<div class="admin-data-card-sub" style="margin-top:3px">${escapeHtml(r.keterangan)}</div>` : ''}
           </div>
           <div class="admin-data-card-actions">
             <button class="btn btn-edit btn-sm" onclick="editJadwal('${r.id}')">
-              ✏️ Edit Jadwal
+              Edit Jadwal
             </button>
             <button class="btn btn-delete btn-sm" onclick="confirmDelete('jadwal_misa','${r.id}','jadwal misa ini','loadJadwal')">
-              🗑️ Hapus
+              Hapus
             </button>
           </div>
         </div>
@@ -1046,7 +1046,6 @@ function renderRenunganTable(list, isFiltered = false) {
     } else {
       el.innerHTML = `
         <div class="empty-state">
-          <div style="font-size:2.4rem;margin-bottom:10px;opacity:0.6">📖</div>
           <p style="font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:6px">Belum Ada Renungan Khusus Paroki</p>
           <p style="color:var(--ink-soft);font-size:0.85rem">Klik "+ Tambah Renungan" untuk menulis dan menjadwalkan renungan harian khusus yang tampil otomatis di website.</p>
         </div>`;
@@ -1080,7 +1079,7 @@ function renderRenunganTable(list, isFiltered = false) {
               </td>
               <td>
                 <div style="font-weight:700;color:var(--ink);font-size:0.9rem">${escapeHtml(r.tema)}</div>
-                <div style="font-size:0.78rem;color:var(--gold);font-weight:600;margin-top:2px">📖 ${escapeHtml(r.perikop)}</div>
+                <div style="font-size:0.78rem;color:var(--gold);font-weight:600;margin-top:2px">${escapeHtml(r.perikop)}</div>
               </td>
               <td>
                 <div style="font-size:0.8rem;color:var(--ink-soft);max-width:280px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(r.ayat)}</div>
@@ -1108,18 +1107,18 @@ function renderRenunganTable(list, isFiltered = false) {
       ${list.map((r, i) => `
         <div class="admin-data-card">
           <div class="admin-data-card-head">
-            <div style="font-weight:700;font-size:0.84rem;color:var(--ink)">📅 ${escapeHtml(formatTanggalIndo(r.tanggal))}</div>
+            <div style="font-weight:700;font-size:0.84rem;color:var(--ink)">${escapeHtml(formatTanggalIndo(r.tanggal))}</div>
             <span class="badge ${getLiturgiBadgeClass(r.liturgi)}">${escapeHtml(r.liturgi || 'Masa Biasa')}</span>
           </div>
           <div class="admin-data-card-body">
             <div class="admin-data-card-title">${escapeHtml(r.tema)}</div>
-            <div style="font-size:0.78rem;color:var(--gold);font-weight:700">📖 ${escapeHtml(r.perikop)}</div>
+            <div style="font-size:0.78rem;color:var(--gold);font-weight:700">${escapeHtml(r.perikop)}</div>
             <div class="admin-data-card-sub" style="font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">"${escapeHtml(r.ayat)}"</div>
           </div>
           <div class="admin-data-card-actions">
-            <button class="btn btn-ghost btn-sm" onclick="editRenungan('${r.id}')">✏️ Edit</button>
+            <button class="btn btn-ghost btn-sm" onclick="editRenungan('${r.id}')">Edit</button>
             <button class="btn btn-ghost btn-sm" onclick="toggleAktifRenungan('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
-            <button class="btn btn-danger btn-sm" onclick="confirmDelete('renungan', '${r.id}', '${escapeHtml(r.tema)} (${escapeHtml(r.tanggal)})', 'loadRenungan')">🗑️</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDelete('renungan', '${r.id}', '${escapeHtml(r.tema)} (${escapeHtml(r.tanggal)})', 'loadRenungan')">Hapus</button>
           </div>
         </div>
       `).join('')}
@@ -1252,18 +1251,31 @@ async function submitRenungan(e) {
   }
 }
 
-async function toggleAktifRenungan(id, current) {
+// ── Generic Status Toggle Function (Consolidated DRY Handler) ──
+async function toggleEntityStatus(table, id, field, currentStatus, reloadFn, entityLabel = '') {
   try {
-    const { error } = await db.from('renungan').update({ aktif: !current, updated_at: new Date().toISOString() }).eq('id', id);
+    const payload = { [field]: !currentStatus };
+    if (table === 'renungan') payload.updated_at = new Date().toISOString();
+    const { error } = await db.from(table).update(payload).eq('id', id);
     if (error) throw error;
-    toast(!current ? 'Renungan diaktifkan dan akan tampil di website.' : 'Renungan dinonaktifkan sementara.');
-    loadRenungan();
+
+    let msg = '';
+    if (table === 'pesan') {
+      msg = currentStatus ? 'Ditandai belum dibaca' : 'Ditandai sudah dibaca';
+    } else {
+      msg = !currentStatus
+        ? `${entityLabel || 'Item'} diaktifkan dan tampil di website.`
+        : `${entityLabel || 'Item'} dinonaktifkan sementara.`;
+    }
+    toast(msg);
+    if (typeof reloadFn === 'function') reloadFn();
     loadCounters();
   } catch (err) {
-    const errMsg = formatDbError(err, 'Gagal mengubah status renungan');
-    toast(errMsg, 'error');
+    toast(formatDbError(err, `Gagal mengubah status ${entityLabel || 'data'}`), 'error');
   }
 }
+
+const toggleAktifRenungan = (id, current) => toggleEntityStatus('renungan', id, 'aktif', current, loadRenungan, 'Renungan');
 
 // ══════════════════════════════════════════
 //  PENGUMUMAN (CRUD + Confirmation + Error Handling)
@@ -1391,13 +1403,13 @@ function renderPengumumanView(data, isFiltered = false) {
           </div>
           <div class="admin-data-card-body">
             <div class="admin-data-card-title">${escapeHtml(r.judul)}</div>
-            <div style="font-size:0.75rem;color:var(--ink-soft)">📅 ${escapeHtml(r.tanggal || '—')}</div>
+            <div style="font-size:0.75rem;color:var(--ink-soft)">${escapeHtml(r.tanggal || '—')}</div>
             <div class="admin-data-card-sub" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escapeHtml(r.isi)}</div>
           </div>
           <div class="admin-data-card-actions">
-            <button class="btn btn-ghost btn-sm" onclick="editPengumuman('${r.id}')">✏️ Edit</button>
+            <button class="btn btn-ghost btn-sm" onclick="editPengumuman('${r.id}')">Edit</button>
             <button class="btn btn-ghost btn-sm" onclick="toggleAktif('${r.id}', ${r.aktif})">${r.aktif ? 'Nonaktifkan' : 'Aktifkan'}</button>
-            <button class="btn btn-danger btn-sm" onclick="confirmDelete('pengumuman', '${r.id}', '${escapeHtml(r.judul)}', 'loadPengumuman')">🗑️</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDelete('pengumuman', '${r.id}', '${escapeHtml(r.judul)}', 'loadPengumuman')">Hapus</button>
           </div>
         </div>
       `).join('')}
@@ -1509,18 +1521,7 @@ async function submitPengumuman(e) {
   }
 }
 
-async function toggleAktif(id, current) {
-  try {
-    const { error } = await db.from('pengumuman').update({ aktif: !current }).eq('id', id);
-    if (error) throw error;
-    toast(!current ? 'Pengumuman diaktifkan dan tampil di website.' : 'Pengumuman disembunyikan dari website.');
-    loadPengumuman();
-    loadCounters();
-  } catch (err) {
-    const errMsg = formatDbError(err, 'Gagal mengubah status pengumuman');
-    toast(errMsg, 'error');
-  }
-}
+const toggleAktif = (id, current) => toggleEntityStatus('pengumuman', id, 'aktif', current, loadPengumuman, 'Pengumuman');
 
 // ── Image URL Helper for Admin Subdirectory ───────────────
 function resolveAdminImgUrl(url) {
@@ -1569,8 +1570,8 @@ async function loadGaleri() {
               <div class="galeri-admin-body">
                 <h4 class="galeri-admin-title">${escapeHtml(r.judul)}</h4>
                 <div class="galeri-admin-meta">
-                  <span>📅 ${escapeHtml(r.tanggal || '—')}</span>
-                  ${r.keterangan ? `<span>📝 ${escapeHtml(r.keterangan)}</span>` : ''}
+                  <span>${escapeHtml(r.tanggal || '—')}</span>
+                  ${r.keterangan ? `<span>${escapeHtml(r.keterangan)}</span>` : ''}
                 </div>
                 <div class="galeri-admin-actions">
                   <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center" onclick="editGaleri('${r.id}')">
@@ -1939,9 +1940,8 @@ async function loadPesan() {
     if (!_pesanList.length) {
       container.innerHTML = `
         <div class="empty-state">
-          <div style="font-size:2.5rem;margin-bottom:12px;opacity:0.6">✉️</div>
-          <p style="font-weight:600;font-size:1rem;color:var(--text);margin-bottom:6px">Belum Ada Pesan Masuk</p>
-          <p style="color:var(--muted);font-size:0.85rem">Pesan yang dikirim pengunjung melalui halaman Hubungi Kami akan tampil di sini.</p>
+          <p style="font-weight:600;font-size:1rem;color:var(--ink);margin-bottom:6px">Belum Ada Pesan Masuk</p>
+          <p style="color:var(--ink-soft);font-size:0.85rem">Pesan yang dikirim pengunjung melalui halaman Hubungi Kami akan tampil di sini.</p>
         </div>`;
       return;
     }
@@ -1968,15 +1968,15 @@ async function loadPesan() {
           </div>
 
           <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px">
-            ${p.email ? `<div>📧 <a href="mailto:${escapeHtml(p.email)}" style="color:var(--gold);text-decoration:underline">${escapeHtml(p.email)}</a></div>` : ''}
-            ${p.telepon ? `<div>📱 <a href="https://wa.me/${escapeHtml(p.telepon.replace(/[^0-9]/g, ''))}" target="_blank" style="color:var(--gold);text-decoration:underline">${escapeHtml(p.telepon)}</a></div>` : ''}
+            ${p.email ? `<div>Email: <a href="mailto:${escapeHtml(p.email)}" style="color:var(--gold);text-decoration:underline">${escapeHtml(p.email)}</a></div>` : ''}
+            ${p.telepon ? `<div>WhatsApp: <a href="https://wa.me/${escapeHtml(p.telepon.replace(/[^0-9]/g, ''))}" target="_blank" style="color:var(--gold);text-decoration:underline">${escapeHtml(p.telepon)}</a></div>` : ''}
           </div>
 
           <div style="font-size:0.9rem;line-height:1.6;color:var(--ink);background:var(--bg-alt);padding:12px 16px;border-radius:10px;border:1px solid var(--border);white-space:pre-wrap;margin-bottom:14px">${escapeHtml(p.pesan)}</div>
 
           <div style="display:flex;justify-content:flex-end;gap:10px">
             <button class="btn btn-ghost btn-sm" onclick="toggleBacaPesan('${p.id}', ${p.dibaca})">
-              ${p.dibaca ? 'Tandai Belum Dibaca' : '✓ Tandai Sudah Dibaca'}
+              ${p.dibaca ? 'Tandai Belum Dibaca' : 'Tandai Sudah Dibaca'}
             </button>
             <button class="btn btn-danger btn-sm" onclick="confirmDelete('pesan', '${p.id}', 'Pesan dari ${escapeHtml(p.nama)}', 'loadPesan')">
               Hapus
@@ -1999,17 +1999,7 @@ async function loadPesan() {
   }
 }
 
-async function toggleBacaPesan(id, currentStatus) {
-  try {
-    const { error } = await db.from('pesan').update({ dibaca: !currentStatus }).eq('id', id);
-    if (error) throw error;
-    toast(currentStatus ? 'Ditandai belum dibaca' : 'Ditandai sudah dibaca');
-    loadPesan();
-    loadCounters();
-  } catch (err) {
-    toast(formatDbError(err, 'Gagal memperbarui status pesan'), 'error');
-  }
-}
+const toggleBacaPesan = (id, current) => toggleEntityStatus('pesan', id, 'dibaca', current, loadPesan, 'Pesan');
 
 // ── Inisialisasi Dropzones saat dokumen siap ─────────────────
 document.addEventListener('DOMContentLoaded', () => {
