@@ -6,7 +6,8 @@
 
 // ── Constants ──────────────────────────────────────────────
 const STASI_MAP = {
-  'margo-agung':  'Margo Agung',
+  'margo-agung':  'Margo Agung (Paroki)',
+  'misa-khusus':  'Misa Khusus & Adorasi',
   'marga-lestari':'Marga Lestari',
   'rejomulyo':    'Rejomulyo',
   'sukadamai':    'Sukadamai',
@@ -305,13 +306,25 @@ function clearFormState(modalId) {
 // ── Modal helpers ───────────────────────────────────────────
 function openModal(id) {
   const el = document.getElementById(id);
-  if (el) el.classList.add('open');
+  if (el) {
+    el.classList.add('open');
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+  }
 }
 
 function closeModal(id) {
   const el = document.getElementById(id);
   if (el) el.classList.remove('open');
   clearFormState(id);
+  if (!document.querySelector('.modal-overlay.open')) {
+    document.documentElement.classList.remove('modal-open');
+    document.body.classList.remove('modal-open');
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+  }
 }
 
 async function safeCloseModal(id) {

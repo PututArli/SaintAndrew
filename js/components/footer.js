@@ -247,7 +247,9 @@ class ModernFooter extends HTMLElement {
             modal.classList.add('flex');
             modal.style.setProperty('display', 'flex', 'important');
             modal.style.setProperty('pointer-events', 'auto', 'important');
+            document.documentElement.classList.add('modal-open');
             document.body.classList.add('modal-open');
+            document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
             document.getElementById('secretEmail').focus();
         };
@@ -257,7 +259,9 @@ class ModernFooter extends HTMLElement {
             modal.classList.remove('flex');
             modal.style.setProperty('display', 'none', 'important');
             modal.style.setProperty('pointer-events', 'none', 'important');
+            document.documentElement.classList.remove('modal-open');
             document.body.classList.remove('modal-open');
+            document.documentElement.style.overflow = '';
             document.body.style.overflow = '';
             errBox.classList.add('hidden');
             errBox.classList.remove('flex');

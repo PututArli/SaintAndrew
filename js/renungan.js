@@ -384,7 +384,10 @@ async function openDevotionModal() {
   }
 
   modal.classList.add('open');
+  document.documentElement.classList.add('modal-open');
   document.body.classList.add('modal-open');
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
 }
 
 /**
@@ -394,7 +397,10 @@ function closeDevotionModal() {
   const modal = document.getElementById('devotionModal');
   if (!modal) return;
   modal.classList.remove('open');
+  document.documentElement.classList.remove('modal-open');
   document.body.classList.remove('modal-open');
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
 }
 
 // Global escape key listener

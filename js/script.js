@@ -334,7 +334,9 @@ function openStasiModal(id) {
     modal.classList.add('flex');
     modal.style.setProperty('display', 'flex', 'important');
     modal.style.setProperty('pointer-events', 'auto', 'important');
+    document.documentElement.classList.add('modal-open');
     document.body.classList.add('modal-open');
+    document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
 }
 
@@ -345,7 +347,9 @@ function closeStasiModal() {
     modal.classList.remove('flex');
     modal.style.setProperty('display', 'none', 'important');
     modal.style.setProperty('pointer-events', 'none', 'important');
+    document.documentElement.classList.remove('modal-open');
     document.body.classList.remove('modal-open');
+    document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
 }
 
@@ -456,7 +460,9 @@ function openLightbox(src, alt, customData = null) {
         lb.classList.add('active');
         lb.style.setProperty('display', 'flex', 'important');
         lb.style.setProperty('pointer-events', 'auto', 'important');
+        document.documentElement.classList.add('modal-open');
         document.body.classList.add('modal-open');
+        document.documentElement.style.overflow = 'hidden';
         document.body.style.overflow = 'hidden';
     }
 }
@@ -469,7 +475,9 @@ function closeLightbox() {
             lb.classList.remove('active', 'closing');
             lb.style.setProperty('display', 'none', 'important');
             lb.style.setProperty('pointer-events', 'none', 'important');
+            document.documentElement.classList.remove('modal-open');
             document.body.classList.remove('modal-open');
+            document.documentElement.style.overflow = '';
             document.body.style.overflow = '';
         }, 200);
     }

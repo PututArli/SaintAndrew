@@ -498,6 +498,14 @@
   }
   .filter-select:focus { border-color: var(--gold); }
 
+  /* ═══ GLOBAL MODAL SCROLL LOCK ═══ */
+  html.modal-open,
+  body.modal-open {
+    overflow: hidden !important;
+    height: 100% !important;
+    overscroll-behavior: none !important;
+  }
+
   /* ═══ MODAL ═══ */
   .modal-overlay {
     position: fixed; inset: 0; z-index: 9000;
@@ -505,6 +513,7 @@
     display: none !important;
     pointer-events: none !important;
     align-items: center; justify-content: center; padding: 1.25rem;
+    overscroll-behavior: contain !important;
   }
   .modal-overlay.open {
     display: flex !important;
@@ -522,6 +531,7 @@
     flex-direction: column;
     overflow: hidden;
     position: relative;
+    overscroll-behavior: contain !important;
   }
   .modal-box > form {
     display: flex;

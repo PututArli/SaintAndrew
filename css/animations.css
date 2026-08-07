@@ -205,6 +205,30 @@ body {
   backdrop-filter: blur(6px);
 }
 
+/* ── Global Modal Scroll Lock & Containment ── */
+html.modal-open,
+body.modal-open {
+  overflow: hidden !important;
+  height: 100% !important;
+  overscroll-behavior: none !important;
+}
+
+/* ── Lightbox Overlay ── */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  overflow: hidden;
+  overscroll-behavior: contain !important;
+}
+
 /* ── Modal (Stasi) ── */
 #stasiModal {
   position: fixed;
@@ -214,6 +238,7 @@ body {
   -webkit-backdrop-filter: blur(14px);
   background: rgba(18, 18, 20, 0.78);
   transition: opacity 0.25s ease;
+  overscroll-behavior: contain !important;
 }
 
 #stasiModal:not(.flex) {
@@ -226,6 +251,10 @@ body {
   pointer-events: auto !important;
 }
 
+#secretAdminModal {
+  overscroll-behavior: contain !important;
+}
+
 #secretAdminModal:not(.flex) {
   display: none !important;
   pointer-events: none !important;
@@ -234,6 +263,12 @@ body {
 #secretAdminModal.flex {
   display: flex !important;
   pointer-events: auto !important;
+}
+
+#stasiModal .modal-card,
+#modalContent {
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 #stasiModal .modal-card {

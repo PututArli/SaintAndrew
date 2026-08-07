@@ -88,16 +88,16 @@
               <h3 class="font-bold text-sm" style="color:var(--ink)">Misa Khusus &amp; Adorasi</h3>
             </div>
             
-            <div class="space-y-3 text-xs leading-relaxed" style="color:var(--ink-soft)">
-              <div class="p-3 rounded-xl" style="background:var(--bg-alt);border:1px solid var(--border)">
+            <div id="misaKhususContainer" class="space-y-3 text-xs leading-relaxed" style="color:var(--ink-soft)">
+              <div class="p-3.5 rounded-xl transition-all" style="background:var(--bg-alt);border:1px solid var(--border)">
                 <div class="font-bold text-xs" style="color:var(--ink)">Misa Jumat Pertama</div>
-                <div class="text-[11px] mt-0.5" style="color:var(--gold)">Setiap Jumat Pertama pkl 18:00 WIB</div>
+                <div class="text-[11px] font-semibold mt-0.5" style="color:var(--gold)">Setiap Jumat Pertama pkl 18:00 WIB</div>
                 <div class="text-[11px] text-gray-500 mt-1">Dilanjutkan Adorasi dan Salve Sakramen Mahakudus di Gereja Paroki.</div>
               </div>
 
-              <div class="p-3 rounded-xl" style="background:var(--bg-alt);border:1px solid var(--border)">
+              <div class="p-3.5 rounded-xl transition-all" style="background:var(--bg-alt);border:1px solid var(--border)">
                 <div class="font-bold text-xs" style="color:var(--ink)">Misa Lingkungan / Ujud Khusus</div>
-                <div class="text-[11px] mt-0.5" style="color:var(--gold)">Sesuai Jadwal Wilayah &amp; Permohonan</div>
+                <div class="text-[11px] font-semibold mt-0.5" style="color:var(--gold)">Sesuai Jadwal Wilayah &amp; Permohonan</div>
                 <div class="text-[11px] text-gray-500 mt-1">Dikoordinasikan bersama Ketua Lingkungan dan Sekretariat Paroki.</div>
               </div>
             </div>
@@ -252,8 +252,9 @@ const STASI_INFO = {
       return;
     }
 
-    // Helper untuk mendeteksi gereja paroki (margo-agung / marga-agung)
+    // Helper deteksi kategori stasi / lokasi
     const isGerejaParoki = (stasi) => ['margo-agung', 'marga-agung'].includes((stasi || '').toLowerCase());
+    const isMisaKhusus  = (stasi) => ['misa-khusus', 'khusus', 'adorasi'].includes((stasi || '').toLowerCase());
 
     // Update tabel jadwal gereja paroki
     const parokiRows = data.filter(r => isGerejaParoki(r.stasi));
@@ -271,8 +272,22 @@ const STASI_INFO = {
       }
     }
 
-    // Update kartu jadwal stasi
-    const stasiRows = data.filter(r => !isGerejaParoki(r.stasi));
+    // Update info Misa Khusus & Adorasi
+    const khususRows = data.filter(r => isMisaKhusus(r.stasi));
+    const khususEl = document.getElementById('misaKhususContainer');
+    if (khususEl && khususRows.length > 0) {
+      khususEl.innerHTML = khususRows.map(r => `
+        <div class="p-3.5 rounded-xl transition-all" style="background:var(--bg-alt);border:1px solid var(--border)">
+          <div class="font-bold text-xs" style="color:var(--ink)">${escapeHtml(r.hari || 'Misa Khusus')}</div>
+          <div class="text-[11px] font-semibold mt-0.5" style="color:var(--gold)">${escapeHtml(r.waktu || '')}</div>
+          ${r.keterangan ? `<div class="text-[11px] text-gray-500 mt-1">${escapeHtml(r.keterangan)}</div>` : ''}
+          ${r.minggu_ke ? `<div class="text-[10px] text-gray-400 mt-1 pt-1 border-t" style="border-color:var(--border)">${escapeHtml(r.minggu_ke)}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Update kartu jadwal stasi (kecuali paroki dan misa khusus)
+    const stasiRows = data.filter(r => !isGerejaParoki(r.stasi) && !isMisaKhusus(r.stasi));
     const stasiList = [...new Set(stasiRows.map(r => r.stasi))];
     
     if (stasiEl) {
