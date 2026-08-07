@@ -487,7 +487,7 @@
     background: rgba(16,16,18,0.7); backdrop-filter: blur(10px);
     display: none !important;
     pointer-events: none !important;
-    align-items: center; justify-content: center; padding: 1rem;
+    align-items: center; justify-content: center; padding: 1.25rem;
   }
   .modal-overlay.open {
     display: flex !important;
@@ -496,24 +496,34 @@
 
   .modal-box {
     background: var(--surface); border-radius: 24px;
-    width: 100%; max-width: 520px;
+    width: 100%; max-width: 540px;
     box-shadow: 0 30px 80px rgba(0,0,0,0.25);
     animation: modalIn 0.2s ease;
-    max-height: 90vh;
-    overflow: hidden;
+    max-height: calc(100vh - 2.5rem);
+    max-height: calc(100dvh - 2.5rem);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .modal-box > form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
   }
   @keyframes modalIn {
     from { transform: translateY(20px) scale(0.97); opacity: 0; }
     to   { transform: translateY(0) scale(1); opacity: 1; }
   }
   .modal-head {
-    padding: 1.5rem 1.75rem 1.25rem;
+    padding: 1.35rem 1.75rem 1.15rem;
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
     background: var(--surface);
     flex-shrink: 0;
+    z-index: 5;
   }
   .modal-head-title {
     font-size: 1rem; font-weight: 800; color: var(--ink);
@@ -529,16 +539,20 @@
   .modal-body {
     padding: 1.5rem 1.75rem;
     overflow-y: auto;
-    flex: 1;
+    flex: 1 1 auto;
     min-height: 0;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
   .modal-foot {
-    padding: 1.25rem 1.75rem;
+    padding: 1.15rem 1.75rem;
     border-top: 1px solid var(--border);
     display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem;
     background: var(--surface);
     flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.03);
   }
 
   /* ═══ FORM ═══ */
@@ -1189,33 +1203,45 @@
       pointer-events: auto !important;
       padding: 0;
       align-items: flex-end;
+      justify-content: center;
     }
     .modal-box {
       width: 100%;
       max-width: 100%;
       border-radius: 24px 24px 0 0;
-      max-height: 88vh;
+      max-height: 90vh;
+      max-height: 90dvh;
       display: flex;
       flex-direction: column;
       margin: 0;
       overflow: hidden;
+      position: relative;
+    }
+    .modal-box > form {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
     }
     .modal-head {
-      padding: 1.25rem 1.4rem;
+      padding: 1.15rem 1.4rem;
       border-radius: 24px 24px 0 0;
       background: var(--surface);
       flex-shrink: 0;
       z-index: 10;
+      border-bottom: 1px solid var(--border);
     }
     .modal-body {
       padding: 1.25rem 1.4rem;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      flex: 1;
+      overscroll-behavior: contain;
+      flex: 1 1 auto;
       min-height: 0;
     }
     .modal-foot {
-      padding: 1rem 1.4rem max(1.75rem, env(safe-area-inset-bottom, 1.75rem));
+      padding: 1rem 1.4rem max(1.5rem, env(safe-area-inset-bottom, 1.5rem));
       border-radius: 0;
       display: flex;
       gap: 0.75rem;
@@ -1223,6 +1249,7 @@
       flex-shrink: 0;
       z-index: 10;
       border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.04);
     }
     .modal-foot .btn {
       flex: 1;
