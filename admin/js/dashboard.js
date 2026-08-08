@@ -146,6 +146,10 @@ let _deleteCb    = null;
 
 // ── Auth Guard & Initialization ─────────────────────────────
 async function initDashboard() {
+  // Ensure body scroll is unlocked on initial page load
+  document.body.classList.remove('modal-open');
+  document.body.style.overflow = '';
+
   try {
     if (typeof db !== 'undefined' && db && db.auth) {
       const { data: { session } = {} } = await db.auth.getSession();
@@ -464,12 +468,7 @@ function showTab(name, btn = null, pushHistory = true) {
   }
 
   // Tutup sidebar di mobile secara halus jika sedang terbuka
-  const sidebar = document.getElementById('sidebar');
-  const backdrop = document.getElementById('sidebar-backdrop');
-  if (sidebar && sidebar.classList.contains('open')) {
-    sidebar.classList.remove('open');
-    backdrop?.classList.remove('open');
-  }
+  closeSidebar();
 
   if (name === 'jadwal')     loadJadwal();
   if (name === 'renungan')   loadRenungan();
@@ -2188,7 +2187,10 @@ function closeSidebar() {
   const backdrop = document.getElementById('sidebar-backdrop');
   sidebar?.classList.remove('open');
   backdrop?.classList.remove('open');
-  document.body.style.overflow = '';
+  if (!document.querySelector('.modal-overlay.open')) {
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+  }
 }
 
 // Expose all dashboard functions to window

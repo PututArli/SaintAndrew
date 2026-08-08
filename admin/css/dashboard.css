@@ -642,10 +642,11 @@
     font-size: 0.83rem; font-weight: 600;
     color: white; z-index: 99999;
     transform: translateY(80px); opacity: 0;
+    pointer-events: none;
     transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
     box-shadow: 0 8px 24px rgba(0,0,0,0.2); max-width: 320px;
   }
-  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
   #toast.success { background: #101012; border: 1px solid #22C55E; }
   #toast.error   { background: #101012; border: 1px solid var(--danger); }
   #toast.info    { background: #101012; border: 1px solid var(--gold); color: #FCD34D; }
@@ -1307,9 +1308,13 @@
     background: rgba(0,0,0,0.6);
     backdrop-filter: blur(4px);
     opacity: 0; pointer-events: none;
+    display: none;
     transition: opacity 0.3s ease;
   }
-  .sidebar-backdrop.open { opacity: 1; pointer-events: auto; }
+  @media (max-width: 768px) {
+    .sidebar-backdrop { display: block; }
+    .sidebar-backdrop.open { opacity: 1; pointer-events: auto; }
+  }
 
   /* ─── Sidebar Close Button ─── */
   .sidebar-close-btn {
