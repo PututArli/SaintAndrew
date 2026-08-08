@@ -416,7 +416,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-jadwal-title">Tambah Jadwal Misa</div>
-      <button class="modal-close" type="button" onclick="closeModal('modal-jadwal')">✕</button>
+      <button class="modal-close" type="button" onclick="safeCloseModal('modal-jadwal')">✕</button>
     </div>
     <form id="form-jadwal" onsubmit="submitJadwal(event)">
       <input type="hidden" id="jid">
@@ -542,7 +542,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-jadwal')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-jadwal')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-jadwal">
           <span id="btn-jadwal-text">Simpan Jadwal</span>
         </button>
@@ -558,7 +558,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-renungan-title">Tambah Renungan Harian</div>
-      <button class="modal-close" type="button" onclick="closeModal('modal-renungan')">✕</button>
+      <button class="modal-close" type="button" onclick="safeCloseModal('modal-renungan')">✕</button>
     </div>
     <form id="form-renungan" onsubmit="submitRenungan(event)">
       <input type="hidden" id="rid">
@@ -619,7 +619,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-renungan')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-renungan')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-renungan">
           <span id="btn-renungan-text">Simpan Renungan</span>
         </button>
@@ -635,7 +635,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-pengumuman-title">Tambah Pengumuman</div>
-      <button class="modal-close" type="button" onclick="closeModal('modal-pengumuman')">✕</button>
+      <button class="modal-close" type="button" onclick="safeCloseModal('modal-pengumuman')">✕</button>
     </div>
     <form id="form-pengumuman" onsubmit="submitPengumuman(event)">
       <input type="hidden" id="pid">
@@ -683,7 +683,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-pengumuman')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-pengumuman')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-peng">
           <span id="btn-peng-text">Simpan Pengumuman</span>
         </button>
@@ -699,7 +699,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-galeri-title">Tambah Foto Kegiatan</div>
-      <button class="modal-close" type="button" onclick="closeModal('modal-galeri')">✕</button>
+      <button class="modal-close" type="button" onclick="safeCloseModal('modal-galeri')">✕</button>
     </div>
     <form id="form-galeri" onsubmit="submitGaleri(event)">
       <input type="hidden" id="gid">
@@ -789,7 +789,7 @@
 
       </div><!-- /modal-body -->
       <div class="modal-foot">
-        <button type="button" class="btn btn-ghost" onclick="closeModal('modal-galeri')">Batal</button>
+        <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-galeri')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-galeri">
           <span id="btn-galeri-text">Simpan Foto Kegiatan</span>
         </button>
@@ -805,7 +805,7 @@
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-head-title" id="modal-stasi-title">Edit Foto &amp; Data Stasi</div>
-      <button class="modal-close" type="button" onclick="closeModal('modal-stasi')">✕</button>
+      <button class="modal-close" type="button" onclick="safeCloseModal('modal-stasi')">✕</button>
     </div>
     <form id="form-stasi" onsubmit="submitStasiAdmin(event)">
       <input type="hidden" id="s-id">

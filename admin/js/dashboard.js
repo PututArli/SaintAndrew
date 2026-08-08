@@ -238,15 +238,16 @@ function showConfirmModal({
       `;
     }
 
-    openModal('modal-confirm');
+    openModal('modal-confirm', false);
   });
 }
 
 function resolveConfirmModal(value) {
-  closeModal('modal-confirm');
+  closeModal('modal-confirm', true);
   if (_confirmResolver) {
-    _confirmResolver(value);
+    const resolver = _confirmResolver;
     _confirmResolver = null;
+    resolver(value);
   }
 }
 
@@ -368,7 +369,7 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
       if (m.id === 'modal-confirm') {
         resolveConfirmModal(false);
       } else {
-        closeModal(m.id);
+        safeCloseModal(m.id);
       }
     }
   });
@@ -382,7 +383,7 @@ document.addEventListener('keydown', e => {
       resolveConfirmModal(false);
       return;
     }
-    document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+    document.querySelectorAll('.modal-overlay.open').forEach(m => safeCloseModal(m.id));
   }
 });
 
@@ -406,10 +407,11 @@ window.addEventListener('popstate', (e) => {
     return;
   }
 
-  // 3. If any data modal is open, close it cleanly without page loop
-  const openModals = document.querySelectorAll('.modal-overlay.open');
+  // 3. If any data modal is open, close only top data modal
+  const openModals = Array.from(document.querySelectorAll('.modal-overlay.open')).filter(m => m.id !== 'modal-confirm');
   if (openModals.length > 0) {
-    openModals.forEach(m => closeModal(m.id, true));
+    const topModal = openModals[openModals.length - 1];
+    closeModal(topModal.id, true);
     _isPopStateNav = false;
     return;
   }
@@ -1072,13 +1074,6 @@ async function submitJadwal(e) {
   const id      = document.getElementById('jid').value;
   const alertEl = document.getElementById('jadwal-alert');
 
-  // Change detection for edit: if no modifications made
-  if (id && !isFormDirty('modal-jadwal')) {
-    toast('Tidak ada perubahan jadwal yang dilakukan.', 'info');
-    closeModal('modal-jadwal');
-    return;
-  }
-
   const stasiVal  = document.getElementById('j-stasi').value;
   const hariVal   = getCustomSelectValue('j-hari-select', 'j-hari');
   const waktuVal  = getCustomSelectValue('j-waktu-select', 'j-waktu');
@@ -1348,13 +1343,6 @@ async function submitRenungan(e) {
   e.preventDefault();
   const id      = document.getElementById('rid').value;
   const alertEl = document.getElementById('renungan-alert');
-
-  // Change detection for edit
-  if (id && !isFormDirty('modal-renungan')) {
-    toast('Tidak ada perubahan renungan yang dilakukan.', 'info');
-    closeModal('modal-renungan');
-    return;
-  }
 
   const tanggalVal  = document.getElementById('r-tanggal').value;
   const liturgiVal  = document.getElementById('r-liturgi').value;
@@ -1633,13 +1621,6 @@ async function submitPengumuman(e) {
   const id      = document.getElementById('pid').value;
   const alertEl = document.getElementById('peng-alert');
 
-  // Change detection for edit
-  if (id && !isFormDirty('modal-pengumuman')) {
-    toast('Tidak ada perubahan pengumuman yang dilakukan.', 'info');
-    closeModal('modal-pengumuman');
-    return;
-  }
-
   const judulVal = document.getElementById('p-judul').value.trim();
   const isiVal   = document.getElementById('p-isi').value.trim();
   const katVal   = document.getElementById('p-kategori').value;
@@ -1808,13 +1789,6 @@ async function submitGaleri(e) {
   const id      = document.getElementById('gid').value;
   const alertEl = document.getElementById('galeri-alert');
 
-  // Change detection for edit
-  if (id && !isFormDirty('modal-galeri')) {
-    toast('Tidak ada perubahan foto kegiatan yang dilakukan.', 'info');
-    closeModal('modal-galeri');
-    return;
-  }
-
   const fotoUrl = document.getElementById('g-foto').value.trim();
   const judul   = document.getElementById('g-judul').value.trim();
   const kat     = document.getElementById('g-kategori').value;
@@ -1980,13 +1954,6 @@ async function submitStasiAdmin(e) {
   e.preventDefault();
   const id      = document.getElementById('s-id').value;
   const alertEl = document.getElementById('stasi-alert');
-
-  // Change detection for stasi
-  if (!isFormDirty('modal-stasi')) {
-    toast('Tidak ada perubahan data stasi yang dilakukan.', 'info');
-    closeModal('modal-stasi');
-    return;
-  }
 
   const nama       = document.getElementById('s-nama').value.trim();
   const pelindung  = document.getElementById('s-pelindung').value.trim();
@@ -2224,6 +2191,7 @@ function closeSidebar() {
   document.body.style.overflow = '';
 }
 
+// Expose all dashboard functions to window
 window.handleCustomSelectChange = handleCustomSelectChange;
 window.syncSelectWithCustomInput = syncSelectWithCustomInput;
 window.getCustomSelectValue = getCustomSelectValue;
@@ -2241,6 +2209,12 @@ window.loadStasiAdmin = loadStasiAdmin;
 window.loadPesan = loadPesan;
 window.filterJadwalList = filterJadwalList;
 window.resetJadwalFilter = resetJadwalFilter;
+window.filterPengumumanList = filterPengumumanList;
+window.resetPengumumanFilter = resetPengumumanFilter;
+window.filterGaleriList = filterGaleriList;
+window.resetGaleriFilter = resetGaleriFilter;
+window.filterPesanList = filterPesanList;
+window.resetPesanFilter = resetPesanFilter;
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.safeCloseModal = safeCloseModal;
@@ -2250,12 +2224,39 @@ window.toggleSidebar = toggleSidebar;
 window.closeSidebar = closeSidebar;
 window.doLogout = doLogout;
 window.toast = toast;
+window.submitJadwal = submitJadwal;
+window.submitRenungan = submitRenungan;
+window.submitPengumuman = submitPengumuman;
+window.submitGaleri = submitGaleri;
+window.submitStasiAdmin = submitStasiAdmin;
 window.editJadwal = editJadwal;
+window.editRenungan = editRenungan;
+window.editPengumuman = editPengumuman;
+window.editGaleri = editGaleri;
 window.openJadwalModal = typeof openJadwalModal === 'function' ? openJadwalModal : undefined;
 window.openRenunganModal = typeof openRenunganModal === 'function' ? openRenunganModal : undefined;
 window.openPengumumanModal = typeof openPengumumanModal === 'function' ? openPengumumanModal : undefined;
 window.openGaleriModal = typeof openGaleriModal === 'function' ? openGaleriModal : undefined;
 window.openStasiModal = typeof openStasiModal === 'function' ? openStasiModal : undefined;
+window.toggleAktifJadwal = typeof toggleAktifJadwal === 'function' ? toggleAktifJadwal : undefined;
+window.toggleAktifRenungan = typeof toggleAktifRenungan === 'function' ? toggleAktifRenungan : undefined;
+window.toggleAktif = typeof toggleAktif === 'function' ? toggleAktif : undefined;
+window.toggleAktifGaleri = typeof toggleAktifGaleri === 'function' ? toggleAktifGaleri : undefined;
+window.deleteJadwal = typeof deleteJadwal === 'function' ? deleteJadwal : undefined;
+window.deleteRenungan = typeof deleteRenungan === 'function' ? deleteRenungan : undefined;
+window.deletePengumuman = typeof deletePengumuman === 'function' ? deletePengumuman : undefined;
+window.deleteGaleri = typeof deleteGaleri === 'function' ? deleteGaleri : undefined;
+window.confirmDelete = typeof confirmDelete === 'function' ? confirmDelete : undefined;
+window.executeDelete = typeof executeDelete === 'function' ? executeDelete : undefined;
+window.toggleDetailPesan = typeof toggleDetailPesan === 'function' ? toggleDetailPesan : undefined;
+window.balasPesanWA = typeof balasPesanWA === 'function' ? balasPesanWA : undefined;
+window.balasPesanEmail = typeof balasPesanEmail === 'function' ? balasPesanEmail : undefined;
+window.hapusPesan = typeof hapusPesan === 'function' ? hapusPesan : undefined;
+window.triggerFileInput = typeof triggerFileInput === 'function' ? triggerFileInput : undefined;
+window.handleFileSelect = typeof handleFileSelect === 'function' ? handleFileSelect : undefined;
+window.removeImage = typeof removeImage === 'function' ? removeImage : undefined;
+window.toggleUrlInput = typeof toggleUrlInput === 'function' ? toggleUrlInput : undefined;
+window.applyManualUrl = typeof applyManualUrl === 'function' ? applyManualUrl : undefined;
 
 // Web Component: <aesthetic-divider>
 if (!customElements.get('aesthetic-divider')) {
