@@ -493,15 +493,39 @@
     background: var(--bg-alt);
   }
   .filter-label { font-size: 0.75rem; font-weight: 600; color: var(--ink-soft); }
+  
   .filter-select {
-    padding: 0.45rem 0.85rem;
+    padding: 0.48rem 0.85rem;
     border: 1.5px solid var(--border); border-radius: 9px;
     font-family: 'Inter', sans-serif; font-size: 0.8rem;
     color: var(--ink); background: var(--surface);
-    cursor: pointer; outline: none; transition: border-color 0.15s;
+    outline: none; transition: all 0.15s ease;
     appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
   }
-  .filter-select:focus { border-color: var(--gold); }
+  .filter-select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,134,11,0.12);
+  }
+
+  /* Distinctive Dropdown Arrow for Select elements */
+  select.filter-select,
+  .filter-select:is(select) {
+    cursor: pointer;
+    padding-right: 2.35rem !important;
+    background-color: var(--surface);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23B8860B' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 14px 14px;
+    font-weight: 500;
+  }
+  select.filter-select:hover,
+  .filter-select:is(select):hover {
+    border-color: rgba(184,134,11,0.4);
+    background-color: #FDFAF5;
+  }
 
   /* ═══ GLOBAL MODAL SCROLL LOCK ═══ */
   body.modal-open {
@@ -605,7 +629,21 @@
   }
   .form-ctrl:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,134,11,0.1); }
   textarea.form-ctrl { resize: vertical; min-height: 90px; }
-  select.form-ctrl { cursor: pointer; }
+  select.form-ctrl,
+  .form-ctrl:is(select) {
+    cursor: pointer;
+    padding-right: 2.5rem !important;
+    background-color: var(--surface);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23B8860B' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    background-size: 15px 15px;
+    font-weight: 500;
+  }
+  select.form-ctrl:hover,
+  .form-ctrl:is(select):hover {
+    border-color: rgba(184,134,11,0.4);
+  }
   .form-check {
     display: flex; align-items: center; gap: 0.6rem;
     padding: 0.75rem 0.9rem; border-radius: 11px;
