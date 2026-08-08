@@ -1217,6 +1217,14 @@ function filterRenunganList() {
   renderRenunganTable(filtered, true);
 }
 
+function resetRenunganFilter() {
+  const qEl = document.getElementById('filter-search-renungan');
+  const litEl = document.getElementById('filter-liturgi-renungan');
+  if (qEl) qEl.value = '';
+  if (litEl) litEl.value = '';
+  filterRenunganList();
+}
+
 function renderRenunganTable(list, isFiltered = false) {
   const el = document.getElementById('renungan-content');
   if (!el) return;
@@ -1309,27 +1317,40 @@ function renderRenunganTable(list, isFiltered = false) {
 
 function openRenunganModal(data = null) {
   const isEdit = !!data?.id;
-  document.getElementById('rid').value        = data?.id || '';
+  const ridEl = document.getElementById('rid');
+  if (ridEl) ridEl.value = data?.id || '';
   
   // Default today's date if new
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-  document.getElementById('r-tanggal').value  = data?.tanggal || todayStr;
-  document.getElementById('r-liturgi').value  = data?.liturgi || 'Masa Biasa';
-  document.getElementById('r-tema').value     = data?.tema || '';
-  document.getElementById('r-perikop').value  = data?.perikop || '';
-  document.getElementById('r-ayat').value     = data?.ayat || '';
-  document.getElementById('r-refleksi').value = data?.refleksi || '';
-  document.getElementById('r-doa').value      = data?.doa || '';
-  document.getElementById('r-aktif').checked  = data ? (data.aktif !== false) : true;
-  document.getElementById('renungan-alert').style.display = 'none';
+  const tglEl = document.getElementById('r-tanggal');
+  if (tglEl) tglEl.value = data?.tanggal || todayStr;
+  const litEl = document.getElementById('r-liturgi');
+  if (litEl) litEl.value = data?.liturgi || 'Masa Biasa';
+  const temaEl = document.getElementById('r-tema') || document.getElementById('r-judul');
+  if (temaEl) temaEl.value = data?.tema || data?.judul || '';
+  const perikopEl = document.getElementById('r-perikop') || document.getElementById('r-bacaan');
+  if (perikopEl) perikopEl.value = data?.perikop || data?.bacaan || '';
+  const ayatEl = document.getElementById('r-ayat');
+  if (ayatEl) ayatEl.value = data?.ayat || '';
+  const refleksiEl = document.getElementById('r-refleksi') || document.getElementById('r-isi');
+  if (refleksiEl) refleksiEl.value = data?.refleksi || data?.isi || '';
+  const doaEl = document.getElementById('r-doa');
+  if (doaEl) doaEl.value = data?.doa || '';
+  const aktifEl = document.getElementById('r-aktif');
+  if (aktifEl) aktifEl.checked = data ? (data.aktif !== false) : true;
 
-  document.getElementById('modal-renungan-title').textContent = isEdit ? 'Edit Renungan Harian' : 'Tambah Renungan Harian';
-  document.getElementById('btn-renungan-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Renungan';
+  const alertEl = document.getElementById('renungan-alert');
+  if (alertEl) alertEl.style.display = 'none';
+
+  const titleEl = document.getElementById('modal-renungan-title');
+  if (titleEl) titleEl.textContent = isEdit ? 'Edit Renungan Harian' : 'Tambah Renungan Harian';
+  const btnTextEl = document.getElementById('btn-renungan-text');
+  if (btnTextEl) btnTextEl.textContent = isEdit ? 'Simpan Perubahan' : 'Simpan Renungan';
 
   openModal('modal-renungan');
   saveInitialFormState('modal-renungan');
-  setTimeout(() => document.getElementById('r-tema').focus(), 100);
+  if (temaEl) setTimeout(() => temaEl.focus(), 100);
 }
 
 function editRenungan(id) {
@@ -1340,21 +1361,23 @@ function editRenungan(id) {
 
 async function submitRenungan(e) {
   e.preventDefault();
-  const id      = document.getElementById('rid').value;
+  const id      = document.getElementById('rid')?.value || '';
   const alertEl = document.getElementById('renungan-alert');
 
-  const tanggalVal  = document.getElementById('r-tanggal').value;
-  const liturgiVal  = document.getElementById('r-liturgi').value;
-  const temaVal     = document.getElementById('r-tema').value.trim();
-  const perikopVal  = document.getElementById('r-perikop').value.trim();
-  const ayatVal     = document.getElementById('r-ayat').value.trim();
-  const refleksiVal = document.getElementById('r-refleksi').value.trim();
-  const doaVal      = document.getElementById('r-doa').value.trim();
-  const aktifVal    = document.getElementById('r-aktif').checked;
+  const tanggalVal  = document.getElementById('r-tanggal')?.value || '';
+  const liturgiVal  = document.getElementById('r-liturgi')?.value || 'Masa Biasa';
+  const temaVal     = ((document.getElementById('r-tema') || document.getElementById('r-judul'))?.value || '').trim();
+  const perikopVal  = ((document.getElementById('r-perikop') || document.getElementById('r-bacaan'))?.value || '').trim();
+  const ayatVal     = (document.getElementById('r-ayat')?.value || '').trim();
+  const refleksiVal = ((document.getElementById('r-refleksi') || document.getElementById('r-isi'))?.value || '').trim();
+  const doaVal      = (document.getElementById('r-doa')?.value || '').trim();
+  const aktifVal    = document.getElementById('r-aktif') ? document.getElementById('r-aktif').checked : true;
 
   if (!tanggalVal || !temaVal || !perikopVal || !ayatVal || !refleksiVal) {
-    alertEl.textContent = 'Semua kolom bertanda bintang (*) wajib diisi.';
-    alertEl.style.display = 'flex';
+    if (alertEl) {
+      alertEl.textContent = 'Semua kolom bertanda bintang (*) wajib diisi.';
+      alertEl.style.display = 'flex';
+    }
     toast('Mohon lengkapi semua data renungan', 'error');
     return;
   }
@@ -1596,39 +1619,51 @@ function renderPengumumanView(data, isFiltered = false) {
 }
 
 function openPengumumanModal(data = null) {
-  document.getElementById('pid').value        = data?.id || '';
-  document.getElementById('p-judul').value    = data?.judul || '';
-  document.getElementById('p-isi').value      = data?.isi || '';
-  document.getElementById('p-kategori').value = data?.kategori || 'umum';
-  document.getElementById('p-tanggal').value  = data?.tanggal || new Date().toISOString().split('T')[0];
-  document.getElementById('p-aktif').checked  = data ? data.aktif : true;
-  document.getElementById('peng-alert').style.display = 'none';
+  const pidEl = document.getElementById('pid');
+  if (pidEl) pidEl.value = data?.id || '';
+  const pJudulEl = document.getElementById('p-judul');
+  if (pJudulEl) pJudulEl.value = data?.judul || '';
+  const pIsiEl = document.getElementById('p-isi');
+  if (pIsiEl) pIsiEl.value = data?.isi || '';
+  const pKatEl = document.getElementById('p-kategori');
+  if (pKatEl) pKatEl.value = data?.kategori || 'umum';
+  const pTglEl = document.getElementById('p-tanggal');
+  if (pTglEl) pTglEl.value = data?.tanggal || new Date().toISOString().split('T')[0];
+  const pAktifEl = document.getElementById('p-aktif');
+  if (pAktifEl) pAktifEl.checked = data ? data.aktif : true;
+
+  const alertEl = document.getElementById('pengumuman-alert') || document.getElementById('peng-alert');
+  if (alertEl) alertEl.style.display = 'none';
 
   const isEdit = !!data?.id;
-  document.getElementById('modal-peng-title').textContent = isEdit ? 'Edit Pengumuman' : 'Tambah Pengumuman';
-  document.getElementById('btn-peng-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Pengumuman';
+  const titleEl = document.getElementById('modal-pengumuman-title') || document.getElementById('modal-peng-title');
+  if (titleEl) titleEl.textContent = isEdit ? 'Edit Pengumuman' : 'Tambah Pengumuman';
+  const btnTextEl = document.getElementById('btn-peng-text');
+  if (btnTextEl) btnTextEl.textContent = isEdit ? 'Simpan Perubahan' : 'Simpan Pengumuman';
 
   openModal('modal-pengumuman');
   saveInitialFormState('modal-pengumuman');
-  setTimeout(() => document.getElementById('p-judul').focus(), 100);
+  if (pJudulEl) setTimeout(() => pJudulEl.focus(), 100);
 }
 
 function editPengumuman(id) { openPengumumanModal(_pengMap[id]); }
 
 async function submitPengumuman(e) {
   e.preventDefault();
-  const id      = document.getElementById('pid').value;
-  const alertEl = document.getElementById('peng-alert');
+  const id      = document.getElementById('pid')?.value || '';
+  const alertEl = document.getElementById('pengumuman-alert') || document.getElementById('peng-alert');
 
-  const judulVal = document.getElementById('p-judul').value.trim();
-  const isiVal   = document.getElementById('p-isi').value.trim();
-  const katVal   = document.getElementById('p-kategori').value;
-  const tglVal   = document.getElementById('p-tanggal').value;
-  const aktifVal = document.getElementById('p-aktif').checked;
+  const judulVal = (document.getElementById('p-judul')?.value || '').trim();
+  const isiVal   = (document.getElementById('p-isi')?.value || '').trim();
+  const katVal   = document.getElementById('p-kategori')?.value || 'umum';
+  const tglVal   = document.getElementById('p-tanggal')?.value || '';
+  const aktifVal = document.getElementById('p-aktif') ? document.getElementById('p-aktif').checked : true;
 
   if (!judulVal || !isiVal) {
-    alertEl.textContent = 'Judul dan isi pengumuman tidak boleh kosong.';
-    alertEl.style.display = 'flex';
+    if (alertEl) {
+      alertEl.textContent = 'Judul dan isi pengumuman tidak boleh kosong.';
+      alertEl.style.display = 'flex';
+    }
     toast('Judul dan isi wajib diisi', 'error');
     return;
   }
@@ -1708,6 +1743,7 @@ function resolveAdminImgUrl(url) {
 // ══════════════════════════════════════════
 async function loadGaleri() {
   const el = document.getElementById('galeri-content');
+  if (!el) return;
   el.innerHTML = '<div class="empty-state"><p>Memuat data galeri…</p></div>';
 
   try {
@@ -1723,40 +1759,67 @@ async function loadGaleri() {
     }
 
     allItems.forEach(r => { _galeriMap[r.id] = r; });
-
-    el.innerHTML = `
-      <div class="galeri-admin-grid">
-        ${allItems.map(r => {
-          const resolvedImg = resolveAdminImgUrl(r.foto_url);
-          return `
-            <div class="galeri-admin-card">
-              <div class="galeri-admin-thumb">
-                <img src="${escapeHtml(resolvedImg)}" alt="${escapeHtml(r.judul)}" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--ink-soft);font-size:0.75rem\\'>Foto tidak ditemukan</div>';">
-                <span class="badge badge-gold galeri-badge">${escapeHtml(r.kategori)}</span>
-              </div>
-              <div class="galeri-admin-body">
-                <h4 class="galeri-admin-title">${escapeHtml(r.judul)}</h4>
-                <div class="galeri-admin-meta">
-                  <span>${escapeHtml(r.tanggal || '—')}</span>
-                  ${r.keterangan ? `<span>${escapeHtml(r.keterangan)}</span>` : ''}
-                </div>
-                <div class="galeri-admin-actions">
-                  <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center" onclick="editGaleri('${r.id}')">
-                    Edit
-                  </button>
-                  <button class="btn btn-danger btn-sm" style="flex:1;justify-content:center" onclick="confirmDelete('galeri', '${r.id}', '${escapeHtml(r.judul)}', 'loadGaleri')">
-                    Hapus
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    `;
+    renderGaleriView(allItems);
   } catch (err) {
     el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(err.message)}</p></div>`;
   }
+}
+
+function renderGaleriView(list, isFiltered = false) {
+  const el = document.getElementById('galeri-content');
+  if (!el) return;
+
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="empty-state"><p>${isFiltered ? 'Tidak ada foto galeri pada kategori yang dipilih.' : 'Belum ada foto galeri.'}</p></div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="galeri-admin-grid">
+      ${list.map(r => {
+        const resolvedImg = resolveAdminImgUrl(r.foto_url);
+        return `
+          <div class="galeri-admin-card">
+            <div class="galeri-admin-thumb">
+              <img src="${escapeHtml(resolvedImg)}" alt="${escapeHtml(r.judul)}" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--ink-soft);font-size:0.75rem\\'>Foto tidak ditemukan</div>';">
+              <span class="badge badge-gold galeri-badge">${escapeHtml(r.kategori)}</span>
+            </div>
+            <div class="galeri-admin-body">
+              <h4 class="galeri-admin-title">${escapeHtml(r.judul)}</h4>
+              <div class="galeri-admin-meta">
+                <span>${escapeHtml(r.tanggal || '—')}</span>
+                ${r.keterangan ? `<span>${escapeHtml(r.keterangan)}</span>` : ''}
+              </div>
+              <div class="galeri-admin-actions">
+                <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center" onclick="editGaleri('${r.id}')">
+                  Edit
+                </button>
+                <button class="btn btn-danger btn-sm" style="flex:1;justify-content:center" onclick="confirmDelete('galeri', '${r.id}', '${escapeHtml(r.judul)}', 'loadGaleri')">
+                  Hapus
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function filterGaleriList() {
+  const kat = document.getElementById('filter-kategori-galeri')?.value || '';
+  if (!kat) {
+    renderGaleriView(Object.values(_galeriMap || {}));
+    return;
+  }
+  const filtered = Object.values(_galeriMap || {}).filter(r => r.kategori === kat);
+  renderGaleriView(filtered, true);
+}
+
+function resetGaleriFilter() {
+  const katEl = document.getElementById('filter-kategori-galeri');
+  if (katEl) katEl.value = '';
+  renderGaleriView(Object.values(_galeriMap || {}));
 }
 
 function openGaleriModal(data = null) {
@@ -1931,40 +1994,55 @@ function openStasiModal(key) {
   const item = _stasiMap[key] || DEFAULT_STASI_DATA[key];
   if (!item) return;
 
-  document.getElementById('s-id').value         = key;
-  document.getElementById('s-nama').value       = item.nama || '';
-  document.getElementById('s-pelindung').value  = item.pelindung || '';
-  document.getElementById('s-pesta').value      = item.pesta_nama || '';
-  document.getElementById('s-role').value       = item.role || '';
-  document.getElementById('s-foto').value       = item.foto_url || '';
-  document.getElementById('s-foto-manual').value = item.foto_url || '';
-  document.getElementById('s-alamat').value     = item.alamat || '';
-  document.getElementById('s-maps').value       = item.gmaps_url || '';
-  document.getElementById('stasi-alert').style.display = 'none';
+  const sIdEl = document.getElementById('s-id');
+  if (sIdEl) sIdEl.value = key;
+  const sNamaEl = document.getElementById('s-nama');
+  if (sNamaEl) sNamaEl.value = item.nama || '';
+  const sPelEl = document.getElementById('s-pelindung');
+  if (sPelEl) sPelEl.value = item.pelindung || '';
+  const sPestaEl = document.getElementById('s-pesta');
+  if (sPestaEl) sPestaEl.value = item.pesta_nama || '';
+  const sRoleEl = document.getElementById('s-role');
+  if (sRoleEl) sRoleEl.value = item.role || '';
+  const sFotoEl = document.getElementById('s-foto');
+  if (sFotoEl) sFotoEl.value = item.foto_url || '';
+  const sFotoManEl = document.getElementById('s-foto-manual');
+  if (sFotoManEl) sFotoManEl.value = item.foto_url || '';
+  const sAlamatEl = document.getElementById('s-alamat');
+  if (sAlamatEl) sAlamatEl.value = item.alamat || '';
+  const sMapsEl = document.getElementById('s-maps');
+  if (sMapsEl) sMapsEl.value = item.gmaps_url || '';
+
+  const alertEl = document.getElementById('stasi-alert');
+  if (alertEl) alertEl.style.display = 'none';
 
   setDropzonePreview('s', item.foto_url || '');
 
-  document.getElementById('modal-stasi-title').textContent = 'Edit Data: ' + (item.nama || 'Stasi');
+  const titleEl = document.getElementById('modal-stasi-title');
+  if (titleEl) titleEl.textContent = 'Edit Data: ' + (item.nama || 'Stasi');
   openModal('modal-stasi');
   saveInitialFormState('modal-stasi');
+  if (sPelEl) setTimeout(() => sPelEl.focus(), 100);
 }
 
 async function submitStasiAdmin(e) {
   e.preventDefault();
-  const id      = document.getElementById('s-id').value;
+  const id      = document.getElementById('s-id')?.value || '';
   const alertEl = document.getElementById('stasi-alert');
 
-  const nama       = document.getElementById('s-nama').value.trim();
-  const pelindung  = document.getElementById('s-pelindung').value.trim();
-  const pesta_nama = document.getElementById('s-pesta').value.trim();
-  const role       = document.getElementById('s-role').value.trim();
-  const foto_url   = document.getElementById('s-foto').value.trim();
-  const alamat     = document.getElementById('s-alamat').value.trim();
-  const gmaps_url  = document.getElementById('s-maps').value.trim();
+  const nama       = (document.getElementById('s-nama')?.value || '').trim();
+  const pelindung  = (document.getElementById('s-pelindung')?.value || '').trim();
+  const pesta_nama = (document.getElementById('s-pesta')?.value || '').trim();
+  const role       = (document.getElementById('s-role')?.value || '').trim();
+  const foto_url   = (document.getElementById('s-foto')?.value || '').trim();
+  const alamat     = (document.getElementById('s-alamat')?.value || '').trim();
+  const gmaps_url  = (document.getElementById('s-maps')?.value || '').trim();
 
   if (!pelindung || !alamat) {
-    alertEl.textContent = 'Nama pelindung dan alamat stasi wajib diisi.';
-    alertEl.style.display = 'flex';
+    if (alertEl) {
+      alertEl.textContent = 'Nama pelindung dan alamat stasi wajib diisi.';
+      alertEl.style.display = 'flex';
+    }
     toast('Nama pelindung & alamat wajib diisi', 'error');
     return;
   }
@@ -2090,57 +2168,7 @@ async function loadPesan() {
     if (error) throw error;
 
     _pesanList = data || [];
-    if (!_pesanList.length) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <p style="font-weight:600;font-size:1rem;color:var(--ink);margin-bottom:6px">Belum Ada Pesan Masuk</p>
-          <p style="color:var(--ink-soft);font-size:0.85rem">Pesan yang dikirim pengunjung melalui halaman Hubungi Kami akan tampil di sini.</p>
-        </div>`;
-      return;
-    }
-
-    let html = `
-      <div style="display:flex;flex-direction:column;gap:14px">
-    `;
-
-    _pesanList.forEach(p => {
-      const isUnread = !p.dibaca;
-      const tgl = p.created_at ? new Date(p.created_at).toLocaleDateString('id-ID', {
-        day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-      }) : 'Baru saja';
-
-      html += `
-        <div class="card" style="padding:18px 20px;border-left:4px solid ${isUnread ? 'var(--gold)' : 'rgba(255,255,255,0.1)'};background:${isUnread ? 'rgba(201,168,76,0.04)' : 'transparent'}">
-          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px">
-            <div style="display:flex;align-items:center;gap:10px">
-              <span style="font-weight:700;font-size:1rem;color:var(--ink)">${escapeHtml(p.nama)}</span>
-              ${isUnread ? '<span class="badge" style="background:var(--gold);color:#000;font-size:0.65rem;font-weight:700;padding:2px 8px">BARU</span>' : ''}
-              <span class="badge badge-info" style="font-size:0.75rem">${escapeHtml(p.subjek || 'Pesan Umum')}</span>
-            </div>
-            <div style="font-size:0.78rem;color:var(--ink-soft)">${tgl}</div>
-          </div>
-
-          <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px">
-            ${p.email ? `<div>Email: <a href="mailto:${escapeHtml(p.email)}" style="color:var(--gold);text-decoration:underline">${escapeHtml(p.email)}</a></div>` : ''}
-            ${p.telepon ? `<div>WhatsApp: <a href="https://wa.me/${escapeHtml(p.telepon.replace(/[^0-9]/g, ''))}" target="_blank" style="color:var(--gold);text-decoration:underline">${escapeHtml(p.telepon)}</a></div>` : ''}
-          </div>
-
-          <div style="font-size:0.9rem;line-height:1.6;color:var(--ink);background:var(--bg-alt);padding:12px 16px;border-radius:10px;border:1px solid var(--border);white-space:pre-wrap;margin-bottom:14px">${escapeHtml(p.pesan)}</div>
-
-          <div style="display:flex;justify-content:flex-end;gap:10px">
-            <button class="btn btn-ghost btn-sm" onclick="toggleBacaPesan('${p.id}', ${p.dibaca})">
-              ${p.dibaca ? 'Tandai Belum Dibaca' : 'Tandai Sudah Dibaca'}
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="confirmDelete('pesan', '${p.id}', 'Pesan dari ${escapeHtml(p.nama)}', 'loadPesan')">
-              Hapus
-            </button>
-          </div>
-        </div>
-      `;
-    });
-
-    html += `</div>`;
-    container.innerHTML = html;
+    renderPesanView(_pesanList);
   } catch (err) {
     console.error('Load pesan error:', err);
     container.innerHTML = `
@@ -2150,6 +2178,78 @@ async function loadPesan() {
         <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="loadPesan()">Coba Lagi</button>
       </div>`;
   }
+}
+
+function renderPesanView(list, isFiltered = false) {
+  const container = document.getElementById('pesan-content');
+  if (!container) return;
+
+  if (!list || !list.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <p style="font-weight:600;font-size:1rem;color:var(--ink);margin-bottom:6px">${isFiltered ? 'Tidak ada pesan yang cocok' : 'Belum Ada Pesan Masuk'}</p>
+        <p style="color:var(--ink-soft);font-size:0.85rem">${isFiltered ? 'Coba ganti kata kunci pencarian.' : 'Pesan yang dikirim pengunjung melalui halaman Hubungi Kami akan tampil di sini.'}</p>
+      </div>`;
+    return;
+  }
+
+  let html = `<div style="display:flex;flex-direction:column;gap:14px">`;
+
+  list.forEach(p => {
+    const isUnread = !p.dibaca;
+    const tgl = p.created_at ? new Date(p.created_at).toLocaleDateString('id-ID', {
+      day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    }) : 'Baru saja';
+
+    html += `
+      <div class="card" style="padding:18px 20px;border-left:4px solid ${isUnread ? 'var(--gold)' : 'rgba(255,255,255,0.1)'};background:${isUnread ? 'rgba(201,168,76,0.04)' : 'transparent'}">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-weight:700;font-size:1rem;color:var(--ink)">${escapeHtml(p.nama)}</span>
+            ${isUnread ? '<span class="badge" style="background:var(--gold);color:#000;font-size:0.65rem;font-weight:700;padding:2px 8px">BARU</span>' : ''}
+            <span class="badge badge-info" style="font-size:0.75rem">${escapeHtml(p.subjek || 'Pesan Umum')}</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--ink-soft)">${tgl}</div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px">
+          ${p.email ? `<div>Email: <a href="mailto:${escapeHtml(p.email)}" style="color:var(--gold);text-decoration:underline">${escapeHtml(p.email)}</a></div>` : ''}
+          ${p.telepon ? `<div>WhatsApp: <a href="https://wa.me/${escapeHtml(p.telepon.replace(/[^0-9]/g, ''))}" target="_blank" style="color:var(--gold);text-decoration:underline">${escapeHtml(p.telepon)}</a></div>` : ''}
+        </div>
+
+        <div style="font-size:0.9rem;line-height:1.6;color:var(--ink);background:var(--bg-alt);padding:12px 16px;border-radius:10px;border:1px solid var(--border);white-space:pre-wrap;margin-bottom:14px">${escapeHtml(p.pesan)}</div>
+
+        <div style="display:flex;justify-content:flex-end;gap:10px">
+          <button class="btn btn-ghost btn-sm" onclick="toggleBacaPesan('${p.id}', ${p.dibaca})">
+            ${p.dibaca ? 'Tandai Belum Dibaca' : 'Tandai Sudah Dibaca'}
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="confirmDelete('pesan', '${p.id}', 'Pesan dari ${escapeHtml(p.nama)}', 'loadPesan')">
+            Hapus
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function filterPesanList() {
+  const q = (document.getElementById('filter-search-pesan')?.value || '').toLowerCase().trim();
+  const filtered = (_pesanList || []).filter(p => {
+    return !q || (p.nama && p.nama.toLowerCase().includes(q)) ||
+      (p.email && p.email.toLowerCase().includes(q)) ||
+      (p.pesan && p.pesan.toLowerCase().includes(q)) ||
+      (p.subjek && p.subjek.toLowerCase().includes(q));
+  });
+  renderPesanView(filtered, !!q);
+}
+
+function resetPesanFilter() {
+  const qEl = document.getElementById('filter-search-pesan');
+  if (qEl) qEl.value = '';
+  renderPesanView(_pesanList || []);
 }
 
 const toggleBacaPesan = (id, current) => toggleEntityStatus('pesan', id, 'dibaca', current, loadPesan, 'Pesan');
@@ -2193,75 +2293,85 @@ function closeSidebar() {
   }
 }
 
-// Expose all dashboard functions to window
-window.handleCustomSelectChange = handleCustomSelectChange;
-window.syncSelectWithCustomInput = syncSelectWithCustomInput;
-window.getCustomSelectValue = getCustomSelectValue;
-window.handleHariSelectChange = handleHariSelectChange;
-window.handleWaktuSelectChange = handleWaktuSelectChange;
-window.handleKeteranganSelectChange = handleKeteranganSelectChange;
-window.handleMingguSelectChange = handleMingguSelectChange;
-window.showTab = showTab;
-window.loadCounters = loadCounters;
-window.loadJadwal = loadJadwal;
-window.loadRenungan = loadRenungan;
-window.loadPengumuman = loadPengumuman;
-window.loadGaleri = loadGaleri;
-window.loadStasiAdmin = loadStasiAdmin;
-window.loadPesan = loadPesan;
-window.filterJadwalList = filterJadwalList;
-window.resetJadwalFilter = resetJadwalFilter;
-window.filterPengumumanList = filterPengumumanList;
-window.resetPengumumanFilter = resetPengumumanFilter;
-window.filterGaleriList = filterGaleriList;
-window.resetGaleriFilter = resetGaleriFilter;
-window.filterPesanList = filterPesanList;
-window.resetPesanFilter = resetPesanFilter;
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.safeCloseModal = safeCloseModal;
-window.showConfirmModal = showConfirmModal;
-window.resolveConfirmModal = resolveConfirmModal;
-window.toggleSidebar = toggleSidebar;
-window.closeSidebar = closeSidebar;
-window.doLogout = doLogout;
-window.toast = toast;
-window.submitJadwal = submitJadwal;
-window.submitRenungan = submitRenungan;
-window.submitPengumuman = submitPengumuman;
-window.submitGaleri = submitGaleri;
-window.submitStasiAdmin = submitStasiAdmin;
-window.editJadwal = editJadwal;
-window.editRenungan = editRenungan;
-window.editPengumuman = editPengumuman;
-window.editGaleri = editGaleri;
-window.openJadwalModal = typeof openJadwalModal === 'function' ? openJadwalModal : undefined;
-window.openRenunganModal = typeof openRenunganModal === 'function' ? openRenunganModal : undefined;
-window.openPengumumanModal = typeof openPengumumanModal === 'function' ? openPengumumanModal : undefined;
-window.openGaleriModal = typeof openGaleriModal === 'function' ? openGaleriModal : undefined;
-window.openStasiModal = typeof openStasiModal === 'function' ? openStasiModal : undefined;
-window.toggleAktifJadwal = typeof toggleAktifJadwal === 'function' ? toggleAktifJadwal : undefined;
-window.toggleAktifRenungan = typeof toggleAktifRenungan === 'function' ? toggleAktifRenungan : undefined;
-window.toggleAktif = typeof toggleAktif === 'function' ? toggleAktif : undefined;
-window.toggleAktifGaleri = typeof toggleAktifGaleri === 'function' ? toggleAktifGaleri : undefined;
-window.deleteJadwal = typeof deleteJadwal === 'function' ? deleteJadwal : undefined;
-window.deleteRenungan = typeof deleteRenungan === 'function' ? deleteRenungan : undefined;
-window.deletePengumuman = typeof deletePengumuman === 'function' ? deletePengumuman : undefined;
-window.deleteGaleri = typeof deleteGaleri === 'function' ? deleteGaleri : undefined;
-window.confirmDelete = typeof confirmDelete === 'function' ? confirmDelete : undefined;
-window.executeDelete = typeof executeDelete === 'function' ? executeDelete : undefined;
-window.toggleDetailPesan = typeof toggleDetailPesan === 'function' ? toggleDetailPesan : undefined;
-window.balasPesanWA = typeof balasPesanWA === 'function' ? balasPesanWA : undefined;
-window.balasPesanEmail = typeof balasPesanEmail === 'function' ? balasPesanEmail : undefined;
-window.hapusPesan = typeof hapusPesan === 'function' ? hapusPesan : undefined;
-window.triggerFileInput = typeof triggerFileInput === 'function' ? triggerFileInput : undefined;
-window.handleFileSelect = typeof handleFileSelect === 'function' ? handleFileSelect : undefined;
-window.removeImage = typeof removeImage === 'function' ? removeImage : undefined;
-window.toggleUrlInput = typeof toggleUrlInput === 'function' ? toggleUrlInput : undefined;
-window.applyManualUrl = typeof applyManualUrl === 'function' ? applyManualUrl : undefined;
+// Expose all dashboard functions safely to window
+const safeExports = {
+  handleCustomSelectChange: typeof handleCustomSelectChange === 'function' ? handleCustomSelectChange : undefined,
+  syncSelectWithCustomInput: typeof syncSelectWithCustomInput === 'function' ? syncSelectWithCustomInput : undefined,
+  getCustomSelectValue: typeof getCustomSelectValue === 'function' ? getCustomSelectValue : undefined,
+  handleHariSelectChange: typeof handleHariSelectChange === 'function' ? handleHariSelectChange : undefined,
+  handleWaktuSelectChange: typeof handleWaktuSelectChange === 'function' ? handleWaktuSelectChange : undefined,
+  handleKeteranganSelectChange: typeof handleKeteranganSelectChange === 'function' ? handleKeteranganSelectChange : undefined,
+  handleMingguSelectChange: typeof handleMingguSelectChange === 'function' ? handleMingguSelectChange : undefined,
+  showTab: typeof showTab === 'function' ? showTab : undefined,
+  loadCounters: typeof loadCounters === 'function' ? loadCounters : undefined,
+  loadJadwal: typeof loadJadwal === 'function' ? loadJadwal : undefined,
+  loadRenungan: typeof loadRenungan === 'function' ? loadRenungan : undefined,
+  loadPengumuman: typeof loadPengumuman === 'function' ? loadPengumuman : undefined,
+  loadGaleri: typeof loadGaleri === 'function' ? loadGaleri : undefined,
+  loadStasiAdmin: typeof loadStasiAdmin === 'function' ? loadStasiAdmin : undefined,
+  loadPesan: typeof loadPesan === 'function' ? loadPesan : undefined,
+  filterJadwalList: typeof filterJadwalList === 'function' ? filterJadwalList : undefined,
+  resetJadwalFilter: typeof resetJadwalFilter === 'function' ? resetJadwalFilter : undefined,
+  filterRenunganList: typeof filterRenunganList === 'function' ? filterRenunganList : undefined,
+  resetRenunganFilter: typeof resetRenunganFilter === 'function' ? resetRenunganFilter : undefined,
+  filterPengumumanList: typeof filterPengumumanList === 'function' ? filterPengumumanList : undefined,
+  resetPengumumanFilter: typeof resetPengumumanFilter === 'function' ? resetPengumumanFilter : undefined,
+  filterGaleriList: typeof filterGaleriList === 'function' ? filterGaleriList : undefined,
+  resetGaleriFilter: typeof resetGaleriFilter === 'function' ? resetGaleriFilter : undefined,
+  filterPesanList: typeof filterPesanList === 'function' ? filterPesanList : undefined,
+  resetPesanFilter: typeof resetPesanFilter === 'function' ? resetPesanFilter : undefined,
+  openModal: typeof openModal === 'function' ? openModal : undefined,
+  closeModal: typeof closeModal === 'function' ? closeModal : undefined,
+  safeCloseModal: typeof safeCloseModal === 'function' ? safeCloseModal : undefined,
+  showConfirmModal: typeof showConfirmModal === 'function' ? showConfirmModal : undefined,
+  resolveConfirmModal: typeof resolveConfirmModal === 'function' ? resolveConfirmModal : undefined,
+  toggleSidebar: typeof toggleSidebar === 'function' ? toggleSidebar : undefined,
+  closeSidebar: typeof closeSidebar === 'function' ? closeSidebar : undefined,
+  doLogout: typeof doLogout === 'function' ? doLogout : undefined,
+  toast: typeof toast === 'function' ? toast : undefined,
+  submitJadwal: typeof submitJadwal === 'function' ? submitJadwal : undefined,
+  submitRenungan: typeof submitRenungan === 'function' ? submitRenungan : undefined,
+  submitPengumuman: typeof submitPengumuman === 'function' ? submitPengumuman : undefined,
+  submitGaleri: typeof submitGaleri === 'function' ? submitGaleri : undefined,
+  submitStasiAdmin: typeof submitStasiAdmin === 'function' ? submitStasiAdmin : undefined,
+  editJadwal: typeof editJadwal === 'function' ? editJadwal : undefined,
+  editRenungan: typeof editRenungan === 'function' ? editRenungan : undefined,
+  editPengumuman: typeof editPengumuman === 'function' ? editPengumuman : undefined,
+  editGaleri: typeof editGaleri === 'function' ? editGaleri : undefined,
+  openJadwalModal: typeof openJadwalModal === 'function' ? openJadwalModal : undefined,
+  openRenunganModal: typeof openRenunganModal === 'function' ? openRenunganModal : undefined,
+  openPengumumanModal: typeof openPengumumanModal === 'function' ? openPengumumanModal : undefined,
+  openGaleriModal: typeof openGaleriModal === 'function' ? openGaleriModal : undefined,
+  openStasiModal: typeof openStasiModal === 'function' ? openStasiModal : undefined,
+  toggleAktifJadwal: typeof toggleAktifJadwal === 'function' ? toggleAktifJadwal : undefined,
+  toggleAktifRenungan: typeof toggleAktifRenungan === 'function' ? toggleAktifRenungan : undefined,
+  toggleAktif: typeof toggleAktif === 'function' ? toggleAktif : undefined,
+  toggleAktifGaleri: typeof toggleAktifGaleri === 'function' ? toggleAktifGaleri : undefined,
+  deleteJadwal: typeof deleteJadwal === 'function' ? deleteJadwal : undefined,
+  deleteRenungan: typeof deleteRenungan === 'function' ? deleteRenungan : undefined,
+  deletePengumuman: typeof deletePengumuman === 'function' ? deletePengumuman : undefined,
+  deleteGaleri: typeof deleteGaleri === 'function' ? deleteGaleri : undefined,
+  confirmDelete: typeof confirmDelete === 'function' ? confirmDelete : undefined,
+  executeDelete: typeof executeDelete === 'function' ? executeDelete : undefined,
+  toggleDetailPesan: typeof toggleDetailPesan === 'function' ? toggleDetailPesan : undefined,
+  balasPesanWA: typeof balasPesanWA === 'function' ? balasPesanWA : undefined,
+  balasPesanEmail: typeof balasPesanEmail === 'function' ? balasPesanEmail : undefined,
+  hapusPesan: typeof hapusPesan === 'function' ? hapusPesan : undefined,
+  triggerFileInput: typeof triggerFileInput === 'function' ? triggerFileInput : undefined,
+  handleFileSelect: typeof handleFileSelect === 'function' ? handleFileSelect : undefined,
+  removeImage: typeof removeImage === 'function' ? removeImage : undefined,
+  toggleUrlInput: typeof toggleUrlInput === 'function' ? toggleUrlInput : undefined,
+  applyManualUrl: typeof applyManualUrl === 'function' ? applyManualUrl : undefined
+};
+
+Object.entries(safeExports).forEach(([key, val]) => {
+  if (typeof val !== 'undefined') {
+    window[key] = val;
+  }
+});
 
 // Web Component: <aesthetic-divider>
-if (!customElements.get('aesthetic-divider')) {
+if (typeof customElements !== 'undefined' && typeof HTMLElement !== 'undefined' && !customElements.get('aesthetic-divider')) {
   customElements.define('aesthetic-divider', class extends HTMLElement {
     connectedCallback() {
       const isReveal = this.hasAttribute('reveal') ? ' reveal' : '';

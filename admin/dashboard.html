@@ -574,39 +574,39 @@
           <div class="form-group">
             <label class="form-label">Warna / Masa Liturgi <span class="req">*</span></label>
             <select id="r-liturgi" class="form-ctrl" required>
-              <option value="hijau">Hijau (Masa Biasa)</option>
-              <option value="ungu">Ungu (Adven / Prapaskah)</option>
-              <option value="putih">Putih / Emas (Paskah / Natal / Hari Raya)</option>
-              <option value="merah">Merah (Martir / Pentakosta / Jumat Agung)</option>
+              <option value="Masa Biasa">Hijau (Masa Biasa)</option>
+              <option value="Masa Adven">Ungu (Adven / Prapaskah)</option>
+              <option value="Masa Paskah">Putih / Emas (Paskah / Natal / Hari Raya)</option>
+              <option value="Hari Raya">Merah (Martir / Pentakosta / Jumat Agung)</option>
             </select>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Judul Renungan <span class="req">*</span></label>
-            <input id="r-judul" type="text" class="form-ctrl" placeholder="Contoh: Menjadi Garam dan Terang Dunia" required>
+            <label class="form-label">Tema / Judul Renungan <span class="req">*</span></label>
+            <input id="r-tema" type="text" class="form-ctrl" placeholder="Contoh: Menjadi Garam dan Terang Dunia" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Bacaan Kitab Suci <span class="req">*</span></label>
-            <input id="r-bacaan" type="text" class="form-ctrl" placeholder="Contoh: Matius 5:13-16" required>
+            <label class="form-label">Bacaan / Perikop Kitab Suci <span class="req">*</span></label>
+            <input id="r-perikop" type="text" class="form-ctrl" placeholder="Contoh: Matius 5:13-16" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Ayat Kunci / Ayat Emas</label>
-            <textarea id="r-ayat" class="form-ctrl" style="min-height:65px" placeholder="Kutipan ayat kunci dari bacaan Kitab Suci…"></textarea>
+            <label class="form-label">Ayat Kunci / Ayat Emas <span class="req">*</span></label>
+            <textarea id="r-ayat" class="form-ctrl" style="min-height:65px" placeholder="Kutipan ayat kunci dari bacaan Kitab Suci…" required></textarea>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Isi Renungan <span class="req">*</span></label>
-            <textarea id="r-isi" class="form-ctrl" style="min-height:120px" placeholder="Tuliskan renungan, permenungan, dan pesan rohani…" required></textarea>
+            <label class="form-label">Refleksi / Isi Renungan <span class="req">*</span></label>
+            <textarea id="r-refleksi" class="form-ctrl" style="min-height:120px" placeholder="Tuliskan renungan, permenungan, dan pesan rohani…" required></textarea>
           </div>
         </div>
 
@@ -614,6 +614,14 @@
           <div class="form-group">
             <label class="form-label">Doa / Refleksi Penutup</label>
             <textarea id="r-doa" class="form-ctrl" style="min-height:65px" placeholder="Doa singkat penutup renungan…"></textarea>
+          </div>
+        </div>
+
+        <div class="form-check" onclick="document.getElementById('r-aktif').click()">
+          <input type="checkbox" id="r-aktif" checked>
+          <div>
+            <label for="r-aktif">Tampilkan di halaman website</label>
+            <div class="fc-sub">Hilangkan centang untuk menyembunyikan sementara tanpa menghapus</div>
           </div>
         </div>
 
@@ -709,8 +717,8 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Judul Kegiatan / Foto <span class="req">*</span></label>
-            <input id="g-judul" type="text" class="form-ctrl" placeholder="Contoh: Ziarah &amp; Rekreasi OMK 2025" required>
+            <label class="form-label">Judul / Nama Kegiatan <span class="req">*</span></label>
+            <input id="g-judul" type="text" class="form-ctrl" placeholder="Contoh: Misa Paskah 2026 Bersama Uskup" required>
           </div>
         </div>
 
@@ -719,9 +727,9 @@
             <label class="form-label">Kategori <span class="req">*</span></label>
             <select id="g-kategori" class="form-ctrl" required>
               <option value="omk">OMK (Orang Muda Katolik)</option>
-              <option value="liturgi">Liturgi &amp; Misa</option>
-              <option value="perayaan">Perayaan Besar (Natal/Paskah/HUT)</option>
-              <option value="sosial">Sosial &amp; Lingkungan</option>
+              <option value="liturgi">Liturgi &amp; Perayaan Ekaristi</option>
+              <option value="sosial">Kegiatan Sosial &amp; Baksos</option>
+              <option value="fasilitas">Gedung &amp; Fasilitas Gereja</option>
             </select>
           </div>
           <div class="form-group">
@@ -744,12 +752,12 @@
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                 </div>
                 <div class="dropzone-title">Tarik &amp; Lepas Foto di Sini, atau <span style="color:var(--gold);text-decoration:underline">Pilih Berkas</span></div>
-                <div class="dropzone-sub">Mendukung format JPG, PNG, WEBP (Otomatis dikompres &amp; diunggah ke database)</div>
+                <div class="dropzone-sub">Format JPG, PNG, WEBP (Maksimal 5MB)</div>
                 <div class="dropzone-progress" id="g-progress"><div class="dropzone-progress-bar" id="g-progress-bar"></div></div>
               </div>
 
               <div id="g-dropzone-preview" class="dropzone-preview-wrap" style="display:none" onclick="event.stopPropagation()">
-                <img id="g-preview-img" class="dropzone-preview-img" src="" alt="Preview Foto">
+                <img id="g-preview-img" class="dropzone-preview-img" src="" alt="Preview Foto Galeri">
                 <div class="dropzone-actions">
                   <button type="button" class="btn btn-ghost btn-sm" onclick="triggerFileInput('g-file-input')">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Ganti Berkas
@@ -772,18 +780,14 @@
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Keterangan Singkat</label>
-            <textarea id="g-keterangan" class="form-ctrl" style="min-height:70px" placeholder="Deskripsi atau sub-judul kegiatan…"></textarea>
-          </div>
-        </div>
-
         <div class="form-row cols-2">
           <div class="form-group">
+            <label class="form-label">Keterangan Singkat</label>
+            <input id="g-keterangan" type="text" class="form-ctrl" placeholder="Contoh: Dihadiri oleh seluruh umat paroki">
+          </div>
+          <div class="form-group">
             <label class="form-label">Urutan Tampil</label>
-            <input id="g-urutan" type="number" class="form-ctrl" value="0" min="0" placeholder="0 = tampil paling atas">
-            <span class="form-hint">Angka lebih kecil tampil lebih awal</span>
+            <input id="g-urutan" type="number" class="form-ctrl" value="0" min="0" placeholder="0 = paling awal">
           </div>
         </div>
 
@@ -791,7 +795,7 @@
       <div class="modal-foot">
         <button type="button" class="btn btn-ghost" onclick="safeCloseModal('modal-galeri')">Batal</button>
         <button type="submit" class="btn btn-primary" id="btn-submit-galeri">
-          <span id="btn-galeri-text">Simpan Foto Kegiatan</span>
+          <span id="btn-galeri-text">Simpan Foto</span>
         </button>
       </div>
     </form>
@@ -832,6 +836,13 @@
           <div class="form-group">
             <label class="form-label">Peran Pelindung</label>
             <input id="s-role" type="text" class="form-ctrl" placeholder="Contoh: Rasul Pertama &amp; Saudara Petrus">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Alamat / Lokasi Stasi <span class="req">*</span></label>
+            <textarea id="s-alamat" class="form-ctrl" style="min-height:75px" placeholder="Alamat lengkap stasi..." required></textarea>
           </div>
         </div>
 
@@ -878,7 +889,6 @@
         </div>
 
         <div class="form-row">
-          <div class="form-group">
           <div class="form-group">
             <label class="form-label">Tautan Google Maps</label>
             <input id="s-maps" type="text" class="form-ctrl" placeholder="https://maps.app.goo.gl/...">
