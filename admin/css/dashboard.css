@@ -288,34 +288,39 @@
   .badge-info   { background: rgba(59,130,246,0.1); color: #2563eb; }
 
   /* ═══ AESTHETIC DIVIDER WITH CROSS ORNAMENT ═══ */
+  aesthetic-divider {
+    display: block;
+    width: 100%;
+  }
   .aesthetic-divider {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.25rem;
     width: 100%;
-    max-width: 520px;
-    margin: 1.5rem auto;
-    opacity: 0.95;
+    max-width: 100%;
+    margin: 1.75rem auto 2rem auto;
+    opacity: 0.85;
+    box-sizing: border-box;
   }
   .aesthetic-divider .divider-line {
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(184,134,11,0.35), transparent);
+    background: linear-gradient(90deg, transparent 0%, rgba(184,134,11,0.25) 30%, rgba(184,134,11,0.45) 50%, rgba(184,134,11,0.25) 70%, transparent 100%);
   }
   .aesthetic-divider .divider-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
     font-weight: 800;
     color: var(--gold);
     background: var(--gold-pale);
-    border: 1px solid rgba(184,134,11,0.3);
+    border: 1.5px solid rgba(184,134,11,0.35);
     border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(184,134,11,0.12);
+    box-shadow: 0 2px 10px rgba(184,134,11,0.15);
     flex-shrink: 0;
   }
 

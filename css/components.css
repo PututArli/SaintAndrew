@@ -285,36 +285,42 @@
 }
 
 /* ── Aesthetic Divider with Cross Ornament ── */
+aesthetic-divider {
+  display: block;
+  width: 100%;
+}
+
 .aesthetic-divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.25rem;
   width: 100%;
-  max-width: 520px;
-  margin: 1.5rem auto;
+  max-width: 100%;
+  margin: 2rem auto;
   opacity: 0.95;
+  box-sizing: border-box;
 }
 
 .aesthetic-divider .divider-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(184,134,11,0.35), transparent);
+  background: linear-gradient(90deg, transparent 0%, rgba(184,134,11,0.2) 20%, rgba(184,134,11,0.4) 50%, rgba(184,134,11,0.2) 80%, transparent 100%);
 }
 
 .aesthetic-divider .divider-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  font-size: 0.8rem;
+  width: 30px;
+  height: 30px;
+  font-size: 0.85rem;
   font-weight: 800;
   color: var(--gold);
   background: var(--gold-muted);
-  border: 1px solid rgba(184,134,11,0.3);
+  border: 1.5px solid rgba(184,134,11,0.35);
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(184,134,11,0.12);
+  box-shadow: 0 2px 10px rgba(184,134,11,0.15);
   flex-shrink: 0;
 }
 
