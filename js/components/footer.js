@@ -1,12 +1,10 @@
-const SOCIAL_LINKS = {
-    instagram: "https://www.instagram.com/omk_parokimargaagung?igsh=MW4wODZ0dTRjZGkwZA==",
-    youtube:   "https://youtube.com/@parokisantoandreasrasulmar119?si=g3ct2ltcxme66UYq"
-};
-
 class ModernFooter extends HTMLElement {
     constructor() { super(); }
 
     connectedCallback() {
+        const content = (typeof window.getSiteContent === 'function' ? window.getSiteContent() : null) || window.SA_SITE_CONTENT_DEFAULTS || {};
+        const brand = content.brand || {};
+        const footer = content.footer || {};
         this.innerHTML = `
         <footer class="site-footer">
             <div class="max-w-7xl mx-auto px-6 py-14">
@@ -17,18 +15,18 @@ class ModernFooter extends HTMLElement {
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-9 h-9 rounded-xl flex items-center justify-center text-base" style="background:rgba(184,134,11,0.15);border:1px solid rgba(184,134,11,0.25);color:#D4A017">✝</div>
                             <div>
-                                <div class="font-bold text-white text-base leading-tight" style="font-family:'Inter',sans-serif;letter-spacing:-0.02em">Paroki Marga Agung</div>
-                                <div class="text-xs tracking-widest uppercase" style="color:rgba(255,255,255,0.4)">Santo Andreas Rasul</div>
+                                <div class="font-bold text-white text-base leading-tight" id="footer-brand-name" style="font-family:'Inter',sans-serif;letter-spacing:-0.02em">Paroki Marga Agung</div>
+                                <div class="text-xs tracking-widest uppercase" id="footer-brand-subtitle" style="color:rgba(255,255,255,0.4)">Santo Andreas Rasul</div>
                             </div>
                         </div>
-                        <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.45);max-width:260px">
+                        <p class="text-sm leading-relaxed" id="footer-description" style="color:rgba(255,255,255,0.45);max-width:260px">
                             Melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.
                         </p>
                         <div class="flex gap-2.5 mt-5">
-                            <a href="${SOCIAL_LINKS.instagram}" target="_blank" rel="noopener" class="footer-social-btn" title="Instagram">
+                            <a href="https://www.instagram.com/omk_parokimargaagung?igsh=MW4wODZ0dTRjZGkwZA==" target="_blank" rel="noopener" class="footer-social-btn" title="Instagram" id="footer-instagram">
                                 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                             </a>
-                            <a href="${SOCIAL_LINKS.youtube}" target="_blank" rel="noopener" class="footer-social-btn" title="YouTube">
+                            <a href="https://youtube.com/@parokisantoandreasrasulmar119?si=g3ct2ltcxme66UYq" target="_blank" rel="noopener" class="footer-social-btn" title="YouTube" id="footer-youtube">
                                 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                             </a>
                         </div>
@@ -61,25 +59,25 @@ class ModernFooter extends HTMLElement {
                                 <span class="mt-1" style="color:rgba(184,134,11,0.7)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                                 </span>
-                                <span>Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365</span>
+                                <span id="footer-address">Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365</span>
                             </li>
                             <li class="flex items-center gap-3">
                                 <span style="color:rgba(184,134,11,0.7)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                 </span>
-                                <span>(0721) 755300</span>
+                                <span id="footer-phone">(0721) 755300</span>
                             </li>
                             <li class="flex items-center gap-3">
                                 <span style="color:rgba(184,134,11,0.7)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                                 </span>
-                                <a href="mailto:parokimargaagung@gmail.com" class="transition-colors break-all" style="color:rgba(255,255,255,0.45)" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">parokimargaagung@gmail.com</a>
+                                <a href="mailto:parokimargaagung@gmail.com" id="footer-email" class="transition-colors break-all" style="color:rgba(255,255,255,0.45)" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">parokimargaagung@gmail.com</a>
                             </li>
                             <li class="flex items-start gap-3">
                                 <span class="mt-1" style="color:rgba(184,134,11,0.7)">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                 </span>
-                                <span>Sen–Jum: 08:00–15:00<br>Sab–Min: 08:00–12:00</span>
+                                <span id="footer-hours">Sen–Jum: 08:00–15:00<br>Sab–Min: 08:00–12:00</span>
                             </li>
                         </ul>
                     </div>
@@ -87,9 +85,9 @@ class ModernFooter extends HTMLElement {
 
                 <!-- Bottom bar -->
                 <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.28)">
-                    <span>© 2026 Paroki Santo Andreas Rasul Marga Agung.</span>
+                    <span id="footer-copyright">© 2026 Paroki Santo Andreas Rasul Marga Agung.</span>
                     <div class="flex items-center gap-3">
-                        <span class="flex items-center gap-1.5">Dibuat oleh umat dan untuk umat</span>
+                        <span class="flex items-center gap-1.5" id="footer-tagline">Dibuat oleh umat dan untuk umat</span>
                         <button id="adminPortalTrigger" class="text-[11px] opacity-20 hover:opacity-100 transition-opacity flex items-center gap-1 cursor-pointer bg-transparent border-0 p-1" style="color:rgba(255,255,255,0.6)" title="Akses Admin">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </button>
@@ -164,6 +162,42 @@ class ModernFooter extends HTMLElement {
             <button type="button" onclick="document.getElementById('adminQuickPill').style.display='none'" class="text-gray-400 hover:text-white ml-1 text-xs px-1 rounded transition-colors" title="Sembunyikan">✕</button>
         </div>
         `;
+
+        if (typeof window.loadSiteContent === 'function') {
+            window.loadSiteContent().then(() => {
+                const latest = window.getSiteContent ? window.getSiteContent() : content;
+                const latestBrand = latest.brand || {};
+                const latestFooter = latest.footer || {};
+
+                const brandNameEl = this.querySelector('#footer-brand-name');
+                const brandSubEl = this.querySelector('#footer-brand-subtitle');
+                const descEl = this.querySelector('#footer-description');
+                const instagramEl = this.querySelector('#footer-instagram');
+                const youtubeEl = this.querySelector('#footer-youtube');
+                const addressEl = this.querySelector('#footer-address');
+                const phoneEl = this.querySelector('#footer-phone');
+                const emailEl = this.querySelector('#footer-email');
+                const hoursEl = this.querySelector('#footer-hours');
+                const copyrightEl = this.querySelector('#footer-copyright');
+                const taglineEl = this.querySelector('#footer-tagline');
+
+                if (brandNameEl) brandNameEl.textContent = latestBrand.name || 'Paroki Santo Andreas Rasul';
+                if (brandSubEl) brandSubEl.textContent = latestBrand.subtitle || 'Santo Andreas Rasul';
+                if (descEl) descEl.textContent = latestFooter.description || brand.description || 'Melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.';
+                if (instagramEl && (latestBrand.instagram || latestFooter.instagram)) instagramEl.href = latestBrand.instagram || latestFooter.instagram;
+                if (youtubeEl && (latestBrand.youtube || latestFooter.youtube)) youtubeEl.href = latestBrand.youtube || latestFooter.youtube;
+                if (addressEl) addressEl.textContent = latestFooter.address || 'Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365';
+                if (phoneEl) phoneEl.textContent = latestFooter.phone || '(0721) 755300';
+                if (emailEl) {
+                    const email = latestFooter.email || 'parokimargaagung@gmail.com';
+                    emailEl.textContent = email;
+                    emailEl.href = `mailto:${email}`;
+                }
+                if (hoursEl) hoursEl.innerHTML = latestFooter.hours || 'Sen–Jum: 08:00–15:00<br>Sab–Min: 08:00–12:00';
+                if (copyrightEl) copyrightEl.textContent = latestFooter.copyright || '© 2026 Paroki Santo Andreas Rasul Marga Agung.';
+                if (taglineEl) taglineEl.textContent = latestFooter.tagline || 'Dibuat oleh umat dan untuk umat';
+            }).catch(() => {});
+        }
 
         this.initAdminPortal();
     }

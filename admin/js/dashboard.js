@@ -456,6 +456,7 @@ function showTab(name, btn = null, pushHistory = true) {
     'pengumuman': 'Pengumuman Paroki',
     'galeri': 'Galeri Kegiatan',
     'stasi': 'Data & Foto Stasi',
+    'konten': 'Konten Situs',
     'pesan': 'Pesan Masuk'
   };
   document.getElementById('topbar-title').textContent = titles[name] || 'Admin';
@@ -475,6 +476,7 @@ function showTab(name, btn = null, pushHistory = true) {
   if (name === 'pengumuman')  loadPengumuman();
   if (name === 'galeri')      loadGaleri();
   if (name === 'stasi')       loadStasiAdmin();
+  if (name === 'konten' && typeof loadSiteContentAdmin === 'function') loadSiteContentAdmin();
   if (name === 'pesan')       loadPesan();
 }
 

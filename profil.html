@@ -6,6 +6,9 @@
 <title>Profil - Paroki Marga Agung</title>
 <meta name="description" content="Profil dan sejarah Paroki Santo Andreas Rasul Marga Agung, dari transmigrasi hingga menjadi paroki mandiri.">
 <link rel="icon" href="assets/crossIcon.png" type="image/png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/site-content.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -17,8 +20,8 @@
 
   <!-- Page Hero -->
   <div class="page-hero">
-    <div class="page-hero-title animate-fade-in">Profil Paroki</div>
-    <p class="page-hero-subtitle animate-fade-in">Mengenal lebih dalam sejarah dan organisasi Paroki Marga Agung</p>
+    <div class="page-hero-title animate-fade-in" id="profile-hero-title">Profil Paroki</div>
+    <p class="page-hero-subtitle animate-fade-in" id="profile-hero-subtitle">Mengenal lebih dalam sejarah dan organisasi Paroki Marga Agung</p>
   </div>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-12 sm:space-y-16">
@@ -26,29 +29,29 @@
     <!-- ── Struktur Organisasi ── -->
     <section class="reveal">
       <div class="text-center mb-10">
-        <div class="section-badge mx-auto">Organisasi Gereja</div>
-        <h2 class="section-title mt-3">Struktur <span>Organisasi</span> Gereja</h2>
+        <div class="section-badge mx-auto" id="profile-org-badge">Organisasi Gereja</div>
+        <h2 class="section-title mt-3" id="profile-org-title">Struktur <span>Organisasi</span> Gereja</h2>
         <div class="section-divider centered"></div>
-        <p class="text-gray-500 text-sm mt-3 max-w-2xl mx-auto">Layaknya sebuah organisasi, Gereja Katolik memiliki hierarki yang teratur dari tingkat keuskupan hingga komunitas basis.</p>
+        <p class="text-gray-500 text-sm mt-3 max-w-2xl mx-auto" id="profile-org-subtitle">Layaknya sebuah organisasi, Gereja Katolik memiliki hierarki yang teratur dari tingkat keuskupan hingga komunitas basis.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         <div class="glass-card p-8 hover:scale-[1.02] transition-transform reveal reveal-left">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-5 font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
-          <h3 class="text-xl font-bold mb-3" style="color:var(--ink)">Apa itu Paroki?</h3>
+          <h3 class="text-xl font-bold mb-3" style="color:var(--ink)" id="profile-paroki-heading">Apa itu Paroki?</h3>
           <div class="divider-gold mb-4"></div>
           <p class="text-sm leading-relaxed" style="color:var(--ink-soft)">
-            <strong class="font-bold" style="color:var(--ink)">Paroki</strong> adalah badan komunitas kaum beriman kristiani yang dibentuk secara tetap dalam wilayah keuskupan. Reksa pastoral dipercayakan kepada Pastor Kepala Paroki di bawah otoritas Uskup wilayah — berfungsi sebagai tempat koordinasi administrasi, kepengurusan, dan layanan sakramental di daerahnya.
+            <strong class="font-bold" style="color:var(--ink)">Paroki</strong> <span id="profile-paroki-text">adalah badan komunitas kaum beriman kristiani yang dibentuk secara tetap dalam wilayah keuskupan. Reksa pastoral dipercayakan kepada Pastor Kepala Paroki di bawah otoritas Uskup wilayah — berfungsi sebagai tempat koordinasi administrasi, kepengurusan, dan layanan sakramental di daerahnya.</span>
           </p>
         </div>
 
         <div class="glass-card p-8 hover:scale-[1.02] transition-transform reveal reveal-right">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold mb-5" style="background:var(--gold-muted);color:var(--gold)">✝</div>
-          <h3 class="text-xl font-bold mb-3" style="color:var(--ink)">Apa itu Stasi?</h3>
+          <h3 class="text-xl font-bold mb-3" style="color:var(--ink)" id="profile-stasi-heading">Apa itu Stasi?</h3>
           <div class="divider-gold mb-4"></div>
           <p class="text-sm leading-relaxed" style="color:var(--ink-soft)">
-            <strong class="font-bold" style="color:var(--ink)">Stasi</strong> adalah unit struktural di bawah naungan paroki yang mewadahi komunitas umat beriman yang tersebar di berbagai wilayah. Stasi memiliki kapel atau bangunan peribadatan sendiri dan dikelola oleh pengurus inti lokal bersama pastor paroki.
+            <strong class="font-bold" style="color:var(--ink)">Stasi</strong> <span id="profile-stasi-text">adalah unit struktural di bawah naungan paroki yang mewadahi komunitas umat beriman yang tersebar di berbagai wilayah. Stasi memiliki kapel atau bangunan peribadatan sendiri dan dikelola oleh pengurus inti lokal bersama pastor paroki.</span>
           </p>
         </div>
 
@@ -61,8 +64,8 @@
     <!-- ── Visi & Misi ── -->
     <section class="reveal">
       <div class="text-center mb-10">
-        <div class="section-badge mx-auto">Arah &amp; Tujuan</div>
-        <h2 class="section-title mt-3">Visi &amp; <span>Misi</span> Paroki</h2>
+        <div class="section-badge mx-auto" id="profile-vision-badge">Arah &amp; Tujuan</div>
+        <h2 class="section-title mt-3" id="profile-vision-title">Visi &amp; <span>Misi</span> Paroki</h2>
         <div class="section-divider centered"></div>
       </div>
 
@@ -73,11 +76,11 @@
           <div class="mb-5 flex items-center gap-3">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-bold" style="background:rgba(184,134,11,0.2);border:1px solid rgba(184,134,11,0.3);color:var(--gold-light)">✦</div>
             <div>
-              <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold-light)">Visi</div>
-              <div class="font-bold text-white text-lg">Tujuan Jangka Panjang</div>
+              <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold-light)" id="profile-vision-label">Visi</div>
+              <div class="font-bold text-white text-lg" id="profile-vision-heading">Tujuan Jangka Panjang</div>
             </div>
           </div>
-          <p class="text-white/80 leading-relaxed text-sm">
+          <p class="text-white/80 leading-relaxed text-sm" id="profile-vision-text">
             Menjadi persekutuan umat beriman yang berlandaskan Ekaristi, mandiri, misioner, dan berbelarasa terhadap sesama yang miskin dan menderita di tengah masyarakat yang majemuk.
           </p>
         </div>
@@ -87,22 +90,22 @@
           <div class="mb-5 flex items-center gap-3">
             <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl font-bold" style="background:var(--gold-muted);color:var(--gold)">✦</div>
             <div>
-              <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold)">Misi</div>
-              <div class="font-bold text-xl" style="color:var(--ink)">Langkah Nyata</div>
+              <div class="text-xs font-bold uppercase tracking-widest" style="color:var(--gold)" id="profile-mission-label">Misi</div>
+              <div class="font-bold text-xl" style="color:var(--ink)" id="profile-mission-heading">Langkah Nyata</div>
             </div>
           </div>
           <ul class="space-y-3">
             <li class="flex items-start gap-3 text-sm" style="color:var(--ink-soft)">
               <span class="mt-0.5 text-lg flex-shrink-0" style="color:var(--gold)">✦</span>
-              Menghidupkan kelompok kategorial dan wilayah/stasi melalui pendalaman iman.
+              <span id="profile-mission-item-1">Menghidupkan kelompok kategorial dan wilayah/stasi melalui pendalaman iman.</span>
             </li>
             <li class="flex items-start gap-3 text-sm" style="color:var(--ink-soft)">
               <span class="mt-0.5 text-lg flex-shrink-0" style="color:var(--gold)">✦</span>
-              Meningkatkan kepedulian sosial terhadap umat yang kurang mampu.
+              <span id="profile-mission-item-2">Meningkatkan kepedulian sosial terhadap umat yang kurang mampu.</span>
             </li>
             <li class="flex items-start gap-3 text-sm" style="color:var(--ink-soft)">
               <span class="mt-0.5 text-lg flex-shrink-0" style="color:var(--gold)">✦</span>
-              Membangun dialog dan kerjasama yang baik dengan umat beragama lain.
+              <span id="profile-mission-item-3">Membangun dialog dan kerjasama yang baik dengan umat beragama lain.</span>
             </li>
           </ul>
         </div>
@@ -116,10 +119,10 @@
     <!-- ── Santo & Santa Pelindung Stasi & Paroki ── -->
     <section class="reveal">
       <div class="text-center mb-10">
-        <div class="section-badge mx-auto">Pelindung Rohani</div>
-        <h2 class="section-title mt-3">Santo &amp; Santa <span>Pelindung</span></h2>
+        <div class="section-badge mx-auto" id="profile-saints-badge">Pelindung Rohani</div>
+        <h2 class="section-title mt-3" id="profile-saints-title">Santo &amp; Santa <span>Pelindung</span></h2>
         <div class="section-divider centered"></div>
-        <p class="text-sm mt-3 max-w-2xl mx-auto" style="color:var(--stone)">
+        <p class="text-sm mt-3 max-w-2xl mx-auto" style="color:var(--stone)" id="profile-saints-subtitle">
           Mengenal riwayat hidup dan keteladanan iman para kudus pelindung gereja paroki serta stasi-stasi di lingkungan Paroki Santo Andreas Rasul Marga Agung.
         </p>
       </div>
@@ -306,8 +309,8 @@
     <!-- ── Sejarah Paroki ── -->
     <section class="reveal">
       <div class="text-center mb-10">
-        <div class="section-badge mx-auto">Perjalanan Iman</div>
-        <h2 class="section-title mt-3">Sejarah <span>Paroki</span></h2>
+        <div class="section-badge mx-auto" id="profile-history-badge">Perjalanan Iman</div>
+        <h2 class="section-title mt-3" id="profile-history-title">Sejarah <span>Paroki</span></h2>
         <div class="section-divider centered"></div>
       </div>
 
@@ -318,33 +321,33 @@
           <!-- Timeline item -->
           <div class="flex gap-6 reveal reveal-left">
             <div class="flex flex-col items-center">
-              <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-white text-sm flex-shrink-0" style="background:var(--ink)">1961</div>
+              <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-white text-sm flex-shrink-0" style="background:var(--ink)" id="profile-history-year-1">1961</div>
               <div class="w-0.5 flex-1 mt-3" style="background:var(--border)"></div>
             </div>
             <div class="pb-8">
-              <h3 class="font-bold text-lg mb-2" style="color:var(--ink)">Asal Usul Umat</h3>
-              <p class="text-sm leading-relaxed" style="color:var(--ink-soft)">Akar umat Katolik di wilayah ini sebagian besar berasal dari para transmigran korban letusan Gunung Merapi dari Jawa Tengah serta para pekerja kebun PTPN 7. Rombongan pertama tiba di penampungan pada 27 Juni 1961. Pelayanan pastoral awalnya diberikan oleh para imam misionaris SCJ dari Tanjung Karang.</p>
+              <h3 class="font-bold text-lg mb-2" style="color:var(--ink)" id="profile-history-title-1">Asal Usul Umat</h3>
+              <p class="text-sm leading-relaxed" style="color:var(--ink-soft)" id="profile-history-text-1">Akar umat Katolik di wilayah ini sebagian besar berasal dari para transmigran korban letusan Gunung Merapi dari Jawa Tengah serta para pekerja kebun PTPN 7. Rombongan pertama tiba di penampungan pada 27 Juni 1961. Pelayanan pastoral awalnya diberikan oleh para imam misionaris SCJ dari Tanjung Karang.</p>
             </div>
           </div>
 
           <div class="flex gap-6 reveal reveal-left" style="transition-delay:0.1s">
             <div class="flex flex-col items-center">
-              <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-white text-sm flex-shrink-0" style="background:var(--ink)">1964</div>
+              <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-white text-sm flex-shrink-0" style="background:var(--ink)" id="profile-history-year-2">1964</div>
               <div class="w-0.5 flex-1 mt-3" style="background:var(--border)"></div>
             </div>
             <div class="pb-8">
-              <h3 class="font-bold text-lg mb-2" style="color:var(--ink)">Pembangunan Gereja</h3>
-              <p class="text-sm leading-relaxed" style="color:var(--ink-soft)">Gereja pertama berbentuk semi permanen selesai dibangun pada 1962–1963 di atas tanah seluas ¾ hektar di Blok C. Gereja tersebut diresmikan oleh Bapa Uskup Hermelink Gentiaras SCJ pada 27 Juni 1964. Rehabilitasi menjadi bangunan permanen seluas 528 m² dilakukan saat masih berstatus stasi di bawah Paroki Kedaton.</p>
+              <h3 class="font-bold text-lg mb-2" style="color:var(--ink)" id="profile-history-title-2">Pembangunan Gereja</h3>
+              <p class="text-sm leading-relaxed" style="color:var(--ink-soft)" id="profile-history-text-2">Gereja pertama berbentuk semi permanen selesai dibangun pada 1962–1963 di atas tanah seluas ¾ hektar di Blok C. Gereja tersebut diresmikan oleh Bapa Uskup Hermelink Gentiaras SCJ pada 27 Juni 1964. Rehabilitasi menjadi bangunan permanen seluas 528 m² dilakukan saat masih berstatus stasi di bawah Paroki Kedaton.</p>
             </div>
           </div>
 
           <div class="flex gap-6 reveal reveal-left" style="transition-delay:0.2s">
             <div class="flex flex-col items-center">
-              <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-sm flex-shrink-0" style="background:var(--gold);color:white">2005</div>
+              <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-sm flex-shrink-0" style="background:var(--gold);color:white" id="profile-history-year-3">2005</div>
             </div>
             <div>
-              <h3 class="font-bold text-lg mb-2" style="color:var(--ink)">Peningkatan Status Paroki</h3>
-              <p class="text-sm leading-relaxed" style="color:var(--ink-soft)">Stasi Marga Agung ditetapkan sebagai Unit Pastoral sekitar tahun 1989. Statusnya resmi ditingkatkan menjadi <strong style="color:var(--gold)">Paroki pada 1 Januari 2005</strong> dengan Romo Yohanes Thedens Tana sebagai Pastor Paroki pertamanya. Data terakhir menunjukkan 217 KK dan 9 Lingkungan.</p>
+              <h3 class="font-bold text-lg mb-2" style="color:var(--ink)" id="profile-history-title-3">Peningkatan Status Paroki</h3>
+              <p class="text-sm leading-relaxed" style="color:var(--ink-soft)" id="profile-history-text-3">Stasi Marga Agung ditetapkan sebagai Unit Pastoral sekitar tahun 1989. Statusnya resmi ditingkatkan menjadi <strong style="color:var(--gold)">Paroki pada 1 Januari 2005</strong> dengan Romo Yohanes Thedens Tana sebagai Pastor Paroki pertamanya. Data terakhir menunjukkan 217 KK dan 9 Lingkungan.</p>
             </div>
           </div>
 
@@ -358,10 +361,10 @@
     <!-- ── Daftar Ketua ── -->
     <section class="reveal">
       <div class="text-center mb-10">
-        <div class="section-badge mx-auto">Kepemimpinan</div>
-        <h2 class="section-title mt-3">Daftar <span>Ketua Stasi</span></h2>
+        <div class="section-badge mx-auto" id="profile-leaders-badge">Kepemimpinan</div>
+        <h2 class="section-title mt-3" id="profile-leaders-title">Daftar <span>Ketua Stasi</span></h2>
         <div class="section-divider centered"></div>
-        <p class="text-sm mt-3" style="color:var(--stone)">Para pemimpin yang telah mengabdi untuk Margo Agung</p>
+        <p class="text-sm mt-3" style="color:var(--stone)" id="profile-leaders-subtitle">Para pemimpin yang telah mengabdi untuk Margo Agung</p>
       </div>
 
       <div class="glass-card p-8">

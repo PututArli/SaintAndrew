@@ -3,6 +3,8 @@ class ModernNavbar extends HTMLElement {
 
     connectedCallback() {
         const activePage = this.getAttribute('active-page') || 'index.html';
+        const content = (typeof window.getSiteContent === 'function' ? window.getSiteContent() : null) || window.SA_SITE_CONTENT_DEFAULTS || {};
+        const brand = content.brand || {};
 
         const links = [
             { href: 'index.html',   text: 'Beranda' },
@@ -45,8 +47,8 @@ class ModernNavbar extends HTMLElement {
                 <a href="index.html" class="flex items-center gap-2.5 no-underline pr-2">
                     <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.25)">✝</div>
                     <div class="flex flex-col">
-                        <span class="font-extrabold text-sm tracking-tight" style="color:var(--ink);line-height:1.15">Paroki Marga Agung</span>
-                        <span class="text-[10px] font-medium tracking-wider uppercase" style="color:var(--stone)">S. Andreas Rasul</span>
+                        <span class="font-extrabold text-sm tracking-tight" style="color:var(--ink);line-height:1.15" id="navbar-brand-name">${brand.name || 'Paroki Santo Andreas Rasul'}</span>
+                        <span class="text-[10px] font-medium tracking-wider uppercase" style="color:var(--stone)" id="navbar-brand-subtitle">${brand.subtitle || 'S. Andreas Rasul'}</span>
                     </div>
                 </a>
 
@@ -64,6 +66,17 @@ class ModernNavbar extends HTMLElement {
             </div>
         </nav>
         `;
+
+        if (typeof window.loadSiteContent === 'function') {
+            window.loadSiteContent().then(() => {
+                const latest = window.getSiteContent ? window.getSiteContent() : content;
+                const latestBrand = latest.brand || {};
+                const nameEl = this.querySelector('#navbar-brand-name');
+                const subEl = this.querySelector('#navbar-brand-subtitle');
+                if (nameEl) nameEl.textContent = latestBrand.name || brand.name || 'Paroki Santo Andreas Rasul';
+                if (subEl) subEl.textContent = latestBrand.subtitle || brand.subtitle || 'S. Andreas Rasul';
+            }).catch(() => {});
+        }
 
         // Scroll awareness for floating nav
         const nav = this.querySelector('.floating-nav');

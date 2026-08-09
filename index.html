@@ -30,29 +30,29 @@
         <!-- Badge -->
         <div class="hero-badge mb-6">
           <span>✝</span>
-          <span id="greeting-hero">Selamat Datang</span>
+          <span id="hero-badge">Selamat Datang</span>
         </div>
 
         <!-- Title -->
         <h1 class="hero-title mb-6">
-          Paroki<br>
-          <span>Santo Andreas</span><br>
-          Rasul
+          <span id="hero-line-1">Paroki</span><br>
+          <span id="hero-line-2">Santo Andreas</span><br>
+          <span id="hero-line-3">Rasul</span>
         </h1>
 
         <!-- Subtitle -->
         <p class="hero-subtitle mb-10">
-          Gereja Katolik Paroki Santo Andreas Rasul Marga Agung hadir untuk melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.
+          <span id="hero-subtitle">Gereja Katolik Paroki Santo Andreas Rasul Marga Agung hadir untuk melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.</span>
         </p>
 
         <!-- CTA Actions (Focused & Clean) -->
         <div class="flex flex-wrap items-center gap-4">
-          <a href="jadwal.html" class="btn-primary">
-            <span>Jadwal Misa</span>
+          <a href="jadwal.html" class="btn-primary" id="hero-cta-primary">
+            <span id="hero-cta-primary-text">Jadwal Misa</span>
             <span>→</span>
           </a>
-          <a href="#stasi-section" class="btn-secondary">
-            <span>Jelajahi 9 Stasi</span>
+          <a href="#stasi-section" class="btn-secondary" id="hero-cta-secondary">
+            <span id="hero-cta-secondary-text">Jelajahi 9 Stasi</span>
             <span>↓</span>
           </a>
         </div>
@@ -63,20 +63,20 @@
         <div class="glass-card-dark rounded-2xl overflow-hidden">
           <div class="hero-stats-grid">
             <div class="stat-item">
-              <span class="stat-number">9</span>
-              <span class="stat-label">Stasi</span>
+              <span class="stat-number" id="home-stat-1-value">9</span>
+              <span class="stat-label" id="home-stat-1-label">Stasi</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">217+</span>
-              <span class="stat-label">Kepala Keluarga</span>
+              <span class="stat-number" id="home-stat-2-value">217+</span>
+              <span class="stat-label" id="home-stat-2-label">Kepala Keluarga</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">2005</span>
-              <span class="stat-label">Tahun Berdiri</span>
+              <span class="stat-number" id="home-stat-3-value">2005</span>
+              <span class="stat-label" id="home-stat-3-label">Tahun Berdiri</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">60+</span>
-              <span class="stat-label">Tahun Melayani</span>
+              <span class="stat-number" id="home-stat-4-value">60+</span>
+              <span class="stat-label" id="home-stat-4-label">Tahun Melayani</span>
             </div>
           </div>
         </div>
@@ -98,10 +98,10 @@
     <div class="max-w-7xl mx-auto">
 
       <div class="text-center mb-14 reveal">
-        <div class="section-badge mx-auto">Informasi Terkini</div>
-        <h2 class="section-title mt-3">Pengumuman &amp; <span>Renungan</span></h2>
+        <div class="section-badge mx-auto" id="home-announcement-badge">Informasi Terkini</div>
+        <h2 class="section-title mt-3" id="home-announcement-title">Pengumuman &amp; <span>Renungan</span></h2>
         <div class="section-divider centered"></div>
-        <p class="text-gray-500 text-sm mt-2 max-w-lg mx-auto">Tetap terhubung dengan kegiatan dan pesan rohani paroki kita.</p>
+        <p class="text-gray-500 text-sm mt-2 max-w-lg mx-auto" id="home-announcement-subtitle">Tetap terhubung dengan kegiatan dan pesan rohani paroki kita.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -111,7 +111,7 @@
           <div class="glass-card p-8 h-full">
             <h3 class="font-bold text-lg mb-6 flex items-center gap-3" style="color:var(--ink)">
               <span class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.25)">✝</span>
-              Pengumuman Paroki
+              <span id="home-announcement-card-title">Pengumuman Paroki</span>
             </h3>
             <div id="pengumumanList" class="space-y-4">
               <div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">
@@ -127,7 +127,7 @@
             <div class="mb-4 flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold" style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);color:var(--gold)">✝</div>
               <div>
-                <div class="text-xs font-bold uppercase tracking-widest text-yellow-400/80">Renungan Harian</div>
+                <div class="text-xs font-bold uppercase tracking-widest text-yellow-400/80" id="home-renungan-label">Renungan Harian</div>
                 <div class="font-bold text-white text-base mt-0.5">Memuat Sabda Hari Ini…</div>
               </div>
             </div>
@@ -148,8 +148,8 @@
     <div class="max-w-7xl mx-auto">
 
       <div class="text-center mb-12 reveal">
-        <div class="section-badge mx-auto">Jadwal Mingguan</div>
-        <h2 class="section-title mt-3">Jadwal Misa <span>Gereja Paroki</span></h2>
+        <div class="section-badge mx-auto" id="home-schedule-badge">Jadwal Mingguan</div>
+        <h2 class="section-title mt-3" id="home-schedule-title">Jadwal Misa <span>Gereja Paroki</span></h2>
         <div class="section-divider centered"></div>
       </div>
 
@@ -179,8 +179,8 @@
       </div>
 
       <div class="text-center reveal">
-        <a href="jadwal.html" class="btn-primary inline-flex">
-          <span>Lihat Jadwal Lengkap</span>
+        <a href="jadwal.html" class="btn-primary inline-flex" id="home-schedule-link">
+          <span id="home-schedule-link-text">Lihat Jadwal Lengkap</span>
           <span>→</span>
         </a>
       </div>
@@ -198,12 +198,12 @@
 
       <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10 reveal">
         <div>
-          <div class="section-badge">Foto Kegiatan</div>
-          <h2 class="section-title mt-3">Galeri <span>Paroki</span></h2>
+          <div class="section-badge" id="home-gallery-badge">Foto Kegiatan</div>
+          <h2 class="section-title mt-3" id="home-gallery-title">Galeri <span>Paroki</span></h2>
           <div class="section-divider"></div>
         </div>
         <a href="galeri.html" class="flex items-center gap-2 text-sm font-semibold hover:opacity-70 transition-opacity" style="color:var(--gold)">
-          Lihat Semua Foto <span>→</span>
+          <span id="home-gallery-link">Lihat Semua Foto</span> <span>→</span>
         </a>
       </div>
 
@@ -257,10 +257,10 @@
   <section id="stasi-section" class="py-16 px-6" style="background:var(--bg-alt);scroll-margin-top:5rem">
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-12 reveal">
-        <div class="section-badge mx-auto">Komunitas Kami</div>
-        <h2 class="section-title mt-3">9 <span>Stasi</span> Paroki</h2>
+        <div class="section-badge mx-auto" id="home-stasi-badge">Komunitas Kami</div>
+        <h2 class="section-title mt-3" id="home-stasi-title">9 <span>Stasi</span> Paroki</h2>
         <div class="section-divider centered"></div>
-        <p class="text-gray-500 text-sm mt-3 max-w-md mx-auto">Paroki Marga Agung menaungi 9 stasi dengan sejarah yang kaya di Lampung Selatan.</p>
+        <p class="text-gray-500 text-sm mt-3 max-w-md mx-auto" id="home-stasi-subtitle">Paroki Marga Agung menaungi 9 stasi dengan sejarah yang kaya di Lampung Selatan.</p>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 mb-8">
@@ -330,8 +330,8 @@
       </div>
 
       <div class="text-center reveal">
-        <a href="stasi.html" class="btn-primary inline-flex">
-          Jelajahi Semua Stasi
+        <a href="stasi.html" class="btn-primary inline-flex" id="home-stasi-link">
+          <span id="home-stasi-link-text">Jelajahi Semua Stasi</span>
         </a>
       </div>
     </div>
@@ -343,6 +343,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-config.js"></script>
+<script src="js/site-content.js"></script>
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>
 <script src="js/components/ui-components.js"></script>

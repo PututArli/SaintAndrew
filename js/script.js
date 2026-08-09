@@ -753,6 +753,176 @@ function updateGreetings() {
     if (oldGreeting)  oldGreeting.textContent  = `${greetingText}, Berkah Dalem.`;
 }
 
+function setTextContentById(id, value) {
+    const el = document.getElementById(id);
+    if (!el || value === undefined || value === null) return;
+    el.innerHTML = String(value);
+}
+
+function setAttrById(id, attr, value) {
+    const el = document.getElementById(id);
+    if (!el || value === undefined || value === null || value === '') return;
+    el.setAttribute(attr, String(value));
+}
+
+function applyHomeSiteContent(content) {
+    const home = content?.home || {};
+    const hero = home.hero || {};
+
+    setTextContentById('hero-badge', hero.badge);
+    setTextContentById('hero-line-1', hero.titleLines?.[0]);
+    setTextContentById('hero-line-2', hero.titleLines?.[1]);
+    setTextContentById('hero-line-3', hero.titleLines?.[2]);
+    setTextContentById('hero-subtitle', hero.subtitle);
+    setTextContentById('hero-cta-primary-text', hero.primaryCta?.text);
+    setAttrById('hero-cta-primary', 'href', hero.primaryCta?.href);
+    setTextContentById('hero-cta-secondary-text', hero.secondaryCta?.text);
+    setAttrById('hero-cta-secondary', 'href', hero.secondaryCta?.href);
+
+    (home.stats || []).slice(0, 4).forEach((stat, index) => {
+        setTextContentById(`home-stat-${index + 1}-value`, stat.value);
+        setTextContentById(`home-stat-${index + 1}-label`, stat.label);
+    });
+
+    const announcements = home.announcements || {};
+    setTextContentById('home-announcement-badge', announcements.badge);
+    setTextContentById('home-announcement-title', announcements.title);
+    setTextContentById('home-announcement-subtitle', announcements.subtitle);
+    setTextContentById('home-announcement-card-title', announcements.cardTitle);
+    setTextContentById('home-renungan-label', announcements.devotionLabel);
+
+    const schedule = home.schedule || {};
+    setTextContentById('home-schedule-badge', schedule.badge);
+    setTextContentById('home-schedule-title', schedule.title);
+    setTextContentById('home-schedule-subtitle', schedule.subtitle);
+    setTextContentById('home-schedule-link-text', schedule.linkText);
+
+    const gallery = home.gallery || {};
+    setTextContentById('home-gallery-badge', gallery.badge);
+    setTextContentById('home-gallery-title', gallery.title);
+    setTextContentById('home-gallery-link', gallery.linkText);
+
+    const stasi = home.stasi || {};
+    setTextContentById('home-stasi-badge', stasi.badge);
+    setTextContentById('home-stasi-title', stasi.title);
+    setTextContentById('home-stasi-subtitle', stasi.subtitle);
+    setTextContentById('home-stasi-link', stasi.linkText);
+}
+
+function applyProfileSiteContent(content) {
+    const profile = content?.profile || {};
+    const organization = profile.organization || {};
+    const visionMission = profile.visionMission || {};
+    const saints = profile.saints || {};
+    const history = profile.history || {};
+    const leaders = profile.leaders || {};
+
+    setTextContentById('profile-hero-title', profile.hero?.title);
+    setTextContentById('profile-hero-subtitle', profile.hero?.subtitle);
+
+    setTextContentById('profile-org-badge', organization.badge);
+    setTextContentById('profile-org-title', organization.title);
+    setTextContentById('profile-org-subtitle', organization.subtitle);
+    setTextContentById('profile-paroki-heading', organization.parokiHeading);
+    setTextContentById('profile-paroki-text', organization.parokiText);
+    setTextContentById('profile-stasi-heading', organization.stasiHeading);
+    setTextContentById('profile-stasi-text', organization.stasiText);
+
+    setTextContentById('profile-vision-badge', visionMission.badge);
+    setTextContentById('profile-vision-title', visionMission.title);
+    setTextContentById('profile-vision-subtitle', visionMission.subtitle);
+    setTextContentById('profile-vision-label', visionMission.visionLabel);
+    setTextContentById('profile-vision-heading', visionMission.visionTitle);
+    setTextContentById('profile-vision-text', visionMission.visionText);
+    setTextContentById('profile-mission-label', visionMission.missionLabel);
+    setTextContentById('profile-mission-heading', visionMission.missionTitle);
+    (visionMission.missionItems || []).slice(0, 3).forEach((item, index) => setTextContentById(`profile-mission-item-${index + 1}`, item));
+
+    setTextContentById('profile-saints-badge', saints.badge);
+    setTextContentById('profile-saints-title', saints.title);
+    setTextContentById('profile-saints-subtitle', saints.subtitle);
+
+    setTextContentById('profile-history-badge', history.badge);
+    setTextContentById('profile-history-title', history.title);
+    setTextContentById('profile-history-subtitle', history.subtitle);
+    (history.items || []).slice(0, 3).forEach((item, index) => {
+        setTextContentById(`profile-history-year-${index + 1}`, item.year);
+        setTextContentById(`profile-history-title-${index + 1}`, item.title);
+        setTextContentById(`profile-history-text-${index + 1}`, item.text);
+    });
+
+    setTextContentById('profile-leaders-badge', leaders.badge);
+    setTextContentById('profile-leaders-title', leaders.title);
+    setTextContentById('profile-leaders-subtitle', leaders.subtitle);
+}
+
+function applyContactSiteContent(content) {
+    const contact = content?.contact || {};
+    const quick = contact.quickActions || {};
+    const sekretariat = contact.sekretariat || {};
+    const form = contact.form || {};
+    const map = contact.map || {};
+
+    setTextContentById('contact-hero-badge', contact.hero?.badge);
+    setTextContentById('contact-hero-title', contact.hero?.title);
+    setTextContentById('contact-hero-subtitle', contact.hero?.subtitle);
+
+    setTextContentById('contact-wa-text', quick.whatsapp?.label);
+    setAttrById('contact-wa-link', 'href', quick.whatsapp?.href);
+    setTextContentById('contact-phone-text', quick.phone?.label);
+    setAttrById('contact-phone-link', 'href', quick.phone?.href);
+
+    setTextContentById('contact-sekretariat-title', sekretariat.title);
+    setTextContentById('contact-address', sekretariat.address);
+    setTextContentById('contact-phone', sekretariat.phone);
+    setTextContentById('contact-email', sekretariat.email);
+    setTextContentById('contact-hours-weekday', sekretariat.hoursWeekday);
+    setTextContentById('contact-hours-weekend', sekretariat.hoursWeekend);
+
+    setTextContentById('contact-form-title', form.title);
+    setTextContentById('contact-form-subtitle', form.subtitle);
+    setTextContentById('contact-submit-text', form.submitText);
+
+    setTextContentById('contact-map-badge', map.badge);
+    setTextContentById('contact-map-title', map.title);
+    setTextContentById('contact-map-subtitle', map.subtitle);
+    setTextContentById('contact-map-address-label', map.addressLabel);
+    setTextContentById('contact-map-address-line', map.addressLine);
+    setTextContentById('contact-map-button', map.buttonText);
+    setAttrById('contact-map-button', 'href', map.mapUrl);
+    setAttrById('contact-map-iframe', 'src', map.iframeUrl);
+
+    const faqList = contact.faq || [];
+    faqList.slice(0, 4).forEach((item, index) => {
+        setTextContentById(`contact-faq-q-${index + 1}`, item.question);
+        setTextContentById(`contact-faq-a-${index + 1}`, item.answer);
+    });
+}
+
+function applySiteContentToPage(content) {
+    const pathname = (location.pathname || '').toLowerCase();
+    if (pathname.endsWith('index.html') || pathname.endsWith('/')) {
+        applyHomeSiteContent(content);
+    }
+    if (pathname.endsWith('profil.html')) {
+        applyProfileSiteContent(content);
+    }
+    if (pathname.endsWith('kontak.html')) {
+        applyContactSiteContent(content);
+    }
+}
+
+async function refreshSiteContentOnPage() {
+    try {
+        const content = typeof window.loadSiteContent === 'function'
+            ? await window.loadSiteContent()
+            : (typeof window.getSiteContent === 'function' ? window.getSiteContent() : null);
+        if (content) applySiteContentToPage(content);
+    } catch (e) {
+        console.warn('Apply site content note:', e);
+    }
+}
+
 // Execute immediately if DOM elements already parsed
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', updateGreetings);
@@ -812,6 +982,9 @@ async function syncStasiFromSupabase() {
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Sync dynamic Stasi from DB
     syncStasiFromSupabase();
+
+    // 0b. Load editable site content for public pages
+    refreshSiteContentOnPage();
 
     // 1. Setup Scroll-to-top
     ensureScrollTopInDOM();
