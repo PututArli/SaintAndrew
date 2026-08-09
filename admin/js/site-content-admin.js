@@ -126,10 +126,10 @@
             </div>
           </div>
           <div class="site-content-quicknav">
-            <a href="#sc-section-brand" class="site-content-jump">Identitas</a>
             <a href="#sc-section-home" class="site-content-jump">Beranda</a>
-            <a href="#sc-section-contact" class="site-content-jump">Kontak</a>
             <a href="#sc-section-profile" class="site-content-jump">Profil</a>
+            <a href="#sc-section-contact" class="site-content-jump">Kontak</a>
+            <a href="#sc-section-brand" class="site-content-jump">Identitas</a>
           </div>
         </div>
 
@@ -187,38 +187,6 @@
           </div>
         `)}
 
-        ${sectionCard('Kontak', 'Teks dan data yang tampil di halaman kontak.', `
-          <div id="sc-section-contact" class="site-content-grid site-content-grid-2">
-            ${inputGroup('sc-contact-hero-badge', 'Badge Hero', contact.hero?.badge || '', 'Hubungi Kami')}
-            ${inputGroup('sc-contact-hero-title', 'Judul Hero', contact.hero?.title || '', 'Kontak & Sekretariat')}
-            ${textareaGroup('sc-contact-hero-subtitle', 'Subjudul Hero', contact.hero?.subtitle || '', 'Teks hero kontak', 3)}
-            ${inputGroup('sc-contact-wa-label', 'Label WhatsApp', contact.quickActions?.whatsapp?.label || '', 'WhatsApp Sekretariat')}
-            ${inputGroup('sc-contact-wa-href', 'Link WhatsApp', contact.quickActions?.whatsapp?.href || '', 'https://wa.me/...')}
-            ${inputGroup('sc-contact-phone-label', 'Label Telepon', contact.quickActions?.phone?.label || '', 'Telepon: ...')}
-            ${inputGroup('sc-contact-phone-href', 'Link Telepon', contact.quickActions?.phone?.href || '', 'tel:...')}
-            ${inputGroup('sc-contact-sekretariat-title', 'Judul Sekretariat', contact.sekretariat?.title || '', 'Sekretariat Paroki')}
-            ${textareaGroup('sc-contact-sekretariat-address', 'Alamat Sekretariat', contact.sekretariat?.address || '', 'Alamat lengkap', 3)}
-            ${inputGroup('sc-contact-sekretariat-phone', 'Telepon Sekretariat', contact.sekretariat?.phone || '', '(0721) 755300')}
-            ${inputGroup('sc-contact-sekretariat-email', 'Email Sekretariat', contact.sekretariat?.email || '', 'email@paroki.id', 'email')}
-            ${inputGroup('sc-contact-hours-weekday', 'Jam Weekday', contact.sekretariat?.hoursWeekday || '', 'Senin – Jumat: ...')}
-            ${inputGroup('sc-contact-hours-weekend', 'Jam Weekend', contact.sekretariat?.hoursWeekend || '', 'Sabtu – Minggu: ...')}
-            ${inputGroup('sc-contact-form-title', 'Judul Form', contact.form?.title || '', 'Kirim Pesan')}
-            ${textareaGroup('sc-contact-form-subtitle', 'Subjudul Form', contact.form?.subtitle || '', 'Teks di bawah judul form', 3)}
-            ${inputGroup('sc-contact-form-submit', 'Teks Tombol Kirim', contact.form?.submitText || '', 'Kirim Pesan')}
-            ${inputGroup('sc-contact-map-badge', 'Badge Peta', contact.map?.badge || '', 'Peta Gereja')}
-            ${inputGroup('sc-contact-map-title', 'Judul Peta', contact.map?.title || '', 'Lokasi & Petunjuk Arah')}
-            ${textareaGroup('sc-contact-map-subtitle', 'Subjudul Peta', contact.map?.subtitle || '', 'Teks pengantar peta', 3)}
-            ${inputGroup('sc-contact-map-address-label', 'Label Alamat Peta', contact.map?.addressLabel || '', 'Gereja Paroki')}
-            ${inputGroup('sc-contact-map-address-line', 'Baris Alamat Peta', contact.map?.addressLine || '', 'Alamat pada kartu peta')}
-            ${inputGroup('sc-contact-map-button', 'Teks Tombol Peta', contact.map?.buttonText || '', 'Buka Google Maps ↗')}
-            ${inputGroup('sc-contact-map-url', 'Link Google Maps', contact.map?.mapUrl || '', 'https://...')}
-            ${inputGroup('sc-contact-map-iframe', 'Link Iframe Maps', contact.map?.iframeUrl || '', 'https://...')}
-          </div>
-          <div class="mt-5 space-y-3">
-            ${[0, 1, 2, 3].map(index => faqBlock(index, contact.faq?.[index] || {})).join('')}
-          </div>
-        `)}
-
         ${sectionCard('Profil', 'Semua teks utama di halaman profil, termasuk visi, misi, sejarah, dan kepemimpinan.', `
           <div id="sc-section-profile" class="site-content-grid site-content-grid-2">
             ${inputGroup('sc-profile-hero-title', 'Judul Hero Profil', profile.hero?.title || '', 'Profil Paroki')}
@@ -251,6 +219,39 @@
             ${inputGroup('sc-profile-leaders-badge', 'Badge Kepemimpinan', profile.leaders?.badge || '', 'Kepemimpinan')}
             ${inputGroup('sc-profile-leaders-title', 'Judul Kepemimpinan', profile.leaders?.title || '', 'Daftar Ketua Stasi')}
             ${textareaGroup('sc-profile-leaders-subtitle', 'Subjudul Kepemimpinan', profile.leaders?.subtitle || '', 'Teks pengantar daftar ketua', 3)}
+            ${textareaGroup('sc-profile-leaders-items', 'Daftar Ketua Stasi', (profile.leaders?.items || []).join('\n'), 'Satu nama per baris. Contoh: Bpk. Yohakim Noto Siswoyo (Alm)', 10)}
+          </div>
+        `)}
+
+        ${sectionCard('Kontak', 'Teks dan data yang tampil di halaman kontak.', `
+          <div id="sc-section-contact" class="site-content-grid site-content-grid-2">
+            ${inputGroup('sc-contact-hero-badge', 'Badge Hero', contact.hero?.badge || '', 'Hubungi Kami')}
+            ${inputGroup('sc-contact-hero-title', 'Judul Hero', contact.hero?.title || '', 'Kontak & Sekretariat')}
+            ${textareaGroup('sc-contact-hero-subtitle', 'Subjudul Hero', contact.hero?.subtitle || '', 'Teks hero kontak', 3)}
+            ${inputGroup('sc-contact-wa-label', 'Label WhatsApp', contact.quickActions?.whatsapp?.label || '', 'WhatsApp Sekretariat')}
+            ${inputGroup('sc-contact-wa-href', 'Link WhatsApp', contact.quickActions?.whatsapp?.href || '', 'https://wa.me/...')}
+            ${inputGroup('sc-contact-phone-label', 'Label Telepon', contact.quickActions?.phone?.label || '', 'Telepon: ...')}
+            ${inputGroup('sc-contact-phone-href', 'Link Telepon', contact.quickActions?.phone?.href || '', 'tel:...')}
+            ${inputGroup('sc-contact-sekretariat-title', 'Judul Sekretariat', contact.sekretariat?.title || '', 'Sekretariat Paroki')}
+            ${textareaGroup('sc-contact-sekretariat-address', 'Alamat Sekretariat', contact.sekretariat?.address || '', 'Alamat lengkap', 3)}
+            ${inputGroup('sc-contact-sekretariat-phone', 'Telepon Sekretariat', contact.sekretariat?.phone || '', '(0721) 755300')}
+            ${inputGroup('sc-contact-sekretariat-email', 'Email Sekretariat', contact.sekretariat?.email || '', 'email@paroki.id', 'email')}
+            ${inputGroup('sc-contact-hours-weekday', 'Jam Weekday', contact.sekretariat?.hoursWeekday || '', 'Senin – Jumat: ...')}
+            ${inputGroup('sc-contact-hours-weekend', 'Jam Weekend', contact.sekretariat?.hoursWeekend || '', 'Sabtu – Minggu: ...')}
+            ${inputGroup('sc-contact-form-title', 'Judul Form', contact.form?.title || '', 'Kirim Pesan')}
+            ${textareaGroup('sc-contact-form-subtitle', 'Subjudul Form', contact.form?.subtitle || '', 'Teks di bawah judul form', 3)}
+            ${inputGroup('sc-contact-form-submit', 'Teks Tombol Kirim', contact.form?.submitText || '', 'Kirim Pesan')}
+            ${inputGroup('sc-contact-map-badge', 'Badge Peta', contact.map?.badge || '', 'Peta Gereja')}
+            ${inputGroup('sc-contact-map-title', 'Judul Peta', contact.map?.title || '', 'Lokasi & Petunjuk Arah')}
+            ${textareaGroup('sc-contact-map-subtitle', 'Subjudul Peta', contact.map?.subtitle || '', 'Teks pengantar peta', 3)}
+            ${inputGroup('sc-contact-map-address-label', 'Label Alamat Peta', contact.map?.addressLabel || '', 'Gereja Paroki')}
+            ${inputGroup('sc-contact-map-address-line', 'Baris Alamat Peta', contact.map?.addressLine || '', 'Alamat pada kartu peta')}
+            ${inputGroup('sc-contact-map-button', 'Teks Tombol Peta', contact.map?.buttonText || '', 'Buka Google Maps ↗')}
+            ${inputGroup('sc-contact-map-url', 'Link Google Maps', contact.map?.mapUrl || '', 'https://...')}
+            ${inputGroup('sc-contact-map-iframe', 'Link Iframe Maps', contact.map?.iframeUrl || '', 'https://...')}
+          </div>
+          <div class="mt-5 space-y-3">
+            ${[0, 1, 2, 3].map(index => faqBlock(index, contact.faq?.[index] || {})).join('')}
           </div>
         `)}
       </div>
@@ -406,7 +407,18 @@
         leaders: {
           badge: fieldValue('sc-profile-leaders-badge'),
           title: fieldValue('sc-profile-leaders-title'),
-          subtitle: fieldValue('sc-profile-leaders-subtitle')
+          subtitle: fieldValue('sc-profile-leaders-subtitle'),
+          items: readLines('sc-profile-leaders-items', [
+            'Bpk. Yohakim Noto Siswoyo (Alm)',
+            'Bpk. Yohakim Sosrowasito (Alm)',
+            'Bpk. Petrus Siswosukarto (Alm)',
+            'Bpk. Fx. Edi Suwarno (Alm)',
+            'Bpk. Paulus Sutikno',
+            'Bpk. Yohanes Supandi',
+            'Bpk. Petrus Sukamto',
+            'Bpk. Fx. Heri Hendarto (Alm)',
+            'Bpk. Andreas Kamajaya (2024–Sekarang)'
+          ])
         }
       },
       footer: {

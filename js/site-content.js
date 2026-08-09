@@ -164,7 +164,18 @@
       leaders: {
         badge: 'Kepemimpinan',
         title: 'Daftar Ketua Stasi',
-        subtitle: 'Para pemimpin yang telah mengabdi untuk Margo Agung'
+        subtitle: 'Para pemimpin yang telah mengabdi untuk Margo Agung',
+        items: [
+          'Bpk. Yohakim Noto Siswoyo (Alm)',
+          'Bpk. Yohakim Sosrowasito (Alm)',
+          'Bpk. Petrus Siswosukarto (Alm)',
+          'Bpk. Fx. Edi Suwarno (Alm)',
+          'Bpk. Paulus Sutikno',
+          'Bpk. Yohanes Supandi',
+          'Bpk. Petrus Sukamto',
+          'Bpk. Fx. Heri Hendarto (Alm)',
+          'Bpk. Andreas Kamajaya (2024–Sekarang)'
+        ]
       }
     },
     footer: {

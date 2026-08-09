@@ -25,6 +25,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Andreas Rasul',
     pesta_nama: '30 November',
     role: 'Rasul Pertama & Saudara Simon Petrus',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: 'assets/img/stasi/marga-agung.jpg',
     alamat: 'Jl. Margo Agung, Marga Kaya, Kec. Jati Agung, Kab. Lampung Selatan, Lampung 35365',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Andreas+Rasul+Marga+Agung+Lampung+Selatan'
@@ -35,6 +37,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santa Maria',
     pesta_nama: '1 Januari & 15 Agustus',
     role: 'Bunda Yesus Kristus & Teladan Ketaatan Iman',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: 'assets/img/stasi/marga-lestari.jpg',
     alamat: 'Desa Marga Lestari, Kec. Jati Agung, Kab. Lampung Selatan',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santa+Maria+Marga+Lestari+Jati+Agung'
@@ -45,6 +49,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Stefanus',
     pesta_nama: '26 Desember',
     role: 'Protomartir (Martir Pertama) & Diakon Gereja',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: 'assets/img/stasi/sindang-sari.jpg',
     alamat: 'Dusun Umbul Kapuk, Desa Sindangsari, Kec. Tanjung Bintang, Kab. Lampung Selatan',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Stefanus+Sindang+Sari+Tanjung+Bintang'
@@ -55,6 +61,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Tritunggal Mahakudus',
     pesta_nama: 'Minggu I stl. Pentakosta (Mei/Juni)',
     role: 'Misteri Sentral Iman Katolik (Bapa, Putra, & Roh Kudus)',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: 'assets/img/stasi/rejomulyo.jpg',
     alamat: 'Desa Rejomulyo, Kec. Jati Agung, Kab. Lampung Selatan',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Tritunggal+Mahakudus+Rejomulyo+Jati+Agung'
@@ -65,6 +73,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Fransiskus Xaverius',
     pesta_nama: '3 Desember',
     role: 'Misionaris Agung & Pelindung Misi Sedunia',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: 'assets/img/stasi/jatimulyo.jpg',
     alamat: 'Perumahan Jatimulyo Perdana, Kec. Jati Agung, Kab. Lampung Selatan',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Fransiskus+Xaverius+Jatimulyo+Perdana'
@@ -75,6 +85,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Yohanes De Britto',
     pesta_nama: '4 Februari',
     role: 'Misionaris Yesuit & Martir Pembela Kekudusan Iman',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: 'assets/img/stasi/way-galih.jpg',
     alamat: 'Dusun V.A, Desa Way Galih, Kec. Tanjung Bintang, Kab. Lampung Selatan',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Yohanes+De+Britto+Way+Galih'
@@ -85,6 +97,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Yusuf',
     pesta_nama: '19 Maret & 1 Mei',
     role: 'Bapa Asuh Yesus & Pelindung Gereja Universal',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: 'assets/img/stasi/sukadamai.jpg',
     alamat: 'RT 006, Dusun II, Desa Sukadamai, Kec. Natar, Kab. Lampung Selatan',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Yusuf+Sukadamai+Lampung+Selatan'
@@ -95,6 +109,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Aloysius Gonzaga',
     pesta_nama: '21 Juni',
     role: 'Pelindung Kaum Muda & Pelajar Katolik',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: 'assets/img/stasi/pendowo.jpg',
     alamat: 'Desa Pancasila (Pendowo), Kec. Natar, Kab. Lampung Selatan',
     gmaps_url: 'https://maps.app.goo.gl/mhdeNQXPXwW8WJtJ6'
@@ -105,6 +121,8 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Petrus',
     pesta_nama: '29 Juni & 22 Februari',
     role: 'Pemimpin Para Rasul & Uskup Roma (Paus) Pertama',
+    sejarah: '',
+    daftar_ketua: [],
     foto_url: '',
     alamat: 'Desa Purwotani, Kec. Jati Agung, Kab. Lampung Selatan',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Purwotani+Jati+Agung+Lampung+Selatan'
@@ -2012,6 +2030,10 @@ function openStasiModal(key) {
   if (sFotoManEl) sFotoManEl.value = item.foto_url || '';
   const sAlamatEl = document.getElementById('s-alamat');
   if (sAlamatEl) sAlamatEl.value = item.alamat || '';
+  const sSejarahEl = document.getElementById('s-sejarah');
+  if (sSejarahEl) sSejarahEl.value = item.sejarah || '';
+  const sChairmenEl = document.getElementById('s-chairmen');
+  if (sChairmenEl) sChairmenEl.value = Array.isArray(item.daftar_ketua) ? item.daftar_ketua.join('\n') : '';
   const sMapsEl = document.getElementById('s-maps');
   if (sMapsEl) sMapsEl.value = item.gmaps_url || '';
 
@@ -2038,6 +2060,11 @@ async function submitStasiAdmin(e) {
   const role       = (document.getElementById('s-role')?.value || '').trim();
   const foto_url   = (document.getElementById('s-foto')?.value || '').trim();
   const alamat     = (document.getElementById('s-alamat')?.value || '').trim();
+  const sejarah    = (document.getElementById('s-sejarah')?.value || '').trim();
+  const daftarKetua = (document.getElementById('s-chairmen')?.value || '')
+    .split(/\r?\n/)
+    .map(item => item.trim())
+    .filter(Boolean);
   const gmaps_url  = (document.getElementById('s-maps')?.value || '').trim();
 
   if (!pelindung || !alamat) {
@@ -2053,7 +2080,7 @@ async function submitStasiAdmin(e) {
   const confirmed = await showConfirmModal({
     title: 'Konfirmasi Simpan Data Stasi',
     heading: `Simpan Perubahan Stasi ${escapeHtml(nama)}?`,
-    message: 'Data pelindung, alamat, tautan maps, dan foto bangunan stasi akan diperbarui di seluruh website paroki.',
+    message: 'Data pelindung, alamat, sejarah, daftar ketua, tautan maps, dan foto bangunan stasi akan diperbarui di seluruh website paroki.',
     detailsHtml: `<strong>Stasi:</strong> ${escapeHtml(nama)}<br><strong>Pelindung:</strong> ${escapeHtml(pelindung)}<br><strong>Alamat:</strong> ${escapeHtml(alamat)}`,
     confirmText: 'Ya, Simpan Perubahan',
     cancelText: 'Periksa Kembali',
@@ -2074,6 +2101,8 @@ async function submitStasiAdmin(e) {
       pelindung:  document.getElementById('s-pelindung').value.trim(),
       pesta_nama: document.getElementById('s-pesta').value.trim(),
       role:       document.getElementById('s-role').value.trim(),
+      sejarah:    sejarah,
+      daftar_ketua: daftarKetua,
       foto_url:   document.getElementById('s-foto').value.trim(),
       alamat:     document.getElementById('s-alamat').value.trim(),
       gmaps_url:  document.getElementById('s-maps').value.trim(),

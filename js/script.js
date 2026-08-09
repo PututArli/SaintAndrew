@@ -765,6 +765,35 @@ function setAttrById(id, attr, value) {
     el.setAttribute(attr, String(value));
 }
 
+function renderProfileLeaderList(items) {
+    const container = document.getElementById('profile-leaders-list');
+    if (!container) return;
+
+    const list = Array.isArray(items) ? items.filter(Boolean) : [];
+    container.innerHTML = '';
+
+    list.forEach((name, index) => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-3 p-3 rounded-xl hover:bg-black/5 transition-colors';
+
+        const number = document.createElement('div');
+        number.className = 'w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0';
+        number.style.background = 'var(--gold-muted)';
+        number.style.color = 'var(--gold)';
+        number.textContent = String(index + 1);
+
+        const label = document.createElement('span');
+        label.className = 'text-sm';
+        if (index === list.length - 1) label.classList.add('font-semibold');
+        label.style.color = 'var(--ink)';
+        label.textContent = name;
+
+        row.appendChild(number);
+        row.appendChild(label);
+        container.appendChild(row);
+    });
+}
+
 function applyHomeSiteContent(content) {
     const home = content?.home || {};
     const hero = home.hero || {};
@@ -854,6 +883,7 @@ function applyProfileSiteContent(content) {
     setTextContentById('profile-leaders-badge', leaders.badge);
     setTextContentById('profile-leaders-title', leaders.title);
     setTextContentById('profile-leaders-subtitle', leaders.subtitle);
+    renderProfileLeaderList(leaders.items);
 }
 
 function applyContactSiteContent(content) {
