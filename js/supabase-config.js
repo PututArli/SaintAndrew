@@ -9,22 +9,13 @@ window.SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmF
 var SUPABASE_URL = window.SUPABASE_URL;
 var SUPABASE_ANON = window.SUPABASE_ANON;
 
-function createSafeSupabaseClient() {
-  try {
-    const sb = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
-    if (sb && typeof sb.createClient === 'function') {
-      return sb.createClient(window.SUPABASE_URL, window.SUPABASE_ANON);
-    }
-  } catch (e) {
-    console.warn('Supabase initialization note:', e);
-  }
-
-  // Fallback safe client so UI never crashes or blocks rendering
+function createFallbackClient() {
   const fallbackQuery = () => ({
     select: () => Promise.resolve({ data: [], error: null, count: 0 }),
     insert: () => Promise.resolve({ data: null, error: null }),
     update: () => Promise.resolve({ data: null, error: null }),
     delete: () => Promise.resolve({ data: null, error: null }),
+    upsert: () => Promise.resolve({ data: null, error: null }),
     eq: function() { return this; },
     order: function() { return this; },
     limit: function() { return this; },
@@ -32,20 +23,48 @@ function createSafeSupabaseClient() {
   });
 
   return {
+    __isFallback: true,
     from: fallbackQuery,
     auth: {
       getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-      signInWithPassword: () => Promise.resolve({ data: {}, error: null }),
+      signInWithPassword: () => Promise.resolve({ data: {}, error: { message: 'Koneksi database belum tersedia.' } }),
       signOut: () => Promise.resolve({ error: null })
     },
     storage: {
       from: () => ({
-        upload: () => Promise.resolve({ data: null, error: null }),
+        upload: () => Promise.resolve({ data: null, error: { message: 'Koneksi database belum tersedia.' } }),
         getPublicUrl: () => ({ data: { publicUrl: '' } })
       })
     }
   };
 }
 
-window.db = window.db || createSafeSupabaseClient();
+function createRealSupabaseClient() {
+  const sb = window.supabase || (typeof supabase !== 'undefined' ? supabase : null);
+  if (sb && typeof sb.createClient === 'function') {
+    return sb.createClient(window.SUPABASE_URL, window.SUPABASE_ANON);
+  }
+  return null;
+}
+
+function initSupabaseClient() {
+  try {
+    const realClient = createRealSupabaseClient();
+    if (realClient) {
+      window.db = realClient;
+      return realClient;
+    }
+  } catch (e) {
+    console.warn('Supabase initialization note:', e);
+  }
+
+  if (!window.db || window.db.__isFallback) {
+    window.db = createFallbackClient();
+  }
+
+  return window.db;
+}
+
+window.initSupabaseClient = initSupabaseClient;
+window.db = initSupabaseClient();
 var db = window.db;

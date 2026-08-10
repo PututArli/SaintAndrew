@@ -267,7 +267,11 @@
 
   async function saveSiteContent(content) {
     const payload = normalizeContent(content);
-    if (typeof db === 'undefined' || !db || !db.from) {
+    if (typeof window.initSupabaseClient === 'function') {
+      window.initSupabaseClient();
+    }
+
+    if (typeof db === 'undefined' || !db || !db.from || db.__isFallback) {
       throw new Error('Koneksi database belum tersedia.');
     }
 
