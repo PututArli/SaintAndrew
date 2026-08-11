@@ -214,7 +214,7 @@ function showConfirmModal({
 
     let finalDetailsHtml = detailsHtml;
     if (modalId && type === 'save') {
-      const changed = typeof getChangedFields === 'function' ? getChangedFields(modalId) : [];
+      const changed = typeof window.getChangedFields === 'function' ? window.getChangedFields(modalId) : (typeof getChangedFields === 'function' ? getChangedFields(modalId) : []);
       if (changed.length > 0) {
         const changesText = `<strong>Kolom yang diedit:</strong><br><span style="color:var(--gold)">${escapeHtml(changed.join(', '))}</span>`;
         if (finalDetailsHtml) {
@@ -330,13 +330,16 @@ function getFormSnapshot(modalId) {
   return snapshot;
 }
 
+window._initialFormStates = window._initialFormStates || {};
+
 function saveInitialFormState(modalId) {
-  _initialFormStates[modalId] = JSON.stringify(getFormSnapshot(modalId));
+  window._initialFormStates[modalId] = JSON.stringify(getFormSnapshot(modalId));
 }
+window.saveInitialFormState = saveInitialFormState;
 
 function getChangedFields(modalId) {
-  if (!_initialFormStates[modalId]) return [];
-  const initial = JSON.parse(_initialFormStates[modalId]);
+  if (!window._initialFormStates[modalId]) return [];
+  const initial = JSON.parse(window._initialFormStates[modalId]);
   const current = getFormSnapshot(modalId);
   const changed = [];
   
@@ -368,14 +371,17 @@ function getChangedFields(modalId) {
   }
   return changed;
 }
+window.getChangedFields = getChangedFields;
 
 function isFormDirty(modalId) {
   return getChangedFields(modalId).length > 0;
 }
+window.isFormDirty = isFormDirty;
 
 function clearFormState(modalId) {
-  delete _initialFormStates[modalId];
+  delete window._initialFormStates[modalId];
 }
+window.clearFormState = clearFormState;
 
 // ── Modal helpers ───────────────────────────────────────────
 let _adminModalScrollPos = 0;
@@ -738,7 +744,7 @@ function renderJadwalView(data, isFiltered = false) {
                   <button class="btn btn-edit btn-sm" onclick="editJadwal('${r.id}')" title="Edit jadwal ini">
                     Edit
                   </button>
-                  <button class="btn btn-delete btn-sm" onclick="confirmDelete('jadwal_misa','${r.id}','jadwal misa ini','loadJadwal')" title="Hapus jadwal ini">
+                  <button class="btn btn-delete btn-sm" onclick="confirmDelete('jadwal_misa','${r.id}','Jadwal Misa ${escapeHtml(r.hari)} di ${escapeHtml(STASI_MAP[r.stasi] || r.stasi)}','loadJadwal')" title="Hapus jadwal ini">
                     Hapus
                   </button>
                 </div>
@@ -772,7 +778,7 @@ function renderJadwalView(data, isFiltered = false) {
             <button class="btn btn-edit btn-sm" onclick="editJadwal('${r.id}')">
               Edit Jadwal
             </button>
-            <button class="btn btn-delete btn-sm" onclick="confirmDelete('jadwal_misa','${r.id}','jadwal misa ini','loadJadwal')">
+            <button class="btn btn-delete btn-sm" onclick="confirmDelete('jadwal_misa','${r.id}','Jadwal Misa ${escapeHtml(r.hari)} di ${escapeHtml(STASI_MAP[r.stasi] || r.stasi)}','loadJadwal')">
               Hapus
             </button>
           </div>

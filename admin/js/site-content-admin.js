@@ -120,10 +120,10 @@
             </div>
           </div>
           <div class="site-content-quicknav">
-            <a href="#sc-section-home" class="site-content-jump">Beranda</a>
-            <a href="#sc-section-profile" class="site-content-jump">Profil</a>
-            <a href="#sc-section-contact" class="site-content-jump">Kontak</a>
-            <a href="#sc-section-brand" class="site-content-jump">Identitas</a>
+            <button type="button" class="site-content-jump" onclick="document.getElementById('sc-section-home').scrollIntoView({behavior:'smooth'})">Beranda</button>
+            <button type="button" class="site-content-jump" onclick="document.getElementById('sc-section-profile').scrollIntoView({behavior:'smooth'})">Profil</button>
+            <button type="button" class="site-content-jump" onclick="document.getElementById('sc-section-contact').scrollIntoView({behavior:'smooth'})">Kontak</button>
+            <button type="button" class="site-content-jump" onclick="document.getElementById('sc-section-brand').scrollIntoView({behavior:'smooth'})">Identitas</button>
           </div>
         </div>
 
