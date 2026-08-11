@@ -19,13 +19,18 @@ function createFallbackClient() {
   };
 
   const fallbackQuery = (table) => {
-    let data = getCache(table);
     let queryFilter = null;
     let queryOrder = null;
+    let action = null;
+    let payload = null;
 
-    const chain = {
-      select: () => {
+    const execute = async () => {
+      let data = getCache(table);
+      if (action === 'select') {
         let res = [...data];
+        if (queryFilter) {
+          res = res.filter(item => String(item[queryFilter.col]) === String(queryFilter.val));
+        }
         if (queryOrder) {
           res.sort((a, b) => {
             const valA = a[queryOrder.col];
@@ -35,21 +40,20 @@ function createFallbackClient() {
             return 0;
           });
         }
-        return Promise.resolve({ data: res, error: null, count: res.length });
-      },
-      insert: (payload) => {
+        return { data: res, error: null, count: res.length };
+      }
+      else if (action === 'insert') {
         const arr = Array.isArray(payload) ? payload : [payload];
         const withIds = arr.map(item => ({ ...item, id: item.id || 'local-' + Date.now() + '-' + Math.floor(Math.random()*1000) }));
         data.push(...withIds);
         saveCache(table, data);
-        return Promise.resolve({ data: withIds, error: null });
-      },
-      update: (payload) => {
-        if (!queryFilter) return Promise.resolve({ data: null, error: { message: 'Update requires .eq()' } });
-        const { col, val } = queryFilter;
+        return { data: withIds, error: null };
+      }
+      else if (action === 'update') {
+        if (!queryFilter) return { data: null, error: { message: 'Update requires .eq()' } };
         let updated = [];
         data = data.map(item => {
-          if (String(item[col]) === String(val)) {
+          if (String(item[queryFilter.col]) === String(queryFilter.val)) {
             const newItem = { ...item, ...payload };
             updated.push(newItem);
             return newItem;
@@ -57,16 +61,15 @@ function createFallbackClient() {
           return item;
         });
         saveCache(table, data);
-        return Promise.resolve({ data: updated, error: null });
-      },
-      delete: () => {
-        if (!queryFilter) return Promise.resolve({ data: null, error: { message: 'Delete requires .eq()' } });
-        const { col, val } = queryFilter;
-        data = data.filter(item => String(item[col]) !== String(val));
+        return { data: updated, error: null };
+      }
+      else if (action === 'delete') {
+        if (!queryFilter) return { data: null, error: { message: 'Delete requires .eq()' } };
+        data = data.filter(item => String(item[queryFilter.col]) !== String(queryFilter.val));
         saveCache(table, data);
-        return Promise.resolve({ data: null, error: null });
-      },
-      upsert: (payload) => {
+        return { data: null, error: null };
+      }
+      else if (action === 'upsert') {
         const arr = Array.isArray(payload) ? payload : [payload];
         arr.forEach(item => {
           if (!item.id) item.id = 'local-' + Date.now();
@@ -75,14 +78,29 @@ function createFallbackClient() {
           else data.push(item);
         });
         saveCache(table, data);
-        return Promise.resolve({ data: arr, error: null });
-      },
+        return { data: arr, error: null };
+      }
+      return { data: null, error: { message: 'Unknown action' } };
+    };
+
+    const builder = {
+      select: function() { action = 'select'; return this; },
+      insert: function(p) { action = 'insert'; payload = p; return this; },
+      update: function(p) { action = 'update'; payload = p; return this; },
+      delete: function() { action = 'delete'; return this; },
+      upsert: function(p) { action = 'upsert'; payload = p; return this; },
       eq: function(col, val) { queryFilter = { col, val }; return this; },
       order: function(col, { ascending = true } = {}) { queryOrder = { col, asc: ascending }; return this; },
       limit: function() { return this; },
-      range: function() { return this; }
+      range: function() { return this; },
+      then: function(onFulfilled, onRejected) {
+        return execute().then(onFulfilled, onRejected);
+      },
+      catch: function(onRejected) {
+        return execute().catch(onRejected);
+      }
     };
-    return chain;
+    return builder;
   };
 
   return {
@@ -110,7 +128,7 @@ function createRealSupabaseClient() {
   return null;
 }
 
-window.USE_LOCAL_DB = true; // Ubah ke false jika Supabase sudah dikonfigurasi dengan benar
+window.USE_LOCAL_DB = false; // Ubah ke true HANYA jika ingin mencoba simulasi tanpa Supabase
 
 function initSupabaseClient() {
   if (window.USE_LOCAL_DB) {
