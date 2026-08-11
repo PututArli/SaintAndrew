@@ -316,7 +316,7 @@ const _initialFormStates = {};
 function getFormSnapshot(modalId) {
   const modal = document.getElementById(modalId);
   if (!modal) return {};
-  const form = modal.querySelector('form');
+  const form = modal.tagName === 'FORM' ? modal : modal.querySelector('form');
   if (!form) return {};
   const snapshot = {};
   const elements = form.querySelectorAll('input, select, textarea');

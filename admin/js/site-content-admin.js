@@ -118,12 +118,6 @@
               <h3 class="site-content-title">Kelola teks yang paling sering diubah tanpa buka HTML</h3>
               <p class="site-content-desc">Atur identitas paroki, beranda, profil, kontak, dan footer dari satu tempat. Perubahan langsung dipakai oleh halaman publik setelah disimpan.</p>
             </div>
-            <div class="site-content-badges">
-              <span class="site-content-badge">Beranda</span>
-              <span class="site-content-badge">Profil</span>
-              <span class="site-content-badge">Kontak</span>
-              <span class="site-content-badge">Footer</span>
-            </div>
           </div>
           <div class="site-content-quicknav">
             <a href="#sc-section-home" class="site-content-jump">Beranda</a>
@@ -445,6 +439,9 @@
         : (window.getSiteContent ? window.getSiteContent() : window.SA_SITE_CONTENT_DEFAULTS || {});
 
       renderSiteContentEditor(content || window.SA_SITE_CONTENT_DEFAULTS || {});
+      if (typeof saveInitialFormState === 'function') {
+        saveInitialFormState('site-content-form');
+      }
     } catch (err) {
       container.innerHTML = `<div class="empty-state"><p>Gagal memuat editor konten.<br><small>${escapeHtml(formatSiteContentError(err, 'Gagal memuat editor konten'))}</small></p></div>`;
     }
@@ -460,7 +457,8 @@
         message: 'Perubahan akan langsung dipakai oleh halaman publik setelah tersimpan.',
         confirmText: 'Ya, Simpan',
         cancelText: 'Batal',
-        type: 'save'
+        type: 'save',
+        modalId: 'site-content-form'
       })
       : true;
 
