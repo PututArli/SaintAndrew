@@ -795,10 +795,15 @@ function getCustomSelectValue(selectId, inputId) {
 }
 
 function openJadwalModal(data = null) {
-  document.getElementById('jid').value      = data?.id || '';
-  document.getElementById('j-stasi').value  = data?.stasi || '';
-  document.getElementById('j-urutan').value = data?.urutan ?? 0;
-  document.getElementById('jadwal-alert').style.display = 'none';
+  const jidEl = document.getElementById('jid');
+  if (jidEl) jidEl.value = data?.id || '';
+  const jStasiEl = document.getElementById('j-stasi');
+  if (jStasiEl) jStasiEl.value = data?.stasi || '';
+  const jUrutanEl = document.getElementById('j-urutan');
+  if (jUrutanEl) jUrutanEl.value = data?.urutan ?? 0;
+  
+  const alertEl = document.getElementById('jadwal-alert');
+  if (alertEl) alertEl.style.display = 'none';
 
   syncSelectWithCustomInput('j-hari-select', 'j-hari', data?.hari);
   syncSelectWithCustomInput('j-waktu-select', 'j-waktu', data?.waktu);
@@ -806,12 +811,15 @@ function openJadwalModal(data = null) {
   syncSelectWithCustomInput('j-minggu-select', 'j-minggu', data?.minggu_ke);
 
   const isEdit = !!data?.id;
-  document.getElementById('modal-jadwal-title').textContent = isEdit ? 'Edit Jadwal Misa' : 'Tambah Jadwal Misa';
-  document.getElementById('btn-jadwal-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Jadwal';
+  const titleEl = document.getElementById('modal-jadwal-title');
+  if (titleEl) titleEl.textContent = isEdit ? 'Edit Jadwal Misa' : 'Tambah Jadwal Misa';
+  const btnTextEl = document.getElementById('btn-jadwal-text');
+  if (btnTextEl) btnTextEl.textContent = isEdit ? 'Simpan Perubahan' : 'Simpan Jadwal';
 
   openModal('modal-jadwal');
   saveInitialFormState('modal-jadwal');
-  setTimeout(() => document.getElementById('j-stasi').focus(), 100);
+  const jStasiFocus = document.getElementById('j-stasi');
+  if (jStasiFocus) setTimeout(() => jStasiFocus.focus(), 100);
 }
 
 function editJadwal(id) { openJadwalModal(_jadwalMap[id]); }
@@ -1843,40 +1851,53 @@ function resetGaleriFilter() {
 }
 
 function openGaleriModal(data = null) {
-  document.getElementById('gid').value          = data?.id || '';
-  document.getElementById('g-judul').value      = data?.judul || '';
-  document.getElementById('g-kategori').value   = data?.kategori || 'omk';
-  document.getElementById('g-tanggal').value    = data?.tanggal || new Date().toISOString().split('T')[0];
-  document.getElementById('g-foto').value       = data?.foto_url || '';
-  document.getElementById('g-foto-manual').value= data?.foto_url || '';
-  document.getElementById('g-keterangan').value = data?.keterangan || '';
-  document.getElementById('g-urutan').value     = data?.urutan ?? 0;
-  document.getElementById('galeri-alert').style.display = 'none';
+  const gidEl = document.getElementById('gid');
+  if (gidEl) gidEl.value = data?.id || '';
+  const gJudulEl = document.getElementById('g-judul');
+  if (gJudulEl) gJudulEl.value = data?.judul || '';
+  const gKatEl = document.getElementById('g-kategori');
+  if (gKatEl) gKatEl.value = data?.kategori || 'omk';
+  const gTglEl = document.getElementById('g-tanggal');
+  if (gTglEl) gTglEl.value = data?.tanggal || new Date().toISOString().split('T')[0];
+  const gFotoEl = document.getElementById('g-foto');
+  if (gFotoEl) gFotoEl.value = data?.foto_url || '';
+  const gFotoManEl = document.getElementById('g-foto-manual');
+  if (gFotoManEl) gFotoManEl.value = data?.foto_url || '';
+  const gKetEl = document.getElementById('g-keterangan');
+  if (gKetEl) gKetEl.value = data?.keterangan || '';
+  const gUrutanEl = document.getElementById('g-urutan');
+  if (gUrutanEl) gUrutanEl.value = data?.urutan ?? 0;
+  
+  const alertEl = document.getElementById('galeri-alert');
+  if (alertEl) alertEl.style.display = 'none';
 
   setDropzonePreview('g', data?.foto_url || '');
 
   const isEdit = !!(data?.id && !String(data.id).startsWith('default-'));
-  document.getElementById('modal-galeri-title').textContent = isEdit ? 'Edit Foto Kegiatan' : 'Tambah Foto Kegiatan';
-  document.getElementById('btn-galeri-text').textContent    = isEdit ? 'Simpan Perubahan' : 'Simpan Foto Kegiatan';
+  const titleEl = document.getElementById('modal-galeri-title');
+  if (titleEl) titleEl.textContent = isEdit ? 'Edit Foto Kegiatan' : 'Tambah Foto Kegiatan';
+  const btnTextEl = document.getElementById('btn-galeri-text');
+  if (btnTextEl) btnTextEl.textContent = isEdit ? 'Simpan Perubahan' : 'Simpan Foto Kegiatan';
 
   openModal('modal-galeri');
   saveInitialFormState('modal-galeri');
-  setTimeout(() => document.getElementById('g-judul').focus(), 100);
+  const gJudulFocus = document.getElementById('g-judul');
+  if (gJudulFocus) setTimeout(() => gJudulFocus.focus(), 100);
 }
 
 function editGaleri(id) { openGaleriModal(_galeriMap[id]); }
 
 async function submitGaleri(e) {
   e.preventDefault();
-  const id      = document.getElementById('gid').value;
+  const id      = document.getElementById('gid')?.value || '';
   const alertEl = document.getElementById('galeri-alert');
 
-  const fotoUrl = document.getElementById('g-foto').value.trim();
-  const judul   = document.getElementById('g-judul').value.trim();
-  const kat     = document.getElementById('g-kategori').value;
-  const tgl     = document.getElementById('g-tanggal').value || null;
-  const ket     = document.getElementById('g-keterangan').value.trim();
-  const urutan  = parseInt(document.getElementById('g-urutan').value) || 0;
+  const fotoUrl = (document.getElementById('g-foto')?.value || '').trim();
+  const judul   = (document.getElementById('g-judul')?.value || '').trim();
+  const kat     = document.getElementById('g-kategori')?.value || 'omk';
+  const tgl     = document.getElementById('g-tanggal')?.value || null;
+  const ket     = (document.getElementById('g-keterangan')?.value || '').trim();
+  const urutan  = parseInt(document.getElementById('g-urutan')?.value) || 0;
 
   if (!judul) {
     alertEl.textContent = 'Judul kegiatan tidak boleh kosong.';
