@@ -1069,13 +1069,49 @@ function updateStasiCardsDOM() {
     });
 }
 
+
+async function syncHomeGalleryFromSupabase() {
+    const container = document.getElementById('gallery-container');
+    if (!container) return;
+    
+    if (typeof db === 'undefined') return;
+    try {
+        const { data, error } = await db.from('galeri')
+            .select('*')
+            .order('urutan')
+            .order('created_at', { ascending: false })
+            .limit(10);
+            
+        if (!error && data && data.length > 0) {
+            container.innerHTML = data.map(item => `
+                <div class="gallery-item flex-none w-72 snap-center group" style="aspect-ratio:4/3">
+                  <img src="${item.foto_url || 'assets/img/placeholder.jpg'}" alt="${item.judul}" class="w-full h-full object-cover">
+                  <div class="gallery-overlay">
+                    <span class="gallery-title">${item.judul}</span>
+                    <span class="gallery-sub">${item.keterangan || item.kategori}</span>
+                  </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<div class="text-sm text-gray-500 italic p-4">Belum ada foto kegiatan.</div>';
+        }
+    } catch (e) {
+        console.warn('Sync home gallery error:', e);
+    }
+}
+
 // ── Main DOM Ready Initializer ───────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
     // 0. Sync dynamic Stasi from DB
     await syncStasiFromSupabase();
 
+
     // 0a. Sync home schedule
     await syncHomeScheduleFromSupabase();
+
+    // 0b. Sync home gallery
+    await syncHomeGalleryFromSupabase();
+
 
     // 0b. Load editable site content for public pages
     await refreshSiteContentOnPage();
