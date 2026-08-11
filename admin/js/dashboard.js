@@ -1153,6 +1153,17 @@ function initDropzones() {
 // ══════════════════════════════════════════
 async function submitJadwal(e) {
   e.preventDefault();
+
+  // Validation: Check for empty inputs or inputs with only spaces
+  const inputs = e.target.querySelectorAll('input[required], textarea[required], select[required]');
+  for (let input of inputs) {
+    if (input.value.trim() === '') {
+      toast('Terdapat kolom wajib yang masih kosong atau hanya berisi spasi!', 'error');
+      input.focus();
+      return;
+    }
+  }
+
   const id      = document.getElementById('jid').value;
   const alertEl = document.getElementById('jadwal-alert');
 
@@ -1445,6 +1456,17 @@ function editRenungan(id) {
 
 async function submitRenungan(e) {
   e.preventDefault();
+
+  // Validation: Check for empty inputs or inputs with only spaces
+  const inputs = e.target.querySelectorAll('input[required], textarea[required], select[required]');
+  for (let input of inputs) {
+    if (input.value.trim() === '') {
+      toast('Terdapat kolom wajib yang masih kosong atau hanya berisi spasi!', 'error');
+      input.focus();
+      return;
+    }
+  }
+
   const id      = document.getElementById('rid')?.value || '';
   const alertEl = document.getElementById('renungan-alert');
 
@@ -1735,6 +1757,17 @@ function editPengumuman(id) { openPengumumanModal(_pengMap[id]); }
 
 async function submitPengumuman(e) {
   e.preventDefault();
+
+  // Validation: Check for empty inputs or inputs with only spaces
+  const inputs = e.target.querySelectorAll('input[required], textarea[required], select[required]');
+  for (let input of inputs) {
+    if (input.value.trim() === '') {
+      toast('Terdapat kolom wajib yang masih kosong atau hanya berisi spasi!', 'error');
+      input.focus();
+      return;
+    }
+  }
+
   const id      = document.getElementById('pid')?.value || '';
   const alertEl = document.getElementById('pengumuman-alert') || document.getElementById('peng-alert');
 
@@ -1947,6 +1980,17 @@ function editGaleri(id) { openGaleriModal(_galeriMap[id]); }
 
 async function submitGaleri(e) {
   e.preventDefault();
+
+  // Validation: Check for empty inputs or inputs with only spaces
+  const inputs = e.target.querySelectorAll('input[required], textarea[required], select[required]');
+  for (let input of inputs) {
+    if (input.value.trim() === '') {
+      toast('Terdapat kolom wajib yang masih kosong atau hanya berisi spasi!', 'error');
+      input.focus();
+      return;
+    }
+  }
+
   const id      = document.getElementById('gid')?.value || '';
   const alertEl = document.getElementById('galeri-alert');
 
@@ -2148,6 +2192,17 @@ function openStasiModal(key) {
 
 async function submitStasiAdmin(e) {
   e.preventDefault();
+
+  // Validation: Check for empty inputs or inputs with only spaces
+  const inputs = e.target.querySelectorAll('input[required], textarea[required], select[required]');
+  for (let input of inputs) {
+    if (input.value.trim() === '') {
+      toast('Terdapat kolom wajib yang masih kosong atau hanya berisi spasi!', 'error');
+      input.focus();
+      return;
+    }
+  }
+
   const id      = document.getElementById('s-id')?.value || '';
   const alertEl = document.getElementById('stasi-alert');
 

@@ -1028,6 +1028,32 @@ async function syncStasiFromSupabase() {
     }
 }
 
+async function syncHomeScheduleFromSupabase() {
+    const grid = document.getElementById('home-schedule-grid');
+    if (!grid) return;
+    
+    if (typeof db === 'undefined') return;
+    try {
+        const { data, error } = await db.from('jadwal_misa')
+            .select('*')
+            .eq('lokasi', 'margo-agung')
+            .order('urutan')
+            .limit(3);
+            
+        if (!error && data && data.length > 0) {
+            grid.innerHTML = data.map(item => `
+                <div class="info-card text-center">
+                  <div class="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
+                  <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--gold)">${item.hari}</div>
+                  <div class="text-2xl font-black" style="color:var(--ink)">${item.jam}</div>
+                  <div class="text-xs mt-1 font-medium" style="color:var(--stone)">WIB · ${item.keterangan || 'Misa Umat'}</div>
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        console.warn('Sync home schedule error:', e);
+    }
+}
 function updateStasiCardsDOM() {
     const cards = document.querySelectorAll('[data-stasi]');
     cards.forEach(card => {
@@ -1047,6 +1073,9 @@ function updateStasiCardsDOM() {
 document.addEventListener('DOMContentLoaded', async () => {
     // 0. Sync dynamic Stasi from DB
     await syncStasiFromSupabase();
+
+    // 0a. Sync home schedule
+    await syncHomeScheduleFromSupabase();
 
     // 0b. Load editable site content for public pages
     await refreshSiteContentOnPage();

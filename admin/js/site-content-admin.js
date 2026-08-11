@@ -30,20 +30,20 @@
     `;
   }
 
-  function inputGroup(id, label, value = '', placeholder = '', type = 'text') {
+  function inputGroup(id, label, value = '', placeholder = '', type = 'text', maxlength = 200) {
     return `
       <div class="form-group mb-0">
         <label class="form-label" for="${id}">${escapeHtml(label)}</label>
-        <input id="${id}" type="${type}" class="form-ctrl" value="${escapeHtml(value)}" placeholder="${escapeHtml(placeholder)}">
+        <input id="${id}" type="${type}" class="form-ctrl" value="${escapeHtml(value)}" placeholder="${escapeHtml(placeholder)}" maxlength="${maxlength}" required>
       </div>
     `;
   }
 
-  function textareaGroup(id, label, value = '', placeholder = '', rows = 4) {
+  function textareaGroup(id, label, value = '', placeholder = '', rows = 4, maxlength = 1000) {
     return `
       <div class="form-group mb-0">
         <label class="form-label" for="${id}">${escapeHtml(label)}</label>
-        <textarea id="${id}" class="form-ctrl" rows="${rows}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(value)}</textarea>
+        <textarea id="${id}" class="form-ctrl" rows="${rows}" placeholder="${escapeHtml(placeholder)}" maxlength="${maxlength}" required>${escapeHtml(value)}</textarea>
       </div>
     `;
   }

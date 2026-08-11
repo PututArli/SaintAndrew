@@ -500,7 +500,7 @@
               <option value="Sesuai Permohonan">Sesuai Permohonan</option>
               <option value="custom">✏️ Tulis Hari Lainnya...</option>
             </select>
-            <input id="j-hari" type="text" class="form-ctrl" placeholder="Tulis nama hari..." style="display:none;margin-top:0.35rem">
+            <input id="j-hari" type="text" class="form-ctrl" placeholder="Tulis nama hari..." style="display:none;margin-top:0.35rem" maxlength="150">
           </div>
 
           <div class="form-group">
@@ -525,7 +525,7 @@
               <option value="19:30 WIB">19:30 WIB</option>
               <option value="custom">✏️ Tulis Jam Lainnya...</option>
             </select>
-            <input id="j-waktu" type="text" class="form-ctrl" placeholder="cth: 07:15 WIB" style="display:none;margin-top:0.35rem">
+            <input id="j-waktu" type="text" class="form-ctrl" placeholder="cth: 07:15 WIB" style="display:none;margin-top:0.35rem" maxlength="150">
           </div>
         </div>
 
@@ -546,7 +546,7 @@
               <option value="Misa Syukur & Peringatan Arwah">Misa Syukur &amp; Peringatan Arwah</option>
               <option value="custom">✏️ Tulis Keterangan Lainnya...</option>
             </select>
-            <input id="j-keterangan" type="text" class="form-ctrl" placeholder="Tulis keterangan misa..." style="display:none;margin-top:0.35rem">
+            <input id="j-keterangan" type="text" class="form-ctrl" placeholder="Tulis keterangan misa..." style="display:none;margin-top:0.35rem" maxlength="150">
           </div>
         </div>
 
@@ -569,7 +569,7 @@
               <option value="Minggu ke-5">Minggu ke-5 Saja</option>
               <option value="custom">✏️ Tulis Pekan Kustom...</option>
             </select>
-            <input id="j-minggu" type="text" class="form-ctrl" placeholder="cth: Bergiliran tiap 2 minggu" style="display:none;margin-top:0.35rem">
+            <input id="j-minggu" type="text" class="form-ctrl" placeholder="cth: Bergiliran tiap 2 minggu" style="display:none;margin-top:0.35rem" maxlength="150">
           </div>
         </div>
 
@@ -618,35 +618,35 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Tema / Judul Renungan <span class="req">*</span></label>
-            <input id="r-tema" type="text" class="form-ctrl" placeholder="Contoh: Menjadi Garam dan Terang Dunia" required>
+            <input id="r-tema" type="text" class="form-ctrl" placeholder="Contoh: Menjadi Garam dan Terang Dunia" required maxlength="150">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Bacaan / Perikop Kitab Suci <span class="req">*</span></label>
-            <input id="r-perikop" type="text" class="form-ctrl" placeholder="Contoh: Matius 5:13-16" required>
+            <input id="r-perikop" type="text" class="form-ctrl" placeholder="Contoh: Matius 5:13-16" required maxlength="150">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Ayat Kunci / Ayat Emas <span class="req">*</span></label>
-            <textarea id="r-ayat" class="form-ctrl" style="min-height:65px" placeholder="Kutipan ayat kunci dari bacaan Kitab Suci…" required></textarea>
+            <textarea id="r-ayat" class="form-ctrl" style="min-height:65px" placeholder="Kutipan ayat kunci dari bacaan Kitab Suci…" required maxlength="2500"></textarea>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Refleksi / Isi Renungan <span class="req">*</span></label>
-            <textarea id="r-refleksi" class="form-ctrl" style="min-height:120px" placeholder="Tuliskan renungan, permenungan, dan pesan rohani…" required></textarea>
+            <textarea id="r-refleksi" class="form-ctrl" style="min-height:120px" placeholder="Tuliskan renungan, permenungan, dan pesan rohani…" required maxlength="2500"></textarea>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Doa / Refleksi Penutup</label>
-            <textarea id="r-doa" class="form-ctrl" style="min-height:65px" placeholder="Doa singkat penutup renungan…"></textarea>
+            <textarea id="r-doa" class="form-ctrl" style="min-height:65px" placeholder="Doa singkat penutup renungan…" maxlength="2500"></textarea>
           </div>
         </div>
 
@@ -687,14 +687,14 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Judul Pengumuman <span class="req">*</span></label>
-            <input id="p-judul" type="text" class="form-ctrl" placeholder="Contoh: Jadwal Misa Pekan Suci 2026" required>
+            <input id="p-judul" type="text" class="form-ctrl" placeholder="Contoh: Jadwal Misa Pekan Suci 2026" required maxlength="150">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Isi Pengumuman <span class="req">*</span></label>
-            <textarea id="p-isi" class="form-ctrl" style="min-height:100px" placeholder="Tuliskan detail isi pengumuman paroki…" required></textarea>
+            <textarea id="p-isi" class="form-ctrl" style="min-height:100px" placeholder="Tuliskan detail isi pengumuman paroki…" required maxlength="2500"></textarea>
           </div>
         </div>
 
@@ -751,7 +751,7 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Judul / Nama Kegiatan <span class="req">*</span></label>
-            <input id="g-judul" type="text" class="form-ctrl" placeholder="Contoh: Misa Paskah 2026 Bersama Uskup" required>
+            <input id="g-judul" type="text" class="form-ctrl" placeholder="Contoh: Misa Paskah 2026 Bersama Uskup" required maxlength="150">
           </div>
         </div>
 
@@ -807,7 +807,7 @@
               <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-url-g" style="font-size:0.7rem;padding:0.25rem 0.6rem" onclick="toggleUrlInput('g')">🔗 Input URL Gambar</button>
             </div>
             <div id="g-url-wrap" style="display:none;margin-top:0.45rem;gap:0.4rem;align-items:center">
-              <input id="g-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/galeri/..." oninput="handleManualUrlInput('g')" onkeydown="if(event.key==='Enter'){event.preventDefault();applyManualUrl('g');}" style="flex:1">
+              <input id="g-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/galeri/..." oninput="handleManualUrlInput('g')" onkeydown="if(event.key==='Enter'){event.preventDefault();applyManualUrl('g');}" style="flex:1" maxlength="150">
               <button type="button" class="btn btn-primary btn-sm" onclick="applyManualUrl('g')" style="white-space:nowrap;padding:0.45rem 0.75rem">Terapkan</button>
             </div>
           </div>
@@ -816,7 +816,7 @@
         <div class="form-row cols-2">
           <div class="form-group">
             <label class="form-label">Keterangan Singkat</label>
-            <input id="g-keterangan" type="text" class="form-ctrl" placeholder="Contoh: Dihadiri oleh seluruh umat paroki">
+            <input id="g-keterangan" type="text" class="form-ctrl" placeholder="Contoh: Dihadiri oleh seluruh umat paroki" maxlength="150">
           </div>
           <div class="form-group">
             <label class="form-label">Urutan Tampil</label>
@@ -853,43 +853,43 @@
         <div class="form-row cols-2">
           <div class="form-group">
             <label class="form-label">Nama Stasi / Gereja</label>
-            <input id="s-nama" type="text" class="form-ctrl" readonly style="background:var(--bg-alt);font-weight:700">
+            <input id="s-nama" type="text" class="form-ctrl" readonly style="background:var(--bg-alt);font-weight:700" maxlength="150">
           </div>
           <div class="form-group">
             <label class="form-label">Santo / Santa Pelindung <span class="req">*</span></label>
-            <input id="s-pelindung" type="text" class="form-ctrl" placeholder="Contoh: Santo Andreas Rasul" required>
+            <input id="s-pelindung" type="text" class="form-ctrl" placeholder="Contoh: Santo Andreas Rasul" required maxlength="150">
           </div>
         </div>
 
         <div class="form-row cols-2">
           <div class="form-group">
             <label class="form-label">Hari Pesta Nama</label>
-            <input id="s-pesta" type="text" class="form-ctrl" placeholder="Contoh: 30 November">
+            <input id="s-pesta" type="text" class="form-ctrl" placeholder="Contoh: 30 November" maxlength="150">
           </div>
           <div class="form-group">
             <label class="form-label">Peran Pelindung</label>
-            <input id="s-role" type="text" class="form-ctrl" placeholder="Contoh: Rasul Pertama &amp; Saudara Petrus">
+            <input id="s-role" type="text" class="form-ctrl" placeholder="Contoh: Rasul Pertama &amp; Saudara Petrus" maxlength="150">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Alamat / Lokasi Stasi <span class="req">*</span></label>
-            <textarea id="s-alamat" class="form-ctrl" style="min-height:75px" placeholder="Alamat lengkap stasi..." required></textarea>
+            <textarea id="s-alamat" class="form-ctrl" style="min-height:75px" placeholder="Alamat lengkap stasi..." required maxlength="2500"></textarea>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Sejarah Stasi</label>
-            <textarea id="s-sejarah" class="form-ctrl" style="min-height:140px" placeholder="Tulis sejarah stasi yang tampil di halaman publik..."></textarea>
+            <textarea id="s-sejarah" class="form-ctrl" style="min-height:140px" placeholder="Tulis sejarah stasi yang tampil di halaman publik..." maxlength="2500"></textarea>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Daftar Ketua Stasi</label>
-            <textarea id="s-chairmen" class="form-ctrl" style="min-height:140px" placeholder="Satu nama per baris. Contoh: Bpk. Yohakim Noto Siswoyo"></textarea>
+            <textarea id="s-chairmen" class="form-ctrl" style="min-height:140px" placeholder="Satu nama per baris. Contoh: Bpk. Yohakim Noto Siswoyo" maxlength="2500"></textarea>
             <div class="form-hint" style="margin-top:0.4rem">Tulis satu nama per baris agar tampil rapi di modal stasi.</div>
           </div>
         </div>
@@ -930,7 +930,7 @@
               <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-url-s" style="font-size:0.7rem;padding:0.25rem 0.6rem" onclick="toggleUrlInput('s')">🔗 Input URL Gambar</button>
             </div>
             <div id="s-url-wrap" style="display:none;margin-top:0.45rem;gap:0.4rem;align-items:center">
-              <input id="s-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/stasi/..." oninput="handleManualUrlInput('s')" onkeydown="if(event.key==='Enter'){event.preventDefault();applyManualUrl('s');}" style="flex:1">
+              <input id="s-foto-manual" type="text" class="form-ctrl" placeholder="https://... atau assets/img/stasi/..." oninput="handleManualUrlInput('s')" onkeydown="if(event.key==='Enter'){event.preventDefault();applyManualUrl('s');}" style="flex:1" maxlength="150">
               <button type="button" class="btn btn-primary btn-sm" onclick="applyManualUrl('s')" style="white-space:nowrap;padding:0.45rem 0.75rem">Terapkan</button>
             </div>
           </div>
@@ -939,7 +939,7 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Tautan Google Maps</label>
-            <input id="s-maps" type="text" class="form-ctrl" placeholder="https://maps.app.goo.gl/...">
+            <input id="s-maps" type="text" class="form-ctrl" placeholder="https://maps.app.goo.gl/..." maxlength="150">
           </div>
         </div>
 
