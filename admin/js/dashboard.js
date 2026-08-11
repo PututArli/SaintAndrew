@@ -206,18 +206,32 @@ function showConfirmModal({
   confirmText = 'Ya, Lanjutkan',
   cancelText = 'Batal',
   type = 'save', // 'save' | 'delete' | 'warning'
-  danger = false
+  danger = false,
+  modalId = null
 } = {}) {
   return new Promise((resolve) => {
     _confirmResolver = resolve;
+
+    let finalDetailsHtml = detailsHtml;
+    if (modalId && type === 'save') {
+      const changed = typeof getChangedFields === 'function' ? getChangedFields(modalId) : [];
+      if (changed.length > 0) {
+        const changesText = `<strong>Kolom yang diedit:</strong><br><span style="color:var(--gold)">${escapeHtml(changed.join(', '))}</span>`;
+        if (finalDetailsHtml) {
+          finalDetailsHtml = finalDetailsHtml + '<br><br>' + changesText;
+        } else {
+          finalDetailsHtml = changesText;
+        }
+      }
+    }
 
     document.getElementById('confirm-modal-title').textContent = title;
     document.getElementById('confirm-modal-heading').textContent = heading;
     document.getElementById('confirm-modal-desc').textContent = message;
 
     const detailsEl = document.getElementById('confirm-modal-details');
-    if (detailsHtml) {
-      detailsEl.innerHTML = detailsHtml;
+    if (finalDetailsHtml) {
+      detailsEl.innerHTML = finalDetailsHtml;
       detailsEl.style.display = 'block';
     } else {
       detailsEl.style.display = 'none';
@@ -320,10 +334,43 @@ function saveInitialFormState(modalId) {
   _initialFormStates[modalId] = JSON.stringify(getFormSnapshot(modalId));
 }
 
+function getChangedFields(modalId) {
+  if (!_initialFormStates[modalId]) return [];
+  const initial = JSON.parse(_initialFormStates[modalId]);
+  const current = getFormSnapshot(modalId);
+  const changed = [];
+  
+  const modal = document.getElementById(modalId);
+  if (!modal) return [];
+
+  for (const key in current) {
+    if (current[key] !== initial[key]) {
+      const el = document.getElementById(key);
+      let label = key;
+      if (el) {
+        let labelEl = modal.querySelector(`label[for="${key}"]`);
+        if (!labelEl) {
+          const formGroup = el.closest('.form-group') || el.parentElement;
+          if (formGroup) labelEl = formGroup.querySelector('.form-label');
+        }
+        if (!labelEl && el.previousElementSibling && el.previousElementSibling.classList.contains('form-label')) {
+          labelEl = el.previousElementSibling;
+        }
+        
+        if (labelEl) {
+          label = labelEl.textContent.replace(/\*/g, '').trim();
+        } else if (el.placeholder) {
+          label = el.placeholder;
+        }
+      }
+      changed.push(label);
+    }
+  }
+  return changed;
+}
+
 function isFormDirty(modalId) {
-  if (!_initialFormStates[modalId]) return false;
-  const current = JSON.stringify(getFormSnapshot(modalId));
-  return current !== _initialFormStates[modalId];
+  return getChangedFields(modalId).length > 0;
 }
 
 function clearFormState(modalId) {
@@ -370,11 +417,13 @@ async function safeCloseModal(id) {
     resolveConfirmModal(false);
     return;
   }
-  if (isFormDirty(id)) {
+  const changed = getChangedFields(id);
+  if (changed.length > 0) {
     const leave = await showConfirmModal({
       title: 'Batalkan Perubahan?',
       heading: 'Perubahan Belum Disimpan',
-      message: 'Perubahan data yang baru saja Anda masukkan belum disimpan. Apakah Anda yakin ingin membatalkan dan keluar?',
+      message: 'Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin ingin membatalkan dan keluar?',
+      detailsHtml: `<strong>Kolom yang diubah:</strong><br><span style="color:var(--danger)">${escapeHtml(changed.join(', '))}</span><br><br>Peringatan: Perubahan ini akan hilang jika Anda keluar.`,
       confirmText: 'Ya, Buang Perubahan',
       cancelText: 'Lanjutkan Mengedit',
       type: 'warning'
@@ -1126,7 +1175,8 @@ async function submitJadwal(e) {
     detailsHtml: `<strong>Stasi:</strong> ${escapeHtml(stasiName)}<br><strong>Hari & Jam:</strong> ${escapeHtml(hariVal)}, ${escapeHtml(waktuVal)} ${ketVal ? `<br><strong>Keterangan:</strong> ${escapeHtml(ketVal)}` : ''}`,
     confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Tambahkan Jadwal',
     cancelText: 'Periksa Kembali',
-    type: 'save'
+    type: 'save',
+    modalId: 'modal-jadwal'
   });
 
   if (!confirmed) return;
@@ -1423,7 +1473,8 @@ async function submitRenungan(e) {
     `,
     confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Terbitkan Renungan',
     cancelText: 'Batal',
-    type: 'save'
+    type: 'save',
+    modalId: 'modal-renungan'
   });
 
   if (!confirmed) return;
@@ -1706,7 +1757,8 @@ async function submitPengumuman(e) {
     detailsHtml: `<strong>Judul:</strong> ${escapeHtml(judulVal)}<br><strong>Kategori:</strong> ${escapeHtml(katVal)} | <strong>Status:</strong> ${aktifVal ? 'Aktif (Tayang)' : 'Draft (Nonaktif)'}`,
     confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Terbitkan',
     cancelText: 'Periksa Kembali',
-    type: 'save'
+    type: 'save',
+    modalId: 'modal-pengumuman'
   });
 
   if (!confirmed) return;
@@ -1922,7 +1974,8 @@ async function submitGaleri(e) {
     detailsHtml: `<strong>Judul:</strong> ${escapeHtml(judul)}<br><strong>Kategori:</strong> ${escapeHtml(kat)}`,
     confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Tambahkan ke Galeri',
     cancelText: 'Periksa Kembali',
-    type: 'save'
+    type: 'save',
+    modalId: 'modal-galeri'
   });
 
   if (!confirmed) return;
@@ -2105,7 +2158,8 @@ async function submitStasiAdmin(e) {
     detailsHtml: `<strong>Stasi:</strong> ${escapeHtml(nama)}<br><strong>Pelindung:</strong> ${escapeHtml(pelindung)}<br><strong>Alamat:</strong> ${escapeHtml(alamat)}`,
     confirmText: 'Ya, Simpan Perubahan',
     cancelText: 'Periksa Kembali',
-    type: 'save'
+    type: 'save',
+    modalId: 'modal-stasi'
   });
 
   if (!confirmed) return;

@@ -1002,10 +1002,26 @@ async function syncStasiFromSupabase() {
                     if (Array.isArray(item.daftar_ketua)) stasiData[item.id].chairmen = item.daftar_ketua;
                 }
             });
+            updateStasiCardsDOM();
         }
     } catch (e) {
         console.warn('Sync stasi error:', e);
     }
+}
+
+function updateStasiCardsDOM() {
+    const cards = document.querySelectorAll('[data-stasi]');
+    cards.forEach(card => {
+        const id = card.getAttribute('data-stasi');
+        const data = stasiData[id];
+        if (!data) return;
+
+        const titleEl = card.querySelector('h3.font-bold, div.font-bold');
+        const patronEl = card.querySelector('p.font-semibold, div.font-medium');
+
+        if (titleEl && data.title) titleEl.textContent = data.title;
+        if (patronEl && data.patron) patronEl.textContent = data.patron;
+    });
 }
 
 // ── Main DOM Ready Initializer ───────────────────────────────
