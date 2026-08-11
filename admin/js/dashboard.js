@@ -2041,7 +2041,11 @@ async function loadStasiAdmin() {
     if (!error && data && data.length > 0) {
       data.forEach(s => {
         if (_stasiMap[s.id]) {
-          Object.assign(_stasiMap[s.id], s);
+          for (const key in s) {
+             if (s[key] !== null && s[key] !== undefined && s[key] !== '' && (!Array.isArray(s[key]) || s[key].length > 0)) {
+               _stasiMap[s.id][key] = s[key];
+             }
+          }
         } else {
           _stasiMap[s.id] = s;
         }
