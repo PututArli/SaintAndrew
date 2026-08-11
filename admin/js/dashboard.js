@@ -2113,7 +2113,20 @@ function openStasiModal(key) {
   const sSejarahEl = document.getElementById('s-sejarah');
   if (sSejarahEl) sSejarahEl.value = item.sejarah || '';
   const sChairmenEl = document.getElementById('s-chairmen');
-  if (sChairmenEl) sChairmenEl.value = Array.isArray(item.daftar_ketua) ? item.daftar_ketua.join('\n') : '';
+  if (sChairmenEl) {
+    let chairmenList = [];
+    if (Array.isArray(item.daftar_ketua)) {
+      chairmenList = item.daftar_ketua;
+    } else if (typeof item.daftar_ketua === 'string' && item.daftar_ketua.trim() !== '') {
+      try {
+        chairmenList = JSON.parse(item.daftar_ketua);
+        if (!Array.isArray(chairmenList)) chairmenList = [item.daftar_ketua];
+      } catch(e) {
+        chairmenList = item.daftar_ketua.replace(/^\{|\}$/g, '').split(',').map(s => s.replace(/^"|"$/g, '').trim()).filter(Boolean);
+      }
+    }
+    sChairmenEl.value = chairmenList.join('\n');
+  }
   const sMapsEl = document.getElementById('s-maps');
   if (sMapsEl) sMapsEl.value = item.gmaps_url || '';
 

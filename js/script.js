@@ -883,7 +883,12 @@ function applyProfileSiteContent(content) {
     setTextContentById('profile-leaders-badge', leaders.badge);
     setTextContentById('profile-leaders-title', leaders.title);
     setTextContentById('profile-leaders-subtitle', leaders.subtitle);
-    renderProfileLeaderList(leaders.items);
+    
+    let chairmenList = leaders.items;
+    if (typeof stasiData !== 'undefined' && stasiData['margo-agung'] && Array.isArray(stasiData['margo-agung'].chairmen) && stasiData['margo-agung'].chairmen.length > 0) {
+        chairmenList = stasiData['margo-agung'].chairmen;
+    }
+    renderProfileLeaderList(chairmenList);
 }
 
 function applyContactSiteContent(content) {
@@ -999,7 +1004,21 @@ async function syncStasiFromSupabase() {
                     if (item.gmaps_url) stasiData[item.id].gmapsUrl = item.gmaps_url;
                     if (item.foto_url) stasiData[item.id].image = item.foto_url;
                     if (item.sejarah) stasiData[item.id].history = item.sejarah;
-                    if (Array.isArray(item.daftar_ketua)) stasiData[item.id].chairmen = item.daftar_ketua;
+                    
+                    let parsedChairmen = [];
+                    if (Array.isArray(item.daftar_ketua)) {
+                        parsedChairmen = item.daftar_ketua;
+                    } else if (typeof item.daftar_ketua === 'string' && item.daftar_ketua.trim() !== '') {
+                        try {
+                            parsedChairmen = JSON.parse(item.daftar_ketua);
+                            if (!Array.isArray(parsedChairmen)) parsedChairmen = [item.daftar_ketua];
+                        } catch(e) {
+                            parsedChairmen = item.daftar_ketua.replace(/^\{|\}$/g, '').split(',').map(s => s.replace(/^"|"$/g, '').trim()).filter(Boolean);
+                        }
+                    }
+                    if (parsedChairmen.length > 0) {
+                        stasiData[item.id].chairmen = parsedChairmen;
+                    }
                 }
             });
             updateStasiCardsDOM();
@@ -1025,12 +1044,12 @@ function updateStasiCardsDOM() {
 }
 
 // ── Main DOM Ready Initializer ───────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // 0. Sync dynamic Stasi from DB
-    syncStasiFromSupabase();
+    await syncStasiFromSupabase();
 
     // 0b. Load editable site content for public pages
-    refreshSiteContentOnPage();
+    await refreshSiteContentOnPage();
 
     // 1. Setup Scroll-to-top
     ensureScrollTopInDOM();

@@ -121,7 +121,6 @@
           </div>
           <div class="site-content-quicknav">
             <button type="button" class="site-content-jump" onclick="document.getElementById('sc-section-home').scrollIntoView({behavior:'smooth'})">Beranda</button>
-            <button type="button" class="site-content-jump" onclick="document.getElementById('sc-section-profile').scrollIntoView({behavior:'smooth'})">Profil</button>
             <button type="button" class="site-content-jump" onclick="document.getElementById('sc-section-contact').scrollIntoView({behavior:'smooth'})">Kontak</button>
             <button type="button" class="site-content-jump" onclick="document.getElementById('sc-section-brand').scrollIntoView({behavior:'smooth'})">Identitas</button>
           </div>
@@ -158,10 +157,7 @@
             ${inputGroup('sc-home-hero-secondary-text', 'Teks CTA Kedua', home.hero?.secondaryCta?.text || '', 'Jelajahi 9 Stasi')}
             ${inputGroup('sc-home-hero-secondary-href', 'Link CTA Kedua', home.hero?.secondaryCta?.href || '', '#stasi-section')}
           </div>
-          <div class="mt-5 grid grid-cols-1 gap-3">
-            ${[0, 1, 2, 3].map(index => statBlock(index, home.stats?.[index] || {})).join('')}
-          </div>
-          <div class="mt-5 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div class="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-4">
             ${inputGroup('sc-home-announcement-badge', 'Badge Informasi', home.announcements?.badge || '', 'Informasi Terkini')}
             ${inputGroup('sc-home-announcement-title', 'Judul Informasi', home.announcements?.title || '', 'Pengumuman & Renungan')}
             ${textareaGroup('sc-home-announcement-subtitle', 'Subjudul Informasi', home.announcements?.subtitle || '', 'Teks pengantar bagian informasi', 3)}
@@ -171,57 +167,11 @@
             ${inputGroup('sc-home-schedule-title', 'Judul Jadwal', home.schedule?.title || '', 'Jadwal Misa Gereja Paroki')}
             ${textareaGroup('sc-home-schedule-subtitle', 'Subjudul Jadwal', home.schedule?.subtitle || '', 'Teks pengantar bagian jadwal', 3)}
             ${inputGroup('sc-home-schedule-link', 'Teks Link Jadwal', home.schedule?.linkText || '', 'Lihat Jadwal Lengkap')}
-            ${inputGroup('sc-home-gallery-badge', 'Badge Galeri', home.gallery?.badge || '', 'Foto Kegiatan')}
-            ${inputGroup('sc-home-gallery-title', 'Judul Galeri', home.gallery?.title || '', 'Galeri Paroki')}
-            ${inputGroup('sc-home-gallery-link', 'Teks Link Galeri', home.gallery?.linkText || '', 'Lihat Semua Foto')}
-            ${inputGroup('sc-home-stasi-badge', 'Badge Stasi', home.stasi?.badge || '', 'Komunitas Kami')}
-            ${inputGroup('sc-home-stasi-title', 'Judul Stasi', home.stasi?.title || '', '9 Stasi Paroki')}
-            ${textareaGroup('sc-home-stasi-subtitle', 'Subjudul Stasi', home.stasi?.subtitle || '', 'Teks pengantar bagian stasi', 3)}
-            ${inputGroup('sc-home-stasi-link', 'Teks Link Stasi', home.stasi?.linkText || '', 'Jelajahi Semua Stasi')}
           </div>
         `)}
 
-        ${sectionCard('Profil', 'Semua teks utama di halaman profil, termasuk visi, misi, sejarah, dan kepemimpinan.', `
-          <div id="sc-section-profile" class="site-content-grid site-content-grid-2">
-            ${inputGroup('sc-profile-hero-title', 'Judul Hero Profil', profile.hero?.title || '', 'Profil Paroki')}
-            ${textareaGroup('sc-profile-hero-subtitle', 'Subjudul Hero Profil', profile.hero?.subtitle || '', 'Teks pembuka profil', 3)}
-            ${inputGroup('sc-profile-org-badge', 'Badge Organisasi', profile.organization?.badge || '', 'Organisasi Gereja')}
-            ${inputGroup('sc-profile-org-title', 'Judul Organisasi', profile.organization?.title || '', 'Struktur Organisasi Gereja')}
-            ${textareaGroup('sc-profile-org-subtitle', 'Subjudul Organisasi', profile.organization?.subtitle || '', 'Teks penjelas', 3)}
-            ${inputGroup('sc-profile-paroki-heading', 'Judul Paroki', profile.organization?.parokiHeading || '', 'Apa itu Paroki?')}
-            ${textareaGroup('sc-profile-paroki-text', 'Teks Apa itu Paroki', profile.organization?.parokiText || '', 'Uraian paroki', 6)}
-            ${inputGroup('sc-profile-stasi-heading', 'Judul Stasi', profile.organization?.stasiHeading || '', 'Apa itu Stasi?')}
-            ${textareaGroup('sc-profile-stasi-text', 'Teks Apa itu Stasi', profile.organization?.stasiText || '', 'Uraian stasi', 6)}
-            ${inputGroup('sc-profile-vision-badge', 'Badge Visi & Misi', profile.visionMission?.badge || '', 'Arah & Tujuan')}
-            ${inputGroup('sc-profile-vision-title', 'Judul Visi & Misi', profile.visionMission?.title || '', 'Visi & Misi')}
-            ${textareaGroup('sc-profile-vision-subtitle', 'Subjudul Visi & Misi', profile.visionMission?.subtitle || '', 'Teks pengantar visi misi', 3)}
-            ${inputGroup('sc-profile-vision-label', 'Label Visi', profile.visionMission?.visionLabel || '', 'Visi')}
-            ${inputGroup('sc-profile-vision-heading', 'Judul Visi', profile.visionMission?.visionTitle || '', 'Tujuan Jangka Panjang')}
-            ${textareaGroup('sc-profile-vision-text', 'Teks Visi', profile.visionMission?.visionText || '', 'Uraian visi', 5)}
-            ${inputGroup('sc-profile-mission-label', 'Label Misi', profile.visionMission?.missionLabel || '', 'Misi')}
-            ${inputGroup('sc-profile-mission-heading', 'Judul Misi', profile.visionMission?.missionTitle || '', 'Langkah Nyata')}
-            ${textareaGroup('sc-profile-mission-items', 'Daftar Misi', (profile.visionMission?.missionItems || []).join('\n'), 'Satu misi per baris', 5)}
-            ${inputGroup('sc-profile-saints-badge', 'Badge Pelindung', profile.saints?.badge || '', 'Pelindung Rohani')}
-            ${inputGroup('sc-profile-saints-title', 'Judul Pelindung', profile.saints?.title || '', 'Santo & Santa Pelindung')}
-            ${textareaGroup('sc-profile-saints-subtitle', 'Subjudul Pelindung', profile.saints?.subtitle || '', 'Teks pengantar pelindung', 4)}
-            ${inputGroup('sc-profile-history-badge', 'Badge Sejarah', profile.history?.badge || '', 'Perjalanan Iman')}
-            ${inputGroup('sc-profile-history-title', 'Judul Sejarah', profile.history?.title || '', 'Sejarah Paroki')}
-            ${textareaGroup('sc-profile-history-subtitle', 'Subjudul Sejarah', profile.history?.subtitle || '', 'Teks pengantar sejarah', 3)}
-            <div class="site-content-history-list" style="grid-column:1 / -1; display:grid; gap:0.9rem;">
-              ${[0, 1, 2].map(index => historyBlock(index, profile.history?.items?.[index] || {})).join('')}
-            </div>
-            ${inputGroup('sc-profile-leaders-badge', 'Badge Kepemimpinan', profile.leaders?.badge || '', 'Kepemimpinan')}
-            ${inputGroup('sc-profile-leaders-title', 'Judul Kepemimpinan', profile.leaders?.title || '', 'Daftar Ketua Stasi')}
-            ${textareaGroup('sc-profile-leaders-subtitle', 'Subjudul Kepemimpinan', profile.leaders?.subtitle || '', 'Teks pengantar daftar ketua', 3)}
-            ${textareaGroup('sc-profile-leaders-items', 'Daftar Ketua Stasi', (profile.leaders?.items || []).join('\n'), 'Satu nama per baris. Contoh: Bpk. Yohakim Noto Siswoyo (Alm)', 10)}
-          </div>
-        `)}
-
-        ${sectionCard('Kontak', 'Teks dan data yang tampil di halaman kontak.', `
+        ${sectionCard('Kontak & Sekretariat', 'Teks dan data yang tampil di halaman kontak dan footer.', `
           <div id="sc-section-contact" class="site-content-grid site-content-grid-2">
-            ${inputGroup('sc-contact-hero-badge', 'Badge Hero', contact.hero?.badge || '', 'Hubungi Kami')}
-            ${inputGroup('sc-contact-hero-title', 'Judul Hero', contact.hero?.title || '', 'Kontak & Sekretariat')}
-            ${textareaGroup('sc-contact-hero-subtitle', 'Subjudul Hero', contact.hero?.subtitle || '', 'Teks hero kontak', 3)}
             ${inputGroup('sc-contact-wa-label', 'Label WhatsApp', contact.quickActions?.whatsapp?.label || '', 'WhatsApp Sekretariat')}
             ${inputGroup('sc-contact-wa-href', 'Link WhatsApp', contact.quickActions?.whatsapp?.href || '', 'https://wa.me/...')}
             ${inputGroup('sc-contact-phone-label', 'Label Telepon', contact.quickActions?.phone?.label || '', 'Telepon: ...')}
@@ -232,20 +182,6 @@
             ${inputGroup('sc-contact-sekretariat-email', 'Email Sekretariat', contact.sekretariat?.email || '', 'email@paroki.id', 'email')}
             ${inputGroup('sc-contact-hours-weekday', 'Jam Weekday', contact.sekretariat?.hoursWeekday || '', 'Senin – Jumat: ...')}
             ${inputGroup('sc-contact-hours-weekend', 'Jam Weekend', contact.sekretariat?.hoursWeekend || '', 'Sabtu – Minggu: ...')}
-            ${inputGroup('sc-contact-form-title', 'Judul Form', contact.form?.title || '', 'Kirim Pesan')}
-            ${textareaGroup('sc-contact-form-subtitle', 'Subjudul Form', contact.form?.subtitle || '', 'Teks di bawah judul form', 3)}
-            ${inputGroup('sc-contact-form-submit', 'Teks Tombol Kirim', contact.form?.submitText || '', 'Kirim Pesan')}
-            ${inputGroup('sc-contact-map-badge', 'Badge Peta', contact.map?.badge || '', 'Peta Gereja')}
-            ${inputGroup('sc-contact-map-title', 'Judul Peta', contact.map?.title || '', 'Lokasi & Petunjuk Arah')}
-            ${textareaGroup('sc-contact-map-subtitle', 'Subjudul Peta', contact.map?.subtitle || '', 'Teks pengantar peta', 3)}
-            ${inputGroup('sc-contact-map-address-label', 'Label Alamat Peta', contact.map?.addressLabel || '', 'Gereja Paroki')}
-            ${inputGroup('sc-contact-map-address-line', 'Baris Alamat Peta', contact.map?.addressLine || '', 'Alamat pada kartu peta')}
-            ${inputGroup('sc-contact-map-button', 'Teks Tombol Peta', contact.map?.buttonText || '', 'Buka Google Maps ↗')}
-            ${inputGroup('sc-contact-map-url', 'Link Google Maps', contact.map?.mapUrl || '', 'https://...')}
-            ${inputGroup('sc-contact-map-iframe', 'Link Iframe Maps', contact.map?.iframeUrl || '', 'https://...')}
-          </div>
-          <div class="mt-5 space-y-3">
-            ${[0, 1, 2, 3].map(index => faqBlock(index, contact.faq?.[index] || {})).join('')}
           </div>
         `)}
       </div>
@@ -285,10 +221,6 @@
             href: fieldValue('sc-home-hero-secondary-href')
           }
         },
-        stats: [1, 2, 3, 4].map(index => ({
-          value: fieldValue(`sc-home-stat-${index}-value`),
-          label: fieldValue(`sc-home-stat-${index}-label`)
-        })),
         announcements: {
           badge: fieldValue('sc-home-announcement-badge'),
           title: fieldValue('sc-home-announcement-title'),
@@ -301,25 +233,9 @@
           title: fieldValue('sc-home-schedule-title'),
           subtitle: fieldValue('sc-home-schedule-subtitle'),
           linkText: fieldValue('sc-home-schedule-link')
-        },
-        gallery: {
-          badge: fieldValue('sc-home-gallery-badge'),
-          title: fieldValue('sc-home-gallery-title'),
-          linkText: fieldValue('sc-home-gallery-link')
-        },
-        stasi: {
-          badge: fieldValue('sc-home-stasi-badge'),
-          title: fieldValue('sc-home-stasi-title'),
-          subtitle: fieldValue('sc-home-stasi-subtitle'),
-          linkText: fieldValue('sc-home-stasi-link')
         }
       },
       contact: {
-        hero: {
-          badge: fieldValue('sc-contact-hero-badge'),
-          title: fieldValue('sc-contact-hero-title'),
-          subtitle: fieldValue('sc-contact-hero-subtitle')
-        },
         quickActions: {
           whatsapp: {
             label: fieldValue('sc-contact-wa-label'),
@@ -338,82 +254,10 @@
           hoursWeekday: fieldValue('sc-contact-hours-weekday'),
           hoursWeekend: fieldValue('sc-contact-hours-weekend')
         },
-        form: {
-          title: fieldValue('sc-contact-form-title'),
-          subtitle: fieldValue('sc-contact-form-subtitle'),
-          submitText: fieldValue('sc-contact-form-submit')
-        },
-        map: {
-          badge: fieldValue('sc-contact-map-badge'),
-          title: fieldValue('sc-contact-map-title'),
-          subtitle: fieldValue('sc-contact-map-subtitle'),
-          addressLabel: fieldValue('sc-contact-map-address-label'),
-          addressLine: fieldValue('sc-contact-map-address-line'),
-          buttonText: fieldValue('sc-contact-map-button'),
-          mapUrl: fieldValue('sc-contact-map-url'),
-          iframeUrl: fieldValue('sc-contact-map-iframe')
-        },
         faq: [1, 2, 3, 4].map(index => ({
           question: fieldValue(`sc-contact-faq-q-${index}`),
           answer: fieldValue(`sc-contact-faq-a-${index}`)
         }))
-      },
-      profile: {
-        hero: {
-          title: fieldValue('sc-profile-hero-title'),
-          subtitle: fieldValue('sc-profile-hero-subtitle')
-        },
-        organization: {
-          badge: fieldValue('sc-profile-org-badge'),
-          title: fieldValue('sc-profile-org-title'),
-          subtitle: fieldValue('sc-profile-org-subtitle'),
-          parokiHeading: fieldValue('sc-profile-paroki-heading'),
-          parokiText: fieldValue('sc-profile-paroki-text'),
-          stasiHeading: fieldValue('sc-profile-stasi-heading'),
-          stasiText: fieldValue('sc-profile-stasi-text')
-        },
-        visionMission: {
-          badge: fieldValue('sc-profile-vision-badge'),
-          title: fieldValue('sc-profile-vision-title'),
-          subtitle: fieldValue('sc-profile-vision-subtitle'),
-          visionLabel: fieldValue('sc-profile-vision-label'),
-          visionTitle: fieldValue('sc-profile-vision-heading'),
-          visionText: fieldValue('sc-profile-vision-text'),
-          missionLabel: fieldValue('sc-profile-mission-label'),
-          missionTitle: fieldValue('sc-profile-mission-heading'),
-          missionItems: readLines('sc-profile-mission-items')
-        },
-        saints: {
-          badge: fieldValue('sc-profile-saints-badge'),
-          title: fieldValue('sc-profile-saints-title'),
-          subtitle: fieldValue('sc-profile-saints-subtitle')
-        },
-        history: {
-          badge: fieldValue('sc-profile-history-badge'),
-          title: fieldValue('sc-profile-history-title'),
-          subtitle: fieldValue('sc-profile-history-subtitle'),
-          items: [1, 2, 3].map(index => ({
-            year: fieldValue(`sc-profile-history-year-${index}`),
-            title: fieldValue(`sc-profile-history-title-${index}`),
-            text: fieldValue(`sc-profile-history-text-${index}`)
-          }))
-        },
-        leaders: {
-          badge: fieldValue('sc-profile-leaders-badge'),
-          title: fieldValue('sc-profile-leaders-title'),
-          subtitle: fieldValue('sc-profile-leaders-subtitle'),
-          items: readLines('sc-profile-leaders-items', [
-            'Bpk. Yohakim Noto Siswoyo (Alm)',
-            'Bpk. Yohakim Sosrowasito (Alm)',
-            'Bpk. Petrus Siswosukarto (Alm)',
-            'Bpk. Fx. Edi Suwarno (Alm)',
-            'Bpk. Paulus Sutikno',
-            'Bpk. Yohanes Supandi',
-            'Bpk. Petrus Sukamto',
-            'Bpk. Fx. Heri Hendarto (Alm)',
-            'Bpk. Andreas Kamajaya (2024–Sekarang)'
-          ])
-        }
       },
       footer: {
         description: fieldValue('sc-footer-description'),
