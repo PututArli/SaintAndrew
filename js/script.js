@@ -902,10 +902,20 @@ function applyContactSiteContent(content) {
     setTextContentById('contact-hero-title', contact.hero?.title);
     setTextContentById('contact-hero-subtitle', contact.hero?.subtitle);
 
-    setTextContentById('contact-wa-text', quick.whatsapp?.label);
-    setAttrById('contact-wa-link', 'href', quick.whatsapp?.href);
-    setTextContentById('contact-phone-text', quick.phone?.label);
-    setAttrById('contact-phone-link', 'href', quick.phone?.href);
+    const phoneStr = sekretariat.phone || '(0721) 755300';
+    let numeric = String(phoneStr).trim().replace(/[^\d+]/g, '');
+    if (numeric.startsWith('0')) {
+        numeric = '62' + numeric.substring(1);
+    } else if (numeric.startsWith('+62')) {
+        numeric = '62' + numeric.substring(3);
+    }
+    const waLink = `https://wa.me/${numeric}`;
+    const callLink = `tel:${numeric.startsWith('62') ? '0' + numeric.substring(2) : numeric}`;
+
+    setTextContentById('contact-wa-text', 'WhatsApp Sekretariat');
+    setAttrById('contact-wa-link', 'href', waLink);
+    setTextContentById('contact-phone-text', `Telepon: ${phoneStr}`);
+    setAttrById('contact-phone-link', 'href', callLink);
 
     setTextContentById('contact-sekretariat-title', sekretariat.title);
     setTextContentById('contact-address', sekretariat.address);
@@ -947,13 +957,6 @@ function applySiteContentToPage(content) {
         applyProfileSiteContent(content);
     }
     if (pathname.endsWith('kontak.html') || pathname.endsWith('/kontak')) {
-        applyContactSiteContent(content);
-    }
-}
-    if (pathname.endsWith('profil.html')) {
-        applyProfileSiteContent(content);
-    }
-    if (pathname.endsWith('kontak.html')) {
         applyContactSiteContent(content);
     }
 }

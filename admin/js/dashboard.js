@@ -207,7 +207,8 @@ function showConfirmModal({
   cancelText = 'Batal',
   type = 'save', // 'save' | 'delete' | 'warning'
   danger = false,
-  modalId = null
+  modalId = null,
+  expectedText = ''
 } = {}) {
   return new Promise((resolve) => {
     _confirmResolver = resolve;
@@ -242,6 +243,44 @@ function showConfirmModal({
     const cancelBtn = document.getElementById('confirm-btn-cancel');
     okBtn.textContent = confirmText;
     cancelBtn.textContent = cancelText;
+
+    const inputWrap = document.getElementById('confirm-modal-input-wrap');
+    const expectedEl = document.getElementById('confirm-modal-expected');
+    const inputEl = document.getElementById('confirm-modal-input');
+    
+    let newInputEl = inputEl;
+    if (inputEl) {
+      newInputEl = inputEl.cloneNode(true);
+      inputEl.parentNode.replaceChild(newInputEl, inputEl);
+    }
+
+    if (expectedText) {
+      if (inputWrap) inputWrap.style.display = 'block';
+      if (expectedEl) expectedEl.textContent = expectedText;
+      if (newInputEl) {
+        newInputEl.value = '';
+        okBtn.disabled = true;
+        okBtn.style.opacity = '0.4';
+        okBtn.style.cursor = 'not-allowed';
+        newInputEl.addEventListener('input', (e) => {
+          if (e.target.value.toLowerCase() === expectedText.toLowerCase()) {
+            okBtn.disabled = false;
+            okBtn.style.opacity = '1';
+            okBtn.style.cursor = '';
+          } else {
+            okBtn.disabled = true;
+            okBtn.style.opacity = '0.4';
+            okBtn.style.cursor = 'not-allowed';
+          }
+        });
+      }
+    } else {
+      if (inputWrap) inputWrap.style.display = 'none';
+      if (newInputEl) newInputEl.value = '';
+      okBtn.disabled = false;
+      okBtn.style.opacity = '1';
+      okBtn.style.cursor = '';
+    }
 
     const iconEl = document.getElementById('confirm-modal-icon');
     if (type === 'delete' || danger) {
@@ -2237,7 +2276,8 @@ async function submitStasiAdmin(e) {
     confirmText: 'Ya, Simpan Perubahan',
     cancelText: 'Periksa Kembali',
     type: 'save',
-    modalId: 'modal-stasi'
+    modalId: 'modal-stasi',
+    expectedText: 'simpan stasi'
   });
 
   if (!confirmed) return;
@@ -2306,7 +2346,8 @@ async function confirmDelete(table, id, desc, cb) {
     confirmText: 'Hapus Sekarang',
     cancelText: 'Batal',
     type: 'delete',
-    danger: true
+    danger: true,
+    expectedText: 'hapus ' + table.replace('_', ' ')
   });
 
   if (!confirmed) return;

@@ -172,10 +172,6 @@
 
         ${sectionCard('Kontak & Sekretariat', 'Teks dan data yang tampil di halaman kontak dan footer.', `
           <div id="sc-section-contact" class="site-content-grid site-content-grid-2">
-            ${inputGroup('sc-contact-wa-label', 'Label WhatsApp', contact.quickActions?.whatsapp?.label || '', 'WhatsApp Sekretariat')}
-            ${inputGroup('sc-contact-wa-href', 'Link WhatsApp', contact.quickActions?.whatsapp?.href || '', 'https://wa.me/...')}
-            ${inputGroup('sc-contact-phone-label', 'Label Telepon', contact.quickActions?.phone?.label || '', 'Telepon: ...')}
-            ${inputGroup('sc-contact-phone-href', 'Link Telepon', contact.quickActions?.phone?.href || '', 'tel:...')}
             ${inputGroup('sc-contact-sekretariat-title', 'Judul Sekretariat', contact.sekretariat?.title || '', 'Sekretariat Paroki')}
             ${textareaGroup('sc-contact-sekretariat-address', 'Alamat Sekretariat', contact.sekretariat?.address || '', 'Alamat lengkap', 3)}
             ${inputGroup('sc-contact-sekretariat-phone', 'Telepon Sekretariat', contact.sekretariat?.phone || '', '(0721) 755300')}
@@ -238,12 +234,12 @@
       contact: {
         quickActions: {
           whatsapp: {
-            label: fieldValue('sc-contact-wa-label'),
-            href: fieldValue('sc-contact-wa-href')
+            label: 'WhatsApp Sekretariat',
+            href: ''
           },
           phone: {
-            label: fieldValue('sc-contact-phone-label'),
-            href: fieldValue('sc-contact-phone-href')
+            label: 'Telepon Sekretariat',
+            href: ''
           }
         },
         sekretariat: {
