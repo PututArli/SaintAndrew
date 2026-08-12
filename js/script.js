@@ -936,9 +936,20 @@ function applyContactSiteContent(content) {
 
 function applySiteContentToPage(content) {
     const pathname = (location.pathname || '').toLowerCase();
-    if (pathname.endsWith('index.html') || pathname.endsWith('/')) {
+    
+    // Always apply footer
+    applyFooterSiteContent(content);
+
+    if (pathname.endsWith('index.html') || pathname.endsWith('/') || pathname === '') {
         applyHomeSiteContent(content);
     }
+    if (pathname.endsWith('profil.html') || pathname.endsWith('/profil')) {
+        applyProfileSiteContent(content);
+    }
+    if (pathname.endsWith('kontak.html') || pathname.endsWith('/kontak')) {
+        applyContactSiteContent(content);
+    }
+}
     if (pathname.endsWith('profil.html')) {
         applyProfileSiteContent(content);
     }

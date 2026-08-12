@@ -27,7 +27,7 @@ if (!customElements.get('page-hero')) {
             const badge = this.getAttribute('badge') || '';
             const title = this.getAttribute('title') || '';
             const subtitle = this.getAttribute('subtitle') || '';
-            const badgeHtml = badge ? `<div class="flex justify-center mb-4"><div class="hero-badge">${badge}</div></div>` : '';
+            const badgeHtml = '';
             
             this.innerHTML = `
             <div class="page-hero">

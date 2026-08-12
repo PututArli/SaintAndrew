@@ -284,6 +284,14 @@
   border: 1px solid rgba(184,134,11,0.22);
 }
 
+/* ── Web Components Default Display ── */
+callout-banner,
+modern-navbar,
+modern-footer {
+  display: block;
+  width: 100%;
+}
+
 /* ── Aesthetic Divider with Cross Ornament ── */
 aesthetic-divider {
   display: block;

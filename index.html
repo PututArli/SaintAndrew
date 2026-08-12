@@ -28,11 +28,6 @@
     <div class="max-w-7xl mx-auto px-6 py-20 w-full relative z-10">
       <div class="max-w-2xl animate-fade-in">
         <!-- Badge -->
-        <div class="hero-badge mb-6">
-          <span>✝</span>
-          <span id="hero-badge">Selamat Datang</span>
-        </div>
-
         <!-- Title -->
         <h1 class="hero-title mb-6">
           <span id="hero-line-1">Paroki</span><br>
@@ -312,6 +307,36 @@
 <script src="js/script.js"></script>
 <script src="js/renungan.js"></script>
 <script>
+
+// ── Load Jadwal from Supabase ──────────────────────
+(async () => {
+  const gridEl = document.getElementById('home-schedule-grid');
+  if (!gridEl || typeof db === 'undefined') return;
+
+  try {
+    const { data, error } = await db.from('jadwal_misa').select('*').order('urutan').order('created_at');
+    if (error) throw error;
+
+    if (!data || data.length === 0) return;
+
+    const isGerejaParoki = (stasi) => ['margo-agung', 'marga-agung'].includes((stasi || '').toLowerCase());
+    const parokiRows = data.filter(r => isGerejaParoki(r.stasi)).slice(0, 3); // Ambil maks 3
+
+    if (parokiRows.length > 0) {
+      gridEl.innerHTML = parokiRows.map(r => `
+        <div class="info-card text-center animate-fade-in">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
+          <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--gold)">${escapeHtml(r.hari)}</div>
+          <div class="text-2xl font-black" style="color:var(--ink)">${escapeHtml(r.waktu)}</div>
+          <div class="text-xs mt-1 font-medium" style="color:var(--stone)">${escapeHtml(r.keterangan || 'Misa Umat')}</div>
+        </div>
+      `).join('');
+    }
+  } catch(e) {
+    console.error('Error load home schedule:', e);
+  }
+})();
+
 // ── Load Pengumuman from Supabase ──────────────────
 (async () => {
   const listEl = document.getElementById('pengumumanList');
