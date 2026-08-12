@@ -81,7 +81,6 @@ if (!customElements.get('section-header')) {
 
             this.innerHTML = `
             <div class="${isCentered ? 'text-center' : ''} mb-8 sm:mb-10${isReveal}">
-                ${badge ? `<div class="section-badge ${isCentered ? 'mx-auto' : ''}">${badge}</div>` : ''}
                 <h2 class="section-title mt-3">${title}</h2>
                 <div class="section-divider ${isCentered ? 'centered' : ''}"></div>
                 ${subtitle ? `<p class="text-sm mt-3 ${isCentered ? 'max-w-2xl mx-auto' : ''}" style="color:var(--stone)">${subtitle}</p>` : ''}
