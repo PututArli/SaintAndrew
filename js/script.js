@@ -944,6 +944,29 @@ function applyContactSiteContent(content) {
     });
 }
 
+function applyFooterSiteContent(content) {
+    const brand = content?.brand || {};
+    const contact = content?.contact || {};
+    const sekretariat = contact.sekretariat || {};
+
+    setTextContentById('footer-brand-name', brand.name);
+    setTextContentById('footer-brand-subtitle', brand.subtitle);
+    setTextContentById('footer-description', brand.description);
+    setAttrById('footer-instagram', 'href', brand.instagram);
+    setAttrById('footer-youtube', 'href', brand.youtube);
+
+    setTextContentById('footer-address', sekretariat.address);
+    setTextContentById('footer-phone', sekretariat.phone);
+    setTextContentById('footer-email', sekretariat.email);
+    setTextContentById('footer-email', sekretariat.email);
+    setAttrById('footer-email', 'href', sekretariat.email ? `mailto:${sekretariat.email}` : '#');
+    setTextContentById('footer-hours', (sekretariat.hoursWeekday && sekretariat.hoursWeekend) 
+        ? `${sekretariat.hoursWeekday.replace('Senin – Jumat', 'Sen–Jum')}<br>${sekretariat.hoursWeekend.replace('Sabtu – Minggu', 'Sab–Min')}`
+        : '');
+    setTextContentById('footer-copyright', brand.copyright);
+    setTextContentById('footer-tagline', brand.tagline);
+}
+
 function applySiteContentToPage(content) {
     const pathname = (location.pathname || '').toLowerCase();
     
