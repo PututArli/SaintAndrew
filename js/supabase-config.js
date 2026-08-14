@@ -1,5 +1,5 @@
 // ============================================================
-//  SUPABASE CLIENT — Paroki Santo Andreas Rasul Marga Agung
+//  SUPABASE CLIENT — Paroki Santo Andreas Rasul Margo Agung
 //  Gunakan file ini untuk semua koneksi ke Supabase
 // ============================================================
 

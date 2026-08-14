@@ -15,7 +15,7 @@ class ModernFooter extends HTMLElement {
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-9 h-9 rounded-xl flex items-center justify-center text-base" style="background:rgba(184,134,11,0.15);border:1px solid rgba(184,134,11,0.25);color:#D4A017">✝</div>
                             <div>
-                                <div class="font-bold text-white text-base leading-tight" id="footer-brand-name" style="font-family:'Inter',sans-serif;letter-spacing:-0.02em">Paroki Marga Agung</div>
+                                <div class="font-bold text-white text-base leading-tight" id="footer-brand-name" style="font-family:'Inter',sans-serif;letter-spacing:-0.02em">Paroki Margo Agung</div>
                                 <div class="text-xs tracking-widest uppercase" id="footer-brand-subtitle" style="color:rgba(255,255,255,0.4)">Santo Andreas Rasul</div>
                             </div>
                         </div>
@@ -85,7 +85,7 @@ class ModernFooter extends HTMLElement {
 
                 <!-- Bottom bar -->
                 <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="border-top:1px solid rgba(255,255,255,0.07);color:rgba(255,255,255,0.28)">
-                    <span id="footer-copyright">© 2026 Paroki Santo Andreas Rasul Marga Agung.</span>
+                    <span id="footer-copyright">© 2026 Paroki Santo Andreas Rasul Margo Agung.</span>
                     <div class="flex items-center gap-3">
                         <span class="flex items-center gap-1.5" id="footer-tagline">Dibuat oleh umat dan untuk umat</span>
                         <button id="adminPortalTrigger" class="text-[11px] opacity-20 hover:opacity-100 transition-opacity flex items-center gap-1 cursor-pointer bg-transparent border-0 p-1" style="color:rgba(255,255,255,0.6)" title="Akses Admin">
@@ -109,7 +109,7 @@ class ModernFooter extends HTMLElement {
                     <div class="w-10 h-10 rounded-xl flex items-center justify-center text-base text-white" style="background:#1C1C1E">✝</div>
                     <div>
                         <h3 class="text-base font-bold text-gray-900 leading-tight">Masuk Admin</h3>
-                        <p class="text-xs text-gray-500 mt-0.5">Paroki Marga Agung</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Paroki Margo Agung</p>
                     </div>
                 </div>
 
@@ -186,7 +186,7 @@ class ModernFooter extends HTMLElement {
                 if (descEl) descEl.textContent = latestFooter.description || brand.description || 'Melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.';
                 if (instagramEl && (latestBrand.instagram || latestFooter.instagram)) instagramEl.href = latestBrand.instagram || latestFooter.instagram;
                 if (youtubeEl && (latestBrand.youtube || latestFooter.youtube)) youtubeEl.href = latestBrand.youtube || latestFooter.youtube;
-                if (addressEl) addressEl.textContent = latestFooter.address || 'Jl. Marga Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365';
+                if (addressEl) addressEl.textContent = latestFooter.address || 'Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365';
                 if (phoneEl) phoneEl.textContent = latestFooter.phone || '(0721) 755300';
                 if (emailEl) {
                     const email = latestFooter.email || 'parokimargaagung@gmail.com';
@@ -194,7 +194,7 @@ class ModernFooter extends HTMLElement {
                     emailEl.href = `mailto:${email}`;
                 }
                 if (hoursEl) hoursEl.innerHTML = latestFooter.hours || 'Sen–Jum: 08:00–15:00<br>Sab–Min: 08:00–12:00';
-                if (copyrightEl) copyrightEl.textContent = latestFooter.copyright || '© 2026 Paroki Santo Andreas Rasul Marga Agung.';
+                if (copyrightEl) copyrightEl.textContent = latestFooter.copyright || '© 2026 Paroki Santo Andreas Rasul Margo Agung.';
                 if (taglineEl) taglineEl.textContent = latestFooter.tagline || 'Dibuat oleh umat dan untuk umat';
             }).catch(() => {});
         }

@@ -1,6 +1,6 @@
 // ============================================================
 //  RENUNGAN HARIAN & SABDA LITURGI KATOLIK — OTOMATIS BERGANTI TIAP HARI
-//  Paroki Santo Andreas Rasul Marga Agung
+//  Paroki Santo Andreas Rasul Margo Agung
 // ============================================================
 
 /**
@@ -438,7 +438,7 @@ async function shareDevotion(btnElement = null) {
     ? window.location.origin 
     : window.location.href.split('?')[0].split('#')[0].replace(/\/index\.html$/, '');
 
-  const textToShare = `*RENUNGAN HARIAN KATOLIK*\n*Paroki Santo Andreas Rasul Marga Agung*\n${d.tanggalFormatted} (${d.liturgi})\n\n*${d.tema}*\n_Bacaan: ${d.perikop}_\n\n"${d.ayat}"\n\n*Refleksi:*\n${d.refleksi}\n\n*Doa:*\n"${d.doa}"\n\nBerkah Dalem — ${siteUrl}`;
+  const textToShare = `*RENUNGAN HARIAN KATOLIK*\n*Paroki Santo Andreas Rasul Margo Agung*\n${d.tanggalFormatted} (${d.liturgi})\n\n*${d.tema}*\n_Bacaan: ${d.perikop}_\n\n"${d.ayat}"\n\n*Refleksi:*\n${d.refleksi}\n\n*Doa:*\n"${d.doa}"\n\nBerkah Dalem — ${siteUrl}`;
 
   // 1. Mobile Web Share API (Pass ONLY text to avoid WhatsApp displaying duplicate URLs)
   if (navigator.share) {

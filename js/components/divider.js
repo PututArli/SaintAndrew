@@ -1,6 +1,6 @@
 /**
  * Aesthetic Divider with Catholic Cross Ornament
- * Paroki Santo Andreas Rasul Marga Agung
+ * Paroki Santo Andreas Rasul Margo Agung
  *
  * Usage in HTML:
  *   <aesthetic-divider></aesthetic-divider>

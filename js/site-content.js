@@ -1,5 +1,5 @@
 // ============================================================
-//  SITE CONTENT STORE — Paroki Santo Andreas Rasul Marga Agung
+//  SITE CONTENT STORE — Paroki Santo Andreas Rasul Margo Agung
 //  Shared content defaults + load/save helpers for public pages
 // ============================================================
 
@@ -9,7 +9,7 @@
       name: 'Paroki Santo Andreas Rasul',
       subtitle: 'Santo Andreas Rasul',
       description: 'Melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.',
-      copyright: '© 2026 Paroki Santo Andreas Rasul Marga Agung.',
+      copyright: '© 2026 Paroki Santo Andreas Rasul Margo Agung.',
       tagline: 'Dibuat oleh umat dan untuk umat',
       instagram: 'https://www.instagram.com/omk_parokimargaagung?igsh=MW4wODZ0dTRjZGkwZA==',
       youtube: 'https://youtube.com/@parokisantoandreasrasulmar119?si=g3ct2ltcxme66UYq'
@@ -18,7 +18,7 @@
       hero: {
         badge: 'Selamat Datang',
         titleLines: ['Paroki', 'Santo Andreas', 'Rasul'],
-        subtitle: 'Gereja Katolik Paroki Santo Andreas Rasul Marga Agung hadir untuk melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.',
+        subtitle: 'Gereja Katolik Paroki Santo Andreas Rasul Margo Agung hadir untuk melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.',
         primaryCta: { text: 'Jadwal Misa', href: 'jadwal.html' },
         secondaryCta: { text: 'Jelajahi 9 Stasi', href: '#stasi-section' }
       },
@@ -49,7 +49,7 @@
       stasi: {
         badge: 'Komunitas Kami',
         title: '9 Stasi Paroki',
-        subtitle: 'Paroki Marga Agung menaungi 9 stasi dengan sejarah yang kaya di Lampung Selatan.',
+        subtitle: 'Paroki Margo Agung menaungi 9 stasi dengan sejarah yang kaya di Lampung Selatan.',
         linkText: 'Jelajahi Semua Stasi'
       }
     },
@@ -65,7 +65,7 @@
       },
       sekretariat: {
         title: 'Sekretariat Paroki',
-        address: 'Jl. Marga Agung, Marga Kaya, Jati Agung, Kabupaten Lampung Selatan, Lampung 35365',
+        address: 'Jl. Margo Agung, Marga Kaya, Jati Agung, Kabupaten Lampung Selatan, Lampung 35365',
         phone: '(0721) 755300',
         email: 'parokimargaagung@gmail.com',
         hoursWeekday: 'Senin – Jumat: 08:00 – 15:00 WIB',
@@ -79,9 +79,9 @@
       map: {
         badge: 'Peta Gereja',
         title: 'Lokasi & Petunjuk Arah',
-        subtitle: 'Kunjungi Gereja Paroki Santo Andreas Rasul Marga Agung. Klik tombol navigasi untuk langsung membuka rute di Google Maps ponsel atau komputer Anda.',
+        subtitle: 'Kunjungi Gereja Paroki Santo Andreas Rasul Margo Agung. Klik tombol navigasi untuk langsung membuka rute di Google Maps ponsel atau komputer Anda.',
         addressLabel: 'Gereja Paroki',
-        addressLine: 'Jl. Marga Agung, Marga Kaya, Jati Agung, Lampung Selatan',
+        addressLine: 'Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan',
         buttonText: 'Buka Google Maps ↗',
         mapUrl: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Andreas+Rasul+Marga+Agung+Lampung+Selatan',
         iframeUrl: 'https://maps.google.com/maps?q=Gereja+Katolik+Santo+Andreas+Rasul+Marga+Agung+Lampung+Selatan&t=&z=15&ie=UTF8&iwloc=&output=embed'
@@ -108,7 +108,7 @@
     profile: {
       hero: {
         title: 'Profil Paroki',
-        subtitle: 'Mengenal lebih dalam sejarah dan organisasi Paroki Marga Agung'
+        subtitle: 'Mengenal lebih dalam sejarah dan organisasi Paroki Margo Agung'
       },
       organization: {
         badge: 'Organisasi Gereja',
@@ -137,7 +137,7 @@
       saints: {
         badge: 'Pelindung Rohani',
         title: 'Santo & Santa Pelindung',
-        subtitle: 'Mengenal riwayat hidup dan keteladanan iman para kudus pelindung gereja paroki serta stasi-stasi di lingkungan Paroki Santo Andreas Rasul Marga Agung.'
+        subtitle: 'Mengenal riwayat hidup dan keteladanan iman para kudus pelindung gereja paroki serta stasi-stasi di lingkungan Paroki Santo Andreas Rasul Margo Agung.'
       },
       history: {
         badge: 'Perjalanan Iman',
@@ -157,14 +157,14 @@
           {
             year: '2005',
             title: 'Peningkatan Status Paroki',
-            text: 'Stasi Marga Agung ditetapkan sebagai Unit Pastoral sekitar tahun 1989. Statusnya resmi ditingkatkan menjadi Paroki pada 1 Januari 2005 dengan Romo Yohanes Thedens Tana sebagai Pastor Paroki pertamanya. Data terakhir menunjukkan 217 KK dan 9 Lingkungan.'
+            text: 'Stasi Margo Agung ditetapkan sebagai Unit Pastoral sekitar tahun 1989. Statusnya resmi ditingkatkan menjadi Paroki pada 1 Januari 2005 dengan Romo Yohanes Thedens Tana sebagai Pastor Paroki pertamanya. Data terakhir menunjukkan 217 KK dan 9 Lingkungan.'
           }
         ]
       },
       leaders: {
         badge: 'Kepemimpinan',
         title: 'Daftar Ketua Stasi',
-        subtitle: 'Para pemimpin yang telah mengabdi untuk Marga Agung',
+        subtitle: 'Para pemimpin yang telah mengabdi untuk Margo Agung',
         items: [
           'Bpk. Yohakim Noto Siswoyo (Alm)',
           'Bpk. Yohakim Sosrowasito (Alm)',
@@ -182,11 +182,11 @@
       brandName: 'Paroki Santo Andreas Rasul',
       brandSubtitle: 'Santo Andreas Rasul',
       description: 'Melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.',
-      address: 'Jl. Marga Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365',
+      address: 'Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365',
       phone: '(0721) 755300',
       email: 'parokimargaagung@gmail.com',
       hours: 'Sen–Jum: 08:00–15:00<br>Sab–Min: 08:00–12:00',
-      copyright: '© 2026 Paroki Santo Andreas Rasul Marga Agung.',
+      copyright: '© 2026 Paroki Santo Andreas Rasul Margo Agung.',
       tagline: 'Dibuat oleh umat dan untuk umat'
     }
   };
