@@ -201,14 +201,12 @@ function ensureStasiModalInDOM() {
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'stasiModal';
-        modal.className = 'fixed inset-0 z-[60] hidden items-center justify-center p-3 md:p-6';
-        modal.style.setProperty('display', 'none', 'important');
-        modal.style.setProperty('pointer-events', 'none', 'important');
-        modal.style.background = 'rgba(28,28,30,0.8)';
+        modal.className = 'fixed inset-0 z-[99999]';
+        modal.style.cssText = 'display:none!important;pointer-events:none!important;background:rgba(18,18,20,0.82);align-items:center;justify-content:center;padding:0.75rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);';
         modal.innerHTML = `
-            <div class="modal-card w-full max-w-4xl max-h-[90vh] md:max-h-[88vh] relative flex flex-col overflow-hidden">
+            <div class="modal-card w-full max-w-4xl relative flex flex-col overflow-hidden" style="max-height:calc(100vh - 1.5rem);border-radius:1.25rem;">
                 <button class="modal-close-btn absolute top-4 right-4 md:top-5 md:right-5 z-50 w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold" aria-label="Tutup modal">✕</button>
-                <div id="modalContent" class="p-6 md:p-10 overflow-y-auto custom-scrollbar flex-grow min-h-0"></div>
+                <div id="modalContent" class="p-5 md:p-10 overflow-y-auto custom-scrollbar flex-grow min-h-0" style="-webkit-overflow-scrolling:touch;"></div>
             </div>
         `;
         document.body.appendChild(modal);
@@ -357,10 +355,7 @@ function openStasiModal(id) {
         </div>
     `;
     
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    modal.style.setProperty('display', 'flex', 'important');
-    modal.style.setProperty('pointer-events', 'auto', 'important');
+    modal.style.cssText = 'display:flex!important;pointer-events:auto!important;background:rgba(18,18,20,0.82);align-items:center;justify-content:center;padding:0.75rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);';
     lockBodyScroll();
 
     if (window.history && window.history.pushState) {
@@ -371,10 +366,7 @@ function openStasiModal(id) {
 function closeStasiModal(fromPopState = false) {
     const modal = document.getElementById('stasiModal');
     if (!modal) return;
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    modal.style.setProperty('display', 'none', 'important');
-    modal.style.setProperty('pointer-events', 'none', 'important');
+    modal.style.cssText = 'display:none!important;pointer-events:none!important;background:rgba(18,18,20,0.82);align-items:center;justify-content:center;padding:0.75rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);';
     unlockBodyScroll();
 
     if (!fromPopState && window.history && history.state && history.state.modal === 'stasiModal') {
@@ -397,15 +389,15 @@ function ensureLightboxInDOM() {
             <button class="lb-close" title="Tutup">&times;</button>
             <button class="lb-prev" title="Sebelumnya">&#10094;</button>
             <button class="lb-next" title="Selanjutnya">&#10095;</button>
-            <div id="lightbox-content" style="max-width:min(92vw, 950px);width:100%;text-align:center;margin:0 auto;position:relative;">
-                <img id="lightbox-img" src="" alt="" style="max-height:85vh;max-width:100%;display:inline-block;object-fit:contain;border-radius:1rem;box-shadow:0 24px 64px rgba(0,0,0,0.6)">
-                <div id="lightbox-info-box" class="px-5 py-4 rounded-2xl w-full" style="position:absolute;bottom:0;left:50%;transform:translate(-50%, 50%);max-width:90%;background:rgba(28,28,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);z-index:10001;display:flex;flex-direction:column;align-items:center;">
-                    <div class="flex items-center justify-center gap-2 mb-1.5">
-                        <span id="lightbox-badge" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white" style="display:none"></span>
-                        <span id="lightbox-date" class="text-xs text-amber-400 font-medium" style="display:none"></span>
+            <div id="lightbox-content" style="max-width:min(95vw,900px);width:100%;display:flex;flex-direction:column;align-items:center;gap:0.75rem;">
+                <img id="lightbox-img" src="" alt="" style="max-height:65vh;max-width:100%;display:block;object-fit:contain;border-radius:0.75rem;box-shadow:0 24px 64px rgba(0,0,0,0.6);">
+                <div id="lightbox-info-box" style="width:100%;max-width:560px;background:rgba(28,28,30,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);border-radius:0.875rem;padding:0.875rem 1.125rem;text-align:center;">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.35rem;">
+                        <span id="lightbox-badge" style="display:none;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:0.2rem 0.6rem;border-radius:999px;color:white;"></span>
+                        <span id="lightbox-date" style="display:none;font-size:0.7rem;color:#fbbf24;font-weight:600;"></span>
                     </div>
-                    <h4 id="lightbox-title" class="text-white text-sm md:text-base font-bold leading-snug m-0 text-center"></h4>
-                    <p id="lightbox-desc" class="text-gray-300 text-[11px] md:text-xs mt-1 leading-relaxed m-0 text-center" style="display:none"></p>
+                    <h4 id="lightbox-title" style="color:white;font-size:0.9rem;font-weight:700;line-height:1.35;margin:0;"></h4>
+                    <p id="lightbox-desc" style="display:none;color:rgba(209,213,219,1);font-size:0.78rem;margin:0.35rem 0 0;line-height:1.55;"></p>
                 </div>
             </div>
             <div id="lightbox-counter"></div>
