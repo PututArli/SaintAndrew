@@ -397,15 +397,15 @@ function ensureLightboxInDOM() {
             <button class="lb-close" title="Tutup">&times;</button>
             <button class="lb-prev" title="Sebelumnya">&#10094;</button>
             <button class="lb-next" title="Selanjutnya">&#10095;</button>
-            <div id="lightbox-content" style="max-width:min(92vw, 950px);width:100%;text-align:center;margin:0 auto;">
-                <img id="lightbox-img" src="" alt="" style="max-height:70vh;max-width:100%;display:inline-block;object-fit:contain;border-radius:1rem;box-shadow:0 24px 64px rgba(0,0,0,0.6)">
-                <div id="lightbox-info-box" class="mt-4 text-center px-6 py-4 rounded-2xl max-w-xl mx-auto w-full" style="background:rgba(28,28,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12)">
+            <div id="lightbox-content" style="max-width:min(92vw, 950px);width:100%;text-align:center;margin:0 auto;position:relative;">
+                <img id="lightbox-img" src="" alt="" style="max-height:85vh;max-width:100%;display:inline-block;object-fit:contain;border-radius:1rem;box-shadow:0 24px 64px rgba(0,0,0,0.6)">
+                <div id="lightbox-info-box" class="px-5 py-4 rounded-2xl w-full" style="position:absolute;bottom:0;left:50%;transform:translate(-50%, 50%);max-width:90%;background:rgba(28,28,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);z-index:10001;display:flex;flex-direction:column;align-items:center;">
                     <div class="flex items-center justify-center gap-2 mb-1.5">
                         <span id="lightbox-badge" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white" style="display:none"></span>
                         <span id="lightbox-date" class="text-xs text-amber-400 font-medium" style="display:none"></span>
                     </div>
-                    <h4 id="lightbox-title" class="text-white text-base md:text-lg font-bold leading-snug"></h4>
-                    <p id="lightbox-desc" class="text-gray-300 text-xs md:text-sm mt-1.5 leading-relaxed" style="display:none"></p>
+                    <h4 id="lightbox-title" class="text-white text-sm md:text-base font-bold leading-snug m-0 text-center"></h4>
+                    <p id="lightbox-desc" class="text-gray-300 text-[11px] md:text-xs mt-1 leading-relaxed m-0 text-center" style="display:none"></p>
                 </div>
             </div>
             <div id="lightbox-counter"></div>
@@ -428,15 +428,19 @@ function ensureLightboxInDOM() {
 }
 
 function buildLightboxImages() {
-    const items = document.querySelectorAll('.gallery-item:not([style*="display: none"]), .gallery-card:not([style*="display: none"])');
-    lightboxImages = Array.from(items).map(item => {
-        const img = item.querySelector('img');
+    // Only select gallery items that are NOT hidden (i.e. not filtered out)
+    const cards = Array.from(document.querySelectorAll('.gallery-item, .gallery-card, [data-lightbox]'))
+        .filter(card => window.getComputedStyle(card).display !== 'none');
+
+    lightboxImages = cards.map(item => {
+        const img = item.querySelector('img') || (item.tagName === 'IMG' ? item : null);
         const titleEl = item.querySelector('.gallery-title, h3, h4');
         const descEl = item.querySelector('.gallery-desc, .gallery-sub, p');
         const dateEl = item.querySelector('.gallery-date');
         const badgeEl = item.querySelector('.gallery-badge');
+        
         return {
-            src: img ? (img.currentSrc || img.src) : '',
+            src: img ? (img.currentSrc || img.src || img.getAttribute('src')) : '',
             rawSrc: img ? (img.getAttribute('src') || '') : '',
             alt: img ? img.alt : '',
             title: titleEl ? titleEl.textContent.trim() : (img ? img.alt : ''),

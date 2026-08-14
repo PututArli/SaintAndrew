@@ -78,11 +78,9 @@ class ModernNavbar extends HTMLElement {
             }).catch(() => {});
         }
 
-        // Scroll awareness for floating nav and mobile dock
+        // Scroll awareness for floating nav
         const nav = this.querySelector('.floating-nav');
-        const mobileDock = this.querySelector('.mobile-bottom-dock');
-        let lastScrollY = window.scrollY;
-
+        
         const onScroll = () => {
             const currentScrollY = window.scrollY;
             
@@ -92,19 +90,6 @@ class ModernNavbar extends HTMLElement {
             } else {
                 nav?.classList.remove('nav-scrolled');
             }
-
-            // Smart Mobile Dock: Hide on scroll down, show on scroll up
-            if (mobileDock) {
-                // If scrolling down and past 100px, hide the dock
-                if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                    mobileDock.style.transform = 'translateY(150%)';
-                } else {
-                    // Scrolling up, show the dock
-                    mobileDock.style.transform = 'translateY(0)';
-                }
-            }
-            
-            lastScrollY = currentScrollY;
         };
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
