@@ -186,7 +186,7 @@ class ModernFooter extends HTMLElement {
                 if (descEl) descEl.textContent = latestFooter.description || brand.description || 'Melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.';
                 if (instagramEl && (latestBrand.instagram || latestFooter.instagram)) instagramEl.href = latestBrand.instagram || latestFooter.instagram;
                 if (youtubeEl && (latestBrand.youtube || latestFooter.youtube)) youtubeEl.href = latestBrand.youtube || latestFooter.youtube;
-                if (addressEl) addressEl.textContent = latestFooter.address || 'Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365';
+                if (addressEl) addressEl.textContent = latestFooter.address || 'Jl. Marga Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365';
                 if (phoneEl) phoneEl.textContent = latestFooter.phone || '(0721) 755300';
                 if (emailEl) {
                     const email = latestFooter.email || 'parokimargaagung@gmail.com';

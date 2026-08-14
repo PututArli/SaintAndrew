@@ -1,11 +1,11 @@
 const stasiData = {
     'margo-agung': {
-        title: 'Gereja Paroki Margo Agung',
+        title: 'Gereja Paroki Marga Agung',
         patron: 'Santo Andreas Rasul',
         patronFeast: '30 November',
         patronRole: 'Rasul Pertama & Saudara Simon Petrus',
         patronBio: 'Santo Andreas adalah seorang nelayan asal Betsaida dan saudara kandung Simon Petrus. Ia merupakan murid pertama yang mengikuti Yesus setelah mendengar kesaksian Yohanes Pembaptis. Andreas memiliki keteladanan dalam membawa sesama kepada Kristus—mengajak Petrus dan mempertemukan anak pembawa lima roti serta dua ikan kepada Yesus. Ia mewartakan Injil hingga Yunani dan wafat sebagai martir disalibkan pada kayu silang berbentuk huruf "X" (Salib Santo Andreas).',
-        address: 'Jl. Margo Agung, Marga Kaya, Kec. Jati Agung, Kab. Lampung Selatan, Lampung 35365',
+        address: 'Jl. Marga Agung, Marga Kaya, Kec. Jati Agung, Kab. Lampung Selatan, Lampung 35365',
         gmapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Andreas+Rasul+Marga+Agung+Lampung+Selatan',
         image: 'assets/img/stasi/marga-agung.jpg',
         history: 'Gereja ini terletak di desa Marga Agung, Jati Agung. Terbentuk akibat transmigrasi korban letusan Gunung Merapi tahun 1961 dari Magelang, Jawa Tengah. Rombongan pertama tiba 27 Juni 1961. Cikal bakal gereja dimulai dari 9 KK Katolik perdana di Marga Kaya. Gedung gereja pertama (semi permanen) selesai tahun 1962-1963 di Blok C dan diresmikan oleh Bapa Uskup Hermelink Gentiaras SCJ pada 27 Juni 1964.',
@@ -173,10 +173,12 @@ function showToast(message, type = 'success') {
     toast.id = 'global-toast';
     const isError = type === 'error';
     const bgColor = isError ? 'bg-[#DC2626] text-white border border-red-400/40 shadow-red-900/40' : 'bg-[#101012] text-amber-300 border border-amber-500/40 shadow-black/50';
-    const icon = isError ? '✕' : '✓';
+    const iconHtml = isError 
+        ? `<span class="text-base flex-shrink-0 font-bold cursor-pointer hover:opacity-70 transition-opacity" onclick="this.parentElement.style.display='none'" title="Tutup">✕</span>` 
+        : `<span class="text-base flex-shrink-0 font-bold">✓</span>`;
     
     toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 max-w-[92vw] md:max-w-md w-max px-5 py-3.5 rounded-2xl font-semibold shadow-2xl backdrop-blur-md transform transition-all duration-300 translate-y-16 opacity-0 z-[999999] flex items-center gap-3 text-sm ${bgColor}`;
-    toast.innerHTML = `<span class="text-base flex-shrink-0 font-bold">${icon}</span><span class="leading-snug text-center">${message}</span>`;
+    toast.innerHTML = `${iconHtml}<span class="leading-snug text-center">${message}</span>`;
     
     document.body.appendChild(toast);
 
@@ -186,9 +188,11 @@ function showToast(message, type = 'success') {
     });
 
     setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-16', 'opacity-0');
-        setTimeout(() => toast.remove(), 320);
+        if(document.body.contains(toast)) {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('translate-y-16', 'opacity-0');
+            setTimeout(() => toast.remove(), 320);
+        }
     }, 3800);
 }
 

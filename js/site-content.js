@@ -65,7 +65,7 @@
       },
       sekretariat: {
         title: 'Sekretariat Paroki',
-        address: 'Jl. Margo Agung, Marga Kaya, Jati Agung, Kabupaten Lampung Selatan, Lampung 35365',
+        address: 'Jl. Marga Agung, Marga Kaya, Jati Agung, Kabupaten Lampung Selatan, Lampung 35365',
         phone: '(0721) 755300',
         email: 'parokimargaagung@gmail.com',
         hoursWeekday: 'Senin – Jumat: 08:00 – 15:00 WIB',
@@ -79,9 +79,9 @@
       map: {
         badge: 'Peta Gereja',
         title: 'Lokasi & Petunjuk Arah',
-        subtitle: 'Kunjungi Gereja Paroki Santo Andreas Rasul Margo Agung. Klik tombol navigasi untuk langsung membuka rute di Google Maps ponsel atau komputer Anda.',
+        subtitle: 'Kunjungi Gereja Paroki Santo Andreas Rasul Marga Agung. Klik tombol navigasi untuk langsung membuka rute di Google Maps ponsel atau komputer Anda.',
         addressLabel: 'Gereja Paroki',
-        addressLine: 'Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan',
+        addressLine: 'Jl. Marga Agung, Marga Kaya, Jati Agung, Lampung Selatan',
         buttonText: 'Buka Google Maps ↗',
         mapUrl: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Andreas+Rasul+Marga+Agung+Lampung+Selatan',
         iframeUrl: 'https://maps.google.com/maps?q=Gereja+Katolik+Santo+Andreas+Rasul+Marga+Agung+Lampung+Selatan&t=&z=15&ie=UTF8&iwloc=&output=embed'
@@ -164,7 +164,7 @@
       leaders: {
         badge: 'Kepemimpinan',
         title: 'Daftar Ketua Stasi',
-        subtitle: 'Para pemimpin yang telah mengabdi untuk Margo Agung',
+        subtitle: 'Para pemimpin yang telah mengabdi untuk Marga Agung',
         items: [
           'Bpk. Yohakim Noto Siswoyo (Alm)',
           'Bpk. Yohakim Sosrowasito (Alm)',
@@ -182,7 +182,7 @@
       brandName: 'Paroki Santo Andreas Rasul',
       brandSubtitle: 'Santo Andreas Rasul',
       description: 'Melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.',
-      address: 'Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365',
+      address: 'Jl. Marga Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365',
       phone: '(0721) 755300',
       email: 'parokimargaagung@gmail.com',
       hours: 'Sen–Jum: 08:00–15:00<br>Sab–Min: 08:00–12:00',

@@ -6,7 +6,7 @@
 
 // ── Constants ──────────────────────────────────────────────
 const STASI_MAP = {
-  'margo-agung':  'Margo Agung (Paroki)',
+  'margo-agung':  'Marga Agung (Paroki)',
   'misa-khusus':  'Misa Khusus & Adorasi',
   'marga-lestari':'Marga Lestari',
   'rejomulyo':    'Rejomulyo',
@@ -21,14 +21,14 @@ const STASI_MAP = {
 const DEFAULT_STASI_DATA = {
   'margo-agung': {
     id: 'margo-agung',
-    nama: 'Gereja Paroki Margo Agung',
+    nama: 'Gereja Paroki Marga Agung',
     pelindung: 'Santo Andreas Rasul',
     pesta_nama: '30 November',
     role: 'Rasul Pertama & Saudara Simon Petrus',
     sejarah: "Gereja ini terletak di desa Marga Agung, Jati Agung. Terbentuk akibat transmigrasi korban letusan Gunung Merapi tahun 1961 dari Magelang, Jawa Tengah. Rombongan pertama tiba 27 Juni 1961. Cikal bakal gereja dimulai dari 9 KK Katolik perdana di Marga Kaya. Gedung gereja pertama (semi permanen) selesai tahun 1962-1963 di Blok C dan diresmikan oleh Bapa Uskup Hermelink Gentiaras SCJ pada 27 Juni 1964.",
     daftar_ketua: ["Yohakim Noto Siswoyo","Yohakim Sosrowasito","Petrus Siswosukarto","Fx. Edi Suwarno","Paulus Sutikno","Yohanes Supandi","Petrus Sukamto","Fx. Heri Hendarto","Andreas Kamajaya (2024-Sekarang)"],
     foto_url: 'assets/img/stasi/marga-agung.jpg',
-    alamat: 'Jl. Margo Agung, Marga Kaya, Kec. Jati Agung, Kab. Lampung Selatan, Lampung 35365',
+    alamat: 'Jl. Marga Agung, Marga Kaya, Kec. Jati Agung, Kab. Lampung Selatan, Lampung 35365',
     gmaps_url: 'https://www.google.com/maps/search/?api=1&query=Gereja+Katolik+Santo+Andreas+Rasul+Marga+Agung+Lampung+Selatan'
   },
   'marga-lestari': {
