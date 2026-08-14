@@ -397,8 +397,8 @@ function ensureLightboxInDOM() {
             <button class="lb-close" title="Tutup">&times;</button>
             <button class="lb-prev" title="Sebelumnya">&#10094;</button>
             <button class="lb-next" title="Selanjutnya">&#10095;</button>
-            <div id="lightbox-content" style="max-width:min(92vw, 950px);width:100%;display:flex;flex-direction:column;align-items:center;">
-                <img id="lightbox-img" src="" alt="" style="max-height:70vh;width:auto;height:auto;object-fit:contain;border-radius:1rem;box-shadow:0 24px 64px rgba(0,0,0,0.6)">
+            <div id="lightbox-content" style="max-width:min(92vw, 950px);width:100%;text-align:center;margin:0 auto;">
+                <img id="lightbox-img" src="" alt="" style="max-height:70vh;max-width:100%;display:inline-block;object-fit:contain;border-radius:1rem;box-shadow:0 24px 64px rgba(0,0,0,0.6)">
                 <div id="lightbox-info-box" class="mt-4 text-center px-6 py-4 rounded-2xl max-w-xl mx-auto w-full" style="background:rgba(28,28,30,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12)">
                     <div class="flex items-center justify-center gap-2 mb-1.5">
                         <span id="lightbox-badge" class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white" style="display:none"></span>

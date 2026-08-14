@@ -2,6 +2,10 @@
    LAYOUT — Navbar · Hero · Page Header · Footer · Responsive
    ============================================================ */
 
+modern-navbar, modern-footer {
+  display: block;
+}
+
 /* ── Floating Pill Navbar (Top) ── */
 .floating-nav-container {
   position: fixed;
@@ -358,15 +362,14 @@ body.modal-open .mobile-bottom-dock {
   html { -webkit-text-size-adjust: 100%; }
   body {
     font-size: 15px;
-    line-height: 1.75;
-    /* Generous bottom padding so content has plenty of air above mobile dock */
-    padding-bottom: 6.5rem;
+    line-height: 1.65;
+    padding-bottom: 4.5rem; /* Reduced from 6.5rem to fix empty bottom space */
   }
 
-  /* ── General Section Spacing on Mobile ── */
+  /* ✨ General Section Spacing on Mobile ✨ */
   section {
-    padding-top: 3.5rem !important;
-    padding-bottom: 3.5rem !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
   }
