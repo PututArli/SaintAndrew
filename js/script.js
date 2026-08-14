@@ -937,10 +937,12 @@ function applyContactSiteContent(content) {
     setAttrById('contact-map-button', 'href', map.mapUrl);
     setAttrById('contact-map-iframe', 'src', map.iframeUrl);
 
+    const defaultFaq = (window.SA_SITE_CONTENT_DEFAULTS && window.SA_SITE_CONTENT_DEFAULTS.contact && window.SA_SITE_CONTENT_DEFAULTS.contact.faq) || [];
     const faqList = contact.faq || [];
     faqList.slice(0, 4).forEach((item, index) => {
-        setTextContentById(`contact-faq-q-${index + 1}`, item.question);
-        setTextContentById(`contact-faq-a-${index + 1}`, item.answer);
+        const def = defaultFaq[index] || {};
+        setTextContentById(`contact-faq-q-${index + 1}`, item.question || def.question);
+        setTextContentById(`contact-faq-a-${index + 1}`, item.answer || def.answer);
     });
 }
 
@@ -1228,7 +1230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (alertBox) {
                     alertBox.className = 'mb-5 flex items-center gap-2.5 p-3.5 rounded-xl text-sm font-medium bg-red-50 text-red-700 border border-red-200';
-                    alertBox.innerHTML = `<span class="flex-shrink-0 text-base font-bold">✕</span><div class="flex-grow leading-relaxed">Mohon lengkapi kolom wajib: <strong class="font-bold text-red-800">${missing.join(', ')}</strong></div>`;
+                    alertBox.innerHTML = `<span class="flex-shrink-0 text-base font-bold cursor-pointer hover:text-red-900 transition-colors" onclick="this.parentElement.style.display='none'" title="Tutup">✕</span><div class="flex-grow leading-relaxed">Mohon lengkapi kolom wajib: <strong class="font-bold text-red-800">${missing.join(', ')}</strong></div>`;
                     alertBox.style.display = 'flex';
                     
                     // Smoothly scroll into view so mobile user sees it instantly

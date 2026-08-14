@@ -52,7 +52,7 @@ if (!customElements.get('callout-banner')) {
             const customClass = this.getAttribute('class') || '';
 
             this.innerHTML = `
-            <div class="p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4${isReveal} ${customClass}" style="background:linear-gradient(135deg, rgba(184,134,11,0.07) 0%, rgba(255,255,255,0.95) 100%);border:1px solid rgba(184,134,11,0.25)">
+            <div class="my-8 sm:my-12 p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4${isReveal} ${customClass}" style="background:linear-gradient(135deg, rgba(184,134,11,0.07) 0%, rgba(255,255,255,0.95) 100%);border:1px solid rgba(184,134,11,0.25)">
                 <div class="flex items-center gap-3.5 text-center sm:text-left">
                     <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 text-base font-bold shadow-sm" style="background:var(--gold-muted);color:var(--gold);border:1px solid rgba(184,134,11,0.3)">
                         ${icon}

@@ -179,6 +179,20 @@
             ${inputGroup('sc-contact-hours-weekday', 'Jam Weekday', contact.sekretariat?.hoursWeekday || '', 'Senin – Jumat: ...')}
             ${inputGroup('sc-contact-hours-weekend', 'Jam Weekend', contact.sekretariat?.hoursWeekend || '', 'Sabtu – Minggu: ...')}
           </div>
+          <div class="mt-5 pt-5 border-t border-gray-200">
+            <h4 class="text-sm font-bold text-gray-700 mb-4">Pertanyaan Umum (FAQ)</h4>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              ${[1, 2, 3, 4].map(i => `
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                  <div class="font-semibold text-xs text-gray-500 mb-3 uppercase tracking-wider">FAQ ${i}</div>
+                  ${inputGroup(`sc-contact-faq-q-${i}`, 'Pertanyaan', contact.faq?.[i-1]?.question || '', 'Contoh: Apa syarat baptis?')}
+                  <div class="mt-3">
+                    ${textareaGroup(`sc-contact-faq-a-${i}`, 'Jawaban', contact.faq?.[i-1]?.answer || '', 'Jawaban lengkap...', 3)}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
         `)}
       </div>
     `;
