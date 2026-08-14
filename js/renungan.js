@@ -373,10 +373,10 @@ async function openDevotionModal() {
       </div>
 
       <div style="padding:1.15rem 1.25rem;border-radius:16px;background:var(--bg-alt);border:1px solid var(--border)">
-        <h4 style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--gold);margin:0 0 0.5rem 0;display:flex;align-items:center;gap:0.4rem">
+        <h4 style="font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--gold);margin:0 0 0.5rem 0;display:flex;align-items:center;justify-content:center;gap:0.4rem;text-align:center">
           Doa Harian
         </h4>
-        <p style="font-family:'Playfair Display',serif;font-size:0.92rem;font-style:italic;color:var(--ink);line-height:1.65;margin:0">
+        <p style="font-family:'Playfair Display',serif;font-size:0.92rem;font-style:italic;color:var(--ink);line-height:1.65;margin:0;text-align:center">
           "${escapeHtml(d.doa)}"
         </p>
       </div>
@@ -387,6 +387,7 @@ async function openDevotionModal() {
     window.lockBodyScroll();
   } else {
     document.body.classList.add('modal-open');
+    document.documentElement.classList.add('modal-open');
     document.body.style.overflow = 'hidden';
   }
   modal.classList.add('open');
@@ -407,6 +408,7 @@ function closeDevotionModal(fromPopState = false) {
     window.unlockBodyScroll();
   } else {
     document.body.classList.remove('modal-open');
+    document.documentElement.classList.remove('modal-open');
     document.body.style.overflow = '';
   }
 
