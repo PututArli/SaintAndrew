@@ -62,56 +62,10 @@
 
     <!-- ── Gallery Grid ── -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 reveal" id="full-gallery">
-      <!-- OMK Card -->
-      <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="omk" style="background:var(--surface);border:1px solid var(--border)">
-        <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
-          <img src="assets/img/galeri/kegiatanOMK.png" alt="Ziarah & Rekreasi OMK 2025" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-          <div class="gallery-badge" style="background:#0d9488">OMK</div>
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">2025</span>
-          <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Ziarah &amp; Rekreasi OMK 2025</h3>
-          <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Kebersamaan kaum muda paroki dalam membangun persaudaraan dan iman.</p>
-        </div>
-      </div>
-
-      <!-- Liturgi & Misa Card -->
-      <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="liturgi" style="background:var(--surface);border:1px solid var(--border)">
-        <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
-          <img src="assets/img/stasi/marga-agung.jpg" alt="Perayaan Ekaristi Paroki" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-          <div class="gallery-badge" style="background:#7c3aed">Liturgi &amp; Misa</div>
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">Minggu &amp; Hari Raya</span>
-          <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Perayaan Ekaristi Kudus</h3>
-          <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Perayaan Ekaristi Kudus bersama umat di Gereja Paroki Santo Andreas Rasul.</p>
-        </div>
-      </div>
-
-      <!-- Perayaan Besar Card -->
-      <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="perayaan" style="background:var(--surface);border:1px solid var(--border)">
-        <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
-          <img src="assets/img/stasi/marga-lestari.jpg" alt="Peringatan Hari Raya Pelindung" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-          <div class="gallery-badge" style="background:#d97706">Perayaan Besar</div>
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">Pesta Pelindung</span>
-          <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Peringatan Hari Raya Pelindung</h3>
-          <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Momen syukur kebersamaan seluruh stasi dalam pesta nama pelindung paroki.</p>
-        </div>
-      </div>
-
-      <!-- Sosial & Lingkungan Card -->
-      <div class="gallery-card group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col" data-category="sosial" style="background:var(--surface);border:1px solid var(--border)">
-        <div class="relative overflow-hidden aspect-[4/3] bg-stone-900">
-          <img src="assets/img/stasi/sindang-sari.jpg" alt="Aksi Sosial & Gotong Royong" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-          <div class="gallery-badge" style="background:#2563eb">Sosial &amp; Lingkungan</div>
-        </div>
-        <div class="p-4 flex flex-col flex-grow">
-          <span class="gallery-date text-[11px] font-semibold text-amber-600 mb-1">Aksi Peduli</span>
-          <h3 class="gallery-title font-bold text-sm md:text-base leading-snug" style="color:var(--ink)">Aksi Sosial &amp; Gotong Royong Umat</h3>
-          <p class="gallery-desc text-xs mt-1.5 leading-relaxed line-clamp-2" style="color:var(--ink-soft)">Aksi nyata persaudaraan dan kepedulian sosial bagi sesama dan lingkungan.</p>
-        </div>
+      <!-- Loading State -->
+      <div id="gallery-loader" style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--ink-soft)">
+        <div class="w-10 h-10 mx-auto mb-4 rounded-full border-2 border-gray-200 border-t-amber-600 animate-spin"></div>
+        <p class="text-sm font-medium">Memuat dokumentasi kegiatan paroki…</p>
       </div>
     </div>
 
@@ -169,10 +123,10 @@ async function loadDynamicGaleri() {
   if (typeof db === 'undefined') return;
   try {
     const { data, error } = await db.from('galeri').select('*').order('urutan').order('tanggal', { ascending: false });
-    if (!error && data && data.length > 0) {
-      const container = document.getElementById('full-gallery');
-      if (!container) return;
+    const container = document.getElementById('full-gallery');
+    if (!container) return;
 
+    if (!error && data && data.length > 0) {
       container.innerHTML = data.map(item => {
         const catKey = (item.kategori || 'omk').toLowerCase().trim();
         const kat = KAT_STYLE_MAP[catKey] || { label: item.kategori || 'Kegiatan', bg: 'var(--gold)' };
@@ -196,9 +150,31 @@ async function loadDynamicGaleri() {
         window.filterGallery(window.currentGalleryFilter || 'all');
       }
       if (typeof setupGalleryClicks === 'function') setupGalleryClicks();
+    } else {
+      container.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--ink-soft)">
+          <div class="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center" style="background:var(--bg-alt);color:var(--ink-soft)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          </div>
+          <p class="font-bold text-base" style="color:var(--ink)">Belum ada foto yang tersedia</p>
+          <p class="text-xs sm:text-sm mt-1 text-gray-500">Galeri dokumentasi paroki akan segera diperbarui.</p>
+        </div>
+      `;
     }
   } catch (e) {
     console.warn('Galeri dynamic load fallback to static content:', e);
+    const container = document.getElementById('full-gallery');
+    if (container) {
+      container.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem;color:var(--ink-soft)">
+          <div class="w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center" style="background:var(--bg-alt);color:var(--ink-soft)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          </div>
+          <p class="font-bold text-base" style="color:var(--ink)">Gagal Memuat Galeri</p>
+          <p class="text-xs sm:text-sm mt-1 text-gray-500">Periksa koneksi internet Anda atau coba lagi nanti.</p>
+        </div>
+      `;
+    }
   }
 }
 
