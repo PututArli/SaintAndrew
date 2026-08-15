@@ -1,4 +1,4 @@
-﻿const stasiData = {
+const stasiData = {
     'margo-agung': {
         title: 'Gereja Paroki Margo Agung',
         patron: 'Santo Andreas Rasul',
@@ -742,6 +742,41 @@ function setupGalleryClicks() {
     });
 }
 
+// ── Fix for physical phones: tap vs scroll disambiguation in horizontal scroll containers
+function setupTouchTapForScrollContainers() {
+    const containers = document.querySelectorAll('[style*="overflow-x:auto"], [style*="overflow-x: auto"], .overflow-x-auto');
+    containers.forEach(container => {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            touchStartTime = Date.now();
+        }, { passive: true });
+
+        container.addEventListener('touchend', (e) => {
+            const dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
+            const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+            const dt = Date.now() - touchStartTime;
+
+            // Only treat as a tap if movement is small and duration is short
+            if (dx < 10 && dy < 10 && dt < 300) {
+                const btn = e.target.closest('button[onclick*="openStasiModal"]');
+                if (btn) {
+                    e.preventDefault();
+                    // Extract the modal ID from onclick attr and call it
+                    const match = (btn.getAttribute('onclick') || '').match(/openStasiModal\(['"]([^'"]+)['"]\)/);
+                    if (match && match[1]) {
+                        openStasiModal(match[1]);
+                    }
+                }
+            }
+        }, { passive: false });
+    });
+}
+
 // Global click delegation for all interactive elements (supports dynamic & static content)
 document.addEventListener('click', (e) => {
     // 1. If clicked on a filter button, filter gallery
@@ -1220,6 +1255,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 2. Setup Gallery & Lightbox triggers
     setupGalleryClicks();
+    if (typeof setupTouchTapForScrollContainers === 'function') {
+        setupTouchTapForScrollContainers();
+    }
     setupFilters();
 
     // 2b. Scroll Reveal — IntersectionObserver

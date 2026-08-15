@@ -89,12 +89,15 @@ body.modal-open .mobile-bottom-dock {
 .mobile-bottom-dock {
   position: fixed;
   bottom: 1.25rem;
+  /* Respect iOS & Android safe area (home indicator / gesture bar) */
+  bottom: max(1.25rem, calc(env(safe-area-inset-bottom) + 0.5rem));
   left: 0;
   right: 0;
   z-index: 999;
   display: flex;
   justify-content: center;
   padding: 0 1rem;
+  padding-bottom: env(safe-area-inset-bottom, 0);
   pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
