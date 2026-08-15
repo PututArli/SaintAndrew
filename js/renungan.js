@@ -359,7 +359,7 @@ async function openDevotionModal() {
 
       <div style="padding:1rem 1.25rem;border-radius:14px;background:rgba(184,134,11,0.06);border-left:4px solid var(--gold);margin-bottom:1.25rem">
         <p style="font-family:'Playfair Display',serif;font-size:0.95rem;font-style:italic;color:var(--ink);line-height:1.65;margin:0">
-          "${escapeHtml(d.ayat)}"
+          ${escapeHtml(d.ayat)}
         </p>
       </div>
 
@@ -377,7 +377,7 @@ async function openDevotionModal() {
           Doa Harian
         </h4>
         <p style="font-family:'Playfair Display',serif;font-size:0.92rem;font-style:italic;color:var(--ink);line-height:1.65;margin:0;text-align:center">
-          "${escapeHtml(d.doa)}"
+          ${escapeHtml(d.doa)}
         </p>
       </div>
     `;

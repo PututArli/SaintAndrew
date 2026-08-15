@@ -78,46 +78,24 @@ class ModernNavbar extends HTMLElement {
             }).catch(() => {});
         }
 
-        // Scroll awareness for floating nav & smart mobile dock
+        // Scroll awareness: only top nav gets background on scroll
+        // Mobile dock is ALWAYS visible
         const nav = this.querySelector('.floating-nav');
         const mobileDock = this.querySelector('.mobile-bottom-dock');
-        let lastScrollY = window.scrollY;
-        let ticking = false;
 
-        const onScroll = () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const currentScrollY = window.scrollY;
+        // Always show dock
+        if (mobileDock) {
+            mobileDock.style.transform = 'translateY(0)';
+            mobileDock.style.opacity = '1';
+        }
 
-                    // Top nav scrolled state
-                    if (currentScrollY > 40) {
-                        nav?.classList.add('nav-scrolled');
-                    } else {
-                        nav?.classList.remove('nav-scrolled');
-                    }
-
-                    // Smart Mobile Dock: hide on scroll-down, show on scroll-up
-                    if (mobileDock) {
-                        const diff = currentScrollY - lastScrollY;
-                        if (diff > 4 && currentScrollY > 80) {
-                            // Scrolling DOWN — hide dock
-                            mobileDock.style.transform = 'translateY(120%)';
-                            mobileDock.style.opacity = '0';
-                        } else if (diff < -4 || currentScrollY < 80) {
-                            // Scrolling UP or near top — show dock
-                            mobileDock.style.transform = 'translateY(0)';
-                            mobileDock.style.opacity = '1';
-                        }
-                    }
-
-                    lastScrollY = currentScrollY;
-                    ticking = false;
-                });
-                ticking = true;
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                nav?.classList.add('nav-scrolled');
+            } else {
+                nav?.classList.remove('nav-scrolled');
             }
-        };
-        window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
+        }, { passive: true });
     }
 }
 

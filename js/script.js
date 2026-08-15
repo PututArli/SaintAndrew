@@ -1,4 +1,4 @@
-const stasiData = {
+﻿const stasiData = {
     'margo-agung': {
         title: 'Gereja Paroki Margo Agung',
         patron: 'Santo Andreas Rasul',
@@ -201,20 +201,55 @@ function ensureStasiModalInDOM() {
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'stasiModal';
-        modal.className = 'fixed inset-0 z-[99999]';
-        modal.style.cssText = 'display:none!important;pointer-events:none!important;background:rgba(18,18,20,0.82);align-items:center;justify-content:center;padding:0.75rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);';
+        // Pure inline style approach — no CSS class dependency
+        modal.style.cssText = [
+            'position:fixed', 'inset:0', 'z-index:99999',
+            'display:none', 'align-items:center', 'justify-content:center',
+            'padding:0.75rem',
+            'background:rgba(12,12,14,0.88)',
+            'backdrop-filter:blur(18px)', '-webkit-backdrop-filter:blur(18px)',
+            'overflow-y:auto', '-webkit-overflow-scrolling:touch',
+            'opacity:0', 'transition:opacity 0.3s ease'
+        ].join(';');
         modal.innerHTML = `
-            <div class="modal-card w-full max-w-4xl relative flex flex-col overflow-hidden" style="max-height:calc(100vh - 1.5rem);border-radius:1.25rem;">
-                <button class="modal-close-btn absolute top-4 right-4 md:top-5 md:right-5 z-50 w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold" aria-label="Tutup modal">✕</button>
-                <div id="modalContent" class="p-5 md:p-10 overflow-y-auto custom-scrollbar flex-grow min-h-0" style="-webkit-overflow-scrolling:touch;"></div>
+            <div id="stasiModalCard" style="
+                background:var(--surface);
+                border-radius:1.25rem;
+                border:1px solid var(--border);
+                box-shadow:0 32px 80px rgba(0,0,0,0.5);
+                width:100%;
+                max-width:860px;
+                max-height:calc(100vh - 1.5rem);
+                display:flex;
+                flex-direction:column;
+                overflow:hidden;
+                position:relative;
+                opacity:0;
+                transform:scale(0.94) translateY(16px);
+                transition:opacity 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1);
+                will-change:opacity,transform;
+            ">
+                <button id="stasiModalClose" aria-label="Tutup" style="
+                    position:absolute;top:1rem;right:1rem;z-index:10;
+                    width:2.5rem;height:2.5rem;border-radius:50%;
+                    background:var(--bg-alt);color:var(--ink-soft);
+                    border:1px solid var(--border);cursor:pointer;
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:1.1rem;font-weight:700;
+                    transition:background 0.2s,color 0.2s;
+                ">&#x2715;</button>
+                <div id="modalContent" style="
+                    padding:1.5rem;
+                    overflow-y:auto;
+                    -webkit-overflow-scrolling:touch;
+                    flex:1;
+                    min-height:0;
+                "></div>
             </div>
         `;
         document.body.appendChild(modal);
-
-        modal.querySelector('.modal-close-btn').addEventListener('click', closeStasiModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeStasiModal();
-        });
+        modal.querySelector('#stasiModalClose').addEventListener('click', closeStasiModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeStasiModal(); });
     }
     return modal;
 }
@@ -266,22 +301,17 @@ function openStasiModal(id) {
         const safeTitle = (data.title || '').replace(/'/g, "\\'");
         const safePatron = (data.patron || '').replace(/'/g, "\\'");
         imageHtml = `
-        <div class="relative w-full rounded-2xl overflow-hidden shadow-lg mb-6 flex items-center justify-center cursor-pointer group border transition-all hover:shadow-xl" 
-             style="max-height:440px; min-height:220px; background:#141416; border-color:var(--border);"
-             onclick="openLightbox('${data.image}', '${safeTitle}', {title:'${safeTitle}', keterangan:'Gedung Gereja / Stasi ${safeTitle} · Pelindung: ${safePatron}', badge:'Gereja &amp; Stasi'})"
-             title="Klik untuk melihat foto penuh">
-            
-            <!-- Ambient blurred backdrop to seamlessly frame church photo -->
-            <img src="${data.image}" alt="" class="absolute inset-0 w-full h-full object-cover filter blur-xl opacity-35 scale-110 pointer-events-none" aria-hidden="true">
-            
-            <!-- Full uncropped church building photo -->
-            <img src="${data.image}" alt="${data.title}" class="relative z-10 max-h-[380px] md:max-h-[440px] w-auto max-w-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-[1.02] shadow-sm">
-            
-            <!-- Zoom Hint Badge -->
-            <div class="absolute bottom-3 right-3 z-20 px-3.5 py-1.5 rounded-full text-xs font-semibold text-white flex items-center gap-1.5 shadow-md transition-all group-hover:shadow-lg" 
-                 style="background:rgba(28,28,30,0.8);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2)">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                <span>Lihat Foto Penuh</span>
+        <div onclick="openLightbox('${data.image}', '${safeTitle}', {single:true,title:'${safeTitle}', keterangan:'Gedung Gereja / Stasi ${safeTitle} \u00b7 Pelindung: ${safePatron}', badge:'Gereja &amp; Stasi'})" 
+             title="Klik untuk melihat foto penuh"
+             style="position:relative;width:100%;border-radius:1rem;overflow:hidden;background:#141416;border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:180px;max-height:360px;margin-bottom:1.5rem;">
+            <!-- blurred ambient bg -->
+            <img src="${data.image}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(20px);opacity:0.3;transform:scale(1.1);pointer-events:none;" aria-hidden="true">
+            <!-- main photo -->
+            <img src="${data.image}" alt="${data.title}" style="position:relative;z-index:1;max-width:100%;max-height:340px;width:auto;height:auto;object-fit:contain;border-radius:0.75rem;display:block;">
+            <!-- zoom hint -->
+            <div style="position:absolute;bottom:0.75rem;right:0.75rem;z-index:2;padding:0.35rem 0.75rem;border-radius:999px;font-size:0.7rem;font-weight:600;color:white;background:rgba(28,28,30,0.8);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;gap:0.35rem;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                Lihat Foto Penuh
             </div>
         </div>`;
     } else {
@@ -355,8 +385,22 @@ function openStasiModal(id) {
         </div>
     `;
     
-    modal.style.cssText = 'display:flex!important;pointer-events:auto!important;background:rgba(18,18,20,0.82);align-items:center;justify-content:center;padding:0.75rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);';
+    // Step 1: make modal visible (display:flex) so it enters the layout
+    modal.style.display = 'flex';
+    modal.style.pointerEvents = 'auto';
     lockBodyScroll();
+
+    // Step 2: on the NEXT frame, trigger card animation (opacity/transform transition)
+    const card = modal.querySelector('#stasiModalCard');
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            modal.style.opacity = '1';
+            if (card) {
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1) translateY(0)';
+            }
+        });
+    });
 
     if (window.history && window.history.pushState) {
         window.history.pushState({ modal: 'stasiModal', id: cleanId }, '');
@@ -366,9 +410,25 @@ function openStasiModal(id) {
 function closeStasiModal(fromPopState = false) {
     const modal = document.getElementById('stasiModal');
     if (!modal) return;
-    modal.style.cssText = 'display:none!important;pointer-events:none!important;background:rgba(18,18,20,0.82);align-items:center;justify-content:center;padding:0.75rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);';
-    unlockBodyScroll();
 
+    // Animate card out and overlay fade out simultaneously
+    modal.style.opacity = '0';
+    const card = modal.querySelector('#stasiModalCard');
+    if (card) {
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.94) translateY(16px)';
+    }
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.style.pointerEvents = 'none';
+        // Reset card for next open
+        if (card) {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.94) translateY(16px)';
+        }
+    }, 300);
+
+    unlockBodyScroll();
     if (!fromPopState && window.history && history.state && history.state.modal === 'stasiModal') {
         window.history.back();
     }
@@ -1356,3 +1416,20 @@ if (!window.renderAestheticDivider) {
         return `<div class="aesthetic-divider ${extraClass}"${styleAttr}><div class="divider-line"></div><div class="divider-icon">✝</div><div class="divider-line"></div></div>`;
     };
 }
+// ── Mobile Back Button Support (PopState) ──────────────────────
+window.addEventListener('popstate', (e) => {
+    const stasiModal = document.getElementById('stasiModal');
+    if (stasiModal && stasiModal.style.display !== 'none' && typeof closeStasiModal === 'function') {
+        closeStasiModal(true);
+    }
+    
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox && lightbox.style.display !== 'none' && typeof closeLightbox === 'function') {
+        closeLightbox(true);
+    }
+    
+    const devotionModal = document.getElementById('devotionModal');
+    if (devotionModal && devotionModal.classList.contains('open') && typeof closeDevotionModal === 'function') {
+        closeDevotionModal(true);
+    }
+});
