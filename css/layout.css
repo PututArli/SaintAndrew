@@ -249,6 +249,7 @@ body.modal-open .mobile-bottom-dock {
 .page-hero {
   background: linear-gradient(150deg, #1A1A1E 0%, #2A2A2E 100%);
   position: relative;
+  z-index: 45; /* Sits above page-loader */
   overflow: hidden;
   padding: 6.5rem 1.5rem 4.5rem;
   text-align: center;
