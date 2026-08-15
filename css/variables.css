@@ -90,11 +90,7 @@ a {
 img {
   display: block;
   max-width: 100%;
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
+  -webkit-user-drag: none; /* Safari/Chrome: prevent image drag */
   user-select: none;
   -webkit-user-select: none;
 }

@@ -7,9 +7,10 @@
 <meta name="description" content="Website resmi Paroki Santo Andreas Rasul Margo Agung, Jati Agung, Lampung Selatan. Informasi jadwal misa, stasi, dan pelayanan pastoral.">
 <link rel="icon" href="assets/crossIcon.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="css/style.css?v=1786813392">
+<link rel="stylesheet" href="css/style.css?v=1786815889">
 </head>
 <body class="flex flex-col min-h-screen">
+<script src="js/page-loader.js?v=1786815889"></script>
 
 <modern-navbar active-page="index.html"></modern-navbar>
 
@@ -143,28 +144,25 @@
         </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8 reveal" id="home-schedule-grid">
-
-        <div class="info-card text-center">
-          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
-          <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--gold)">Minggu Pagi</div>
-          <div class="text-2xl font-black" style="color:var(--ink)">07:00</div>
-          <div class="text-xs mt-1 font-medium" style="color:var(--stone)">WIB · Misa Umat</div>
+        <!-- Skeleton loading — diganti JS setelah data Supabase dimuat -->
+        <div class="info-card text-center schedule-skeleton" aria-hidden="true">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl" style="background:var(--bg-alt)"></div>
+          <div class="h-3 rounded mx-auto mb-2" style="width:60%;background:var(--bg-alt)"></div>
+          <div class="h-7 rounded mx-auto mb-2" style="width:45%;background:var(--bg-alt)"></div>
+          <div class="h-3 rounded mx-auto" style="width:70%;background:var(--bg-alt)"></div>
         </div>
-
-        <div class="info-card text-center">
-          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
-          <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--gold)">Jumat Sore</div>
-          <div class="text-2xl font-black" style="color:var(--ink)">17:00</div>
-          <div class="text-xs mt-1 font-medium" style="color:var(--stone)">WIB · Misa Harian</div>
+        <div class="info-card text-center schedule-skeleton" aria-hidden="true">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl" style="background:var(--bg-alt)"></div>
+          <div class="h-3 rounded mx-auto mb-2" style="width:60%;background:var(--bg-alt)"></div>
+          <div class="h-7 rounded mx-auto mb-2" style="width:45%;background:var(--bg-alt)"></div>
+          <div class="h-3 rounded mx-auto" style="width:70%;background:var(--bg-alt)"></div>
         </div>
-
-        <div class="info-card text-center">
-          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
-          <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--gold)">Sabtu Sore</div>
-          <div class="text-2xl font-black" style="color:var(--ink)">17:00</div>
-          <div class="text-xs mt-1 font-medium" style="color:var(--stone)">WIB · Misa Antisipasi</div>
+        <div class="info-card text-center schedule-skeleton" aria-hidden="true">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl" style="background:var(--bg-alt)"></div>
+          <div class="h-3 rounded mx-auto mb-2" style="width:60%;background:var(--bg-alt)"></div>
+          <div class="h-7 rounded mx-auto mb-2" style="width:45%;background:var(--bg-alt)"></div>
+          <div class="h-3 rounded mx-auto" style="width:70%;background:var(--bg-alt)"></div>
         </div>
-
       </div>
 
       <div class="text-center reveal">
@@ -289,117 +287,81 @@
 <modern-footer></modern-footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase-config.js?v=1786813392"></script>
-<script src="js/site-content.js?v=1786813392"></script>
-<script src="js/components/navbar.js?v=1786813392"></script>
-<script src="js/components/footer.js?v=1786813392"></script>
-<script src="js/components/ui-components.js?v=1786813392"></script>
-<script src="js/script.js?v=1786813392"></script>
-<script src="js/renungan.js?v=1786813392"></script>
+<script src="js/supabase-config.js?v=1786815889"></script>
+<script src="js/site-content.js?v=1786815889"></script>
+<script src="js/components/navbar.js?v=1786815889"></script>
+<script src="js/components/footer.js?v=1786815889"></script>
+<script src="js/components/ui-components.js?v=1786815889"></script>
+<script src="js/script.js?v=1786815889"></script>
+<script src="js/renungan.js?v=1786815889"></script>
 <script>
+// Load all home data in parallel, then reveal page
+Promise.all([
 
-// ── Load Jadwal from Supabase ──────────────────────
-(async () => {
-  const gridEl = document.getElementById('home-schedule-grid');
-  if (!gridEl || typeof db === 'undefined') return;
+  // 1. Jadwal Misa
+  (async () => {
+    const gridEl = document.getElementById('home-schedule-grid');
+    if (!gridEl || typeof db === 'undefined') return;
+    try {
+      const { data, error } = await db.from('jadwal_misa').select('*').order('urutan').order('created_at');
+      if (error) throw error;
+      if (!data || data.length === 0) return;
+      const isGerejaParoki = (s) => ['margo-agung','marga-agung'].includes((s||'').toLowerCase());
+      const rows = data.filter(r => isGerejaParoki(r.stasi)).slice(0, 3);
+      if (rows.length > 0) {
+        gridEl.innerHTML = rows.map(r => `
+          <div class="info-card text-center animate-fade-in">
+            <div class="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">&#x271D;</div>
+            <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--gold)">${escapeHtml(r.hari)}</div>
+            <div class="text-2xl font-black" style="color:var(--ink)">${escapeHtml(r.waktu)}</div>
+            <div class="text-xs mt-1 font-medium" style="color:var(--stone)">${escapeHtml(r.keterangan || 'Misa Umat')}</div>
+          </div>`).join('');
+      }
+    } catch(e) { console.error('schedule:', e); }
+  })(),
 
-  try {
-    const { data, error } = await db.from('jadwal_misa').select('*').order('urutan').order('created_at');
-    if (error) throw error;
-
-    if (!data || data.length === 0) return;
-
-    const isGerejaParoki = (stasi) => ['margo-agung', 'marga-agung'].includes((stasi || '').toLowerCase());
-    const parokiRows = data.filter(r => isGerejaParoki(r.stasi)).slice(0, 3); // Ambil maks 3
-
-    if (parokiRows.length > 0) {
-      gridEl.innerHTML = parokiRows.map(r => `
-        <div class="info-card text-center animate-fade-in">
-          <div class="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center text-lg font-bold" style="background:var(--gold-muted);color:var(--gold)">✝</div>
-          <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--gold)">${escapeHtml(r.hari)}</div>
-          <div class="text-2xl font-black" style="color:var(--ink)">${escapeHtml(r.waktu)}</div>
-          <div class="text-xs mt-1 font-medium" style="color:var(--stone)">${escapeHtml(r.keterangan || 'Misa Umat')}</div>
-        </div>
-      `).join('');
-    }
-  } catch(e) {
-    console.error('Error load home schedule:', e);
-  }
-})();
-
-
-// ── Load Galeri from Supabase ──────────────────────
-(async () => {
-  const container = document.getElementById('gallery-container');
-  if (!container || typeof db === 'undefined') return;
-  try {
-    const { data, error } = await db.from('galeri')
-      .select('*')
-      .order('tanggal', { ascending: false })
-      .limit(6);
-      
-    if (error) throw error;
-    
-    if (!data || data.length === 0) {
-      container.innerHTML = '<div class="text-sm text-gray-500 italic p-4">Belum ada foto kegiatan.</div>';
-      return;
-    }
-    
-    container.innerHTML = data.map(item => `
-      <div class="flex-none w-64 sm:w-72 md:w-80 snap-start animate-fade-in group cursor-pointer" onclick="openLightbox('${escapeHtml(item.foto_url)}')">
-        <div class="relative w-full aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm">
-          <img src="${escapeHtml(item.foto_url)}" alt="${escapeHtml(item.judul)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90"></div>
-          <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-5 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-            <div class="text-xs font-semibold text-white/80 mb-1 tracking-wider uppercase">${escapeHtml(item.kategori || 'Kegiatan')}</div>
-            <h3 class="text-white font-bold text-sm sm:text-base leading-snug">${escapeHtml(item.judul)}</h3>
+  // 2. Galeri
+  (async () => {
+    const el = document.getElementById('gallery-container');
+    if (!el || typeof db === 'undefined') return;
+    try {
+      const { data, error } = await db.from('galeri').select('*').order('tanggal', { ascending: false }).limit(6);
+      if (error) throw error;
+      if (!data || data.length === 0) { el.innerHTML = '<div class="text-sm text-gray-500 italic p-4">Belum ada foto kegiatan.</div>'; return; }
+      el.innerHTML = data.map(item => `
+        <div class="flex-none w-64 sm:w-72 md:w-80 snap-start animate-fade-in group cursor-pointer" onclick="openLightbox('${escapeHtml(item.foto_url)}')">
+          <div class="relative w-full aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm">
+            <img src="${escapeHtml(item.foto_url)}" alt="${escapeHtml(item.judul)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-5 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+              <div class="text-xs font-semibold text-white/80 mb-1 tracking-wider uppercase">${escapeHtml(item.kategori || 'Kegiatan')}</div>
+              <h3 class="text-white font-bold text-sm sm:text-base leading-snug">${escapeHtml(item.judul)}</h3>
+            </div>
           </div>
-        </div>
-      </div>
-    `).join('');
-  } catch(e) {
-    console.error('Error load gallery:', e);
-    container.innerHTML = '<div class="text-sm text-gray-500 italic p-4">Gagal memuat galeri.</div>';
-  }
-})();
+        </div>`).join('');
+    } catch(e) { console.error('gallery:', e); el.innerHTML = '<div class="text-sm text-gray-500 italic p-4">Gagal memuat galeri.</div>'; }
+  })(),
 
-// ── Load Pengumuman from Supabase ──────────────────
-(async () => {
-  const listEl = document.getElementById('pengumumanList');
-  try {
-    const { data, error } = await db
-      .from('pengumuman')
-      .select('*')
-      .eq('aktif', true)
-      .order('tanggal', { ascending: false })
-      .limit(5);
-
-    if (error) throw error;
-
-    if (!data || data.length === 0) {
-      listEl.innerHTML = `
-        <div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">
-          Belum ada pengumuman terbaru.
-        </div>`;
-      return;
-    }
-
-    listEl.innerHTML = data.map(p => {
-      const tgl = new Date(p.tanggal).toLocaleDateString('id-ID', {
-        day: 'numeric', month: 'long', year: 'numeric'
-      });
-      return `
-        <div class="announcement-card animate-fade-in">
+  // 3. Pengumuman
+  (async () => {
+    const listEl = document.getElementById('pengumumanList');
+    if (!listEl || typeof db === 'undefined') return;
+    try {
+      const { data, error } = await db.from('pengumuman').select('*').eq('aktif', true).order('tanggal', { ascending: false }).limit(5);
+      if (error) throw error;
+      if (!data || data.length === 0) { listEl.innerHTML = '<div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">Belum ada pengumuman terbaru.</div>'; return; }
+      listEl.innerHTML = data.map(p => {
+        const tgl = new Date(p.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        return `<div class="announcement-card animate-fade-in">
           <span class="announcement-date">${tgl}</span>
           <h4 class="font-bold text-base mt-1" style="color:var(--ink)">${escapeHtml(p.judul)}</h4>
           <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--ink-soft)">${escapeHtml(p.isi)}</p>
         </div>`;
-    }).join('');
-  } catch(e) {
-    listEl.innerHTML = `
-      <div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">
-        Gagal memuat pengumuman.
-      </div>`;
-  }
-})();
+      }).join('');
+    } catch(e) { listEl.innerHTML = '<div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">Gagal memuat pengumuman.</div>'; }
+  })()
+
+]).finally(function() {
+  if (typeof window.hidePageLoader === 'function') window.hidePageLoader();
+});
 </script>

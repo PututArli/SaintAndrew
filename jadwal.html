@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="flex flex-col min-h-screen">
+<script src="js/page-loader.js?v=1786815889"></script>
 
 <modern-navbar active-page="jadwal.html"></modern-navbar>
 
@@ -216,7 +217,7 @@
 <modern-footer></modern-footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase-config.js?v=2"></script>
+<script src="js/supabase-config.js?v=1786815889"></script>
 <script src="js/site-content.js"></script>
 <script src="js/components/navbar.js"></script>
 <script src="js/components/footer.js"></script>
@@ -324,6 +325,8 @@ const STASI_INFO = {
   } catch(e) {
     if (parokiEl) parokiEl.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--ink-soft);font-size:0.85rem">Gagal memuat jadwal.</td></tr>';
     if (stasiEl) stasiEl.innerHTML = '<div class="info-card" style="text-align:center;grid-column:1/-1;padding:2rem;color:var(--ink-soft);font-size:0.85rem">Gagal memuat jadwal stasi.</div>';
+  } finally {
+    if (typeof window.hidePageLoader === 'function') window.hidePageLoader();
   }
 })();
 </script>
