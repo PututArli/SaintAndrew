@@ -277,6 +277,8 @@ function unlockBodyScroll() {
     }
 }
 
+let stasiModalTimeout = null;
+
 function openStasiModal(id) {
     const cleanId = String(id || '').trim().toLowerCase().replace(/_/g, '-');
     const data = stasiData[cleanId] || stasiData[id];
@@ -385,22 +387,23 @@ function openStasiModal(id) {
         </div>
     `;
     
+    // Clear any pending close animations
+    if (stasiModalTimeout) clearTimeout(stasiModalTimeout);
+    
     // Step 1: make modal visible (display:flex) so it enters the layout
     modal.style.display = 'flex';
     modal.style.pointerEvents = 'auto';
     lockBodyScroll();
 
-    // Step 2: on the NEXT frame, trigger card animation (opacity/transform transition)
+    // Step 2: on the NEXT frame, trigger card animation using setTimeout for reliable mobile execution
     const card = modal.querySelector('#stasiModalCard');
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            modal.style.opacity = '1';
-            if (card) {
-                card.style.opacity = '1';
-                card.style.transform = 'scale(1) translateY(0)';
-            }
-        });
-    });
+    setTimeout(() => {
+        modal.style.opacity = '1';
+        if (card) {
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1) translateY(0)';
+        }
+    }, 20); // 20ms ensures layout flush on most mobile browsers
 
     if (window.history && window.history.pushState) {
         window.history.pushState({ modal: 'stasiModal', id: cleanId }, '');
@@ -411,6 +414,8 @@ function closeStasiModal(fromPopState = false) {
     const modal = document.getElementById('stasiModal');
     if (!modal) return;
 
+    if (stasiModalTimeout) clearTimeout(stasiModalTimeout);
+
     // Animate card out and overlay fade out simultaneously
     modal.style.opacity = '0';
     const card = modal.querySelector('#stasiModalCard');
@@ -418,7 +423,8 @@ function closeStasiModal(fromPopState = false) {
         card.style.opacity = '0';
         card.style.transform = 'scale(0.94) translateY(16px)';
     }
-    setTimeout(() => {
+    
+    stasiModalTimeout = setTimeout(() => {
         modal.style.display = 'none';
         modal.style.pointerEvents = 'none';
         // Reset card for next open

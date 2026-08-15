@@ -488,8 +488,10 @@ body.modal-open .mobile-bottom-dock {
 
   /* ── Dock ── */
   .mobile-bottom-dock {
-    bottom: 1rem;
+    /* Respect iOS & Android safe area in mobile breakpoint */
+    bottom: max(1rem, calc(env(safe-area-inset-bottom) + 0.5rem));
     padding: 0 0.5rem;
+    padding-bottom: env(safe-area-inset-bottom, 0);
   }
 
   .dock-inner {
