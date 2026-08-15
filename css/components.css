@@ -382,6 +382,8 @@ aesthetic-divider {
   cursor: pointer;
   box-shadow: var(--shadow-xs);
   transition: box-shadow var(--ease), transform var(--ease);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .gallery-item:hover {
@@ -393,9 +395,22 @@ aesthetic-divider {
   width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .gallery-item:hover > img { transform: scale(1.07); }
+
+/* Horizontal Carousel Containers — Lock Vertical Overflow */
+#gallery-container,
+#home-stasi-container,
+.overflow-x-auto {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-y: none;
+  touch-action: pan-x pan-y;
+}
 
 .gallery-overlay {
   position: absolute; inset: 0;
