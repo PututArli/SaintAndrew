@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    PAROKI SANTO ANDREAS RASUL — MODULAR STYLESHEET ENTRY POINT
    ============================================================
    Design System Architecture (7-1 Pattern):
@@ -8,7 +8,7 @@
    4. animations.css : Keyframes, scroll reveals, modals, lightbox & scroll-to-top
    ============================================================ */
 
-@import url('variables.css');
-@import url('layout.css');
-@import url('components.css');
-@import url('animations.css');
+@import url('variables.css?v=1786781657');
+@import url('layout.css?v=1786781657');
+@import url('components.css?v=1786781657');
+@import url('animations.css?v=1786781657');

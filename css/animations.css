@@ -364,4 +364,9 @@ body.modal-open {
   #modalContent {
     padding: 1rem 1rem 5rem !important;
   }
+
+  /* Prevent scroll-to-top from hiding behind mobile dock */
+  #scroll-top {
+    bottom: 4.75rem;
+  }
 }

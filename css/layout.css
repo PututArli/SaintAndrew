@@ -485,23 +485,24 @@ body.modal-open .mobile-bottom-dock {
 
   /* ── Dock ── */
   .mobile-bottom-dock {
-    bottom: 1.25rem;
-    padding: 0 1.25rem;
+    bottom: 1rem;
+    padding: 0 0.5rem;
   }
 
   .dock-inner {
-    max-width: 100%;
-    padding: 0.45rem 0.75rem;
-    gap: 0.25rem;
+    max-width: 400px;
+    padding: 0.4rem 0.5rem;
+    gap: 0.15rem;
   }
 
   .dock-item {
-    padding: 0.4rem 0.55rem;
-    font-size: 0.65rem;
+    padding: 0.35rem 0.4rem;
+    font-size: 0.6rem;
+    min-width: 40px;
   }
 
   .dock-icon {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
 }
 
