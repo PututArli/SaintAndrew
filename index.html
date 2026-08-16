@@ -7,10 +7,10 @@
 <meta name="description" content="Website resmi Paroki Santo Andreas Rasul Margo Agung, Jati Agung, Lampung Selatan. Informasi jadwal misa, stasi, dan pelayanan pastoral.">
 <link rel="icon" href="assets/crossIcon.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="css/style.css?v=1786816630">
+<link rel="stylesheet" href="css/style.css?v=1786917386">
 </head>
 <body class="flex flex-col min-h-screen">
-<script src="js/page-loader.js?v=1786816630"></script>
+<script src="js/page-loader.js?v=1786917386"></script>
 
 <modern-navbar active-page="index.html"></modern-navbar>
 
@@ -287,13 +287,13 @@
 <modern-footer></modern-footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase-config.js?v=1786816630"></script>
-<script src="js/site-content.js?v=1786816630"></script>
-<script src="js/components/navbar.js?v=1786816630"></script>
-<script src="js/components/footer.js?v=1786816630"></script>
-<script src="js/components/ui-components.js?v=1786816630"></script>
-<script src="js/script.js?v=1786816630"></script>
-<script src="js/renungan.js?v=1786816630"></script>
+<script src="js/supabase-config.js?v=1786917386"></script>
+<script src="js/site-content.js?v=1786917386"></script>
+<script src="js/components/navbar.js?v=1786917386"></script>
+<script src="js/components/footer.js?v=1786917386"></script>
+<script src="js/components/ui-components.js?v=1786917386"></script>
+<script src="js/script.js?v=1786917386"></script>
+<script src="js/renungan.js?v=1786917386"></script>
 <script>
 // Load all home data in parallel, then reveal page
 Promise.all([
@@ -317,7 +317,14 @@ Promise.all([
             <div class="text-xs mt-1 font-medium" style="color:var(--stone)">${escapeHtml(r.keterangan || 'Misa Umat')}</div>
           </div>`).join('');
       }
-    } catch(e) { console.error('schedule:', e); }
+    } catch(e) { 
+      gridEl.innerHTML = `
+        <div class="info-card text-center" style="grid-column: 1/-1">
+          <div class="text-3xl mb-2 opacity-50">📡</div>
+          <div class="text-sm font-medium" style="color:var(--ink)">Gagal memuat jadwal</div>
+          <div class="text-xs mt-1" style="color:var(--ink-soft)">Silakan periksa koneksi internet Anda.</div>
+        </div>`;
+    }
   })(),
 
   // 2. Galeri
@@ -339,7 +346,15 @@ Promise.all([
             </div>
           </div>
         </div>`).join('');
-    } catch(e) { console.error('gallery:', e); el.innerHTML = '<div class="text-sm text-gray-500 italic p-4">Gagal memuat galeri.</div>'; }
+    } catch(e) { 
+      console.error('gallery:', e); 
+      el.innerHTML = `
+        <div class="w-full text-center py-8">
+          <div class="text-3xl mb-2 opacity-50">🖼️</div>
+          <div class="text-sm font-medium" style="color:var(--ink)">Gagal memuat galeri</div>
+          <div class="text-xs mt-1" style="color:var(--ink-soft)">Silakan periksa koneksi internet Anda.</div>
+        </div>`;
+    }
   })(),
 
   // 3. Pengumuman
@@ -358,7 +373,14 @@ Promise.all([
           <p class="text-sm mt-1.5 leading-relaxed" style="color:var(--ink-soft)">${escapeHtml(p.isi)}</p>
         </div>`;
       }).join('');
-    } catch(e) { listEl.innerHTML = '<div class="text-center py-8" style="color:var(--ink-soft);font-size:0.85rem">Gagal memuat pengumuman.</div>'; }
+    } catch(e) { 
+      listEl.innerHTML = `
+        <div class="text-center py-8">
+          <div class="text-3xl mb-2 opacity-50">📢</div>
+          <div class="text-sm font-medium" style="color:var(--ink)">Gagal memuat pengumuman</div>
+          <div class="text-xs mt-1" style="color:var(--ink-soft)">Silakan periksa koneksi internet Anda.</div>
+        </div>`;
+    }
   })()
 
 ]).finally(function() {

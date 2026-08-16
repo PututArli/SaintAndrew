@@ -338,6 +338,7 @@ body.modal-open .mobile-bottom-dock {
   background: var(--charcoal);
   border-top: 1px solid rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.7);
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .footer-social-btn {
@@ -535,3 +536,19 @@ body.modal-open .mobile-bottom-dock {
   .dock-inner { padding: 0.55rem 0.85rem; }
   .dock-icon { font-size: 1.25rem; margin-bottom: 0; }
 }
+
+/* ── Global Accessibility (Focus & Hover Polish) ── */
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+button:active, a:active {
+  transform: scale(0.97) !important;
+  transition: transform 0.1s ease !important;
+}
+
+.floating-nav-container *, .mobile-bottom-dock * {
+  transform: none !important; /* Prevent shrinking nav elements */
+}
+

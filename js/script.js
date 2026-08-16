@@ -256,10 +256,17 @@ function ensureStasiModalInDOM() {
 
 let _globalModalScrollPos = 0;
 let _openModalCount = 0;
+let _scrollbarWidth = 0;
 
 function lockBodyScroll() {
     if (_openModalCount === 0) {
+        _scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
         _globalModalScrollPos = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+        
+        document.body.style.paddingRight = _scrollbarWidth + 'px';
+        const floatingNav = document.querySelector('.floating-nav-container');
+        if (floatingNav) floatingNav.style.paddingRight = _scrollbarWidth + 'px';
+
         document.body.classList.add('modal-open');
         document.documentElement.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
@@ -270,6 +277,10 @@ function lockBodyScroll() {
 function unlockBodyScroll() {
     _openModalCount = Math.max(0, _openModalCount - 1);
     if (_openModalCount === 0) {
+        document.body.style.paddingRight = '';
+        const floatingNav = document.querySelector('.floating-nav-container');
+        if (floatingNav) floatingNav.style.paddingRight = '';
+
         document.body.classList.remove('modal-open');
         document.documentElement.classList.remove('modal-open');
         document.body.style.overflow = '';
@@ -510,7 +521,12 @@ function buildLightboxImages() {
     }).filter(item => item.src);
 }
 
+let _isLightboxOpening = false;
 function openLightbox(src, alt, customData = null) {
+    if (_isLightboxOpening) return;
+    _isLightboxOpening = true;
+    setTimeout(() => { _isLightboxOpening = false; }, 400);
+
     const lb = ensureLightboxInDOM();
     if (customData && customData.single) {
         lightboxImages = [{
