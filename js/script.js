@@ -201,11 +201,10 @@ function ensureStasiModalInDOM() {
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'stasiModal';
-        // Pure inline style approach — no CSS class dependency
         modal.style.cssText = [
             'position:fixed', 'inset:0', 'z-index:99999',
             'display:none', 'align-items:center', 'justify-content:center',
-            'padding:0.75rem',
+            'padding:max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom))',
             'background:rgba(12,12,14,0.88)',
             'backdrop-filter:blur(18px)', '-webkit-backdrop-filter:blur(18px)',
             'overflow-y:auto', '-webkit-overflow-scrolling:touch',
@@ -219,7 +218,7 @@ function ensureStasiModalInDOM() {
                 box-shadow:0 32px 80px rgba(0,0,0,0.5);
                 width:100%;
                 max-width:860px;
-                max-height:calc(100vh - 1.5rem);
+                max-height:100%;
                 display:flex;
                 flex-direction:column;
                 overflow:hidden;

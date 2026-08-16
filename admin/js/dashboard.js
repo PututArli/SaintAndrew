@@ -180,13 +180,16 @@ async function initDashboard() {
     console.warn('Auth session check note:', authErr);
   }
 
-  // Load initial active tab data & statistics based on URL hash (without push loop)
-  const initialTab = location.hash.replace('#', '') || 'jadwal';
+  // Load initial active tab data & statistics (URL anonim tanpa hash)
+  const initialTab = sessionStorage.getItem('sa_admin_tab') || 'jadwal';
   if (window.history && window.history.replaceState) {
-    window.history.replaceState({ tab: initialTab }, '', '#' + initialTab);
+    window.history.replaceState({ tab: initialTab }, '', window.location.pathname);
   }
-  showTab(initialTab, null, false);
-  loadCounters();
+  
+  const loadPromise = showTab(initialTab, null, false);
+  Promise.all([loadCounters(), loadPromise]).finally(() => {
+    if (typeof window.hidePageLoader === 'function') window.hidePageLoader();
+  });
 }
 
 if (document.readyState === 'loading') {
@@ -573,23 +576,26 @@ function showTab(name, btn = null, pushHistory = true) {
   };
   document.getElementById('topbar-title').textContent = titles[name] || 'Admin';
 
-  // Update URL hash cleanly without duplicate history accumulation
+  // Simpan state tab ke sessionStorage agar saat direfresh tidak hilang, tapi URL tetap anonim
+  sessionStorage.setItem('sa_admin_tab', name);
+  
   if (pushHistory && !_isPopStateNav && window.history && window.history.pushState) {
-    if (location.hash.replace('#', '') !== name) {
-      window.history.pushState({ tab: name }, '', '#' + name);
-    }
+    window.history.pushState({ tab: name }, '', window.location.pathname);
   }
 
   // Tutup sidebar di mobile secara halus jika sedang terbuka
   closeSidebar();
 
-  if (name === 'jadwal')     loadJadwal();
-  if (name === 'renungan')   loadRenungan();
-  if (name === 'pengumuman')  loadPengumuman();
-  if (name === 'galeri')      loadGaleri();
-  if (name === 'stasi')       loadStasiAdmin();
-  if (name === 'konten' && typeof loadSiteContentAdmin === 'function') loadSiteContentAdmin();
-  if (name === 'pesan')       loadPesan();
+  let loadPromise = Promise.resolve();
+  if (name === 'jadwal')     loadPromise = loadJadwal();
+  if (name === 'renungan')   loadPromise = loadRenungan();
+  if (name === 'pengumuman')  loadPromise = loadPengumuman();
+  if (name === 'galeri')      loadPromise = loadGaleri();
+  if (name === 'stasi')       loadPromise = loadStasiAdmin();
+  if (name === 'konten' && typeof loadSiteContentAdmin === 'function') loadPromise = loadSiteContentAdmin();
+  if (name === 'pesan')       loadPromise = loadPesan();
+
+  return loadPromise;
 }
 
 // ── Counters ────────────────────────────────────────────────
