@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   function escapeHtml(value) {
     return String(value ?? '')
       .replace(/&/g, '&amp;')
@@ -139,7 +139,7 @@
           <div class="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-4">
             ${textareaGroup('sc-footer-description', 'Deskripsi Footer', footer.description || '', 'Teks footer kiri', 3)}
             ${inputGroup('sc-footer-address', 'Alamat Footer', footer.address || '', 'Alamat gereja')}
-            ${inputGroup('sc-footer-phone', 'Telepon Footer', footer.phone || '', '(0721) 755300')}
+            ${inputGroup('sc-footer-phone', 'Telepon Footer', footer.phone || '', '(0721) 1234567')}
             ${inputGroup('sc-footer-email', 'Email Footer', footer.email || '', 'email@paroki.id', 'email')}
             ${textareaGroup('sc-footer-hours', 'Jam Operasional Footer', footer.hours || '', 'Gunakan baris baru untuk pemisah jam', 3)}
             ${inputGroup('sc-footer-copyright', 'Copyright Footer', footer.copyright || '', '© 2026 ...')}
@@ -174,7 +174,7 @@
           <div id="sc-section-contact" class="site-content-grid site-content-grid-2">
             ${inputGroup('sc-contact-sekretariat-title', 'Judul Sekretariat', contact.sekretariat?.title || '', 'Sekretariat Paroki')}
             ${textareaGroup('sc-contact-sekretariat-address', 'Alamat Sekretariat', contact.sekretariat?.address || '', 'Alamat lengkap', 3)}
-            ${inputGroup('sc-contact-sekretariat-phone', 'Telepon Sekretariat', contact.sekretariat?.phone || '', '(0721) 755300')}
+            ${inputGroup('sc-contact-sekretariat-phone', 'Telepon Sekretariat', contact.sekretariat?.phone || '', '(0721) 1234567')}
             ${inputGroup('sc-contact-sekretariat-email', 'Email Sekretariat', contact.sekretariat?.email || '', 'email@paroki.id', 'email')}
             ${inputGroup('sc-contact-hours-weekday', 'Jam Weekday', contact.sekretariat?.hoursWeekday || '', 'Senin – Jumat: ...')}
             ${inputGroup('sc-contact-hours-weekend', 'Jam Weekend', contact.sekretariat?.hoursWeekend || '', 'Sabtu – Minggu: ...')}

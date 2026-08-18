@@ -1,4 +1,4 @@
-const stasiData = {
+﻿const stasiData = {
     'margo-agung': {
         title: 'Gereja Paroki Margo Agung',
         patron: 'Santo Andreas Rasul',
@@ -1018,7 +1018,7 @@ function applyContactSiteContent(content) {
     setTextContentById('contact-hero-title', contact.hero?.title);
     setTextContentById('contact-hero-subtitle', contact.hero?.subtitle);
 
-    const phoneStr = sekretariat.phone || '(0721) 755300';
+    const phoneStr = sekretariat.phone || '(0721) 1234567';
     let numeric = String(phoneStr).trim().replace(/[^\d+]/g, '');
     if (numeric.startsWith('0')) {
         numeric = '62' + numeric.substring(1);

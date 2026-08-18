@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 //  SITE CONTENT STORE — Paroki Santo Andreas Rasul Margo Agung
 //  Shared content defaults + load/save helpers for public pages
 // ============================================================
@@ -60,13 +60,13 @@
         subtitle: 'Kami siap membantu dan menjawab setiap pertanyaan Anda'
       },
       quickActions: {
-        whatsapp: { label: 'WhatsApp Sekretariat', href: 'https://wa.me/62812755300' },
-        phone: { label: 'Telepon: (0721) 755300', href: 'tel:0721755300' }
+        whatsapp: { label: 'WhatsApp Sekretariat', href: 'https://wa.me/6281234567890' },
+        phone: { label: 'Telepon: (0721) 1234567', href: 'tel:07211234567' }
       },
       sekretariat: {
         title: 'Sekretariat Paroki',
         address: 'Jl. Margo Agung, Marga Kaya, Jati Agung, Kabupaten Lampung Selatan, Lampung 35365',
-        phone: '(0721) 755300',
+        phone: '(0721) 1234567',
         email: 'parokimargaagung@gmail.com',
         hoursWeekday: 'Senin – Jumat: 08:00 – 15:00 WIB',
         hoursWeekend: 'Sabtu – Minggu: 08:00 – 12:00 WIB'
@@ -183,7 +183,7 @@
       brandSubtitle: 'Santo Andreas Rasul',
       description: 'Melayani umat dengan penuh kasih, membangun persaudaraan sejati, dan menghidupi sabda Tuhan.',
       address: 'Jl. Margo Agung, Marga Kaya, Jati Agung, Lampung Selatan 35365',
-      phone: '(0721) 755300',
+      phone: '(0721) 1234567',
       email: 'parokimargaagung@gmail.com',
       hours: 'Sen–Jum: 08:00–15:00<br>Sab–Min: 08:00–12:00',
       copyright: '© 2026 Paroki Santo Andreas Rasul Margo Agung.',
