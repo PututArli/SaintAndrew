@@ -1,4 +1,4 @@
-﻿class ModernFooter extends HTMLElement {
+class ModernFooter extends HTMLElement {
     constructor() { super(); }
 
     connectedCallback() {
@@ -32,22 +32,14 @@
                         </div>
                     </div>
 
-                    <!-- Quick Links -->
+                    <!-- Jadwal Misa -->
                     <div>
-                        <h4 class="font-semibold text-sm tracking-widest uppercase mb-5" style="color:rgba(255,255,255,0.55)">Navigasi</h4>
-                        <ul class="space-y-2.5 list-none">
-                            ${[
-                                ['index.html','Beranda'],
-                                ['profil.html','Profil Paroki'],
-                                ['stasi.html','Daftar Stasi'],
-                                ['galeri.html','Galeri Foto'],
-                                ['jadwal.html','Jadwal Misa'],
-                                ['kontak.html','Hubungi Kami']
-                            ].map(([href, label]) =>
-                                `<li><a href="${href}" class="text-sm flex items-center gap-2 transition-colors duration-200" style="color:rgba(255,255,255,0.45)" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
-                                    <span style="color:rgba(184,134,11,0.7);font-size:0.65rem">›</span> ${label}
-                                </a></li>`
-                            ).join('')}
+                        <h4 class="font-semibold text-sm tracking-widest uppercase mb-5" style="color:rgba(255,255,255,0.55)">Jadwal Misa Gereja Paroki</h4>
+                        <ul id="footer-misa-list" class="space-y-3.5 list-none">
+                            <li class="flex items-center gap-3 opacity-50">
+                                <div class="w-1.5 h-1.5 rounded-full" style="background:rgba(184,134,11,0.7)"></div>
+                                <div class="text-sm">Memuat jadwal...</div>
+                            </li>
                         </ul>
                     </div>
 
@@ -200,6 +192,58 @@
         }
 
         this.initAdminPortal();
+        this.loadFooterSchedule();
+    }
+
+    async loadFooterSchedule() {
+        const listEl = this.querySelector('#footer-misa-list');
+        if (!listEl) return;
+        
+        try {
+            const client = await this.getClient();
+            if (!client || !client.from) return;
+            
+            const { data, error } = await client.from('jadwal_misa')
+                .select('*')
+                .eq('stasi', 'margo-agung')
+                .order('urutan');
+                
+            if (error || !data || data.length === 0) {
+                listEl.innerHTML = `<li class="text-sm" style="color:rgba(255,255,255,0.45)">Belum ada data jadwal.</li>`;
+                return;
+            }
+            
+            let html = '';
+            // Tampilkan maksimal 2 jadwal utama agar tidak terlalu panjang
+            const displayData = data.slice(0, 2);
+            
+            displayData.forEach(j => {
+                const label = j.kategori === 'harian' ? `Misa Harian (${j.hari})` : j.hari;
+                html += `
+                    <li class="flex items-center gap-3">
+                        <div class="w-1.5 h-1.5 rounded-full" style="background:rgba(184,134,11,0.7)"></div>
+                        <div class="text-sm">
+                            <span class="block font-medium" style="color:rgba(255,255,255,0.85)">${label}</span>
+                            <span style="color:rgba(255,255,255,0.45)">${j.waktu}</span>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            // Link ke halaman jadwal full
+            html += `
+                <li class="flex items-center gap-3 mt-4 pt-4" style="border-top:1px solid rgba(255,255,255,0.05)">
+                    <a href="jadwal.html" class="text-xs font-semibold uppercase tracking-wider transition-colors" style="color:rgba(184,134,11,0.9)" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(184,134,11,0.9)'">
+                        Lihat Seluruh Jadwal &rarr;
+                    </a>
+                </li>
+            `;
+            
+            listEl.innerHTML = html;
+        } catch (e) {
+            console.warn('Footer schedule fetch note:', e);
+            listEl.innerHTML = `<li class="text-sm" style="color:rgba(255,255,255,0.45)">Gagal memuat jadwal.</li>`;
+        }
     }
 
     async getClient() {
