@@ -1,4 +1,4 @@
-// =============================================================
+﻿// =============================================================
 //  DASHBOARD ADMIN — Paroki Santo Andreas Rasul Margo Agung
 //  JavaScript Logic — dipisahkan dari dashboard.html
 //  Requires: Supabase JS v2, supabase-config.js (db global)
@@ -49,7 +49,7 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Stefanus',
     pesta_nama: '26 Desember',
     role: 'Protomartir (Martir Pertama) & Diakon Gereja',
-    sejarah: "<strong>Awal Kedatangan Tokoh Perintis (1949–1950)</strong><br>Gereja Santo Stefanus telah berdiri sejak tahun 1967. Kehadiran gereja ini tidak lepas dari peran seorang tokoh Katolik dari Jawa, yaitu Bapak Laurensius Sastro Wirono Sukapjo, berasal dari Piton, Kulon Progo, DIY Yogyakarta. Pada tahun 1949, beliau pergi ke Lampung dan menetap di Desa Karang Anyar, Kecamatan Jati Agung. Setahun kemudian, pada tahun 1950, beliau pindah ke Way Rilau (kini Desa Sindangsari, Kecamatan Tanjung Bintang), yang saat ini merupakan kantor perkebunan karet AVD VII milik PT. Nusantara VII. Bapak Sastro dikenal sebagai tokoh yang handal dan banyak berhasil menarik orang untuk masuk ke dalam Gereja Katolik.<br><br><strong>Perintisan Iman dan Pendirian Gereja (1950–1967)</strong><br>Pada masa itu, daerah Way Rilau belum memiliki bangunan gereja. Misa dan ibadat diadakan di rumah-rumah umat. Romo yang sering melayani adalah Romo Kam, seorang misionaris dari Belanda. Secara administratif, daerah ini masih masuk wilayah pelayanan Paroki Katedral Kristus Raja, Tanjung Karang. Pada mulanya, perayaan Ekaristi hanya dihadiri 3–5 orang. Seiring bertambahnya umat pada tahun 1960-an, pada tahun 1967 didirikanlah gereja atas inisiatif Bapak Sastro Wirono, dibantu Bapak Sunar (alm). Lokasi di Sindangsari (Dusun Umbul Kapuk) tidak berpindah hingga saat ini, dan bangunan aslinya masih berdiri kokoh.<br><br><strong>Perkembangan Umat dan Pelayanan Saat Ini</strong><br>Dari hanya satu Keluarga Katolik pada tahun 1950, kini pada tahun 2025, Stasi Santo Stefanus Sindangsari telah berkembang menjadi 38 Kepala Keluarga atau 87 jiwa. Stasi ini kini masuk ke dalam wilayah pelayanan Paroki Santo Andreas Rasul, Margo Agung.",
+    sejarah: "Awal Kedatangan Tokoh Perintis (1949–1950)\nGereja Santo Stefanus telah berdiri sejak tahun 1967. Kehadiran gereja ini tidak lepas dari peran seorang tokoh Katolik dari Jawa, yaitu Bapak Laurensius Sastro Wirono Sukapjo, berasal dari Piton, Kulon Progo, DIY Yogyakarta. Pada tahun 1949, beliau pergi ke Lampung dan menetap di Desa Karang Anyar, Kecamatan Jati Agung. Setahun kemudian, pada tahun 1950, beliau pindah ke Way Rilau (kini Desa Sindangsari, Kecamatan Tanjung Bintang), yang saat ini merupakan kantor perkebunan karet AVD VII milik PT. Nusantara VII. Bapak Sastro dikenal sebagai tokoh yang handal dan banyak berhasil menarik orang untuk masuk ke dalam Gereja Katolik.\n\nPerintisan Iman dan Pendirian Gereja (1950–1967)\nPada masa itu, daerah Way Rilau belum memiliki bangunan gereja. Misa dan ibadat diadakan di rumah-rumah umat. Romo yang sering melayani adalah Romo Kam, seorang misionaris dari Belanda. Secara administratif, daerah ini masih masuk wilayah pelayanan Paroki Katedral Kristus Raja, Tanjung Karang. Pada mulanya, perayaan Ekaristi hanya dihadiri 3–5 orang. Seiring bertambahnya umat pada tahun 1960-an, pada tahun 1967 didirikanlah gereja atas inisiatif Bapak Sastro Wirono, dibantu Bapak Sunar (alm). Lokasi di Sindangsari (Dusun Umbul Kapuk) tidak berpindah hingga saat ini, dan bangunan aslinya masih berdiri kokoh.\n\nPerkembangan Umat dan Pelayanan Saat Ini\nDari hanya satu Keluarga Katolik pada tahun 1950, kini pada tahun 2025, Stasi Santo Stefanus Sindangsari telah berkembang menjadi 38 Kepala Keluarga atau 87 jiwa. Stasi ini kini masuk ke dalam wilayah pelayanan Paroki Santo Andreas Rasul, Margo Agung.",
     daftar_ketua: ["Laurensius Sastro Wirono Sukapjo (Perintis, 1950–1967)"],
     foto_url: 'assets/img/stasi/sindang-sari.jpg',
     alamat: 'Dusun Umbul Kapuk, Desa Sindangsari, Kec. Tanjung Bintang, Kab. Lampung Selatan',
@@ -61,7 +61,7 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Tritunggal Mahakudus',
     pesta_nama: 'Minggu I stl. Pentakosta (Mei/Juni)',
     role: 'Misteri Sentral Iman Katolik (Bapa, Putra, & Roh Kudus)',
-    sejarah: "<strong>Asal Usul Desa Rejomulyo (1949–1951)</strong><br>Berdirinya Desa Rejomulyo bermula dari pasangan perantauan dari Jawa Tengah, yaitu Bapak Risman (beragama Islam) dan Ibu Jeane Lavre/Rasmani (beragama Katolik). Awalnya tinggal di Perkebunan Rotterdem (kini PRPN VII Unit Trikora). Pada tahun 1949, akibat situasi perang, keluarga ini bersama 135 pekerja lainnya mengungsi ke hutan pedalaman yang kini dikenal sebagai Rejomulyo. Pada tanggal 8 Januari 1951, Desa Rejomulyo diresmikan oleh negara. Nama Rejomulyo berarti \"Makmur\". Saat ini desa ini terletak di ujung utara Kecamatan Jati Agung, berbatasan dengan Kecamatan Natar.<br><br><strong>Perkembangan Iman Katolik dan Awal Stasi (1966–1970)</strong><br>Tahun 1966 menjadi cikal bakal berkembangnya Gereja Katolik di Rejomulyo, diawali dengan satu Keluarga Katolik, yaitu keluarga Bapak Sutrisno. Umat bertumbuh pesat akibat dampak pemberontakan PKI. Umat beribadah di rumah Bapak Kepala Desa, didampingi oleh Pastor Vrankeen. Pelayanan Ekaristi awalnya hanya dua bulan sekali. Stasi ini memiliki tradisi unik: sembayangan ibu-ibu setiap Jumat sore dan sembayangan bersama setiap Rabu malam, keduanya masih lestari hingga saat ini.<br><br><strong>Toleransi dan Pembangunan Gereja (1970)</strong><br>Pada tahun 1970, gereja Katolik didirikan bersamaan dengan pembangunan masjid atas iuran bersama warga—sebuah simbol toleransi yang kuat. Kebersamaan ini juga tampak dalam acara gugur gunung (gotong royong) dan pesta HUT RI.<br><br><strong>Statistik Umat (per November 2024)</strong><br>Jumlah umat: 101 jiwa dari 36 Keluarga Katolik (64 jiwa dewasa, 27 jiwa remaja, 10 jiwa anak-anak).",
+    sejarah: "Asal Usul Desa Rejomulyo (1949–1951)\nBerdirinya Desa Rejomulyo bermula dari pasangan perantauan dari Jawa Tengah, yaitu Bapak Risman (beragama Islam) dan Ibu Jeane Lavre/Rasmani (beragama Katolik). Awalnya tinggal di Perkebunan Rotterdem (kini PRPN VII Unit Trikora). Pada tahun 1949, akibat situasi perang, keluarga ini bersama 135 pekerja lainnya mengungsi ke hutan pedalaman yang kini dikenal sebagai Rejomulyo. Pada tanggal 8 Januari 1951, Desa Rejomulyo diresmikan oleh negara. Nama Rejomulyo berarti \"Makmur\". Saat ini desa ini terletak di ujung utara Kecamatan Jati Agung, berbatasan dengan Kecamatan Natar.\n\nPerkembangan Iman Katolik dan Awal Stasi (1966–1970)\nTahun 1966 menjadi cikal bakal berkembangnya Gereja Katolik di Rejomulyo, diawali dengan satu Keluarga Katolik, yaitu keluarga Bapak Sutrisno. Umat bertumbuh pesat akibat dampak pemberontakan PKI. Umat beribadah di rumah Bapak Kepala Desa, didampingi oleh Pastor Vrankeen. Pelayanan Ekaristi awalnya hanya dua bulan sekali. Stasi ini memiliki tradisi unik: sembayangan ibu-ibu setiap Jumat sore dan sembayangan bersama setiap Rabu malam, keduanya masih lestari hingga saat ini.\n\nToleransi dan Pembangunan Gereja (1970)\nPada tahun 1970, gereja Katolik didirikan bersamaan dengan pembangunan masjid atas iuran bersama warga—sebuah simbol toleransi yang kuat. Kebersamaan ini juga tampak dalam acara gugur gunung (gotong royong) dan pesta HUT RI.\n\nStatistik Umat (per November 2024)\nJumlah umat: 101 jiwa dari 36 Keluarga Katolik (64 jiwa dewasa, 27 jiwa remaja, 10 jiwa anak-anak).",
     daftar_ketua: ["Sutrisno (1966–1980)","Sujiman (1981–2000)","Dewan Stasi (2001–Sekarang)"],
     foto_url: 'assets/img/stasi/rejomulyo.jpg',
     alamat: 'Desa Rejomulyo, Kec. Jati Agung, Kab. Lampung Selatan',
@@ -97,7 +97,7 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Yusuf',
     pesta_nama: '19 Maret & 1 Mei',
     role: 'Bapa Asuh Yesus & Pelindung Gereja Universal',
-    sejarah: "<strong>Asal Usul Umat dan Masa Sulit Perintisan (1960–1972)</strong><br>Komunitas Umat Katolik di Sukadamai tidak lepas dari berdirinya desa tersebut. Warga, termasuk umat Katolik, adalah pendatang dari Lampung Timur dan Lampung Selatan yang bergotong royong membuka lahan—mayoritas berasal dari Marga Jaya. Pada tahun 1960-an, sengketa lahan dengan pemerintah daerah menyebabkan warga harus berpindah ke Way Abung. Banyak umat Katolik merasa kehilangan arah dan tercerai-berai. Meskipun demikian, enam Keluarga Katolik (KK) bertahan di Sukadamai: keluarga Mbah Pantun, Mbah Parto, Mbah Kamso, Mbah Tembeng, Mbah Lasmo, dan Mbah Sukiman.<br><br><strong>Pembangunan Gereja dan Penolakan Sosial (1972)</strong><br>Pada tahun 1972, Romo Vranken membeli sebidang tanah di RT 006, Dusun II, Desa Sukadamai, dan bersama umat mendirikan gereja permanen berbahan batu bata merah—seluruh biayanya ditanggung Romo Vranken. Di tahun yang sama, umat menghadapi penolakan peribadatan dari masyarakat setempat hingga melibatkan aparat desa. Mereka harus bertahan dan melakukan pendekatan hingga tahun 1983, ketika mediasi dengan tokoh agama dan aparat desa berhasil membuahkan kebebasan beribadah. Pembangunan kedua berlangsung pada tahun 2015–2016 melalui gotong royong umat, dengan Romo Hendri dan Romo Roy yang berupaya mendapatkan donatur untuk menyelesaikan pembangunan.<br><br><strong>Dinamika Pelayanan Pastoral dan Perubahan Administrasi (1969–2016)</strong><br>Stasi ini pertama kali masuk karya pastoral Paroki St. Yohanes Rasul, Kedaton pada tahun 1969 (Romo Vranken). Karena jarak yang terlalu jauh, Uskup memindahkan karya pastoral: (1) <em>1985</em>—dipindah ke Paroki Hati Kudus Metro, dilayani Romo Jo, Romo Suroyo, dan Romo Suwar; (2) <em>2005</em>—Paroki Margo Agung berdiri; (3) <em>20 April 2016</em>—Stasi St. Yusuf Sukadamai resmi masuk karya pastoral Paroki Margo Agung (Romo Widarman). Sepanjang perpindahan ini, pelayanan Ekaristi hanya satu bulan sekali, menyebabkan umat mengalami kekeringan rohani yang mendalam.<br><br><strong>Perpecahan Internal dan Isu Multikultural</strong><br>Setelah intoleransi terselesaikan (1983), anggota baru dari suku Batak bergabung. Pada tahun 1987, umat bersuku Jawa mendukung anggota Batak menjadi ketua stasi. Namun perselisihan muncul: umat Batak menginginkan Misa dalam tiga bahasa (Indonesia, Jawa, Batak), sementara umat Jawa hanya menginginkan satu bahasa. Akibatnya, umat bersuku Batak terpaksa berpindah dari Gereja St. Yusuf Sukadamai.<br><br><strong>Penamaan Gereja dan Data Umat</strong><br>Pada tahun 1995 disepakati nama pelindung Santo Yusuf—terinspirasi dari kebijaksanaan Santo Yusuf melindungi keluarganya, sebagai cerminan ketahanan umat menghadapi penolakan. Dari enam keluarga sesepuh di tahun 1960-an, hingga Desember 2025, jumlah umat hanya bertambah menjadi <strong>23 Kepala Keluarga</strong>.",
+    sejarah: "Asal Usul Umat dan Masa Sulit Perintisan (1960–1972)\nKomunitas Umat Katolik di Sukadamai tidak lepas dari berdirinya desa tersebut. Warga, termasuk umat Katolik, adalah pendatang dari Lampung Timur dan Lampung Selatan yang bergotong royong membuka lahan—mayoritas berasal dari Marga Jaya. Pada tahun 1960-an, sengketa lahan dengan pemerintah daerah menyebabkan warga harus berpindah ke Way Abung. Banyak umat Katolik merasa kehilangan arah dan tercerai-berai. Meskipun demikian, enam Keluarga Katolik (KK) bertahan di Sukadamai: keluarga Mbah Pantun, Mbah Parto, Mbah Kamso, Mbah Tembeng, Mbah Lasmo, dan Mbah Sukiman.\n\nPembangunan Gereja dan Penolakan Sosial (1972)\nPada tahun 1972, Romo Vranken membeli sebidang tanah di RT 006, Dusun II, Desa Sukadamai, dan bersama umat mendirikan gereja permanen berbahan batu bata merah—seluruh biayanya ditanggung Romo Vranken. Di tahun yang sama, umat menghadapi penolakan peribadatan dari masyarakat setempat hingga melibatkan aparat desa. Mereka harus bertahan dan melakukan pendekatan hingga tahun 1983, ketika mediasi dengan tokoh agama dan aparat desa berhasil membuahkan kebebasan beribadah. Pembangunan kedua berlangsung pada tahun 2015–2016 melalui gotong royong umat, dengan Romo Hendri dan Romo Roy yang berupaya mendapatkan donatur untuk menyelesaikan pembangunan.\n\nDinamika Pelayanan Pastoral dan Perubahan Administrasi (1969–2016)\nStasi ini pertama kali masuk karya pastoral Paroki St. Yohanes Rasul, Kedaton pada tahun 1969 (Romo Vranken). Karena jarak yang terlalu jauh, Uskup memindahkan karya pastoral: (1) 1985—dipindah ke Paroki Hati Kudus Metro, dilayani Romo Jo, Romo Suroyo, dan Romo Suwar; (2) 2005—Paroki Margo Agung berdiri; (3) 20 April 2016—Stasi St. Yusuf Sukadamai resmi masuk karya pastoral Paroki Margo Agung (Romo Widarman). Sepanjang perpindahan ini, pelayanan Ekaristi hanya satu bulan sekali, menyebabkan umat mengalami kekeringan rohani yang mendalam.\n\nPerpecahan Internal dan Isu Multikultural\nSetelah intoleransi terselesaikan (1983), anggota baru dari suku Batak bergabung. Pada tahun 1987, umat bersuku Jawa mendukung anggota Batak menjadi ketua stasi. Namun perselisihan muncul: umat Batak menginginkan Misa dalam tiga bahasa (Indonesia, Jawa, Batak), sementara umat Jawa hanya menginginkan satu bahasa. Akibatnya, umat bersuku Batak terpaksa berpindah dari Gereja St. Yusuf Sukadamai.\n\nPenamaan Gereja dan Data Umat\nPada tahun 1995 disepakati nama pelindung Santo Yusuf—terinspirasi dari kebijaksanaan Santo Yusuf melindungi keluarganya, sebagai cerminan ketahanan umat menghadapi penolakan. Dari enam keluarga sesepuh di tahun 1960-an, hingga Desember 2025, jumlah umat hanya bertambah menjadi 23 Kepala Keluarga.",
     daftar_ketua: ["Ketua dari Suku Batak (1987–Tdk Diketahui)","Dewan Stasi (Setelah 1987)"],
     foto_url: 'assets/img/stasi/sukadamai.jpg',
     alamat: 'RT 006, Dusun II, Desa Sukadamai, Kec. Natar, Kab. Lampung Selatan',
@@ -109,7 +109,7 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Aloysius Gonzaga',
     pesta_nama: '21 Juni',
     role: 'Pelindung Kaum Muda & Pelajar Katolik',
-    sejarah: "<strong>Awal Pembukaan Lahan dan Pembentukan Komunitas Umat (1969–1971)</strong><br>Desa Pancasila mulai dibuka sekitar tahun 1969. Pada masa pembukaan hutan, orang-orang berdatangan tanpa memandang latar belakang agama. Kegiatan keagamaan (ulangan/pengajaran) Katolik mulai dilakukan dengan pendampingan Pak Sutrisno (dari Rejomulyo), Simas (dari Metro), dan Jaiman (dari Natar). Umat Katolik asli desa hanya terdiri dari dua KK: keluarga Petrus Samulyo dan Yusuf Sulam—berasal dari Metro, Bedeng 20 Purwodadi, bukan dari program Transmigrasi. Karena sekitar 30 KK tertarik mengikuti pelajaran agama, pada tahun 1971 terjadi baptisan massal, termasuk orang tua narasumber.<br><br><strong>Dinamika Umat dan Status Awal Stasi (1971–1998)</strong><br>Beberapa tahun setelah baptisan massal, banyak dari 30 KK tersebut berpindah tempat. Sekitar tahun 1978–1979, hanya tersisa 15 KK—dan keturunan merekalah yang bertahan hingga saat ini. Jumlah umat kini stagnan, hanya bertambah dari keturunan. Berdasarkan data Biduk 2024, stasi ini memiliki <strong>13 Kepala Keluarga</strong>. Pada masa awal, komunitas ini belum berstatus stasi, melainkan masih berupa kring/lingkungan (ketua: Yakobus Natal). Sejak 1971, lingkungan ini menginduk langsung ke Katedral Kristus Raja (Romo Van Kamp, Romo Stan, Romo Laton, Romo Dwijo), lalu menjadi bagian dari Paroki St. Yohanes Rasul, Kedaton sekitar 1979–1980. Nama Stasi Santo Aloysius, Pendowo mulai dikenal sekitar tahun 1982.<br><br><strong>Sejarah Pembangunan dan Perpindahan Lokasi Gereja</strong><br>Sejak awal (1971), kapel telah dibangun dengan papan. Tanah gereja merupakan jatah pembagian bukaan lahan karena ketua RT/RW kala itu beragama Katolik. Lokasi gereja sempat berpindah akibat permintaan “tukar guling” dari Pak Sumo (warga non-Katolik), dan lahan gereja kini seluas kurang lebih setengah hektar berkat pembelian tambahan oleh Keuskupan dan yayasan pada masa Romo Hendri. Renovasi pertama (1991): kapel papan direhab dengan batu bata, dipimpin Romo Paul dan Romo Totok dari Paroki Kedaton. Administrasi berpindah ke Paroki Margo Agung sekitar 1998. Renovasi kedua/pembangunan total (2013–2014): kusen keropos mendorong rehabilitasi total. Pada <strong>tahun 2014, Gereja St. Aloysius, Stasi Pendowo diberkati oleh Mgr. Yohanes Harun Yuwono</strong>—momen bersejarah karena sejak awal gereja belum pernah diberkati secara resmi. Pemberkatan dihadiri umat dari hampir seluruh stasi di Paroki Margo Agung.",
+    sejarah: "Awal Pembukaan Lahan dan Pembentukan Komunitas Umat (1969–1971)\nDesa Pancasila mulai dibuka sekitar tahun 1969. Pada masa pembukaan hutan, orang-orang berdatangan tanpa memandang latar belakang agama. Kegiatan keagamaan (ulangan/pengajaran) Katolik mulai dilakukan dengan pendampingan Pak Sutrisno (dari Rejomulyo), Simas (dari Metro), dan Jaiman (dari Natar). Umat Katolik asli desa hanya terdiri dari dua KK: keluarga Petrus Samulyo dan Yusuf Sulam—berasal dari Metro, Bedeng 20 Purwodadi, bukan dari program Transmigrasi. Karena sekitar 30 KK tertarik mengikuti pelajaran agama, pada tahun 1971 terjadi baptisan massal, termasuk orang tua narasumber.\n\nDinamika Umat dan Status Awal Stasi (1971–1998)\nBeberapa tahun setelah baptisan massal, banyak dari 30 KK tersebut berpindah tempat. Sekitar tahun 1978–1979, hanya tersisa 15 KK—dan keturunan merekalah yang bertahan hingga saat ini. Jumlah umat kini stagnan, hanya bertambah dari keturunan. Berdasarkan data Biduk 2024, stasi ini memiliki 13 Kepala Keluarga. Pada masa awal, komunitas ini belum berstatus stasi, melainkan masih berupa kring/lingkungan (ketua: Yakobus Natal). Sejak 1971, lingkungan ini menginduk langsung ke Katedral Kristus Raja (Romo Van Kamp, Romo Stan, Romo Laton, Romo Dwijo), lalu menjadi bagian dari Paroki St. Yohanes Rasul, Kedaton sekitar 1979–1980. Nama Stasi Santo Aloysius, Pendowo mulai dikenal sekitar tahun 1982.\n\nSejarah Pembangunan dan Perpindahan Lokasi Gereja\nSejak awal (1971), kapel telah dibangun dengan papan. Tanah gereja merupakan jatah pembagian bukaan lahan karena ketua RT/RW kala itu beragama Katolik. Lokasi gereja sempat berpindah akibat permintaan “tukar guling” dari Pak Sumo (warga non-Katolik), dan lahan gereja kini seluas kurang lebih setengah hektar berkat pembelian tambahan oleh Keuskupan dan yayasan pada masa Romo Hendri. Renovasi pertama (1991): kapel papan direhab dengan batu bata, dipimpin Romo Paul dan Romo Totok dari Paroki Kedaton. Administrasi berpindah ke Paroki Margo Agung sekitar 1998. Renovasi kedua/pembangunan total (2013–2014): kusen keropos mendorong rehabilitasi total. Pada tahun 2014, Gereja St. Aloysius, Stasi Pendowo diberkati oleh Mgr. Yohanes Harun Yuwono—momen bersejarah karena sejak awal gereja belum pernah diberkati secara resmi. Pemberkatan dihadiri umat dari hampir seluruh stasi di Paroki Margo Agung.",
     daftar_ketua: ["Yakobus Natal (Ketua Kring, Awal)","Yuventius Prawoto (1982–...)","Pardi","Yuventius Prawoto (periode ke-2)","Martinus Satimin (1990–...)","Yohanes Robert Rebin","Markus Ponidi","Pardi (periode ke-2)","Yohanes Sukiran","Albertus Yanto (...–2025)","Markus Ruswantoro (2025–Sekarang)"],
     foto_url: 'assets/img/stasi/pendowo.jpg',
     alamat: 'Desa Pancasila (Pendowo), Kec. Natar, Kab. Lampung Selatan',
@@ -121,7 +121,7 @@ const DEFAULT_STASI_DATA = {
     pelindung: 'Santo Petrus',
     pesta_nama: '29 Juni & 22 Februari',
     role: 'Pemimpin Para Rasul & Uskup Roma (Paus) Pertama',
-    sejarah: "<strong>Awal Pembentukan Komunitas dan Perjuangan Toleransi (1984–1990-an)</strong><br>Desa Purwotani terbentuk sekitar tahun 1984. Sebagian besar penduduk, termasuk umat Katolik, adalah pendatang dalam proyek transmigrasi lokal karena bekerja di PT. Midsugoro (Jepang). Umat Katolik perdana berjumpa dan mulai beribadat tahun 1990-an, terdiri dari 8 Keluarga Katolik: Pak Surajan, Pak Albertus Kasimin, Pak Margono, Pak Karinus, Pak Bernardus, Mbah Kasimah, Mbah Petrus Murbadi, dan Mbah Yohanes Saleh. Awalnya merupakan lingkungan di Gereja St. Aloysius Bergen (Paroki Katedral). Pada awal 1990-an, Romo Peco dan katekis Pak Puspayuwono mulai memberikan pelayanan. Umat harus berjuang memperoleh izin dari Kepala Desa dan mendapat pengawasan ibadat karena kecurigaan, tetapi secara perlahan terjalin toleransi yang kuat hingga saat ini tanpa adanya benturan agama.<br><br><strong>Lahan Gereja dan Perpindahan Status Administratif (1992–2022)</strong><br>Sekitar tahun 1992, Romo Peco membeli tanah 3/4 hektar untuk gereja lalu ditukar guling oleh Pak Surajan dengan pekarangan 3 rante di tengah kampung. SKT lahan tersebut sekarang disimpan di Paroki Margo Agung atas nama Supriyanto. Menariknya, hingga saat ini umat belum memiliki bangunan gereja permanen; semua ibadat dan Misa diadakan bergiliran di rumah umat—yang juga berfungsi sebagai kunjungan pastoral langsung. Pada 2022, lingkungan tersebut pindah ke Paroki Margo Agung dan baru resmi ditetapkan sebagai <strong>Stasi Santo Petrus Purwotani</strong> oleh Romo Philipus Suroyo.<br><br><strong>Semangat Beribadat dan Data Umat Terkini</strong><br>Sebelumnya Misa hanya diterima pada Minggu ke-5 dan kini umat sering bergabung ke Stasi Marga Lestari di Hari Minggu. Semangat umat sangat tinggi, terbukti dengan partisipasi utuh saat ada ibadah lokal di stasi. Saat ini, jumlah umat Stasi Purwotani tercatat ada <strong>7 Kepala Keluarga (25 jiwa)</strong>.",
+    sejarah: "Awal Pembentukan Komunitas dan Perjuangan Toleransi (1984–1990-an)\nDesa Purwotani terbentuk sekitar tahun 1984. Sebagian besar penduduk, termasuk umat Katolik, adalah pendatang dalam proyek transmigrasi lokal karena bekerja di PT. Midsugoro (Jepang). Umat Katolik perdana berjumpa dan mulai beribadat tahun 1990-an, terdiri dari 8 Keluarga Katolik: Pak Surajan, Pak Albertus Kasimin, Pak Margono, Pak Karinus, Pak Bernardus, Mbah Kasimah, Mbah Petrus Murbadi, dan Mbah Yohanes Saleh. Awalnya merupakan lingkungan di Gereja St. Aloysius Bergen (Paroki Katedral). Pada awal 1990-an, Romo Peco dan katekis Pak Puspayuwono mulai memberikan pelayanan. Umat harus berjuang memperoleh izin dari Kepala Desa dan mendapat pengawasan ibadat karena kecurigaan, tetapi secara perlahan terjalin toleransi yang kuat hingga saat ini tanpa adanya benturan agama.\n\nLahan Gereja dan Perpindahan Status Administratif (1992–2022)\nSekitar tahun 1992, Romo Peco membeli tanah 3/4 hektar untuk gereja lalu ditukar guling oleh Pak Surajan dengan pekarangan 3 rante di tengah kampung. SKT lahan tersebut sekarang disimpan di Paroki Margo Agung atas nama Supriyanto. Menariknya, hingga saat ini umat belum memiliki bangunan gereja permanen; semua ibadat dan Misa diadakan bergiliran di rumah umat—yang juga berfungsi sebagai kunjungan pastoral langsung. Pada 2022, lingkungan tersebut pindah ke Paroki Margo Agung dan baru resmi ditetapkan sebagai Stasi Santo Petrus Purwotani oleh Romo Philipus Suroyo.\n\nSemangat Beribadat dan Data Umat Terkini\nSebelumnya Misa hanya diterima pada Minggu ke-5 dan kini umat sering bergabung ke Stasi Marga Lestari di Hari Minggu. Semangat umat sangat tinggi, terbukti dengan partisipasi utuh saat ada ibadah lokal di stasi. Saat ini, jumlah umat Stasi Purwotani tercatat ada 7 Kepala Keluarga (25 jiwa).",
     daftar_ketua: ["Surajan (Ketua Lingkungan, 1990–?)","Sempat ada kekosongan ketua","Albertus Kasimin (Ketua Lingkungan, ?–2021)","Benediktus Daman (Ketua Stasi, 2022–Sekarang)"],
     foto_url: '',
     alamat: 'Desa Purwotani, Kec. Jati Agung, Kab. Lampung Selatan',
@@ -220,9 +220,9 @@ function showConfirmModal({
     if (modalId && type === 'save') {
       const changed = typeof window.getChangedFields === 'function' ? window.getChangedFields(modalId) : (typeof getChangedFields === 'function' ? getChangedFields(modalId) : []);
       if (changed.length > 0) {
-        const changesText = `<strong>Kolom yang diedit:</strong><br><span style="color:var(--gold)">${escapeHtml(changed.join(', '))}</span>`;
+        const changesText = `Kolom yang diedit:\n<span style="color:var(--gold)">${escapeHtml(changed.join(', '))}</span>`;
         if (finalDetailsHtml) {
-          finalDetailsHtml = finalDetailsHtml + '<br><br>' + changesText;
+          finalDetailsHtml = finalDetailsHtml + '\n\n' + changesText;
         } else {
           finalDetailsHtml = changesText;
         }
@@ -471,7 +471,7 @@ async function safeCloseModal(id) {
       title: 'Batalkan Perubahan?',
       heading: 'Perubahan Belum Disimpan',
       message: 'Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin ingin membatalkan dan keluar?',
-      detailsHtml: `<strong>Kolom yang diubah:</strong><br><span style="color:var(--danger)">${escapeHtml(changed.join(', '))}</span><br><br>Peringatan: Perubahan ini akan hilang jika Anda keluar.`,
+      detailsHtml: `Kolom yang diubah:\n<span style="color:var(--danger)">${escapeHtml(changed.join(', '))}</span>\n\nPeringatan: Perubahan ini akan hilang jika Anda keluar.`,
       confirmText: 'Ya, Buang Perubahan',
       cancelText: 'Lanjutkan Mengedit',
       type: 'warning'
@@ -709,7 +709,7 @@ async function loadJadwal() {
 
     filterJadwalList();
   } catch (err) {
-    el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(err.message)}<br><small>Pastikan tabel sudah dibuat di Supabase.</small></p></div>`;
+    el.innerHTML = `<div class="empty-state"><p>Gagal memuat: ${escapeHtml(err.message)}\n<small>Pastikan tabel sudah dibuat di Supabase.</small></p></div>`;
   }
 }
 
@@ -751,7 +751,7 @@ function renderJadwalView(data, isFiltered = false) {
     if (isFiltered) {
       el.innerHTML = `<div class="empty-state"><p>Tidak ada jadwal yang cocok dengan kata kunci/filter.</p></div>`;
     } else {
-      el.innerHTML = `<div class="empty-state"><p>Belum ada jadwal.<br>Klik "+ Tambah Jadwal" untuk menambahkan.</p></div>`;
+      el.innerHTML = `<div class="empty-state"><p>Belum ada jadwal.\nKlik "+ Tambah Jadwal" untuk menambahkan.</p></div>`;
     }
     return;
   }
@@ -1234,7 +1234,7 @@ async function submitJadwal(e) {
     message: id 
       ? 'Perubahan jadwal misa ini akan langsung disimpan ke database dan tampil di website.' 
       : 'Jadwal misa baru akan langsung ditambahkan ke jadwal paroki.',
-    detailsHtml: `<strong>Stasi:</strong> ${escapeHtml(stasiName)}<br><strong>Hari & Jam:</strong> ${escapeHtml(hariVal)}, ${escapeHtml(waktuVal)} ${ketVal ? `<br><strong>Keterangan:</strong> ${escapeHtml(ketVal)}` : ''}`,
+    detailsHtml: `Stasi: ${escapeHtml(stasiName)}\nHari & Jam: ${escapeHtml(hariVal)}, ${escapeHtml(waktuVal)} ${ketVal ? `\nKeterangan: ${escapeHtml(ketVal)}` : ''}`,
     confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Tambahkan Jadwal',
     cancelText: 'Periksa Kembali',
     type: 'save',
@@ -1539,10 +1539,10 @@ async function submitRenungan(e) {
     heading: id ? 'Simpan perubahan renungan ini?' : 'Terbitkan renungan harian baru?',
     message: `Renungan akan ditayangkan pada tanggal ${formatTanggalIndo(tanggalVal)}.`,
     detailsHtml: `
-      <strong>Tema:</strong> ${escapeHtml(temaVal)}<br>
-      <strong>Perikop:</strong> ${escapeHtml(perikopVal)}<br>
-      <strong>Masa Liturgi:</strong> ${escapeHtml(liturgiVal)}<br>
-      <strong>Status:</strong> ${aktifVal ? 'Aktif (Akan tampil)' : 'Nonaktif'}
+      Tema: ${escapeHtml(temaVal)}\n
+      Perikop: ${escapeHtml(perikopVal)}\n
+      Masa Liturgi: ${escapeHtml(liturgiVal)}\n
+      Status: ${aktifVal ? 'Aktif (Akan tampil)' : 'Nonaktif'}
     `,
     confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Terbitkan Renungan',
     cancelText: 'Batal',
@@ -1691,7 +1691,7 @@ function renderPengumumanView(data, isFiltered = false) {
     if (isFiltered) {
       el.innerHTML = `<div class="empty-state"><p>Tidak ada pengumuman yang cocok dengan kata kunci / filter.</p></div>`;
     } else {
-      el.innerHTML = `<div class="empty-state"><p>Belum ada pengumuman.<br>Klik "+ Tambah Pengumuman" untuk menambahkan.</p></div>`;
+      el.innerHTML = `<div class="empty-state"><p>Belum ada pengumuman.\nKlik "+ Tambah Pengumuman" untuk menambahkan.</p></div>`;
     }
     return;
   }
@@ -1838,7 +1838,7 @@ async function submitPengumuman(e) {
     message: id 
       ? 'Perubahan pengumuman akan langsung diperbarui di website.' 
       : 'Pengumuman baru akan langsung tersimpan dan aktif.',
-    detailsHtml: `<strong>Judul:</strong> ${escapeHtml(judulVal)}<br><strong>Kategori:</strong> ${escapeHtml(katVal)} | <strong>Status:</strong> ${aktifVal ? 'Aktif (Tayang)' : 'Draft (Nonaktif)'}`,
+    detailsHtml: `Judul: ${escapeHtml(judulVal)}\nKategori: ${escapeHtml(katVal)} | Status: ${aktifVal ? 'Aktif (Tayang)' : 'Draft (Nonaktif)'}`,
     confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Terbitkan',
     cancelText: 'Periksa Kembali',
     type: 'save',
@@ -2066,7 +2066,7 @@ async function submitGaleri(e) {
     message: id 
       ? 'Perubahan judul, kategori, dan foto kegiatan akan diperbarui di galeri paroki.' 
       : 'Foto dokumentasi kegiatan baru akan langsung tampil di galeri paroki.',
-    detailsHtml: `<strong>Judul:</strong> ${escapeHtml(judul)}<br><strong>Kategori:</strong> ${escapeHtml(kat)}`,
+    detailsHtml: `Judul: ${escapeHtml(judul)}\nKategori: ${escapeHtml(kat)}`,
     confirmText: id ? 'Ya, Simpan Perubahan' : 'Ya, Tambahkan ke Galeri',
     cancelText: 'Periksa Kembali',
     type: 'save',
@@ -2278,7 +2278,7 @@ async function submitStasiAdmin(e) {
     title: 'Konfirmasi Simpan Data Stasi',
     heading: `Simpan Perubahan Stasi ${escapeHtml(nama)}?`,
     message: 'Data pelindung, alamat, sejarah, daftar ketua, tautan maps, dan foto bangunan stasi akan diperbarui di seluruh website paroki.',
-    detailsHtml: `<strong>Stasi:</strong> ${escapeHtml(nama)}<br><strong>Pelindung:</strong> ${escapeHtml(pelindung)}<br><strong>Alamat:</strong> ${escapeHtml(alamat)}`,
+    detailsHtml: `Stasi: ${escapeHtml(nama)}\nPelindung: ${escapeHtml(pelindung)}\nAlamat: ${escapeHtml(alamat)}`,
     confirmText: 'Ya, Simpan Perubahan',
     cancelText: 'Periksa Kembali',
     type: 'save',
@@ -2348,7 +2348,7 @@ async function confirmDelete(table, id, desc, cb) {
     title: 'Konfirmasi Hapus Data',
     heading: 'Hapus data ini secara permanen?',
     message: 'Data yang dihapus tidak dapat dipulihkan kembali dari database.',
-    detailsHtml: `<strong>Target Data:</strong> ${escapeHtml(desc)}`,
+    detailsHtml: `Target Data: ${escapeHtml(desc)}`,
     confirmText: 'Hapus Sekarang',
     cancelText: 'Batal',
     type: 'delete',

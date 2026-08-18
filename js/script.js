@@ -1,4 +1,4 @@
-﻿const stasiData = {
+const stasiData = {
     'margo-agung': {
         title: 'Gereja Paroki Margo Agung',
         patron: 'Santo Andreas Rasul',
@@ -381,7 +381,7 @@ function openStasiModal(id) {
                     <div class="w-1 h-5 rounded-full" style="background:var(--gold)"></div>
                     <h4 class="font-bold text-base" style="color:var(--ink)">Sejarah Stasi</h4>
                 </div>
-                <div class="text-gray-600 leading-relaxed text-sm" style="text-align:justify">${data.history}</div>
+                <div class="text-gray-600 leading-relaxed text-sm" style="text-align:justify;white-space:pre-line">${data.history}</div>
             </div>
             <div>
                 <div class="sticky top-4 p-5 rounded-2xl" style="background:var(--bg-alt);border:1px solid var(--border)">
