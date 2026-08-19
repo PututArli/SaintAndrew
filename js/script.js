@@ -289,13 +289,40 @@ function unlockBodyScroll() {
 
 let stasiModalTimeout = null;
 
-function openStasiModal(id) {
+async function openStasiModal(id) {
     const cleanId = String(id || '').trim().toLowerCase().replace(/_/g, '-');
-    const data = stasiData[cleanId] || stasiData[id];
+    let data = stasiData[cleanId] || stasiData[id];
     
     if (!data) {
         showToast('Informasi untuk stasi ini belum tersedia.', 'error');
         return;
+    }
+
+    if (window.db) {
+        try {
+            const { data: dbData, error } = await window.db.from('stasi').select('*').eq('id', cleanId).single();
+            if (!error && dbData) {
+                let parsedKetua = [];
+                try {
+                    parsedKetua = typeof dbData.daftar_ketua === 'string' ? JSON.parse(dbData.daftar_ketua) : dbData.daftar_ketua;
+                } catch(e) {}
+                
+                data = {
+                    ...data,
+                    title: dbData.nama ?? data.title,
+                    patron: dbData.pelindung ?? data.patron,
+                    patronFeast: dbData.pesta_nama ?? data.patronFeast,
+                    patronRole: dbData.role ?? data.patronRole,
+                    history: dbData.sejarah ?? data.history,
+                    address: dbData.alamat ?? data.address,
+                    gmapsUrl: dbData.gmaps_url ?? data.gmapsUrl,
+                    image: dbData.foto_url ?? data.image,
+                    chairmen: (parsedKetua && parsedKetua.length > 0) ? parsedKetua : data.chairmen
+                };
+            }
+        } catch (e) {
+            console.warn('Gagal memuat stasi dari DB:', e);
+        }
     }
 
     const modal = ensureStasiModalInDOM();
@@ -1129,15 +1156,15 @@ async function syncStasiFromSupabase() {
             const parsed = JSON.parse(cached);
             Object.values(parsed).forEach(item => {
                 if (stasiData[item.id]) {
-                    if (item.nama) stasiData[item.id].title = item.nama;
-                    if (item.pelindung) stasiData[item.id].patron = item.pelindung;
-                    if (item.pesta_nama) stasiData[item.id].patronFeast = item.pesta_nama;
-                    if (item.role || item.peran_pelindung) stasiData[item.id].patronRole = item.role || item.peran_pelindung;
-                    if (item.biografi_pelindung) stasiData[item.id].patronBio = item.biografi_pelindung;
-                    if (item.alamat) stasiData[item.id].address = item.alamat;
-                    if (item.gmaps_url) stasiData[item.id].gmapsUrl = item.gmaps_url;
-                    if (item.foto_url) stasiData[item.id].image = item.foto_url;
-                    if (item.sejarah) stasiData[item.id].history = item.sejarah;
+                    if (item.nama !== undefined) stasiData[item.id].title = item.nama;
+                    if (item.pelindung !== undefined) stasiData[item.id].patron = item.pelindung;
+                    if (item.pesta_nama !== undefined) stasiData[item.id].patronFeast = item.pesta_nama;
+                    if (item.role !== undefined || item.peran_pelindung !== undefined) stasiData[item.id].patronRole = item.role || item.peran_pelindung;
+                    if (item.biografi_pelindung !== undefined) stasiData[item.id].patronBio = item.biografi_pelindung;
+                    if (item.alamat !== undefined) stasiData[item.id].address = item.alamat;
+                    if (item.gmaps_url !== undefined) stasiData[item.id].gmapsUrl = item.gmaps_url;
+                    if (item.foto_url !== undefined) stasiData[item.id].image = item.foto_url;
+                    if (item.sejarah !== undefined) stasiData[item.id].history = item.sejarah;
                 }
             });
         }
@@ -1150,15 +1177,15 @@ async function syncStasiFromSupabase() {
         if (!error && data && data.length > 0) {
             data.forEach(item => {
                 if (stasiData[item.id]) {
-                    if (item.nama) stasiData[item.id].title = item.nama;
-                    if (item.pelindung) stasiData[item.id].patron = item.pelindung;
-                    if (item.pesta_nama) stasiData[item.id].patronFeast = item.pesta_nama;
-                    if (item.role || item.peran_pelindung) stasiData[item.id].patronRole = item.role || item.peran_pelindung;
-                    if (item.biografi_pelindung) stasiData[item.id].patronBio = item.biografi_pelindung;
-                    if (item.alamat) stasiData[item.id].address = item.alamat;
-                    if (item.gmaps_url) stasiData[item.id].gmapsUrl = item.gmaps_url;
-                    if (item.foto_url) stasiData[item.id].image = item.foto_url;
-                    if (item.sejarah) stasiData[item.id].history = item.sejarah;
+                    if (item.nama !== null) stasiData[item.id].title = item.nama;
+                    if (item.pelindung !== null) stasiData[item.id].patron = item.pelindung;
+                    if (item.pesta_nama !== null) stasiData[item.id].patronFeast = item.pesta_nama;
+                    if (item.role !== null || item.peran_pelindung != null) stasiData[item.id].patronRole = item.role || item.peran_pelindung;
+                    if (item.biografi_pelindung !== null) stasiData[item.id].patronBio = item.biografi_pelindung;
+                    if (item.alamat !== null) stasiData[item.id].address = item.alamat;
+                    if (item.gmaps_url !== null) stasiData[item.id].gmapsUrl = item.gmaps_url;
+                    if (item.foto_url !== null) stasiData[item.id].image = item.foto_url;
+                    if (item.sejarah !== null) stasiData[item.id].history = item.sejarah;
                     
                     let parsedChairmen = [];
                     if (Array.isArray(item.daftar_ketua)) {
